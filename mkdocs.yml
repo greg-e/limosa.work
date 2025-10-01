@@ -1,6 +1,6 @@
 site_name: limosa.work
 site_url: https://limosa.work
-repo_url: https://github.com/<YOUR_USERNAME>/limosa.work
+repo_url: https://github.com/greg-e/limosa.work
 theme:
   name: material
   features:
