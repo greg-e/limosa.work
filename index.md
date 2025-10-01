@@ -1,4 +1,6 @@
-# Actual by Limosa (Godwit)
+---
+title: Actual by Limosa (Godwit)
+---
 
 Passive, truthful time & location for outdoor crews — automated payroll, job costing, and attestation.
 
