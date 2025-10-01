@@ -5,14 +5,14 @@
 # ---- Site identity
 title: limosa.work
 description: Passive, truthful time & location for outdoor crews
-url: https://limosa.work        # your custom domain
-baseurl: ""                     # keep empty with a custom domain
+url: https://limosa.work      # custom domain
+baseurl: ""                   # keep empty when using a custom domain
 
 # ---- Theme
 theme: minima
 minima:
-  skin: classic                 # or 'dark', 'auto', etc. (supported by minima)
-# Header logo (put the image at /assets/img/logo.png or .svg)
+  skin: classic               # 'classic', 'dark', 'auto', etc.
+# Header logo (ensure this file exists)
 logo: /assets/img/logo.png
 
 # ---- Build & Markdown
@@ -21,7 +21,7 @@ kramdown:
   input: GFM
   hard_wrap: false
 highlighter: rouge
-permalink: pretty
+permalink: pretty             # /path/ instead of /path.html
 
 # ---- Plugins (all supported by GitHub Pages)
 plugins:
@@ -29,7 +29,7 @@ plugins:
   - jekyll-sitemap
   - jekyll-seo-tag
 
-# ---- Navigation (top header links)
+# ---- Header navigation (uses each page's front-matter title)
 header_pages:
   - index.md
   - docs/01-methodology.md
@@ -39,13 +39,7 @@ header_pages:
   - docs/05-workshops.md
   - docs/06-brand.md
 
-# ---- SEO / Social (optional; fill in if you want)
-lang: en
-github_username: limosa-work
-# twitter_username: yourhandle
-# linkedin: your-slug
-
-# ---- Defaults (consistent layout for pages in root and /docs)
+# ---- Defaults (consistent layout)
 defaults:
   - scope:
       path: ""
@@ -58,9 +52,16 @@ defaults:
     values:
       layout: page
 
-# ---- Exclusions (don’t publish these if present)
+# ---- SEO / Social (optional)
+lang: en
+# github_username: limosa-work
+# twitter_username: yourhandle
+
+# ---- Exclusions (do not publish)
 exclude:
   - README.md
+  - mkdocs.yml
+  - .github
   - node_modules
   - vendor
-  - .github
+
