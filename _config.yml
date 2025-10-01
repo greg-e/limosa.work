@@ -1,5 +1,6 @@
 # _config.yml
 title: limosa.work
+logo: /assets/img/logo.png
 description: Passive, truthful time & location for outdoor crews
 theme: minima
 header_pages:
