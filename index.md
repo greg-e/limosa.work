@@ -1,5 +1,5 @@
 ---
-title: Actual by Limosa (Godwit)
+title: "Actual by Limosa (Godwit)"
 layout: page
 ---
 
