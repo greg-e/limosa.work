@@ -1,7 +1,16 @@
+# _config.yml
 title: limosa.work
 description: Passive, truthful time & location for outdoor crews
 theme: minima
-markdown: kramdown
+header_pages:
+  - index.md
+  - docs/01-methodology.md
+  - docs/02-product.md
+  - docs/03-architecture.md
+  - docs/04-casestories.md
+  - docs/05-workshops.md
+  - docs/06-brand.md
 plugins:
   - jekyll-feed
   - jekyll-sitemap
+
