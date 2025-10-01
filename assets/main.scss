@@ -1,0 +1,27 @@
+---
+---
+
+@import "minima";
+
+/* Add logo before the site title text */
+.site-title::before {
+  content: "";
+  display: inline-block;
+  background: url("/assets/img/logo.png") no-repeat center;
+  background-size: contain;
+  width: 48px;   /* adjust as you like */
+  height: 48px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+/* Optional: logo-only header (hide text) */
+.site-title {
+  /* comment this out if you want to keep the text title */
+  font-size: 0;
+}
+.site-title::before {
+  /* if you keep text hidden, you can size the logo a bit larger */
+  width: 56px;
+  height: 56px;
+}
