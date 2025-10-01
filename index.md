@@ -1,7 +1,6 @@
-# limosa.work
-Passive, truthful time & location for outdoor crews.
+# Actual by Limosa (Godwit)
+Passive, truthful time & location for outdoor crews — automated payroll, job costing, and attestation.
 
-- Automates payroll and job costing  
-- Crew attestation closes appointments  
-- Badge + tags = minimal cognitive load  
-- Inspired by Godwit (Limosa lapponica)
+- **Why it matters:** Flow > admin. Crews verify; the system does the heavy lift.
+- **How it works:** Badge + tags + truthful GNSS → secure, batched telemetry → integrations.
+- **Principles:** TOC flow, DevOps feedback, minimal cognitive load, audit-worthy data.
