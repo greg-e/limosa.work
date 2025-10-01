@@ -9,8 +9,8 @@
   display: inline-block;
   background: url("/assets/img/logo.png") no-repeat center;
   background-size: contain;
-  width: 48px;   /* adjust as you like */
-  height: 48px;
+  width: 68px;   /* adjust as you like */
+  height: 68px;
   margin-right: 10px;
   vertical-align: middle;
 }
@@ -22,6 +22,6 @@
 }
 .site-title::before {
   /* if you keep text hidden, you can size the logo a bit larger */
-  width: 56px;
-  height: 56px;
+  width: 68px;
+  height: 68px;
 }
