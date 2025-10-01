@@ -1,5 +1,5 @@
 ---
-title: Product: Godwit Badge & Tags
+title: "Product: Godwit Badge & Tags"
 layout: page
 ---
 
