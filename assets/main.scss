@@ -1,7 +1,7 @@
 ---
 ---
 
-@import "minima";
+@import "{{ site.theme }}";   /* pulls Slate’s CSS instead of Minima */
 
 /* Add logo before the site title text */
 .site-title::before {
