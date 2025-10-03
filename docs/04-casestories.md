@@ -3,8 +3,6 @@ title: "Case Stories"
 layout: page
 ---
 
-# Case Stories
-
 ## From Manual Timesheets to Truthful Time
 **Before:** Paper/app timesheets; edits each pay cycle; frequent disputes.  
 **After:** Passive capture + attestation → +X% payroll accuracy, disputes ↓ sharply, closeouts automatic.
