@@ -3,7 +3,8 @@ title: "Actual by Limosa (Godwit)"
 layout: page
 ---
 
-Passive, truthful time & location for outdoor crews — automated payroll, job costing, and attestation.
+Actual is a truth system.
+It replaces compliance rituals with passive flow, turns work into data without interference, and ensures payroll, job costing, and revenue recognition are accurate, automatic, and trusted.
 
 - **Truth over compliance** Real data comes from unhampered participation, not forced reporting.
 - **Flow is the goal** Every design choice is to reduce friction so that people and data move naturally.
