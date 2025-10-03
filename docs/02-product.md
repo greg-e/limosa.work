@@ -3,8 +3,6 @@ title: "Product: Godwit Badge & Tags"
 layout: page
 ---
 
-# Product: Godwit Badge & Tags
-
 ## Badge (crew wearable)
 - **Sensors:** GNSS + IMU; optional BLE for tag proximity.
 - **Comms:** Cellular; batches telemetry ~ every 30 minutes to conserve battery.
