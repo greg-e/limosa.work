@@ -8,7 +8,7 @@ title: "Architecture (High-Level)"
 layout: page
 ---
 
-# Architecture (High-Level)
+
 
 ## Flow
 1. **Edge:** Badge captures `{ts, GNSS, motion, proximity}` continuously; stores locally.
