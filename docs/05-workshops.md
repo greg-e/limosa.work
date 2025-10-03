@@ -3,8 +3,6 @@ title: "Workshops (Runbook)"
 layout: page
 ---
 
-# Workshops (Runbook)
-
 ## 0) Kickoff (90 min)
 - Align on goals, constraints, and the single metric that matters first (e.g., payroll accuracy).
 - Define pilot scope (branches, crews, properties).
