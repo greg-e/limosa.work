@@ -3,8 +3,6 @@ title: "Brand & Assets"
 layout: page
 ---
 
-# Brand & Assets
-
 ## Mark
 - **Godwit** (Limosa lapponica) + subtle **map pin** = *truthful location with migration-grade endurance*.
 
