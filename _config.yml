@@ -9,7 +9,7 @@ url: https://limosa.work      # custom domain
 baseurl: ""                   # empty with a custom domain
 
 # ---- Theme
-theme: jekyll-theme-hacker
+theme: minima
 minima:
   skin: classic               # 'classic', 'dark', 'auto'
 
