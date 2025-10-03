@@ -3,7 +3,6 @@ title: "Methodology: Flow, Feedback, Full-Kit"
 layout: page
 ---
 
-# Methodology: Flow, Feedback, Full-Kit
 
 ## 1) Constraint → Flow (TOC)
 - Find the single bottleneck that limits truth-in-time capture (usually **crew → job → attestation**).
