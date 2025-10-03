@@ -1,14 +1,8 @@
 
 ---
-
-### `docs/03-architecture.md`
-```markdown
----
 title: "Architecture (High-Level)"
 layout: page
 ---
-
-
 
 ## Flow
 1. **Edge:** Badge captures `{ts, GNSS, motion, proximity}` continuously; stores locally.
