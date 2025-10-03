@@ -1,6 +1,6 @@
 
 ---
-title: "Architecture (High-Level)"
+title: "Architecture"
 layout: page
 ---
 
