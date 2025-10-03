@@ -5,9 +5,9 @@ layout: page
 
 Passive, truthful time & location for outdoor crews — automated payroll, job costing, and attestation.
 
-- **Why it matters:** Flow > admin. Crews verify; the system does the heavy lift.
-- **How it works:** Badge + tags + truthful GNSS → secure, batched telemetry → integrations.
-- **Principles:** TOC flow, DevOps feedback, minimal cognitive load, audit-worthy data.
+- **Truth over compliance** Real data comes from unhampered participation, not forced reporting.
+- **Flow is the goal** Every design choice is to reduce friction so that people and data move naturally.
+- **Minimal interference** Technology disappears into the background; work speaks for itself.
 
 ## Navigation
 - [Methodology](/docs/01-methodology/)
