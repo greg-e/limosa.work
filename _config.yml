@@ -1,4 +1,3 @@
-# _config.yml
 title: limosa.work
 description: Passive, truthful time & location for outdoor crews
 url: https://limosa.work
@@ -7,6 +6,7 @@ baseurl: ""
 theme: jekyll-theme-slate
 show_downloads: false
 
+# You may remove this block for now if unsure
 sass:
   sass_dir: assets/css
   style: compressed
@@ -14,7 +14,6 @@ sass:
 markdown: kramdown
 kramdown:
   input: GFM
-  hard_wrap: false
 highlighter: rouge
 permalink: pretty
 
@@ -30,7 +29,6 @@ defaults:
     values: { layout: default }
 
 lang: en
-
 exclude:
   - README.md
   - mkdocs.yml
