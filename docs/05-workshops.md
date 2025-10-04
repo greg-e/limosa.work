@@ -1,6 +1,6 @@
 ---
 title: "Workshops (Runbook)"
-layout: default
+layout: page
 ---
 
 ## 0) Kickoff (90 min)
