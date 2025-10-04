@@ -1,27 +1,19 @@
 ---
 ---
 
-@import "{{ site.theme }}";   /* pulls Slate’s CSS instead of Minima */
+@import "{{ site.theme }}";
 
-/* Add logo before the site title text */
+/* Logo before site title */
 .site-title::before {
   content: "";
   display: inline-block;
   background: url("/assets/img/logo.png") no-repeat center;
   background-size: contain;
-  width: 68px;   /* adjust as you like */
+  width: 68px;
   height: 68px;
   margin-right: 10px;
   vertical-align: middle;
 }
 
-/* Optional: logo-only header (hide text) */
-.site-title {
-  /* comment this out if you want to keep the text title */
-  font-size: 0;
-}
-.site-title::before {
-  /* if you keep text hidden, you can size the logo a bit larger */
-  width: 68px;
-  height: 68px;
-}
+/* Optional: hide text, logo-only */
+.site-title { font-size: 0; }
