@@ -1,6 +1,6 @@
 ---
 title: "Product: Godwit Badge & Tags"
-layout: page
+layout: default
 ---
 
 ## Badge (crew wearable)
