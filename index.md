@@ -1,6 +1,6 @@
 ---
 title: "Actual by Limosa (Godwit)"
-layout: default
+layout: page
 ---
 
 Actual is a truth system.
