@@ -1,6 +1,6 @@
 ---
 title: "Methodology: Flow, Feedback, Full-Kit"
-layout: page
+layout: default
 ---
 
 
