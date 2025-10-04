@@ -1,6 +1,6 @@
 ---
 title: "Brand & Assets"
-layout: default
+layout: page
 ---
 
 ## Mark
