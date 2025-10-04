@@ -1,5 +1,5 @@
 ---
-title: "Workshops (Runbook)"
+title: "Workshops"
 layout: page
 ---
 
