@@ -1,38 +1,27 @@
-# =========================
-# limosa.work — Jekyll config
-# =========================
-
-# ---- Site identity
 title: limosa.work
 description: Passive, truthful time & location for outdoor crews
-url: https://limosa.work      # custom domain
-baseurl: ""                   # empty with a custom domain
+url: https://limosa.work
+baseurl: ""
 
-# ---- Theme
 theme: minima
 minima:
-  skin: classic               # 'classic', 'dark', 'auto'
+  skin: classic
 
-# ---- Custom Styles
 sass:
-  sass_dir: assets/css
   style: compressed
 
-# ---- Build & Markdown
 markdown: kramdown
 kramdown:
   input: GFM
   hard_wrap: false
 highlighter: rouge
-permalink: pretty             # /path/ instead of /path.html
+permalink: pretty
 
-# ---- Plugins (all supported by GitHub Pages)
 plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag
 
-# ---- Header navigation (uses each page's front-matter title)
 header_pages:
   - index.md
   - docs/01-methodology.md
@@ -42,25 +31,13 @@ header_pages:
   - docs/05-workshops.md
   - docs/06-brand.md
 
-# ---- Defaults (consistent layout)
 defaults:
-  - scope:
-      path: ""
-      type: "pages"
-    values:
-      layout: page
-  - scope:
-      path: "docs"
-      type: "pages"
-    values:
-      layout: page
+  - scope: { path: "", type: "pages" }
+    values: { layout: page }
+  - scope: { path: "docs", type: "pages" }
+    values: { layout: page }
 
-# ---- SEO / Social (optional)
 lang: en
-# github_username: limosa-work
-# twitter_username: yourhandle
-
-# ---- Exclusions
 exclude:
   - README.md
   - mkdocs.yml
