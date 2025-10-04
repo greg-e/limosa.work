@@ -1,5 +1,5 @@
 ---
-title: "Methodology: Flow, Feedback, Full-Kit"
+title: "Methodology"
 layout: page
 ---
 
