@@ -1,6 +1,6 @@
 ---
 title: "Architecture"
-layout: page
+layout: default
 ---
 
 ## Flow
