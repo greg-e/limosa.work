@@ -1,5 +1,5 @@
 ---
-title: "Brand & Assets"
+title: "Brand"
 layout: page
 ---
 
