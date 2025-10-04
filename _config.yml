@@ -1,23 +1,16 @@
-# =========================
-# limosa.work — Jekyll config
-# =========================
-
-# ---- Site identity
+# _config.yml
 title: limosa.work
 description: Passive, truthful time & location for outdoor crews
 url: https://limosa.work
-baseurl: ""                   # keep empty with a custom domain
+baseurl: ""
 
-# ---- Theme
 theme: jekyll-theme-slate
-show_downloads: false         # Slate option (true shows ZIP/Tar buttons)
+show_downloads: false
 
-# ---- Custom Styles
 sass:
   sass_dir: assets/css
   style: compressed
 
-# ---- Build & Markdown
 markdown: kramdown
 kramdown:
   input: GFM
@@ -25,29 +18,19 @@ kramdown:
 highlighter: rouge
 permalink: pretty
 
-# ---- Plugins (GitHub Pages–supported)
 plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag
 
-# ---- Defaults (use a layout Slate actually has)
 defaults:
-  - scope:
-      path: ""
-      type: "pages"
-    values:
-      layout: default
-  - scope:
-      path: "docs"
-      type: "pages"
-    values:
-      layout: default
+  - scope: { path: "", type: "pages" }
+    values: { layout: default }
+  - scope: { path: "docs", type: "pages" }
+    values: { layout: default }
 
-# ---- SEO / Social
 lang: en
 
-# ---- Exclusions
 exclude:
   - README.md
   - mkdocs.yml
