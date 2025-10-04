@@ -1,6 +1,6 @@
 ---
 title: "Case Stories"
-layout: page
+layout: default
 ---
 
 ## From Manual Timesheets to Truthful Time
