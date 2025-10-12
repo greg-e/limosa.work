@@ -12,9 +12,9 @@
 
 ---
 
-# Language Family
+# Language
 
-*This family defines the vocabulary of Actual — the words that describe how provenance, locus, and conviviality connect technology and person.*
+*defines the vocabulary of Actual — the words that describe how provenance, locus, and conviviality connect technology and person.*
 
 ## Card 1 – The locus of automation
 **Front**  
@@ -66,9 +66,9 @@
 **Applied to Actual:** The badge is Illich’s convivial tool made real—automation that restores autonomy while preserving provenance.
 
 ---
-# Automation Family
+# Automation
 
-*This family explores how automation originates at the person — the locus of provenance — where technology becomes an extension of truth, not a replacement for it.*
+*explores how automation originates at the person — the locus of provenance — where technology becomes an extension of truth, not a replacement for it.*
 
 ## Card 1 – Automation is good as long as you know exactly where to put the machine
 **Front**  
@@ -137,9 +137,9 @@
 **Applied to Actual:** Actual refines it as *Person-in-the-Loop of Provenance*—machines operate, persons affirm.
 
 ---
-# Truth Family
+# Truth
 
-*This family examines how truth is preserved through provenance, ensuring that every record, event, and attestation remains anchored to its living source — the person.*
+*examines how truth is preserved through provenance, ensuring that every record, event, and attestation remains anchored to its living source — the person.*
 
 ## Card 1 – 395… exactly
 **Front**  
@@ -225,9 +225,9 @@
 **Applied to Actual:** Every line of truth points back to its person of origin, preserving both moral and operational fidelity.
 
 ---
-# Flow Family
+# Flow
 
-*This family explores how flow reveals the geometry of provenance — how truth moves through time and space when automation begins at the person.*
+*explores how flow reveals the geometry of provenance — how truth moves through time and space when automation begins at the person.*
 
 ## Card 1 – Flow as provenance in motion
 **Front**  
@@ -313,9 +313,9 @@
 **Applied to Actual:** Each attestation is a still point—the act of re-anchoring flow in truth.
 
 ---
-# Conviviality Family
+# Conviviality
 
-*This family examines how Actual’s tools preserve agency, dignity, and autonomy — making technology an extension of the person rather than their overseer.*
+*examines how Actual’s tools preserve agency, dignity, and autonomy — making technology an extension of the person rather than their overseer.*
 
 ## Card 1 – Tools that serve
 **Front**  
@@ -384,9 +384,9 @@
 **Applied to Actual:** Dignity is enforced through design—automation with boundaries.
 
 ---
-# Design Principles Family
+# Design Principles
 
-*This family defines how Actual learns, scales, and remains truthful — translating provenance into architecture.*
+*defines how Actual learns, scales, and remains truthful — translating provenance into architecture.*
 
 ## Card 1 – Design for provenance
 **Front**  
