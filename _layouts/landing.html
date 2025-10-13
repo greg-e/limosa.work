@@ -1,0 +1,76 @@
+<!-- _layouts/landing.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{{ site.title }} — {{ site.description }}</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  {%- seo -%}
+  <link rel="stylesheet" href="{{ '/assets/css/landing.css' | relative_url }}" />
+</head>
+<body>
+  <!-- HERO -->
+  <header class="hero">
+    <h1>Passive proof of work, no apps.</h1>
+    <p>A cellular badge and BLE tags turn time, place, and activity into signed evidence — parcel-accurate and ready for your systems.</p>
+    <div class="cta">
+      <a class="btn primary" href="#contact">Start a pilot</a>
+      <a class="btn ghost" href="{{ '/deck/' | relative_url }}">See the 5-card deck</a>
+    </div>
+  </header>
+
+  <!-- TRUST BAND -->
+  <section class="trust">
+    <ul>
+      <li>Parcel-accurate (no circular geofences)</li>
+      <li>System-agnostic (Salesforce FSM optional)</li>
+      <li>Deterministic evidence (JSON + signature)</li>
+      <li><a href="{{ '/samples/evidence.json' | relative_url }}">See an evidence sample →</a></li>
+    </ul>
+  </section>
+
+  <!-- CAPABILITIES GRID -->
+  <section class="capabilities">
+    <h2>Everything you need in a few moving parts.</h2>
+    <div class="grid">
+      <article><h3>Autonomous badge</h3><p>Cellular uplink, IMU hints, adaptive batching.</p></article>
+      <article><h3>BLE asset presence</h3><p>Equipment context and proof on site.</p></article>
+      <article><h3>Truth pipeline</h3><p>Parcel entries/exits, dwell, travel, exceptions.</p></article>
+      <article><h3>Evidence bundle</h3><p>Deterministic JSON + signature for audit.</p></article>
+      <article><h3>Integrations</h3><p>FSM / Payroll / ERP / BI adapters.</p></article>
+      <article><h3>Privacy by design</h3><p>Pseudonymous IDs, visits over tracks.</p></article>
+    </div>
+  </section>
+
+  <!-- OUTCOMES -->
+  <section class="outcomes">
+    <h2>What pilots show</h2>
+    <div class="tiles">
+      <a class="tile" href="{{ '/samples/outcome-crew-variance.html' | relative_url }}">
+        <h3>Crew time variance ↓ 12–18%</h3><p>Parcel-aligned visits remove guesswork.</p>
+      </a>
+      <a class="tile" href="{{ '/samples/outcome-dispatch-edits.html' | relative_url }}">
+        <h3>Dispatch edits ↓ 35–50%</h3><p>Auto evidence reduces manual rework.</p>
+      </a>
+      <a class="tile" href="{{ '/samples/outcome-missed-sites.html' | relative_url }}">
+        <h3>Missed sites flagged the same day</h3><p>Exceptions triggered by evidence gaps.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- CONTACT / LINKS -->
+  <section id="contact" class="contact">
+    <h2>Start a pilot</h2>
+    <p>We’re looking for charter partners who value field truth & flow. Email: <a href="mailto:hello@limosa.work">hello@limosa.work</a></p>
+    <p class="links">
+      <a href="{{ '/manifesto' | relative_url }}">Manifesto</a> •
+      <a href="{{ '/docs/01-methodology' | relative_url }}">Docs</a> •
+      <a href="{{ '/deck/' | relative_url }}">Deck</a>
+    </p>
+  </section>
+
+  <footer class="site-footer">
+    <p>© {{ site.time | date: "%Y" }} Actual Automation — <a href="https://github.com/{{ site.github.owner_name }}/{{ site.github.repository_name }}">GitHub</a></p>
+  </footer>
+</body>
+</html>
