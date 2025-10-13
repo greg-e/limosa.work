@@ -3,9 +3,19 @@ body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif
 h1,h2{color:#111}
 
 .site-logo {
-  height: 80px;
-  margin-bottom: 1rem;
+  display: block;
+  margin: 0 auto 1.5rem;
+  height: 72px;
+  width: auto;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.08));
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
+
+.site-logo:hover {
+  transform: scale(1.04);
+  opacity: 0.95;
+}
+
 
 /* Hero */
 .hero{max-width:840px;margin:0 auto;padding:96px 16px 56px;text-align:center}
