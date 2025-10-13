@@ -30,7 +30,27 @@ a:hover{text-decoration:underline}
   color:#064;border:1px solid #bdeed3;border-radius:999px;
   padding:.35rem .7rem;font-size:.85rem}
 .small{font-size:.9rem;color:var(--muted)}
+/* ---- Logo styling for deck header ---- */
 .site-logo {
-  height: 80px;
-  margin-bottom: 1rem;
+  display: block;
+  margin: 0 auto 2rem;
+  height: 64px;            /* sweet spot for proportional balance */
+  width: auto;
+  opacity: 0.92;           /* softens pure black slightly */
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.08));
+  transition: transform .3s ease, opacity .3s ease;
 }
+
+.site-logo:hover {
+  transform: scale(1.04);
+  opacity: 1;
+}
+
+/* optional: responsive tweak */
+@media (max-width: 600px) {
+  .site-logo {
+    height: 54px;
+    margin-bottom: 1.5rem;
+  }
+}
+
