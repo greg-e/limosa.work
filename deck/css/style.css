@@ -30,3 +30,7 @@ a:hover{text-decoration:underline}
   color:#064;border:1px solid #bdeed3;border-radius:999px;
   padding:.35rem .7rem;font-size:.85rem}
 .small{font-size:.9rem;color:var(--muted)}
+.site-logo {
+  height: 80px;
+  margin-bottom: 1rem;
+}
