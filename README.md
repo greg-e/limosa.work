@@ -23,7 +23,7 @@
 **Insight:** Conventional systems focus *on* people; Actual emanates *from* them.  
 **Practice:** Each badge event begins at the person — the locus of provenance — and carries that origin through every connected system.  
 **Sketch area:** Person at center, arrows radiating outward.
-![Limosa in Flight — Truth Radiates](./assets/img/locus.png)
+<img src="./assets/img/locus.png" alt="Limosa in Flight — Truth Radiates" width="400">
 
 
 ***
