@@ -15,6 +15,50 @@ h1,h2{color:#111}
   transform: scale(1.04);
   opacity: 0.95;
 }
+/* ---------- HOW IT WORKS BAND ---------- */
+.how {
+  background:#fafafa;
+  border-top:1px solid #e6e6e6;
+  border-bottom:1px solid #e6e6e6;
+  text-align:center;
+  padding:80px 16px;
+}
+.how h2{font-size:1.8rem;margin:0 0 .25rem;color:#111}
+.how .subtitle{color:#555;margin:0 auto 2.5rem;max-width:700px;font-style:italic}
+
+.steps{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:24px;
+  max-width:1000px;
+  margin:0 auto 3rem;
+  text-align:left;
+}
+.step{
+  background:#fff;
+  border:1px solid #e6e6e6;
+  border-radius:12px;
+  padding:20px 18px 22px;
+  box-shadow:0 3px 10px rgba(0,0,0,.04);
+  transition:transform .3s ease,box-shadow .3s ease;
+}
+.step:hover{
+  transform:translateY(-4px);
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+}
+.num{
+  width:34px;height:34px;
+  border-radius:50%;
+  background:#0b6;
+  color:#fff;
+  font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:.5rem;
+  font-size:1rem;
+}
+.step h3{margin:.1rem 0 .35rem;font-size:1.15rem}
+.step p{margin:0;color:#333;line-height:1.45}
+.cta-line{margin-top:1rem}
 
 
 /* Hero */
