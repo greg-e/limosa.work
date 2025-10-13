@@ -41,16 +41,19 @@ a:hover{text-decoration:underline}
   transition: transform .3s ease, opacity .3s ease;
 }
 
-.site-logo:hover {
-  transform: scale(1.04);
+.logo-link {
+  display: inline-block;
+  text-decoration: none;
+}
+
+.logo-link:hover .site-logo {
+  transform: scale(1.05);
   opacity: 1;
 }
 
-/* optional: responsive tweak */
-@media (max-width: 600px) {
-  .site-logo {
-    height: 54px;
-    margin-bottom: 1.5rem;
-  }
+.logo-link:focus-visible {
+  outline: 2px solid #0b6;
+  outline-offset: 4px;
+  border-radius: 8px;
 }
 
