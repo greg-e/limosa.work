@@ -1,4 +1,4 @@
-'''mermaid
+```mermaid
 flowchart TB
   %% ONE-PAGE VISUAL: Many-case routing with DMN + Call Activity
   classDef startend stroke-width:1.5;
