@@ -3,27 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Truth in Action — Micro-Deck</title>
+  <title>Truth in Action — Deck (Flip)</title>
   <link rel="stylesheet" href="css/style.css" />
-  <meta name="description" content="Five cards that tell the story of Actual / Limosa.work — Truth in Action." />
+  <meta name="description" content="Flip-card deck for Actual / Limosa.work — Truth in Action." />
 </head>
 <body>
-<header>
-  <a href="../" class="logo-link" title="Back to home">
-  <img src="../assets/img/logo.png" alt="limosa.work logo" class="site-logo" />
-</a>
-
-  <h1>Truth in Action — Micro-Deck</h1>
-  <p class="tagline">Five cards you can skim or present.</p>
-  <div class="badge">Tip: Hover or tap a card to flip it</div>
-</header>
-
-
+  <header>
+    <a href="../" class="logo-link" title="Back to home">
+      <img src="../assets/img/logo.png" alt="limosa.work logo" class="site-logo" />
+    </a>
+    <h1>Truth in Action — Deck</h1>
+    <p class="tagline">Hover or tap a card to flip it.</p>
+    <div class="badge">Tip: You can also tab to a card and press Enter</div>
   </header>
 
   <main class="grid">
-    <!-- Card 1 -->
-    <div class="card" tabindex="0">
+    <!-- 1 -->
+    <article class="card" tabindex="0" aria-label="Why Actual exists">
       <div class="card-inner">
         <div class="face front">
           <div class="kicker">Card 1</div>
@@ -37,10 +33,10 @@
              A passive badge turns work itself into trustworthy evidence.</p>
         </div>
       </div>
-    </div>
+    </article>
 
-    <!-- Card 2 -->
-    <div class="card" tabindex="0">
+    <!-- 2 -->
+    <article class="card" tabindex="0" aria-label="How it works">
       <div class="card-inner">
         <div class="face front">
           <div class="kicker">Card 2</div>
@@ -54,10 +50,10 @@
              The cloud builds Visits and signed Evidence Bundles for payroll / FSM / ERP.</p>
         </div>
       </div>
-    </div>
+    </article>
 
-    <!-- Card 3 -->
-    <div class="card" tabindex="0">
+    <!-- 3 -->
+    <article class="card" tabindex="0" aria-label="Why it’s trustworthy">
       <div class="card-inner">
         <div class="face front">
           <div class="kicker">Card 3</div>
@@ -71,10 +67,10 @@
              and capture a simple on-badge attestation to close the loop.</p>
         </div>
       </div>
-    </div>
+    </article>
 
-    <!-- Card 4 -->
-    <div class="card" tabindex="0">
+    <!-- 4 -->
+    <article class="card" tabindex="0" aria-label="What makes it different">
       <div class="card-inner">
         <div class="face front">
           <div class="kicker">Card 4</div>
@@ -88,10 +84,10 @@
              Plug into Salesforce FSM, payroll, ERP, or BI without lock-in.</p>
         </div>
       </div>
-    </div>
+    </article>
 
-    <!-- Card 5 -->
-    <div class="card" tabindex="0">
+    <!-- 5 -->
+    <article class="card" tabindex="0" aria-label="Call to collaborate">
       <div class="card-inner">
         <div class="face front">
           <div class="kicker">Card 5</div>
@@ -102,15 +98,30 @@
           <div class="kicker">Details</div>
           <h2>Call to collaborate</h2>
           <p>If you value field truth, flow, and minimal cognitive load,  
-             contribute diagrams, adapters, or feedback.  
-             Start with a pilot on a real route.</p>
+             contribute diagrams, adapters, or feedback. Start with a pilot on a real route.</p>
         </div>
       </div>
-    </div>
+    </article>
   </main>
 
   <footer class="small">
-    <p>© 2025 Actual Automation — <a href="../">Back to repository root</a></p>
+    <p>© <span id="y"></span> Actual Automation — <a href="../">Back to Home</a></p>
   </footer>
+
+  <script>
+    // keyboard flip: Enter/Space toggles a data state
+    document.querySelectorAll('.card').forEach(card=>{
+      card.addEventListener('keydown', e=>{
+        if(e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.classList.toggle('flip');
+        }
+      });
+      // tap to flip on mobile
+      card.addEventListener('click', ()=> card.classList.toggle('flip'));
+    });
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
+
