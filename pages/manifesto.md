@@ -16,3 +16,5 @@ layout: page
 > Automation is good as long as you know exactly where to put the machine. — Eliyahu M. Goldratt
 
 We put the machine **at the source of truth**: on-site presence and time.
+
+**Download:** [Actual Manifesto (PDF)](/assets/pdfs/Actual_Manifesto.pdf)

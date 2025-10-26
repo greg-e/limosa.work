@@ -3,14 +3,10 @@ title: Outcomes
 layout: page
 ---
 
-**Crews**
-- Fewer callbacks, fewer disputes, less phone time.
+**Crews** — fewer callbacks, fewer disputes.
 
-**Managers/Dispatch**
-- Clarity on who’s where, what’s next, and what’s done.
+**Managers** — clarity on who’s where, what’s next, and what’s done.
 
-**Finance**
-- Trustworthy payroll and job costing, matched to real presence/time.
+**Finance** — trustworthy payroll and job costing, matched to real presence/time.
 
-**Leadership**
-- Roll-ups built on truth, not estimates.
+**Leadership** — roll-ups built on truth, not estimates.
