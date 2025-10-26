@@ -27,13 +27,17 @@ jobs:
           ruby-version: '3.3'
           bundler-cache: true
 
-      # If you’re not using Gemfile/github-pages, this will no-op gracefully
-      - name: Install dependencies
+      # If you have a Gemfile, we'll use it; otherwise we install Jekyll directly.
+      - name: Build site
         run: |
-          bundle install || true
-
-      - name: Build with Jekyll
-        run: bundle exec jekyll build --baseurl "" || jekyll build --baseurl ""
+          set -e
+          if [ -f Gemfile ]; then
+            bundle install
+            bundle exec jekyll build --baseurl ""
+          else
+            gem install bundler jekyll -N
+            jekyll build --baseurl ""
+          fi
         env:
           JEKYLL_ENV: production
 
