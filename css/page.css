@@ -1,0 +1,114 @@
+/* Base */
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Inter, Roboto, Ubuntu, Arial, sans-serif;
+  color: #222;
+  background: #fff;
+  margin: 0;
+  line-height: 1.65;
+}
+
+/* Container */
+.page-content {
+  max-width: 900px;
+  margin: 2rem auto 4rem;
+  padding: 0 1.2rem;
+}
+
+/* Headings */
+h1, h2, h3, h4 {
+  line-height: 1.2;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 0.6rem;
+}
+h1 { font-size: clamp(1.9rem, 3vw, 2.4rem); color: #0b6; margin-top: 0; }
+h2 { font-size: 1.6rem; color: #0b6; }
+h3 { font-size: 1.25rem; color: #333; }
+
+/* Paragraphs & lists */
+p, ul, ol {
+  margin: 0 0 1rem 0;
+}
+ul, ol {
+  padding-left: 1.5rem;
+}
+li {
+  margin-bottom: 0.4rem;
+}
+
+/* Links */
+a {
+  color: #0b6;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* Quotes */
+blockquote {
+  border-left: 4px solid #0b6;
+  margin: 1.5rem 0;
+  padding: 0.6rem 1rem;
+  background: #fafafa;
+  color: #444;
+  font-style: italic;
+}
+
+/* Code blocks */
+pre, code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.9rem;
+  background: #f7f7f7;
+  border-radius: 6px;
+}
+pre {
+  padding: 1rem;
+  overflow-x: auto;
+}
+code {
+  padding: 0.15rem 0.35rem;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.95rem;
+}
+th, td {
+  border: 1px solid #e6e6e6;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+th {
+  background: #fafafa;
+  color: #333;
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+  margin: 1rem auto;
+}
+
+/* Horizontal line */
+hr {
+  border: none;
+  border-top: 1px solid #e6e6e6;
+  margin: 2rem 0;
+}
+
+/* Footer alignment tweak */
+.site-footer {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e6e6e6;
+  font-size: 0.9rem;
+  color: #666;
+  text-align: center;
+}
