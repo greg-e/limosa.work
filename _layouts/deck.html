@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{{ page.title }} — {{ site.title }}</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  {%- seo -%}
+  <link rel="stylesheet" href="{{ '/assets/css/deck.css' | relative_url }}" />
+</head>
+<body>
+  <header class="deck-hero">
+    <a href="{{ '/' | relative_url }}" class="logo-link" title="Home">
+      <img src="{{ '/assets/img/logo.png' | relative_url }}" class="site-logo" alt="limosa.work logo" />
+    </a>
+    <h1>{{ page.title }}</h1>
+    <p class="tagline">Hover / tap to flip · Press Enter/Space to flip when focused</p>
+    <p><a class="btn ghost" href="{{ '/deck/print/' | relative_url }}">Switch to scrolling view →</a></p>
+  </header>
+
+  <main class="grid">
+    {%- assign cards = site.cards | sort: 'order' -%}
+    {%- for c in cards -%}
+    <article class="card" tabindex="0" aria-label="{{ c.title }}">
+      <div class="card-inner">
+        <div class="face front">
+          <div class="kicker">{{ c.kicker }}</div>
+          <h2>{{ c.title }}</h2>
+          <p>{{ c.front }}</p>
+        </div>
+        <div class="face back">
+          <div class="kicker">Details</div>
+          <h2>{{ c.title }}</h2>
+          <p>{{ c.back }}</p>
+        </div>
+      </div>
+    </article>
+    {%- endfor -%}
+  </main>
+
+  <footer class="deck-footer"><a href="{{ '/' | relative_url }}">← Home</a></footer>
+
+  <script>
+    document.querySelectorAll('.card').forEach(card=>{
+      card.addEventListener('click', ()=> card.classList.toggle('flip'));
+      card.addEventListener('keydown', e=>{
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); card.classList.toggle('flip'); }
+      });
+    });
+  </script>
+</body>
+</html>
