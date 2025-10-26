@@ -1,0 +1,13 @@
+<header class="site-header">
+  <a class="brand" href="{{ '/' | relative_url }}">
+    <img src="{{ '/assets/img/logo.png' | relative_url }}" alt="Actual" height="28">
+    <span>Actual</span>
+  </a>
+  <nav>
+    <ul>
+      {% for item in site.data.nav %}
+      <li><a href="{{ item.url | relative_url }}">{{ item.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </nav>
+</header>
