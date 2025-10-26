@@ -8,8 +8,10 @@
   <link rel="stylesheet" href="{{ '/assets/css/landing.css' | relative_url }}" />
 </head>
 <body>
+
+  <!-- HERO -->
   <header class="hero">
-    <a href="{{ '/' | relative_url }}" class="logo-link">
+    <a href="{{ '/' | relative_url }}" class="logo-link" aria-label="Home">
       <img src="{{ '/assets/img/logo.png' | relative_url }}" alt="limosa.work logo" class="site-logo" />
     </a>
     <h1>Automatic Proof of Work</h1>
@@ -22,7 +24,7 @@
 
   {% include nav.html %}
 
-  <!-- START HOW IT WORKS -->
+  <!-- HOW IT WORKS -->
   <section id="how" class="how">
     <h2>How It Works</h2>
     <p class="subtitle">From jobsite to proof, automatically.</p>
@@ -56,16 +58,17 @@
     </div>
   </section>
 
-  <!-- TRUST / CTA BAND -->
+  <!-- TRUST / CTA -->
   <section id="cta" class="trust">
     <ul>
       <li>Automatic — no apps or check-ins</li>
-      <li>Proof you can trust for payroll & billing</li>
+      <li>Proof you can trust for payroll &amp; billing</li>
       <li>Built for outdoor crews and real routes</li>
-      <li><a href="{{ '/resources/evidence.json' | relative_url }}">See a sample Proof of Work →</a></li>
+      <li><a href="{{ '/resources/evidence/' | relative_url }}">See a sample Proof of Work →</a></li>
     </ul>
   </section>
 
   {% include footer.html %}
+
 </body>
 </html>
