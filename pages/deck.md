@@ -4,7 +4,7 @@ layout: deck
 permalink: /pages/deck/
 ---
 
-View the full deck PDF in /assets/pdfs when available.
+View the full deck PDF once uploaded to **/assets/pdfs/**.
 
 {% assign cards = site.cards | sort: 'name' %}
 <ul class="deck-list">

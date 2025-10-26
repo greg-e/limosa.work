@@ -3,4 +3,6 @@ title: Partners
 layout: page
 ---
 
-Interested in partnering? Reach out via the contact page.
+We partner with operators who want effortless proof of work and clean handoffs to finance.
+
+**Get started:** greg@limosa.work

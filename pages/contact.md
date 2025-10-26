@@ -3,4 +3,6 @@ title: Contact
 layout: page
 ---
 
-Email: info@limosa.work
+- Email: greg@limosa.work
+- GitHub: https://github.com/greg-e/limosa.work
+
