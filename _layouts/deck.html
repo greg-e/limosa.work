@@ -7,16 +7,23 @@
   {%- seo -%}
   <link rel="stylesheet" href="{{ '/assets/css/deck.css' | relative_url }}" />
 </head>
+
 <body>
+  <!-- HEADER -->
   <header class="deck-hero">
-    <a href="{{ '/' | relative_url }}" class="logo-link" title="Home">
+    <a href="{{ '/' | relative_url }}" class="logo-link" title="Back to home">
       <img src="{{ '/assets/img/logo.png' | relative_url }}" class="site-logo" alt="limosa.work logo" />
     </a>
     <h1>{{ page.title }}</h1>
-    <p class="tagline">Hover / tap to flip · Press Enter/Space to flip when focused</p>
-    <p><a class="btn ghost" href="{{ '/deck/print/' | relative_url }}">Switch to scrolling view →</a></p>
+    <p class="tagline">Hover or tap to flip · Press Enter/Space when focused</p>
+    <p>
+      <a class="btn ghost" href="{{ '/deck/print/' | relative_url }}">
+        Switch to scrolling view →
+      </a>
+    </p>
   </header>
 
+  <!-- CARD GRID -->
   <main class="grid">
     {%- assign cards = site.cards | sort: 'order' -%}
     {%- for c in cards -%}
@@ -37,13 +44,21 @@
     {%- endfor -%}
   </main>
 
-  <footer class="deck-footer"><a href="{{ '/' | relative_url }}">← Home</a></footer>
+  <!-- FOOTER -->
+  <footer class="deck-footer">
+    <a href="{{ '/' | relative_url }}">← Home</a>
+  </footer>
 
+  <!-- INTERACTION SCRIPT -->
   <script>
-    document.querySelectorAll('.card').forEach(card=>{
-      card.addEventListener('click', ()=> card.classList.toggle('flip'));
-      card.addEventListener('keydown', e=>{
-        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); card.classList.toggle('flip'); }
+    // Enable click + keyboard flip
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', () => card.classList.toggle('flip'));
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.classList.toggle('flip');
+        }
       });
     });
   </script>
