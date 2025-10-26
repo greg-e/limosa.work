@@ -3,4 +3,10 @@ title: Proof of Work
 layout: page
 ---
 
-Real examples and artifacts that show the system working in the field.
+Operator-friendly examples that demonstrate Actual working in the field.
+
+- Before/after dispatch edits drop by X%.
+- Missed-site variance tracked and resolved.
+- Faster month-end close from straight-through data.
+
+> We call this section **Proof of Work** (not "evidence bundle").
