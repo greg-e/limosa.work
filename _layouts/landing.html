@@ -1,4 +1,3 @@
-<!-- _layouts/landing.html -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -9,103 +8,64 @@
   <link rel="stylesheet" href="{{ '/assets/css/landing.css' | relative_url }}" />
 </head>
 <body>
-  <!-- HERO -->
   <header class="hero">
-    <img src="{{ '/assets/img/logo.png' | relative_url }}" alt="limosa.work logo"
-         class="site-logo" />
-    <h1>Passive proof of work, no apps.</h1>
-    <p>A cellular badge and BLE tags turn time, place, and activity into signed evidence — parcel-accurate and ready for your systems.</p>
+    <a href="{{ '/' | relative_url }}" class="logo-link">
+      <img src="{{ '/assets/img/logo.png' | relative_url }}" alt="limosa.work logo" class="site-logo" />
+    </a>
+    <h1>Automatic Proof of Work</h1>
+    <p class="lead">Truth captured as the work happens — no apps, no check-ins, no lost time.</p>
     <div class="cta">
-      <a class="btn primary" href="#contact">Start a pilot</a>
-      <a class="btn ghost" href="{{ '/deck/' | relative_url }}">See the 5-card deck</a>
+      <a class="btn primary" href="{{ '/partners/' | relative_url }}">Start a pilot</a>
+      <a class="btn ghost" href="{{ '/deck/' | relative_url }}">See the deck</a>
     </div>
   </header>
-<!-- HOW IT WORKS SECTION -->
-<section id="how-it-works" class="how">
-  <h2>How It Works</h2>
-  <p class="subtitle">From motion in the field to truth in your system — four autonomous steps.</p>
 
-  <div class="steps">
-    <article class="step">
-      <div class="num">1</div>
-      <h3>Badge</h3>
-      <p>The worker’s badge logs parcel entrances, exits, and proximity to BLE asset tags — no phone or app needed.</p>
-    </article>
+  {% include nav.html %}
 
-    <article class="step">
-      <div class="num">2</div>
-      <h3>Cloud</h3>
-      <p>Telemetry batches via cellular and flows into the Truth Pipeline, building verified Visits aligned to parcel boundaries.</p>
-    </article>
+  <!-- HOW IT WORKS -->
+  <section id="how" class="how">
+    <h2>How It Works</h2>
+    <p class="subtitle">From jobsite to proof, automatically.</p>
+    <div class="steps">
+      <article class="step" data-num="1">
+        <h3>Automatic</h3>
+        <p>Actual captures proof of work automatically — every arrival, every job, every finish.</p>
+      </article>
+      <article class="step" data-num="2">
+        <h3>Proof of Work</h3>
+        <p>Each job creates Proof of Work — a complete, trusted record ready for payroll or billing.</p>
+      </article>
+      <article class="step" data-num="3">
+        <h3>Truth in Action</h3>
+        <p>Proof shows up on its own, so crews focus on the job and managers see what’s done.</p>
+      </article>
+    </div>
+  </section>
 
-    <article class="step">
-      <div class="num">3</div>
-      <h3>Evidence Bundle</h3>
-      <p>Each Visit becomes a signed, tamper-evident JSON bundle — a digital fingerprint of time, place, and proof of work.</p>
-    </article>
+  <!-- CAPABILITIES -->
+  <section id="capabilities" class="caps">
+    <h2>What It Delivers</h2>
+    <p class="subtitle">The essentials, made automatic.</p>
+    <div class="cap-grid">
+      <article class="cap"><h3>Automatic proof</h3><p>Every site visit records itself — no logins, no manual steps.</p></article>
+      <article class="cap"><h3>Reliable time</h3><p>Work hours match reality, not memory.</p></article>
+      <article class="cap"><h3>Instant visibility</h3><p>Know what’s done, what’s next, and what needs attention.</p></article>
+      <article class="cap"><h3>Accurate payroll</h3><p>Pay the right hours every time — with less rework.</p></article>
+      <article class="cap"><h3>Honest billing</h3><p>Every invoice backed by Proof of Work from the field.</p></article>
+      <article class="cap"><h3>Effortless oversight</h3><p>Less chasing, fewer calls — the truth just shows up.</p></article>
+    </div>
+  </section>
 
-    <article class="step">
-      <div class="num">4</div>
-      <h3>Integration</h3>
-      <p>Bundles sync automatically to your payroll, FSM, or ERP for attestation, job costing, and revenue recognition.</p>
-    </article>
-  </div>
-
-  
-</section>
-
-  <!-- TRUST BAND -->
-  <section class="trust">
+  <!-- TRUST / CTA BAND -->
+  <section id="cta" class="trust">
     <ul>
-      <li>Parcel-accurate (no circular geofences)</li>
-      <li>System-agnostic (Salesforce FSM optional)</li>
-      <li>Deterministic evidence (JSON + signature)</li>
-      <li><a href="{{ '/samples/evidence.json' | relative_url }}">See an evidence sample →</a></li>
+      <li>Automatic — no apps or check-ins</li>
+      <li>Proof you can trust for payroll & billing</li>
+      <li>Built for outdoor crews and real routes</li>
+      <li><a href="{{ '/resources/evidence.json' | relative_url }}">See a sample Proof of Work →</a></li>
     </ul>
   </section>
 
-  <!-- CAPABILITIES GRID -->
-  <section class="capabilities">
-    <h2>Everything you need in a few moving parts.</h2>
-    <div class="grid">
-      <article><h3>Autonomous badge</h3><p>Cellular uplink, IMU hints, adaptive batching.</p></article>
-      <article><h3>BLE asset presence</h3><p>Equipment context and proof on site.</p></article>
-      <article><h3>Truth pipeline</h3><p>Parcel entries/exits, dwell, travel, exceptions.</p></article>
-      <article><h3>Evidence bundle</h3><p>Deterministic JSON + signature for audit.</p></article>
-      <article><h3>Integrations</h3><p>FSM / Payroll / ERP / BI adapters.</p></article>
-      <article><h3>Privacy by design</h3><p>Pseudonymous IDs, visits over tracks.</p></article>
-    </div>
-  </section>
-
-  <!-- OUTCOMES -->
-  <section class="outcomes">
-    <h2>What pilots show</h2>
-    <div class="tiles">
-      <a class="tile" href="{{ '/samples/outcome-crew-variance.html' | relative_url }}">
-        <h3>Crew time variance ↓ 12–18%</h3><p>Parcel-aligned visits remove guesswork.</p>
-      </a>
-      <a class="tile" href="{{ '/samples/outcome-dispatch-edits.html' | relative_url }}">
-        <h3>Dispatch edits ↓ 35–50%</h3><p>Auto evidence reduces manual rework.</p>
-      </a>
-      <a class="tile" href="{{ '/samples/outcome-missed-sites.html' | relative_url }}">
-        <h3>Missed sites flagged the same day</h3><p>Exceptions triggered by evidence gaps.</p>
-      </a>
-    </div>
-  </section>
-
-  <!-- CONTACT / LINKS -->
-  <section id="contact" class="contact">
-    <h2>Start a pilot</h2>
-    <p>We’re looking for charter partners who value field truth & flow. Email: <a href="mailto:hello@limosa.work">hello@limosa.work</a></p>
-    <p class="links">
-      <a href="{{ '/manifesto' | relative_url }}">Manifesto</a> •
-      <a href="{{ '/docs/01-methodology' | relative_url }}">Docs</a> •
-      <a href="{{ '/deck/' | relative_url }}">Deck</a>
-    </p>
-  </section>
-
-  <footer class="site-footer">
-    <p>© {{ site.time | date: "%Y" }} Actual Automation — <a href="https://github.com/{{ site.github.owner_name }}/{{ site.github.repository_name }}">GitHub</a></p>
-  </footer>
+  {% include footer.html %}
 </body>
 </html>
