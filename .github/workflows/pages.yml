@@ -21,27 +21,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # Official Jekyll builder (handles Ruby, minima, common plugins)
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
         with:
-          ruby-version: '3.3'
-          bundler-cache: true
+          source: .
+          destination: ./_site
 
-      # If you have a Gemfile, we'll use it; otherwise we install Jekyll directly.
-      - name: Build site
-        run: |
-          set -e
-          if [ -f Gemfile ]; then
-            bundle install
-            bundle exec jekyll build --baseurl ""
-          else
-            gem install bundler jekyll -N
-            jekyll build --baseurl ""
-          fi
-        env:
-          JEKYLL_ENV: production
-
-      - name: Upload Pages artifact
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
