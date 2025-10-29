@@ -1,6 +1,6 @@
 ---
-layout: landing
+layout: home
 title: Actual
-permalink: /
 ---
 
+Welcome to **Actual** — Proof of work, automatically.
