@@ -1,4 +1,4 @@
-name: Build and deploy Jekyll site to GitHub Pages
+name: Deploy static site to GitHub Pages
 
 on:
   push:
@@ -18,23 +18,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
-
-      # Official Jekyll builder (handles Ruby, minima, common plugins)
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: .
-          destination: ./_site
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: ./public   # <— deploy the /public folder as-is
 
   deploy:
     environment:
@@ -46,3 +36,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
