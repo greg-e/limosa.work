@@ -3,6 +3,21 @@ body {
   margin: 0;
   color: #222;
 }
+.logo img {
+  height: 40px;
+  width: auto;
+  vertical-align: middle;
+}
+@media (max-width: 600px) {
+  .logo img {
+    height: 32px;
+  }
+  .site-header nav a {
+    display: inline-block;
+    margin-right: 0.5rem;
+  }
+}
+
 .site-header {
   display: flex;
   justify-content: space-between;
