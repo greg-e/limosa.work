@@ -1,49 +1,161 @@
-body {
-  font-family: system-ui, Segoe UI, Arial, sans-serif;
-  margin: 0;
-  color: #222;
-}
-.logo img {
-  height: 40px;
-  width: auto;
-  vertical-align: middle;
-}
-@media (max-width: 600px) {
-  .logo img {
-    height: 32px;
-  }
-  .site-header nav a {
-    display: inline-block;
-    margin-right: 0.5rem;
-  }
+/* ----------------------------------------------------------
+   Base styles
+----------------------------------------------------------- */
+:root {
+  --brand-green: #00994d;
+  --brand-black: #111;
+  --brand-gray: #666;
+  --brand-bg: #fafafa;
+  --brand-border: #e5e5e5;
 }
 
-.site-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background: #f8f8f8;
-  border-bottom: 1px solid #ddd;
+* {
+  box-sizing: border-box;
 }
-.site-header a {
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, "Segoe UI", Arial, sans-serif;
+  color: var(--brand-black);
+  background-color: #fff;
+  line-height: 1.6;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--brand-green);
   text-decoration: none;
-  color: #222;
-  margin-right: 1rem;
 }
-.site-header a:hover {
+a:hover {
   text-decoration: underline;
 }
+
+/* ----------------------------------------------------------
+   Header
+----------------------------------------------------------- */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-bottom: 1px solid var(--brand-border);
+  padding: 12px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand img {
+  height: 40px;
+  width: auto;
+}
+
+.brand span {
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.site-nav {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.site-nav a {
+  font-weight: 500;
+  color: var(--brand-black);
+}
+
+.site-nav a:hover {
+  color: var(--brand-green);
+}
+
+/* ----------------------------------------------------------
+   Main content
+----------------------------------------------------------- */
 main.container {
-  max-width: 60ch;
-  margin: 2rem auto;
+  max-width: 70ch;
+  margin: 2.5rem auto;
   padding: 0 1rem;
 }
+
+/* Headings */
+h1, h2, h3, h4 {
+  color: var(--brand-black);
+  margin-top: 1.5rem;
+}
+
+/* Links styled as buttons */
+.button, a.button {
+  display: inline-block;
+  background: var(--brand-green);
+  color: #fff;
+  font-weight: 600;
+  padding: 0.65rem 1.25rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.2s ease-in-out;
+}
+.button:hover, a.button:hover {
+  background: #007f40;
+}
+
+/* Center hero text on home page */
+.home-hero {
+  text-align: center;
+  margin-top: 3rem;
+}
+.home-hero img {
+  width: 120px;
+  margin: 0 auto 1rem;
+}
+
+/* ----------------------------------------------------------
+   Footer
+----------------------------------------------------------- */
 .site-footer {
   text-align: center;
-  padding: 1rem;
-  color: #666;
-  border-top: 1px solid #ddd;
-  background: #fafafa;
+  color: var(--brand-gray);
+  border-top: 1px solid var(--brand-border);
+  padding: 1.5rem;
+  background: var(--brand-bg);
   font-size: 0.9rem;
+}
+
+/* ----------------------------------------------------------
+   Responsive
+----------------------------------------------------------- */
+@media (max-width: 700px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .site-nav {
+    justify-content: flex-start;
+    gap: 12px;
+    padding-top: 8px;
+  }
+
+  .brand img {
+    height: 32px;
+  }
+
+  main.container {
+    margin-top: 1.5rem;
+  }
 }
