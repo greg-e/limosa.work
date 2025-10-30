@@ -1,6 +1,8 @@
 ---
-layout: home
+layout: default
 title: Actual
 ---
 
-Welcome to **Actual** — Proof of work, automatically.
+# Actual
+
+Proof of work, automatically.
