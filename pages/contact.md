@@ -1,8 +1,7 @@
 ---
 title: Contact
-layout: page
+layout: default
 ---
 
-- Email: greg@limosa.work
+- Email: greg@limosa.work  
 - GitHub: https://github.com/greg-e/limosa.work
-
