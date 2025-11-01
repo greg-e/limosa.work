@@ -1,8 +1,36 @@
 ---
-layout: default
-title: Actual
+layout: landing
+title: Actual - Proof of Work
 ---
 
-# Actual
+<section class="hero">
+  <img class="hero-logo" src="/assets/img/logo.png" alt="Actual logo" />
+  <h1>Automatic Proof of Work</h1>
+  <p class="tagline">Truth captured as the work happens — no apps, no check-ins, no lost time.</p>
+  <div class="cta">
+    <a class="button" href="/pages/partners.html">Start a pilot</a>
+    <a class="button ghost" href="/pages/deck.html">See the deck</a>
+  </div>
+</section>
 
-Proof of work, automatically.
+<section class="how">
+  <h2>How It Works</h2>
+  <p class="sub">From jobsite to proof, automatically.</p>
+  <div class="cards">
+    <article class="card">
+      <div class="chip">1</div>
+      <h3>Automatic</h3>
+      <p>Actual captures proof of work automatically — every arrival, every job, every finish.</p>
+    </article>
+    <article class="card">
+      <div class="chip">2</div>
+      <h3>Proof of Work</h3>
+      <p>Each job creates Proof of Work — a complete, trusted record ready for payroll or billing.</p>
+    </article>
+    <article class="card">
+      <div class="chip">3</div>
+      <h3>Truth in Action</h3>
+      <p>Proof shows up on its own, so crews focus on the job and managers see what’s done.</p>
+    </article>
+  </div>
+</section>
