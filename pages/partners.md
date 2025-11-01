@@ -1,6 +1,6 @@
 ---
 title: Partners
-layout: page
+layout: default
 ---
 
 We partner with operators who want effortless proof of work and clean handoffs to finance.
