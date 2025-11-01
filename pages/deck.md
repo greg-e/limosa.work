@@ -1,6 +1,6 @@
 ---
 title: Deck
-layout: page
+layout: default
 ---
 
 **Download the full deck (PDF):**  
