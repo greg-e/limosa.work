@@ -1,0 +1,6 @@
+/* overrides for tighter look */
+.container{max-width:960px;margin:0 auto;padding:0 20px}
+.hero h1{font-size:2rem;margin:0 0 6px}
+.tagline{margin:0 0 14px}
+.cards{gap:16px}
+.card p{margin:0}

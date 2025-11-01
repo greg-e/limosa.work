@@ -3,7 +3,7 @@ title: Outcomes
 layout: default
 ---
 
-**Crews** — fewer callbacks, fewer disputes.  
-**Managers** — clarity on who’s where, what’s next, and what’s done.  
-**Finance** — trustworthy payroll and job costing, matched to real presence/time.  
-**Leadership** — roll-ups built on truth, not estimates.
+**Crews** — fewer callbacks and disputes.  
+**Managers** — live view of who, where, what’s done.  
+**Finance** — payroll and job costing from ground truth.  
+**Leadership** — roll-ups you can audit.

@@ -3,8 +3,8 @@ title: Principles
 layout: default
 ---
 
-1. **Automate the Constraint** — remove the bottleneck of truthful presence/time capture.  
-2. **Reduce the Load** — fewer taps and tools for crews.  
-3. **Provenance of Truth** — every number has a source you can trace.  
-4. **Design for Flow** — smooth handoffs without rework.  
-5. **Operator First** — if it adds steps in the field, we rethink it.
+1. **Automate the constraint** — capture presence/time at the source.  
+2. **Reduce the load** — fewer taps and tools for crews.  
+3. **Provenance of truth** — every number is traceable.  
+4. **Design for flow** — no rework at handoffs.  
+5. **Operator first** — if it adds steps in the field, rethink it.

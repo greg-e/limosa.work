@@ -4,8 +4,8 @@ layout: default
 ---
 
 ### Why Actual exists
-- **No extra steps.** Crews should work, not fill forms.
-- **Truth from the work itself.** Presence + time captured passively.
-- **Right the first time.** Payroll, job costing, and revenue recognition line up because the inputs are trustworthy.
+- **No extra steps.** Crews work. Proof appears.
+- **Truth from the work.** Presence and time captured passively.
+- **Right first time.** Payroll and costing match reality.
 
-**Download:** [Actual Manifesto (PDF)](/assets/pdfs/Actual_Manifesto.pdf)
+**Download:** [Manifesto (PDF)](/assets/pdfs/Actual_Manifesto.pdf)

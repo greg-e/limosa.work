@@ -3,6 +3,6 @@ title: Product
 layout: default
 ---
 
-**Effortless Proof** — passive capture of presence/time as work happens.  
-**Always Connected** — syncs to the cloud when signal is available.  
-**Simple Handoffs** — clean integrations to payroll, costing, and scheduling.
+**Effortless proof** — presence and time, captured passively.  
+**Syncs when it can** — works offline, reconciles later.  
+**Straight-through** — clean handoffs to payroll, costing, scheduling.

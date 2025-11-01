@@ -1,8 +1,6 @@
 title: Actual - Proof of Work
-description: Proof of work, automatically.
+description: Automatic proof of work for field operations.
 url: https://limosa.work
 theme: minima
-markdown: kramdown
 plugins:
   - jekyll-seo-tag
-  - jekyll-sitemap
