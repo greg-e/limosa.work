@@ -4,10 +4,10 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: "../../assets/actual-deck",     // repo-root/assets/actual-deck
+    outDir: "../../assets/actual-deck",
     emptyOutDir: true,
+    lib: { entry: "./main.jsx", formats: ["es"], fileName: "main" },
     rollupOptions: {
-      input: "./main.jsx",                  // entry relative to app/actual-deck
       output: {
         entryFileNames: "main.js",
         assetFileNames: (a) =>
