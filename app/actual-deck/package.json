@@ -8,11 +8,12 @@
     "framer-motion": "^11.0.0",
     "lucide-react": "^0.453.0"
   },
-  "devDependencies": {
-    "vite": "^5.4.0",
-    "@vitejs/plugin-react": "^4.3.1",
-    "tailwindcss": "^3.4.14",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.35"
-  }
+"devDependencies": {
+  "vite": "^5.4.0",
+  "@vitejs/plugin-react": "^4.3.1",
+  "tailwindcss": "^3.4.14",
+  "autoprefixer": "^10.4.20",
+  "postcss": "^8.4.35"
+}
+
 }
