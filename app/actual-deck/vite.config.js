@@ -6,8 +6,8 @@ export default defineConfig({
   build: {
     outDir: "../../assets/actual-deck",
     emptyOutDir: true,
-    lib: { entry: "./main.jsx", formats: ["es"], fileName: "main" },
     rollupOptions: {
+      input: "./main.jsx",
       output: {
         entryFileNames: "main.js",
         assetFileNames: (a) =>
