@@ -1,3 +1,18 @@
+name: Build Actual Deck
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'app/actual-deck/**'
+      - 'assets/actual-deck/cards.json'
+      - 'assets/actual-deck/presets.json'
+      - '.github/workflows/build-actual-deck.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,7 +35,6 @@ jobs:
         run: |
           echo "PWD: $(pwd)"
           ls -la assets/actual-deck || true
-          echo "Tree:"
           ls -laR assets/actual-deck || true
 
       - name: Commit built assets
@@ -28,6 +42,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A assets/actual-deck
-          git status
           git commit -m "Build Actual Deck" || echo "No changes to commit"
           git push
