@@ -8,17 +8,14 @@ export default defineConfig({
     outDir: "../../assets/actual-deck",
     emptyOutDir: true,
     lib: {
-      entry: "app/actual-deck/main.jsx",
+      entry: "main.jsx",          // <-- correct entry relative to root
       formats: ["es"],
       fileName: () => "main"
     },
     rollupOptions: {
       output: {
-        // keep CSS stable too
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name && assetInfo.name.endsWith(".css")) return "style.css";
-          return "[name][extname]";
-        }
+        assetFileNames: (a) =>
+          a.name && a.name.endsWith(".css") ? "style.css" : "[name][extname]"
       }
     }
   },
