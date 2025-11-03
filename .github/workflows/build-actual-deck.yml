@@ -23,17 +23,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: app/actual-deck/package-lock.json
 
       - name: Install deps
         working-directory: app/actual-deck
-        run: npm ci
+        run: npm install
 
       - name: Build bundle
         working-directory: app/actual-deck
-        run: npm run build
-        # outputs to /assets/actual-deck per vite.config.js
+        run: npm run build   # emits /assets/actual-deck/main.js via vite.config.js
 
       - name: Commit built assets
         run: |
