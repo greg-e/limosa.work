@@ -7,12 +7,13 @@
     {% include header.html %}
     <main class="container">
       {{ content }}
+      <div id="actual-deck"></div>
+<script type="module" src="{{ '/assets/actual-deck/main.js' | relative_url }}"></script>
+<link rel="stylesheet" href="{{ '/assets/actual-deck/style.css' | relative_url }}">
     </main>
     {% include footer.html %}
   </body>
-  <div id="actual-deck"></div>
-<script type="module" src="{{ '/assets/actual-deck/main.js' | relative_url }}"></script>
-<link rel="stylesheet" href="{{ '/assets/actual-deck/style.css' | relative_url }}">
+  
 
 
 </html>
