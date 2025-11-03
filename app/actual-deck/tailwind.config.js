@@ -1,4 +1,3 @@
-/** @type {import('tailwindcss').Config} */
 export default {
   content: [
     "./app/actual-deck/**/*.{html,js,jsx,ts,tsx}",
