@@ -1,5 +1,4 @@
-assets/
-node_modules/
-
-
+# keep all assets ignored except the built deck
+assets/*
+!assets/actual-deck/
 !assets/actual-deck/**
