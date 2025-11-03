@@ -1,5 +1,5 @@
+# .github/workflows/build-actual-deck.yml
 name: Build Actual Deck
-
 on:
   push:
     branches: [ main ]
@@ -9,29 +9,21 @@ on:
       - 'assets/actual-deck/presets.json'
       - '.github/workflows/build-actual-deck.yml'
   workflow_dispatch:
-
 permissions:
   contents: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
       - name: Install deps
         working-directory: app/actual-deck
         run: npm install
-
-      - name: Build bundle
+      - name: Build
         working-directory: app/actual-deck
-        run: npm run build   # emits /assets/actual-deck/main.js via vite.config.js
-
+        run: npm run build
       - name: Commit built assets
         run: |
           git config user.name "github-actions[bot]"
