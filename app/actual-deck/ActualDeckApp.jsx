@@ -4,7 +4,7 @@ import {
   Search, Users2, Layers3, Plus, Trash2,
   FlipHorizontal2, Rotate3D
 } from "lucide-react";
-// a small change
+
 const SAMPLE_CARDS = [
   {
     id: "language-provenance",
