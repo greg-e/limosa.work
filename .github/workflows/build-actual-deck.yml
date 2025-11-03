@@ -27,25 +27,18 @@ jobs:
         working-directory: app/actual-deck
         run: npm install
 
-- name: Build bundle
-  working-directory: app/actual-deck
-  run: |
-    npx tailwindcss -i ./styles.css -o ./styles.css --minify || true
-    npm run build
-
-
-      - name: List outputs (debug)
+      - name: Build bundle
+        working-directory: app/actual-deck
         run: |
-          echo "PWD=$(pwd)"
-          echo "Repo tree under assets/actual-deck:"
-          ls -la assets/actual-deck || true
-          ls -laR assets/actual-deck || true
+          npx tailwindcss -i ./styles.css -o ./styles.css --minify || true
+          npm run build
 
       - name: Commit built assets
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -f assets/actual-deck          # force add ignored path
+          git add -f assets/actual-deck
           git status
           git commit -m "Build Actual Deck" || echo "No changes to commit"
           git push
+
