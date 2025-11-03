@@ -1,7 +1,14 @@
 name: Build Actual Deck
+
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'app/actual-deck/**'
+      - 'assets/actual-deck/cards.json'
+      - 'assets/actual-deck/presets.json'
+      - '.github/workflows/build-actual-deck.yml'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -11,17 +18,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm ci
+          cache: 'npm'
+          cache-dependency-path: app/actual-deck/package-lock.json
+
+      - name: Install deps
         working-directory: app/actual-deck
-      - run: npm run build
+        run: npm ci
+
+      - name: Build bundle
         working-directory: app/actual-deck
+        run: npm run build
+        # outputs to /assets/actual-deck per vite.config.js
+
       - name: Commit built assets
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add assets/actual-deck
-          git commit -m "Build Actual Deck" || echo "No changes"
+          git commit -m "Build Actual Deck" || echo "No changes to commit"
           git push
