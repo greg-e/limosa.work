@@ -1,1 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* simple tweaks for mobile spacing */
+body {
+  @apply bg-neutral-50 text-neutral-900;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
