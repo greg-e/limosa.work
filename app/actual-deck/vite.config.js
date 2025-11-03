@@ -2,13 +2,12 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 export default defineConfig({
-  root: "app/actual-deck",
-  plugins: [react()],
+  plugins: [react()],                 // no root here
   build: {
     outDir: "../../assets/actual-deck",
     emptyOutDir: true,
     lib: {
-      entry: "main.jsx",          // <-- correct entry relative to root
+      entry: "./main.jsx",            // entry is relative to cwd (app/actual-deck)
       formats: ["es"],
       fileName: () => "main"
     },
