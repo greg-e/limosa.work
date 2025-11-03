@@ -1,33 +1,33 @@
-# .github/workflows/build-actual-deck.yml
-name: Build Actual Deck
-on:
-  push:
-    branches: [ main ]
-    paths:
-      - 'app/actual-deck/**'
-      - 'assets/actual-deck/cards.json'
-      - 'assets/actual-deck/presets.json'
-      - '.github/workflows/build-actual-deck.yml'
-  workflow_dispatch:
-permissions:
-  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
-        with: { node-version: '20' }
+        with:
+          node-version: '20'
+
       - name: Install deps
         working-directory: app/actual-deck
         run: npm install
-      - name: Build
+
+      - name: Build bundle
         working-directory: app/actual-deck
         run: npm run build
+
+      - name: List outputs (debug)
+        run: |
+          echo "PWD: $(pwd)"
+          ls -la assets/actual-deck || true
+          echo "Tree:"
+          ls -laR assets/actual-deck || true
+
       - name: Commit built assets
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add assets/actual-deck
+          git add -A assets/actual-deck
+          git status
           git commit -m "Build Actual Deck" || echo "No changes to commit"
           git push
