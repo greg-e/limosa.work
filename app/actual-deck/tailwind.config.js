@@ -1,10 +1,8 @@
+/** @type {import('tailwindcss').Config} */
 export default {
+  // we run from app/actual-deck, so point at files *inside this folder*
   content: [
-    "./app/actual-deck/**/*.{html,js,jsx,ts,tsx}",
-    "./_layouts/**/*.{html,md}",
-    "./_includes/**/*.{html,md}",
-    "./**/*.md",
-    "./**/*.html"
+    "./**/*.{html,js,jsx,ts,tsx}"
   ],
   theme: { extend: {} },
   plugins: []
