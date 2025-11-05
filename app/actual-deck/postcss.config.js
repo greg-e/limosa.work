@@ -1,7 +1,6 @@
+// No Tailwind here. We run Tailwind via CLI only.
 export default {
   plugins: {
-    tailwindcss: {},
     autoprefixer: {}
   }
 };
-
