@@ -27,12 +27,13 @@ jobs:
         working-directory: app/actual-deck
         run: npm install
 
-            - name: Build bundle
-        working-directory: app/actual-deck
-        run: |
-          npx tailwindcss -i ./styles.css -o ./generated.css --minify
-          mv generated.css styles.css
-          npm run build
+      - name: Build bundle
+  working-directory: app/actual-deck
+  run: |
+    npx tailwindcss -c ./tailwind.config.js -i ./styles.css -o ./generated.css --minify
+    mv generated.css styles.css
+    npm run build
+
 
 
       - name: Commit built assets
