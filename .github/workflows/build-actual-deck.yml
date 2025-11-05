@@ -16,10 +16,13 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
 
@@ -27,26 +30,22 @@ jobs:
         working-directory: app/actual-deck
         run: npm install
 
-      - name: Build Tailwind and bundle app
+      # Build Tailwind via CLI to app.css, then let Vite bundle everything.
+      - name: Build Tailwind and bundle
         working-directory: app/actual-deck
         run: |
-          echo "Building Tailwind -> app.css"
           npx tailwindcss \
             -c ./tailwind.config.js \
             -i ./styles.css \
             -o ./app.css \
             --minify \
             --content "./**/*.{html,js,jsx,ts,tsx}"
-          echo "Running Vite build"
           npm run build
-          echo "Build complete"
 
-      - name: Verify built assets
+      - name: Verify outputs
         run: |
-          echo "PWD: $(pwd)"
-          echo "Contents of assets/actual-deck:"
+          echo "Listing assets/actual-deck"
           ls -lh assets/actual-deck || true
-          ls -lhR assets/actual-deck || true
 
       - name: Commit built assets
         run: |
@@ -56,4 +55,3 @@ jobs:
           git status
           git commit -m "Build Actual Deck" || echo "No changes to commit"
           git push
-
