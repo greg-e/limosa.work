@@ -1,6 +1,2 @@
-// Tailwind is run by CLI in the workflow. Keep PostCSS minimal.
-export default {
-  plugins: {
-    autoprefixer: {}
-  }
-};
+// Tailwind runs via CLI in workflow. Keep PostCSS minimal.
+export default { plugins: { autoprefixer: {} } };
