@@ -3,10 +3,18 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
+  publicDir: "../../public",                 // copies to site root
   build: {
     outDir: "../../assets/actual-deck",
-    emptyOutDir: true
+    emptyOutDir: true,
+    rollupOptions: {
+      input: "./main.jsx",                   // use JS entry, not index.html
+      output: {
+        entryFileNames: "main.js",
+        assetFileNames: (a) =>
+          a.name && a.name.endsWith(".css") ? "style.css" : "[name][extname]"
+      }
+    }
   },
-  publicDir: "../../public"   // keep public outside assets
+  base: "/"
 });
-
