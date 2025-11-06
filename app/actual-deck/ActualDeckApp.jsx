@@ -156,8 +156,9 @@ export default function ActualDeckApp() {
     async function load(){
       try{
         const [c,p]=await Promise.all([
-          fetch("/assets/actual-deck/cards.json"),
-          fetch("/assets/actual-deck/presets.json")
+          fetch("/actual-deck/cards.json"),
+fetch("/actual-deck/presets.json")
+
         ]);
         if(c.ok) setCards(await c.json());
         if(p.ok) setPresets(await p.json());
