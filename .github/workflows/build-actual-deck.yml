@@ -43,7 +43,7 @@ jobs:
       - name: Clean mistaken nested output (if exists)
         run: rm -rf assets/actual-deck/actual-deck || true
 
-         - name: Rebase and commit built assets
+      - name: Rebase and commit built assets
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
