@@ -1,8 +1,8 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import ActualDeckApp from "./ActualDeckApp.jsx";
-import "./app.css"; // Tailwind CLI output
+import "./app.css";
 
-const m = document.getElementById("actual-deck");
-if (m) createRoot(m).render(<ActualDeckApp />);
+const el = document.getElementById("actual-deck");
+if (el) createRoot(el).render(<ActualDeckApp />);
 else console.error("Mount #actual-deck not found");
