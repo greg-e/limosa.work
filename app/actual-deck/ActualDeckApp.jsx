@@ -155,11 +155,11 @@ export default function ActualDeckApp() {
   React.useEffect(()=>{
     async function load(){
       try{
-        const [c,p]=await Promise.all([
-          fetch("/actual-deck/cards.json"),
-fetch("/actual-deck/presets.json")
+const [c, p] = await Promise.all([
+  fetch("/actual-deck/cards.json"),
+  fetch("/actual-deck/presets.json")
+]);
 
-        ]);
         if(c.ok) setCards(await c.json());
         if(p.ok) setPresets(await p.json());
       }catch(e){ /* fallback to samples */ }
