@@ -43,13 +43,21 @@ jobs:
       - name: Clean mistaken nested output (if exists)
         run: rm -rf assets/actual-deck/actual-deck || true
 
-      - name: Rebase and commit built assets
+         - name: Rebase and commit built assets
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin main
-          git rebase origin/main
+
+          # Stage only what we want
           git add -f assets/actual-deck
+
+          # Commit if there are changes
           git commit -m "Build Actual Deck" || echo "No changes to commit"
+
+          # Rebase safely even with untracked build files
+          git pull --rebase --autostash origin main || true
+
+          # Push
           git push --force-with-lease
+
 
