@@ -15,7 +15,6 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,12 +31,7 @@ jobs:
       - name: Build Tailwind and bundle
         working-directory: app/actual-deck
         run: |
-          npx tailwindcss \
-            -c ./tailwind.config.js \
-            -i ./styles.css \
-            -o ./app.css \
-            --minify \
-            --content "./**/*.{html,js,jsx,ts,tsx}"
+          npx tailwindcss -c ./tailwind.config.js -i ./styles.css -o ./app.css --minify --content "./**/*.{html,js,jsx,ts,tsx}"
           npm run build
 
       - name: Clean mistaken nested output (if exists)
@@ -47,17 +41,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          # Stage only what we want
           git add -f assets/actual-deck
-
-          # Commit if there are changes
           git commit -m "Build Actual Deck" || echo "No changes to commit"
-
-          # Rebase safely even with untracked build files
           git pull --rebase --autostash origin main || true
-
-          # Push
           git push --force-with-lease
+
 
 
