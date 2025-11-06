@@ -7,7 +7,7 @@ export default defineConfig({
     outDir: "../../assets/actual-deck",
     emptyOutDir: true,
     rollupOptions: {
-      input: "./main.jsx",                 // JS entry, not index.html
+      input: "./main.jsx",
       output: {
         entryFileNames: "main.js",
         assetFileNames: (a) =>
