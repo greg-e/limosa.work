@@ -5,8 +5,7 @@ on:
     branches: [ main ]
     paths:
       - 'app/actual-deck/**'
-      - 'assets/actual-deck/cards.json'
-      - 'assets/actual-deck/presets.json'
+      - 'actual-deck/*.json'
       - '.github/workflows/build-actual-deck.yml'
   workflow_dispatch:
 
@@ -30,7 +29,6 @@ jobs:
         working-directory: app/actual-deck
         run: npm install
 
-      # Build Tailwind via CLI to app.css, then let Vite bundle everything.
       - name: Build Tailwind and bundle
         working-directory: app/actual-deck
         run: |
@@ -42,16 +40,16 @@ jobs:
             --content "./**/*.{html,js,jsx,ts,tsx}"
           npm run build
 
-      - name: Verify outputs
-        run: |
-          echo "Listing assets/actual-deck"
-          ls -lh assets/actual-deck || true
+      - name: Clean mistaken nested output (if exists)
+        run: rm -rf assets/actual-deck/actual-deck || true
 
-      - name: Commit built assets
+      - name: Rebase and commit built assets
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git rebase origin/main
           git add -f assets/actual-deck
-          git status
           git commit -m "Build Actual Deck" || echo "No changes to commit"
-          git push
+          git push --force-with-lease
+
