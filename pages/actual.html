@@ -4,6 +4,204 @@ title: Actual Deck
 permalink: /actual/
 ---
 
-<div id="actual-deck-root"></div>
-<link rel="stylesheet" href="/assets/actual-deck/style.css">
-<script type="module" src="/assets/actual-deck/main.js"></script>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Actual Deck</title>
+
+  <!-- Tailwind via CDN (no build needed) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* tiny extras */
+    .card { box-shadow: 0 2px 12px rgba(0,0,0,.06) }
+    .chip { background:#eef2ff; color:#3730a3; padding:.15rem .5rem; border-radius:9999px; font-size:.75rem }
+  </style>
+</head>
+<body class="bg-white text-slate-900">
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <header class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <h1 class="text-2xl font-semibold">Actual Deck</h1>
+        <p id="meta" class="text-sm text-slate-500">Loading…</p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
+        <label class="sr-only" for="preset">Preset</label>
+        <select id="preset" class="border rounded-lg px-3 py-2">
+          <option value="">All cards</option>
+        </select>
+
+        <label class="sr-only" for="q">Search</label>
+        <input id="q" type="search" placeholder="Search title, quote, tags"
+               class="border rounded-lg px-3 py-2 w-full sm:w-64" />
+
+        <button id="shuffle" class="border px-3 py-2 rounded-lg">Shuffle</button>
+      </div>
+    </header>
+
+    <section id="cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></section>
+
+    <template id="card-tpl">
+      <article class="card rounded-2xl border p-5">
+        <div class="flex items-start justify-between gap-3">
+          <h2 class="text-lg font-semibold"></h2>
+          <span class="text-xs text-slate-500" data-id></span>
+        </div>
+        <blockquote class="mt-3 text-slate-800 italic" data-quote></blockquote>
+        <p class="mt-1 text-sm text-slate-500" data-author></p>
+        <p class="mt-4 text-sm" data-body></p>
+        <div class="mt-4 flex flex-wrap gap-2" data-tags></div>
+        <div class="mt-4 text-xs text-slate-400" data-family></div>
+      </article>
+    </template>
+  </main>
+
+  <script>
+    // Config
+    const JSON_BASE = "/data/actual-deck";
+    const CARDS_URL = `${JSON_BASE}/cards.json`;
+    const PRESETS_URL = `${JSON_BASE}/presets.json`;
+
+    // State
+    let ALL_CARDS = [];
+    let PRESETS = [];
+    let CURRENT = [];
+
+    // Elements
+    const elCards  = document.getElementById("cards");
+    const elPreset = document.getElementById("preset");
+    const elQ      = document.getElementById("q");
+    const elMeta   = document.getElementById("meta");
+    const elTpl    = document.getElementById("card-tpl");
+    const elShuffle= document.getElementById("shuffle");
+
+    // Utils
+    const qs = new URLSearchParams(location.search);
+    const cb = Date.now(); // cache-bust on each deploy view
+
+    async function fetchJSON(url) {
+      const r = await fetch(`${url}?cb=${cb}`);
+      if (!r.ok) throw new Error(`HTTP ${r.status} for ${url}`);
+      return r.json();
+    }
+
+    function renderCards(list) {
+      elCards.innerHTML = "";
+      if (!list.length) {
+        elCards.innerHTML = `<p class="text-slate-600">No cards match.</p>`;
+        return;
+      }
+      const frag = document.createDocumentFragment();
+      for (const c of list) {
+        const node = elTpl.content.cloneNode(true);
+        node.querySelector("h2").textContent = c.title || "(untitled)";
+        node.querySelector("[data-id]").textContent = c.id || "";
+        node.querySelector("[data-quote]").textContent = c.quote || "";
+        node.querySelector("[data-author]").textContent = c.author ? `— ${c.author}` : "";
+        node.querySelector("[data-body]").textContent = c.body || "";
+        node.querySelector("[data-family]").textContent = c.family ? `Family: ${c.family}` : "";
+
+        const tagsWrap = node.querySelector("[data-tags]");
+        (c.tags || []).forEach(t => {
+          const s = document.createElement("span");
+          s.className = "chip";
+          s.textContent = t;
+          s.dataset.tag = t;
+          s.addEventListener("click", () => {
+            elQ.value = t;
+            applyFilters();
+          });
+          tagsWrap.appendChild(s);
+        });
+
+        frag.appendChild(node);
+      }
+      elCards.appendChild(frag);
+      elMeta.textContent = `Cards: ${list.length} • Total: ${ALL_CARDS.length} • Presets: ${PRESETS.length}`;
+    }
+
+    function normalize(s) { return (s || "").toLowerCase(); }
+
+    function applyFilters() {
+      const q = normalize(elQ.value);
+      const presetId = elPreset.value;
+      let base = [...ALL_CARDS];
+
+      if (presetId) {
+        const preset = PRESETS.find(p => p.id === presetId);
+        const set = new Set((preset?.cards) || []);
+        base = base.filter(c => set.has(c.id));
+      }
+
+      if (q) {
+        base = base.filter(c => {
+          const hay = [
+            c.title, c.quote, c.author, c.body, c.family,
+            ...(c.tags || [])
+          ].map(normalize).join(" • ");
+          return hay.includes(q);
+        });
+      }
+
+      CURRENT = base;
+      renderCards(CURRENT);
+      // reflect in URL
+      const next = new URL(location);
+      if (presetId) next.searchParams.set("preset", presetId); else next.searchParams.delete("preset");
+      if (q) next.searchParams.set("q", q); else next.searchParams.delete("q");
+      history.replaceState({}, "", next);
+    }
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // Events
+    elPreset.addEventListener("change", applyFilters);
+    elQ.addEventListener("input", () => { applyFilters(); });
+    elShuffle.addEventListener("click", () => {
+      shuffle(CURRENT);
+      renderCards(CURRENT);
+    });
+
+    // Boot
+    (async function init() {
+      try {
+        const [cards, presets] = await Promise.all([
+          fetchJSON(CARDS_URL),
+          fetchJSON(PRESETS_URL).catch(() => [])
+        ]);
+        ALL_CARDS = Array.isArray(cards) ? cards : [];
+        PRESETS = Array.isArray(presets) ? presets : [];
+
+        // populate preset dropdown
+        PRESETS.forEach(p => {
+          const opt = document.createElement("option");
+          opt.value = p.id;
+          opt.textContent = p.name || p.id;
+          elPreset.appendChild(opt);
+        });
+
+        // hydrate from URL
+        const initPreset = qs.get("preset");
+        const initQ = qs.get("q");
+        if (initPreset) elPreset.value = initPreset;
+        if (initQ) elQ.value = initQ;
+
+        applyFilters();
+      } catch (e) {
+        elMeta.textContent = `Error: ${e.message}`;
+        elCards.innerHTML = `<p class="text-red-700">Failed to load JSON from ${JSON_BASE}. Ensure files exist:
+          <code>/data/actual-deck/cards.json</code> and <code>/data/actual-deck/presets.json</code>.</p>`;
+      }
+    })();
+  </script>
+</body>
+</html>
