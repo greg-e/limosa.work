@@ -1,19 +1,15 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import crypto from "crypto";
+
+const hash = crypto.randomBytes(4).toString("hex");
 
 export default defineConfig({
   plugins: [react()],
+  define: { __BUILD_HASH__: JSON.stringify(hash) },
   build: {
     outDir: "../../assets/actual-deck",
-    emptyOutDir: true,
-    rollupOptions: {
-      input: "./main.jsx",
-      output: {
-        entryFileNames: "main.js",
-        assetFileNames: (a) =>
-          a.name && a.name.endsWith(".css") ? "style.css" : "[name][extname]"
-      }
-    }
-  },
-  base: "/"
+    emptyOutDir: false,
+    rollupOptions: { output: { entryFileNames: "main.js", assetFileNames: "style.css" } }
+  }
 });
