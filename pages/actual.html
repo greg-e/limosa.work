@@ -12,29 +12,419 @@ permalink: /actual/
 <title>Actual Deck</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-  .card { perspective: 1200px }
+  :root {
+    color-scheme: light;
+    font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --surface: #f6f1ea;
+  }
+
+  body {
+    background: var(--surface);
+  }
+
+  main {
+    position: relative;
+  }
+
+  .card {
+    perspective: 1600px;
+  }
+
   .card-inner {
-    position: relative; transform-style: preserve-3d;
-    transition: transform .5s ease;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform .6s ease;
   }
-  .card[data-flipped="1"] .card-inner { transform: rotateY(180deg) }
-  .face {
-    position: relative; backface-visibility: hidden;
-    border-radius: 1rem; border: 1px solid color-mix(in oklab, var(--card-color, #CBD5E1) 50%, #000 0%);
-    background: color-mix(in oklab, var(--card-color, #F8FAFC) 12%, #fff 88%);
-    box-shadow: 0 2px 12px rgba(0,0,0,.06);
-    padding: 1.25rem; min-height: 14rem;
+
+  .card[data-flipped="1"] .card-inner {
+    transform: rotateY(180deg);
   }
-  .face.back { transform: rotateY(180deg); position: absolute; inset: 0 }
-  .type-pill {
-    display:inline-block; padding:.125rem .5rem; border-radius:9999px;
-    background: color-mix(in oklab, var(--card-color, #EEF2FF) 36%, #fff 64%);
-    color:#111827; font-size:.7rem;
-    border:1px solid color-mix(in oklab, var(--card-color, #CBD5E1) 50%, #000 0%);
+
+  .card-surface {
+    position: relative;
+    backface-visibility: hidden;
+    border-radius: 1.5rem;
+    padding: 1.75rem;
+    min-height: 16rem;
+    border: 3px solid color-mix(in oklab, var(--card-color, #CBD5E1) 55%, #0f172a 45%);
+    background: #fff;
+    box-shadow: 12px 12px 0 rgba(15, 23, 42, 0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
   }
-  .tag { background:#eef2ff; color:#3730a3; padding:.15rem .5rem; border-radius:9999px; font-size:.75rem }
-  .flip-btn {
-    border:1px solid #CBD5E1; padding:.25rem .5rem; border-radius:.5rem; font-size:.75rem;
+
+  .card-front {
+    background: #fff;
+  }
+
+  .card-back {
+    background: color-mix(in oklab, var(--card-color, #E2E8F0) 30%, #fff 70%);
+  }
+
+  .face.back {
+    transform: rotateY(180deg);
+    position: absolute;
+    inset: 0;
+  }
+
+  .card[data-in-stack="1"] .card-surface {
+    box-shadow: 16px 16px 0 rgba(14, 165, 233, 0.25);
+  }
+
+  .card[data-highlight="1"] .card-surface {
+    outline: 4px solid rgba(14, 165, 233, 0.7);
+    outline-offset: -4px;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .type-ribbon {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .4rem 1rem;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    color: #0f172a;
+    background: color-mix(in oklab, var(--card-color, #c7d2fe) 40%, #fff 60%);
+    border: 1px solid color-mix(in oklab, var(--card-color, #a5b4fc) 55%, #0f172a 45%);
+  }
+
+  .card-controls {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+  }
+
+  .flip-btn,
+  .stack-btn,
+  .dialog-btn,
+  .stack-panel button {
+    border-radius: 9999px;
+    border: 2px solid #1e293b;
+    padding: .3rem .9rem;
+    background: #fff;
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: #1e293b;
+    transition: transform .15s ease, box-shadow .15s ease;
+    cursor: pointer;
+  }
+
+  .flip-btn:hover,
+  .stack-btn:hover,
+  .dialog-btn:hover,
+  .stack-panel button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 12px rgba(15, 23, 42, 0.1);
+  }
+
+  .stack-btn[data-active="1"] {
+    background: color-mix(in oklab, var(--card-color, #c7d2fe) 55%, #fff 45%);
+  }
+
+  .card-front-body {
+    display: grid;
+    gap: 1.5rem;
+    align-items: stretch;
+  }
+
+  @media (min-width: 520px) {
+    .card-front-body {
+      grid-template-columns: minmax(0, .42fr) minmax(0, .58fr);
+    }
+  }
+
+  .card-illustration {
+    position: relative;
+    border-radius: 1.25rem;
+    border: 2px solid color-mix(in oklab, var(--card-color, #c7d2fe) 55%, #1e293b 45%);
+    background: color-mix(in oklab, var(--card-color, #dbeafe) 55%, #fff 45%);
+    min-height: 12rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(2.5rem, 8vw, 3.5rem);
+    font-weight: 700;
+    color: #0f172a;
+    text-transform: uppercase;
+    overflow: hidden;
+  }
+
+  .card-front-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .card-title {
+    font-size: clamp(1.35rem, 4vw, 1.8rem);
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .card-summary {
+    font-size: .98rem;
+    line-height: 1.65;
+    color: #1e293b;
+  }
+
+  .card-quote {
+    position: relative;
+    padding-left: 1.25rem;
+    color: #0f172a;
+    font-style: italic;
+  }
+
+  .card-quote::before {
+    content: "“";
+    font-size: 2.25rem;
+    position: absolute;
+    left: 0;
+    top: -.75rem;
+    color: color-mix(in oklab, var(--card-color, #c7d2fe) 70%, #0f172a 30%);
+  }
+
+  .card-author {
+    font-size: .85rem;
+    color: #475569;
+  }
+
+  .card-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+  }
+
+  .card-id {
+    font-size: .75rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #475569;
+  }
+
+  .card-footer .card-id {
+    margin-left: auto;
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+  }
+
+  .tag {
+    background: color-mix(in oklab, var(--card-color, #dbeafe) 45%, #fff 55%);
+    border: 1px solid color-mix(in oklab, var(--card-color, #c7d2fe) 55%, #1e293b 45%);
+    border-radius: 9999px;
+    padding: .2rem .75rem;
+    font-size: .72rem;
+    font-weight: 600;
+    color: #0f172a;
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+
+  .tag:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 10px rgba(15, 23, 42, 0.12);
+  }
+
+  .card-back h3.card-back-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .card-back-body {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+  }
+
+  .card-section {
+    margin-top: 1rem;
+  }
+
+  .card-section-title {
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .16em;
+    color: #1e293b;
+    font-weight: 700;
+    margin-bottom: .55rem;
+  }
+
+  .card-section-list {
+    list-style: decimal;
+    padding-left: 1.25rem;
+    color: #0f172a;
+    line-height: 1.6;
+  }
+
+  .card-section-text {
+    color: #0f172a;
+    line-height: 1.6;
+  }
+
+  .card-empty-note {
+    font-size: .9rem;
+    color: #64748b;
+    font-style: italic;
+  }
+
+  .stack-panel {
+    border: 2px solid #1e293b;
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    background: #fffef9;
+    box-shadow: 10px 10px 0 rgba(15, 23, 42, 0.08);
+  }
+
+  .stack-card {
+    border-radius: 1rem;
+    border: 2px solid color-mix(in oklab, var(--card-color, #dbeafe) 55%, #1e293b 45%);
+    background: color-mix(in oklab, var(--card-color, #f1f5f9) 60%, #fff 40%);
+    padding: .85rem;
+    display: flex;
+    gap: .85rem;
+    align-items: flex-start;
+  }
+
+  .stack-card button {
+    padding: .25rem .45rem;
+    border-radius: .5rem;
+    border: 2px solid #1e293b;
+    background: #fff;
+    font-size: .65rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .stack-card button:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+  }
+
+  .stack-card-main {
+    flex: 1;
+    cursor: pointer;
+  }
+
+  .stack-card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+  }
+
+  .stack-meta {
+    font-size: .75rem;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+
+  .stack-empty {
+    font-size: .85rem;
+    color: #475569;
+    font-style: italic;
+  }
+
+  .presentation-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 23, 42, 0.82);
+    z-index: 50;
+    padding: 1.5rem;
+  }
+
+  .presentation-overlay[hidden] {
+    display: none;
+  }
+
+  .presentation-dialog {
+    background: #fffaf3;
+    border-radius: 1.5rem;
+    width: 100%;
+    max-width: 48rem;
+    max-height: 100%;
+    padding: 2rem;
+    box-shadow: 0 25px 50px rgba(15, 23, 42, 0.45);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .presentation-card {
+    flex: 1;
+    overflow: auto;
+  }
+
+  .presentation-controls {
+    display: flex;
+    gap: .75rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .presentation-face {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    border-radius: 1.5rem;
+    border: 3px solid color-mix(in oklab, var(--card-color, #CBD5E1) 55%, #0f172a 45%);
+    background: #fff;
+    padding: 1.75rem;
+    box-shadow: 12px 12px 0 rgba(15, 23, 42, 0.12);
+  }
+
+  .presentation-face.back {
+    background: color-mix(in oklab, var(--card-color, #E2E8F0) 35%, #fff 65%);
+  }
+
+  .dialog-btn {
+    border-radius: .75rem;
+  }
+
+  .card-back .card-section-list,
+  .presentation-face .card-section-list {
+    list-style: decimal;
+  }
+
+  .card-back .card-section-list li,
+  .presentation-face .card-section-list li {
+    margin-bottom: .45rem;
+  }
+
+  .card-back .card-section-text,
+  .presentation-face .card-section-text {
+    font-size: .95rem;
+  }
+
+  .tag:focus-visible,
+  .flip-btn:focus-visible,
+  .stack-btn:focus-visible,
+  .dialog-btn:focus-visible,
+  .stack-panel button:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 2px;
   }
   .stack-btn {
     border:1px solid #CBD5E1; padding:.25rem .5rem; border-radius:.5rem; font-size:.75rem;
@@ -103,7 +493,7 @@ permalink: /actual/
         </select>
         <input id="q" type="search" placeholder="Search title, quote, tags"
                class="border rounded-lg px-3 py-2 w-full sm:w-64" />
-        <button id="shuffle" class="border px-3 py-2 rounded-lg">Shuffle</button>
+        <button id="shuffle" class="dialog-btn">Shuffle</button>
       </div>
     </header>
 
@@ -129,10 +519,22 @@ permalink: /actual/
       <article class="card">
         <div class="card-inner">
           <!-- FRONT -->
-          <div class="face front">
-            <div class="flex items-start justify-between gap-3">
-              <h2 class="text-lg font-semibold" data-title></h2>
-              <span class="text-xs text-slate-500" data-id></span>
+          <div class="face front card-surface card-front">
+            <header class="card-header">
+              <span class="type-ribbon" data-family-pill></span>
+              <div class="card-controls">
+                <button class="stack-btn" data-stack>Add to stack</button>
+                <button class="flip-btn" data-flip>Flip</button>
+              </div>
+            </header>
+            <div class="card-front-body">
+              <div class="card-illustration" data-illustration></div>
+              <div class="card-front-content">
+                <h2 class="card-title" data-title></h2>
+                <p class="card-summary" data-summary></p>
+                <blockquote class="card-quote" data-quote></blockquote>
+                <p class="card-author" data-author></p>
+              </div>
             </div>
             <div class="mt-2 flex flex-wrap items-center gap-2 justify-between">
               <span class="type-pill" data-family-pill></span>
@@ -148,12 +550,13 @@ permalink: /actual/
           </div>
 
           <!-- BACK -->
-          <div class="face back">
-            <div class="flex items-start justify-between gap-3">
-              <h3 class="text-base font-semibold">Back</h3>
+          <div class="face back card-surface card-back">
+            <header class="card-header">
+              <span class="type-ribbon" data-family-pill-back></span>
               <button class="flip-btn" data-flip>Flip</button>
-            </div>
-            <div class="mt-3 text-sm space-y-3" data-back></div>
+            </header>
+            <h3 class="card-back-title" data-title-back></h3>
+            <div class="card-back-body" data-back></div>
           </div>
         </div>
       </article>
@@ -191,11 +594,15 @@ permalink: /actual/
   // Simple color map by type/family
   const TYPE_COLORS = {
     automation: "#dbeafe",   // blue-100
-    provenance: "#fde68a",   // amber-300
     conviviality: "#bbf7d0", // green-200
-    philosophy: "#e9d5ff",   // purple-200
     design: "#fecaca",       // red-200
     flow: "#bae6fd",         // sky-200
+    language: "#fde68a",     // amber-200
+    mechanism: "#e9d5ff",    // purple-200
+    metric: "#fbcfe8",       // pink-200
+    outcome: "#c7d2fe",      // indigo-200
+    truth: "#fef3c7",        // amber-100
+    vision: "#bae6e8",       // teal-200
   };
   const DEFAULT_COLOR = "#e5e7eb"; // gray-200
 
@@ -540,7 +947,36 @@ permalink: /actual/
       node.querySelector("[data-body]").textContent = c.body || "";
 
       const pill = node.querySelector("[data-family-pill]");
-      pill.textContent = c.family || c.type || "unspecified";
+      const familyLabel = c.family || c.type || "unspecified";
+      if (pill) pill.textContent = familyLabel;
+      const pillBack = node.querySelector("[data-family-pill-back]");
+      if (pillBack) pillBack.textContent = familyLabel;
+      const backTitle = node.querySelector("[data-title-back]");
+      if (backTitle) backTitle.textContent = c.title || "(untitled)";
+
+      const illustration = node.querySelector("[data-illustration]");
+      if (illustration){
+        const seed = familyLabel || c.title || "?";
+        illustration.textContent = seed.trim().charAt(0).toUpperCase() || "?";
+        illustration.setAttribute("aria-hidden", "true");
+      }
+
+      const stackBtn = node.querySelector("[data-stack]");
+      if (cardId || cardId === 0){
+        stackBtn.textContent = inStack ? "Remove from stack" : "Add to stack";
+        stackBtn.dataset.active = inStack ? "1" : "0";
+        stackBtn.setAttribute("aria-pressed", inStack ? "true" : "false");
+        stackBtn.disabled = false;
+        stackBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          toggleStack(cardId);
+        });
+      }else{
+        stackBtn.disabled = true;
+        stackBtn.dataset.active = "0";
+        stackBtn.setAttribute("aria-pressed", "false");
+        stackBtn.textContent = "No ID";
+      }
 
       const stackBtn = node.querySelector("[data-stack]");
       if (cardId || cardId === 0){
@@ -561,6 +997,7 @@ permalink: /actual/
 
       // Tags
       const tagsWrap = node.querySelector("[data-tags]");
+      tagsWrap.innerHTML = "";
       (c.tags || []).forEach(t => {
         const s = document.createElement("span");
         s.className = "tag";
@@ -569,6 +1006,21 @@ permalink: /actual/
         s.addEventListener("click", () => { elQ.value = t; applyFilters(); });
         tagsWrap.appendChild(s);
       });
+      if (tagsWrap.childElementCount){
+        tagsWrap.removeAttribute("hidden");
+      }else{
+        tagsWrap.setAttribute("hidden", "");
+      }
+
+      const footer = node.querySelector(".card-footer");
+      if (footer){
+        const hasVisibleChild = Array.from(footer.children).some(child => !child.hasAttribute("hidden") && child.textContent.trim() !== "");
+        if (hasVisibleChild){
+          footer.removeAttribute("hidden");
+        }else{
+          footer.setAttribute("hidden", "");
+        }
+      }
 
       const backEl = node.querySelector("[data-back]");
       backEl.innerHTML = buildBackHtml(c);
@@ -609,6 +1061,10 @@ permalink: /actual/
       base = base.filter(c => {
         const hay = [
           c.title, c.quote, c.author, c.body, c.family, c.type,
+          c.tagline, c.why, c.reflection,
+          ...(c.how || []),
+          ...(c.related || []),
+          ...(c.audiences || []),
           ...(c.tags || [])
         ].map(normalize).join(" • ");
         return hay.includes(q);
