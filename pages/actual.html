@@ -426,6 +426,54 @@ permalink: /actual/
     outline: 3px solid #2563eb;
     outline-offset: 2px;
   }
+  .stack-btn[data-active="1"] {
+    background: color-mix(in oklab, var(--card-color, #c7d2fe) 45%, #fff 55%);
+    border-color: color-mix(in oklab, var(--card-color, #a5b4fc) 60%, #000 0%);
+  }
+  .card[data-in-stack="1"] .face {
+    border-width: 2px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.12);
+  }
+  .card[data-highlight="1"] .face {
+    outline:3px solid rgba(14,165,233,0.75);
+    outline-offset:-3px;
+  }
+  .stack-panel {
+    border:1px solid #e2e8f0; border-radius:1rem; padding:1rem; background:#f8fafc;
+  }
+  .stack-card {
+    border-radius:.75rem; border:1px solid color-mix(in oklab, var(--card-color, #E2E8F0) 60%, #000 0%);
+    background: color-mix(in oklab, var(--card-color, #F1F5F9) 30%, #fff 70%);
+    padding:.75rem; display:flex; gap:.75rem; align-items:flex-start;
+  }
+  .stack-card button {
+    border:1px solid #CBD5E1; padding:.2rem .35rem; border-radius:.35rem; font-size:.7rem;
+  }
+  .stack-card button:disabled { opacity:.4; cursor:not-allowed; }
+  .stack-card-main { flex:1; cursor:pointer; }
+  .stack-card-actions { display:flex; flex-direction:column; gap:.35rem; }
+  .stack-meta { font-size:.75rem; color:#64748b; }
+  .stack-empty { font-size:.85rem; color:#475569; font-style:italic; }
+  .presentation-overlay {
+    position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+    background:rgba(15,23,42,0.75); z-index:50; padding:1.5rem;
+  }
+  .presentation-overlay[hidden] { display:none; }
+  .presentation-dialog {
+    background:#fff; border-radius:1rem; width:100%; max-width:48rem; max-height:100%;
+    padding:1.5rem; box-shadow:0 20px 45px rgba(15,23,42,0.35); display:flex; flex-direction:column;
+  }
+  .presentation-card {
+    flex:1; overflow:auto; margin-top:1rem; margin-bottom:1rem;
+  }
+  .presentation-controls { display:flex; gap:.75rem; justify-content:space-between; flex-wrap:wrap; }
+  .presentation-face {
+    border-radius:1rem;
+    border:1px solid color-mix(in oklab, var(--card-color, #CBD5E1) 55%, #000 0%);
+    background: color-mix(in oklab, var(--card-color, #F1F5F9) 25%, #fff 75%);
+    padding:1.5rem;
+    box-shadow:0 10px 35px rgba(15,23,42,0.18);
+  }
 </style>
 </head>
 <body class="bg-white text-slate-900">
