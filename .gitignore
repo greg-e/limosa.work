@@ -1,4 +1,3 @@
-# keep all assets ignored except the built deck
-assets/*
-!assets/actual-deck/
-!assets/actual-deck/**
+# keep data tracked
+!data/actual-deck/cards.json
+!data/actual-deck/presets.json
