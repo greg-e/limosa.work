@@ -1,0 +1,1910 @@
+[
+  {
+    "id": "language-provenance",
+    "family": "Language",
+    "title": "Provenance",
+    "quote": "Truth requires protection.",
+    "tagline": "Trust comes from traceability.",
+    "why": "Truth in data exists only when its origin can be proven. Provenance makes security measurable.",
+    "how": [
+      "Tag source with identity, time, place",
+      "Sign and encrypt each transmission",
+      "Preserve lineage from edge to cloud"
+    ],
+    "reflection": "When origin is provable, truth stands on its own.",
+    "related": [
+      "design-integrity-by-design",
+      "truth-395"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "automation-automate-constraint",
+    "family": "Automation",
+    "title": "Automate the Constraint",
+    "quote": "Automation is good, as long as you know exactly where to put the machine.",
+    "tagline": "Automate where proof depends on it.",
+    "why": "Automation magnifies both correctness and error. Place it at the limiting point that drives downstream accuracy.",
+    "how": [
+      "Identify the constraint",
+      "Capture time and presence directly",
+      "Leave judgment to people",
+      "Align downstream systems"
+    ],
+    "reflection": "Focused automation strengthens the whole.",
+    "related": [
+      "truth-395",
+      "flow-critical"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "truth-395",
+    "family": "Truth",
+    "title": "395… Exactly",
+    "quote": "'395… exactly.' — SGM Plumley",
+    "tagline": "Truth is measured, not estimated.",
+    "why": "Operations depend on exact counts of who was there, when, and for how long.",
+    "how": [
+      "Measure presence by telemetry",
+      "Make events atomic",
+      "Verify before aggregation",
+      "Let precision feed finance"
+    ],
+    "reflection": "Exact counts align decisions with reality.",
+    "related": [
+      "language-provenance",
+      "design-integrity-by-design"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership"
+    ]
+  },
+  {
+    "id": "flow-critical",
+    "family": "Flow",
+    "title": "Critical Flow",
+    "quote": "Flow starts at the edge.",
+    "tagline": "Movement defines truth.",
+    "why": "Work happens at the edge. Systems must follow motion or lose fidelity.",
+    "how": [
+      "Begin capture at the edge",
+      "Store-forward when offline",
+      "Sync in optimized intervals",
+      "Let edge events drive state"
+    ],
+    "reflection": "When the edge flows, the organization follows.",
+    "related": [
+      "mechanism-edge-autonomy"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "convivial-tools",
+    "family": "Conviviality",
+    "title": "Tools for Humans",
+    "quote": "Most learning is not the result of instruction… — Ivan Illich",
+    "tagline": "Systems should serve, not steer.",
+    "why": "Technology must reduce cognitive load and preserve autonomy. The badge observes while people work.",
+    "how": [
+      "Passive capture over check-ins",
+      "Minimize attention cost",
+      "Follow worker rhythm",
+      "Proof from activity"
+    ],
+    "reflection": "Convivial systems reveal truth without supervision.",
+    "related": [
+      "outcome-empower-crew",
+      "convivial-reduce-load"
+    ],
+    "audiences": [
+      "Field",
+      "Leadership"
+    ]
+  },
+  {
+    "id": "design-integrity-by-design",
+    "family": "Design",
+    "title": "Integrity by Design",
+    "quote": "Presence becomes proof.",
+    "tagline": "The system must prove itself.",
+    "why": "Integrity is architectural. Each step preserves verifiability so truth propagates automatically.",
+    "how": [
+      "Sign and timestamp every event",
+      "Log transformations as transactions",
+      "Detect alteration",
+      "Reproduce input from output"
+    ],
+    "reflection": "Design that guarantees truth reduces oversight to confirmation.",
+    "related": [
+      "language-provenance",
+      "truth-395"
+    ],
+    "audiences": [
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "language-truth",
+    "family": "Language",
+    "title": "Truth",
+    "quote": "Truth is what can be verified.",
+    "tagline": "Data is truth only when reproducible.",
+    "why": "Truth is a state that can be independently re-created.",
+    "how": [
+      "Replay must reproduce results",
+      "Require signatures or checksums",
+      "Exclude unverifiable states"
+    ],
+    "reflection": "Truth is an outcome that can be tested.",
+    "related": [
+      "language-provenance",
+      "design-integrity-by-design"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "language-flow",
+    "family": "Language",
+    "title": "Flow",
+    "quote": "Flow is ordered change through time.",
+    "tagline": "Movement proves sequence.",
+    "why": "Systems must record facts and their order.",
+    "how": [
+      "Timestamp every event",
+      "Preserve transmission order",
+      "Alert on sequence breaks"
+    ],
+    "reflection": "Flow turns data into cause and effect.",
+    "related": [
+      "flow-critical",
+      "truth-temporal-integrity"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "language-constraint",
+    "family": "Language",
+    "title": "Constraint",
+    "quote": "The system’s weakest link sets its speed.",
+    "tagline": "Every system has one point that governs all others.",
+    "why": "Improvement without locating the constraint produces waste.",
+    "how": [
+      "Measure throughput stages",
+      "Target the true limiter",
+      "Re-evaluate as throughput changes"
+    ],
+    "reflection": "Knowing the constraint converts guesswork into strategy.",
+    "related": [
+      "automation-automate-constraint",
+      "metric-flow-multiplied"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "language-conviviality",
+    "family": "Language",
+    "title": "Conviviality",
+    "quote": "Tools are extensions, not replacements.",
+    "tagline": "Increase capability, not control.",
+    "why": "Conviviality keeps humans central while automation handles repetition.",
+    "how": [
+      "Quantify cognitive load",
+      "Provide visibility not command",
+      "Favor simplicity over options"
+    ],
+    "reflection": "A convivial tool disappears into the task.",
+    "related": [
+      "convivial-tools",
+      "convivial-min-attn"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "language-integrity",
+    "family": "Language",
+    "title": "Integrity",
+    "quote": "Integrity is consistency across time.",
+    "tagline": "A record that cannot contradict itself.",
+    "why": "Integrity guarantees later facts will not invalidate earlier ones without evidence.",
+    "how": [
+      "Edits are additive, not destructive",
+      "Reference parent state on mutation",
+      "Detect contradiction instead of overwrite"
+    ],
+    "reflection": "Integrity prevents drift.",
+    "related": [
+      "design-integrity-by-design",
+      "design-immutable-record"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "language-evidence",
+    "family": "Language",
+    "title": "Evidence",
+    "quote": "Evidence is truth with context.",
+    "tagline": "Data gains authority when situated.",
+    "why": "Isolated facts lack meaning; link measurement to circumstance.",
+    "how": [
+      "Link to time, actor, place",
+      "Require context metadata",
+      "Store correlation keys"
+    ],
+    "reflection": "Evidence converts numbers into knowledge.",
+    "related": [
+      "language-provenance",
+      "product-context"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "automation-selective",
+    "family": "Automation",
+    "title": "Selective Automation",
+    "quote": "Not everything worth doing is worth automating.",
+    "tagline": "Automate only what limits throughput or proof.",
+    "why": "Excess automation adds complexity without gain.",
+    "how": [
+      "Quantify step value",
+      "Automate rule-bounded tasks",
+      "De-automate when humans outperform"
+    ],
+    "reflection": "Automation is a scalpel, not a blanket.",
+    "related": [
+      "automation-automate-constraint",
+      "convivial-tools"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "automation-feedback-loop",
+    "family": "Automation",
+    "title": "Feedback Loop Design",
+    "quote": "Every system must see the result of its own actions.",
+    "tagline": "Output must inform input.",
+    "why": "Automation without feedback drifts.",
+    "how": [
+      "Capture performance data",
+      "Compare expected vs actual",
+      "Route deviations back to control"
+    ],
+    "reflection": "Without feedback, automation becomes entropy.",
+    "related": [
+      "design-integrity-by-design",
+      "flow-feedback-inversion"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "automation-constraint-migration",
+    "family": "Automation",
+    "title": "Constraint Migration",
+    "quote": "When the limit moves, the focus must follow.",
+    "tagline": "Optimization never ends at the same place.",
+    "why": "Relieving one constraint reveals the next.",
+    "how": [
+      "Measure throughput continuously",
+      "Detect bottleneck shifts",
+      "Retarget resources dynamically"
+    ],
+    "reflection": "Improvement is a moving target.",
+    "related": [
+      "automation-automate-constraint",
+      "metric-flow-multiplied"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "automation-graceful-degradation",
+    "family": "Automation",
+    "title": "Graceful Degradation",
+    "quote": "Partial failure is not total failure.",
+    "tagline": "Maintain core truth under loss.",
+    "why": "Systems must continue producing partial truth rather than halt.",
+    "how": [
+      "Prioritize critical data",
+      "Store locally on failure",
+      "Flag gaps for backfill"
+    ],
+    "reflection": "Degrade in quality, not integrity.",
+    "related": [
+      "mechanism-edge-autonomy",
+      "design-fail-safe"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "automation-ethics",
+    "family": "Automation",
+    "title": "Ethical Boundary",
+    "quote": "Capability does not equal permission.",
+    "tagline": "Collect only what is necessary to prove truth.",
+    "why": "Limit scope to protect dignity and compliance.",
+    "how": [
+      "Define relevance by operational proof",
+      "Exclude non-essential personal metrics",
+      "Maintain transparency of capture"
+    ],
+    "reflection": "A system earns trust by knowing its limits.",
+    "related": [
+      "language-provenance",
+      "convivial-transparency"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "automation-feedback-latency",
+    "family": "Automation",
+    "title": "Feedback Latency",
+    "quote": "Slow feedback is no feedback.",
+    "tagline": "The shorter the loop, the truer the correction.",
+    "why": "Delay between event and correction defines agility.",
+    "how": [
+      "Timestamp feedback signals",
+      "Measure detection-to-action delay",
+      "Escalate unclosed loops"
+    ],
+    "reflection": "Responsiveness is practical intelligence.",
+    "related": [
+      "automation-feedback-loop",
+      "flow-latency-budget"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "automation-necessary-not-sufficient",
+    "family": "Automation",
+    "title": "Necessary but Not Sufficient",
+    "quote": "Technology is necessary, but rarely enough. — Eli Goldratt",
+    "tagline": "Tools matter only when aligned to constraint.",
+    "why": "Technology enables improvement but does not guarantee it.",
+    "how": [
+      "Find the constraint first",
+      "Relieve it with automation",
+      "Measure overall flow, not local speed",
+      "Retire tools that add load"
+    ],
+    "reflection": "Necessity is not sufficiency; alignment is.",
+    "related": [
+      "automation-automate-constraint",
+      "automation-selective"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "truth-presence-vs-participation",
+    "family": "Truth",
+    "title": "Presence vs Participation",
+    "quote": "Being there is not the same as contributing.",
+    "tagline": "Truth records activity, not attendance.",
+    "why": "Presence proves where, not what. Pair with interaction evidence.",
+    "how": [
+      "Correlate presence with movement/tools",
+      "Require task proximity for credit",
+      "Separate attendance from output"
+    ],
+    "reflection": "Truth without context is location.",
+    "related": [
+      "product-context",
+      "truth-395"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "truth-sufficiency",
+    "family": "Truth",
+    "title": "Data Sufficiency",
+    "quote": "Enough is better than everything.",
+    "tagline": "Collect only what improves certainty.",
+    "why": "Too much data creates noise and cost.",
+    "how": [
+      "Define confidence thresholds",
+      "Stop sampling once confidence met",
+      "Discard redundant signals"
+    ],
+    "reflection": "Truth is clarity, not quantity.",
+    "related": [
+      "mechanism-adaptive-sampling",
+      "language-evidence"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "truth-temporal-integrity",
+    "family": "Truth",
+    "title": "Temporal Integrity",
+    "quote": "Sequence is a property of truth.",
+    "tagline": "If order changes, truth changes.",
+    "why": "Out-of-order events break causality.",
+    "how": [
+      "Synchronize device clocks",
+      "Use monotonic timestamps",
+      "Re-order late packets by time"
+    ],
+    "reflection": "Truth exists along a timeline.",
+    "related": [
+      "mechanism-dual-clock",
+      "flow-continuity"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "truth-trust-propagation",
+    "family": "Truth",
+    "title": "Trust Propagation",
+    "quote": "Verified truth creates more truth.",
+    "tagline": "Once verified, data can verify others.",
+    "why": "Extend credibility to dependent records to reduce overhead.",
+    "how": [
+      "Assign trust tokens",
+      "Let derivatives inherit tokens",
+      "Invalidate on edit"
+    ],
+    "reflection": "Verification scales when trust is transitive.",
+    "related": [
+      "design-distributed-proof",
+      "language-provenance"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "truth-evidence-over-opinion",
+    "family": "Truth",
+    "title": "Evidence over Opinion",
+    "quote": "Decisions must reference proof, not preference.",
+    "tagline": "Policy follows data, not habit.",
+    "why": "Bias distorts operations. Elevate evidence to primary input.",
+    "how": [
+      "Show confidence intervals",
+      "Expose data sources",
+      "Link decisions to verified records"
+    ],
+    "reflection": "Opinion fades when evidence is visible.",
+    "related": [
+      "outcome-manage-clarity",
+      "language-truth"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "truth-data-fidelity",
+    "family": "Truth",
+    "title": "Data Fidelity",
+    "quote": "Truth loses value each time it changes form.",
+    "tagline": "Convert without corrupting.",
+    "why": "Every translation risks distortion.",
+    "how": [
+      "Document schemas",
+      "Use checksums",
+      "Preserve originals for audit"
+    ],
+    "reflection": "Truth survives only if translation is perfect.",
+    "related": [
+      "design-self-describing",
+      "design-immutable-record"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "flow-continuity",
+    "family": "Flow",
+    "title": "Flow Continuity",
+    "quote": "No event should be lost between motion and memory.",
+    "tagline": "Keep sequence intact from edge to record.",
+    "why": "Discontinuities break the story of work.",
+    "how": [
+      "Queue unsent events",
+      "Use sequence IDs",
+      "Backfill gaps automatically"
+    ],
+    "reflection": "Continuity is invisible when perfect, disastrous when lost.",
+    "related": [
+      "mechanism-edge-autonomy",
+      "truth-temporal-integrity"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "flow-latency-budget",
+    "family": "Flow",
+    "title": "Latency Budgeting",
+    "quote": "Delay is acceptable; uncertainty is not.",
+    "tagline": "Define how late truth may arrive.",
+    "why": "Bounded latency keeps data timely and preserves energy.",
+    "how": [
+      "Set max delay per type",
+      "Batch within window",
+      "Flag overruns"
+    ],
+    "reflection": "A known delay is safer than a hidden one.",
+    "related": [
+      "mechanism-smart-batching",
+      "automation-feedback-latency"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "flow-feedback-inversion",
+    "family": "Flow",
+    "title": "Feedback Inversion",
+    "quote": "Downstream truth validates upstream capture.",
+    "tagline": "Flow confirms itself in both directions.",
+    "why": "Use downstream results to confirm upstream records.",
+    "how": [
+      "Compare outputs to predictions",
+      "Recalibrate sensors on discrepancy",
+      "Alert on mismatch"
+    ],
+    "reflection": "True flow forms a circuit, not a line.",
+    "related": [
+      "automation-feedback-loop",
+      "design-integrity-by-design"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "flow-queue-discipline",
+    "family": "Flow",
+    "title": "Queue Discipline",
+    "quote": "Order is a design choice, not an accident.",
+    "tagline": "Control sequencing without central control.",
+    "why": "Process events predictably even when decentralized.",
+    "how": [
+      "Assign priorities",
+      "Use deterministic sort keys",
+      "FIFO within context"
+    ],
+    "reflection": "Predictable order is the quiet form of trust.",
+    "related": [
+      "design-deterministic-chain",
+      "flow-continuity"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "flow-recovery",
+    "family": "Flow",
+    "title": "Flow Recovery",
+    "quote": "After interruption, resume without replaying error.",
+    "tagline": "Recovery is part of flow, not an exception.",
+    "why": "Restarts must continue sequence without duplication or omission.",
+    "how": [
+      "Persist last confirmed state",
+      "Resume from verified index",
+      "Reject duplicates on re-entry"
+    ],
+    "reflection": "A flow that recovers itself never truly stops.",
+    "related": [
+      "automation-graceful-degradation",
+      "flow-continuity"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "flow-mapping",
+    "family": "Flow",
+    "title": "Flow Mapping",
+    "quote": "You can’t improve what you can’t see moving.",
+    "tagline": "Map motion to reveal constraint and waste.",
+    "why": "Visualizing flow exposes bottlenecks and idle loops.",
+    "how": [
+      "Render sequences as graphs",
+      "Measure dwell time",
+      "Highlight rework loops"
+    ],
+    "reflection": "Seeing the flow reveals invisible friction.",
+    "related": [
+      "language-constraint",
+      "metric-flow-multiplied"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "convivial-transparency",
+    "family": "Conviviality",
+    "title": "Transparency of Function",
+    "quote": "Users must know what the system is doing.",
+    "tagline": "Hidden logic erodes trust.",
+    "why": "People cooperate best with systems they understand.",
+    "how": [
+      "Display what is sensed and why",
+      "Provide immediate capture feedback",
+      "Publish rules and retention"
+    ],
+    "reflection": "Visible systems keep consent active.",
+    "related": [
+      "automation-ethics",
+      "language-provenance"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "convivial-min-attn",
+    "family": "Conviviality",
+    "title": "Minimum Attention",
+    "quote": "Every tap and confirmation is a cost.",
+    "tagline": "Reduce interaction to near zero.",
+    "why": "Attention is finite; constant input drains focus.",
+    "how": [
+      "Replace manual steps with passive detection",
+      "Consolidate prompts",
+      "Measure interaction time"
+    ],
+    "reflection": "The best interface vanishes in use.",
+    "related": [
+      "metric-cognitive-load",
+      "convivial-tools"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "convivial-forgiveness",
+    "family": "Conviviality",
+    "title": "Error Forgiveness",
+    "quote": "People err; systems must recover.",
+    "tagline": "Failure should teach, not punish.",
+    "why": "Strict systems cause avoidance and falsification.",
+    "how": [
+      "Capture incorrect input with trace",
+      "Provide reversible actions",
+      "Guide recovery not blocking"
+    ],
+    "reflection": "Forgiveness sustains truth engagement.",
+    "related": [
+      "design-fail-safe",
+      "convivial-tools"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "convivial-override",
+    "family": "Conviviality",
+    "title": "Human Override",
+    "quote": "Judgment outranks automation.",
+    "tagline": "Humans remain the final context.",
+    "why": "Systems must yield to informed decision when conditions diverge.",
+    "how": [
+      "Provide override with trace",
+      "Require reason codes",
+      "Feed overrides into model refinement"
+    ],
+    "reflection": "Authority retained preserves accountability.",
+    "related": [
+      "automation-feedback-loop",
+      "automation-ethics"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "convivial-local-adapt",
+    "family": "Conviviality",
+    "title": "Local Adaptation",
+    "quote": "No site is average.",
+    "tagline": "Uniform logic, local parameters.",
+    "why": "Rigid systems fail in variable environments.",
+    "how": [
+      "Local thresholds within bounds",
+      "Parameterize environment",
+      "Store deviations for analysis"
+    ],
+    "reflection": "Flexibility is precision applied to variation.",
+    "related": [
+      "language-constraint",
+      "convivial-override"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "convivial-cognitive-feedback",
+    "family": "Conviviality",
+    "title": "Cognitive Feedback",
+    "quote": "Information is valuable only when it changes action.",
+    "tagline": "Show less, but show what matters.",
+    "why": "Over-reporting overwhelms operators.",
+    "how": [
+      "Rank alerts by relevance",
+      "Collapse redundant messages",
+      "Track resolution time"
+    ],
+    "reflection": "Actionable feedback completes the loop.",
+    "related": [
+      "automation-feedback-loop",
+      "outcome-manage-clarity"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "convivial-reduce-load",
+    "family": "Conviviality",
+    "title": "Reduce the Load",
+    "quote": "The team is the means of delivery, not the toolchain. — Team Topologies",
+    "tagline": "Technology should lighten thinking, not multiply it.",
+    "why": "People deliver value; tools must minimize cognitive and admin burden.",
+    "how": [
+      "Audit cognitive load",
+      "Automate repetitive admin",
+      "Hide infrastructure complexity",
+      "Measure coordination overhead"
+    ],
+    "reflection": "When tech gets lighter, teams get faster.",
+    "related": [
+      "convivial-tools",
+      "outcome-empower-crew"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "design-fail-safe",
+    "family": "Design",
+    "title": "Fail Safe, Not Fail Silent",
+    "quote": "Failure must announce itself.",
+    "tagline": "A quiet failure is a hidden lie.",
+    "why": "Unreported failure breaks trust faster than visible error.",
+    "how": [
+      "Detect absence of data",
+      "Send status heartbeats",
+      "Store diagnostic context"
+    ],
+    "reflection": "Transparency in failure preserves integrity.",
+    "related": [
+      "automation-graceful-degradation",
+      "flow-recovery"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "design-deterministic-chain",
+    "family": "Design",
+    "title": "Deterministic Chain",
+    "quote": "Same input, same output, every time.",
+    "tagline": "Trust depends on reproducibility.",
+    "why": "Non-determinism undermines auditability.",
+    "how": [
+      "Eliminate hidden randomness",
+      "Version algorithms with hashes",
+      "Record config state with results"
+    ],
+    "reflection": "Determinism is the simplest safeguard.",
+    "related": [
+      "design-immutable-record",
+      "flow-queue-discipline"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "design-immutable-record",
+    "family": "Design",
+    "title": "Immutable Record",
+    "quote": "History is append-only.",
+    "tagline": "Deletion is corruption; correction is addition.",
+    "why": "Changing records undermines evidence.",
+    "how": [
+      "Append corrections as new entries",
+      "Maintain versions",
+      "Protect with write-once storage"
+    ],
+    "reflection": "Memory that cannot be rewritten remains reliable.",
+    "related": [
+      "language-integrity",
+      "design-deterministic-chain"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "design-distributed-proof",
+    "family": "Design",
+    "title": "Distributed Proof",
+    "quote": "No single keeper of truth.",
+    "tagline": "Integrity without central trust.",
+    "why": "Central authorities are single points of failure.",
+    "how": [
+      "Share verification among nodes",
+      "Cross-sign data blocks",
+      "Require quorum to accept records"
+    ],
+    "reflection": "Trust grows when no one can own it.",
+    "related": [
+      "language-provenance",
+      "truth-trust-propagation"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "design-self-describing",
+    "family": "Design",
+    "title": "Self-Describing Data",
+    "quote": "A record should explain itself.",
+    "tagline": "Context travels with the data.",
+    "why": "External schema dependence causes misinterpretation.",
+    "how": [
+      "Embed metadata and schema version",
+      "Validate schema presence",
+      "Maintain backward compatibility"
+    ],
+    "reflection": "Data that carries meaning cannot be orphaned.",
+    "related": [
+      "truth-data-fidelity",
+      "design-immutable-record"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "design-minimal-surface",
+    "family": "Design",
+    "title": "Minimal Surface",
+    "quote": "Every interface is an attack vector.",
+    "tagline": "Fewer parts, fewer failures.",
+    "why": "Complexity multiplies risk.",
+    "how": [
+      "Remove unused endpoints",
+      "Design for necessity",
+      "Quantify interface reduction"
+    ],
+    "reflection": "Simplicity is the cheapest security.",
+    "related": [
+      "automation-ethics",
+      "design-fail-safe"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "mechanism-smart-batching",
+    "family": "Mechanism",
+    "title": "Smart Batching",
+    "quote": "Send often enough to stay current, seldom enough to stay alive.",
+    "tagline": "Balance freshness with endurance.",
+    "why": "Schedule transfers to preserve power and truth.",
+    "how": [
+      "Group nearby events",
+      "Encrypt and compress",
+      "Adjust by signal and battery"
+    ],
+    "reflection": "Timely truth without exhaustion.",
+    "related": [
+      "flow-latency-budget",
+      "mechanism-edge-autonomy"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "mechanism-adaptive-sampling",
+    "family": "Mechanism",
+    "title": "Adaptive Sampling",
+    "quote": "Measure faster only when change is faster.",
+    "tagline": "Let the environment set the sampling rate.",
+    "why": "Static sampling wastes energy and bandwidth.",
+    "how": [
+      "Track variance over time",
+      "Increase during high activity",
+      "Reduce during stability"
+    ],
+    "reflection": "Adaptation makes accuracy sustainable.",
+    "related": [
+      "truth-sufficiency",
+      "mechanism-smart-batching"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "mechanism-dual-clock",
+    "family": "Mechanism",
+    "title": "Dual Clock Sync",
+    "quote": "Two clocks prevent one lie.",
+    "tagline": "Independent time sources guard order.",
+    "why": "Single clocks drift; dual references protect sequence.",
+    "how": [
+      "Local + network clocks",
+      "Record both timestamps",
+      "Flag drift beyond tolerance"
+    ],
+    "reflection": "Time verified twice keeps truth aligned once.",
+    "related": [
+      "truth-temporal-integrity",
+      "flow-continuity"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "mechanism-secure-handshake",
+    "family": "Mechanism",
+    "title": "Secure Handshake",
+    "quote": "Identity before conversation.",
+    "tagline": "No data moves without verified sender and receiver.",
+    "why": "Authentication at handshake prevents falsified origins.",
+    "how": [
+      "Require cryptographic keys",
+      "Validate credentials",
+      "Reject replayed tokens"
+    ],
+    "reflection": "Verification at entry removes doubt downstream.",
+    "related": [
+      "language-provenance",
+      "design-distributed-proof"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "mechanism-health-telemetry",
+    "family": "Mechanism",
+    "title": "Health Telemetry",
+    "quote": "A system that monitors itself stays honest.",
+    "tagline": "Every component reports its own state.",
+    "why": "Hidden degradation becomes silent error.",
+    "how": [
+      "Track power, memory, signal",
+      "Send periodic status",
+      "Flag anomalies before failure"
+    ],
+    "reflection": "Self-description enables prediction.",
+    "related": [
+      "design-fail-safe",
+      "vision-autonomous-integrity"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "mechanism-edge-autonomy",
+    "family": "Mechanism",
+    "title": "Edge Autonomy",
+    "quote": "Work continues, even without connection.",
+    "tagline": "Capture locally, transmit intelligently.",
+    "why": "Connectivity is intermittent; work is continuous.",
+    "how": [
+      "Local store of events",
+      "Integrity checks before upload",
+      "Smart batches on signal"
+    ],
+    "reflection": "Reliability comes from autonomy.",
+    "related": [
+      "flow-critical",
+      "design-integrity-by-design"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "outcome-empower-crew",
+    "family": "Outcome",
+    "title": "Empower the Crew",
+    "quote": "Less admin, more work.",
+    "tagline": "Automation should return time to production.",
+    "why": "Removing repetitive confirmation increases output and morale.",
+    "how": [
+      "Eliminate manual time capture",
+      "Shift verification to telemetry",
+      "Reduce reconciliation cycles"
+    ],
+    "reflection": "Workers do only value work.",
+    "related": [
+      "convivial-tools",
+      "metric-cognitive-load"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "outcome-manage-clarity",
+    "family": "Outcome",
+    "title": "Manage with Clarity",
+    "quote": "The truth manages itself.",
+    "tagline": "Verified data replaces supervision.",
+    "why": "Managers shift from monitoring to optimization.",
+    "how": [
+      "Provide verified progress data",
+      "Operate on mirrors not reports",
+      "Decide on shared truth"
+    ],
+    "reflection": "Leadership improves when information is unfiltered.",
+    "related": [
+      "design-integrity-by-design",
+      "truth-evidence-over-opinion"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "outcome-precision-finance",
+    "family": "Outcome",
+    "title": "Precision Finance",
+    "quote": "Revenue follows truth.",
+    "tagline": "Verified inputs create accurate books.",
+    "why": "Finance depends on exact presence and completion.",
+    "how": [
+      "Feed records directly to payroll/billing",
+      "Carry provenance with transactions",
+      "Shorten reconciliation"
+    ],
+    "reflection": "Profitability grows when truth enters accounting at source.",
+    "related": [
+      "language-provenance",
+      "truth-395"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "outcome-friction-index",
+    "family": "Outcome",
+    "title": "Friction Reduction Index",
+    "quote": "Every removed step is reclaimed time.",
+    "tagline": "Measure improvement by subtraction.",
+    "why": "Value appears when unnecessary effort disappears.",
+    "how": [
+      "Map manual actions before/after",
+      "Calculate reduction ratio",
+      "Correlate with output and morale"
+    ],
+    "reflection": "Progress is what you no longer do.",
+    "related": [
+      "convivial-min-attn",
+      "outcome-empower-crew"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "outcome-retention",
+    "family": "Outcome",
+    "title": "Crew Retention Improvement",
+    "quote": "People stay where work feels fair.",
+    "tagline": "Verified fairness reduces churn.",
+    "why": "Accurate pay and transparency improve retention.",
+    "how": [
+      "Track payroll accuracy vs baseline",
+      "Monitor turnover trends",
+      "Link trust to pay accuracy"
+    ],
+    "reflection": "Retention reflects trusted truth.",
+    "related": [
+      "metric-payroll-accuracy",
+      "outcome-manage-clarity"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "outcome-audit-compression",
+    "family": "Outcome",
+    "title": "Audit Cycle Compression",
+    "quote": "Proof should close itself.",
+    "tagline": "Verification runs in real time.",
+    "why": "Continuous verification turns compliance into an outcome.",
+    "how": [
+      "Tag transactions with lineage",
+      "Publish immutable daily ledgers",
+      "Give auditors live access"
+    ],
+    "reflection": "Auditing becomes observation.",
+    "related": [
+      "design-integrity-by-design",
+      "vision-autonomous-integrity"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "metric-payroll-accuracy",
+    "family": "Metric",
+    "title": "Confidence in Every Paycheck",
+    "quote": "Every minute verified.",
+    "tagline": "Eliminate error at the source.",
+    "why": "Payroll is the trust interface between labor and enterprise.",
+    "how": [
+      "Derive time from verified presence",
+      "Prevent duplicate/overlap",
+      "Shorten payroll cycles"
+    ],
+    "reflection": "Accuracy compounds each cycle.",
+    "related": [
+      "truth-395",
+      "outcome-empower-crew"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "metric-revenue-recognition",
+    "family": "Metric",
+    "title": "Recognition Built on Proof",
+    "quote": "Truth closes revenue.",
+    "tagline": "Completion confirmed, revenue realized.",
+    "why": "Manual confirmation delays billing; verified presence enables automation.",
+    "how": [
+      "Link tasks to verified attendance",
+      "Trigger billing from proof",
+      "Recognize revenue continuously"
+    ],
+    "reflection": "Faster truth equals faster value.",
+    "related": [
+      "outcome-precision-finance",
+      "language-provenance"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "metric-flow-multiplied",
+    "family": "Metric",
+    "title": "Flow Multiplied",
+    "quote": "Flow without friction.",
+    "tagline": "Remove drag; preserve motion.",
+    "why": "Manual steps steal momentum; automate invisible friction points.",
+    "how": [
+      "Replace checkpoints with passive capture",
+      "Measure idle/wait reduction",
+      "Quantify productivity as continuity"
+    ],
+    "reflection": "Gains arise from fewer stops.",
+    "related": [
+      "flow-mapping",
+      "automation-automate-constraint"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "metric-data-completeness",
+    "family": "Metric",
+    "title": "Data Completeness ≥ 95 %",
+    "quote": "A missing record is a missing fact.",
+    "tagline": "Measure by what is captured.",
+    "why": "Completeness determines reliability for analytics and finance.",
+    "how": [
+      "Count expected vs received events",
+      "Classify gaps by cause",
+      "Trigger recovery on missing segments"
+    ],
+    "reflection": "Completeness is the floor for all metrics.",
+    "related": [
+      "flow-continuity",
+      "mechanism-health-telemetry"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "metric-cognitive-load",
+    "family": "Metric",
+    "title": "Cognitive Load ≤ 2 min/day",
+    "quote": "Automation success is measured in attention saved.",
+    "tagline": "Less thought on system, more on work.",
+    "why": "Keep user interaction minimal to preserve productivity.",
+    "how": [
+      "Log interaction time",
+      "Remove repetitive steps",
+      "Hold ≤ 2 min/day as guardrail"
+    ],
+    "reflection": "Worth proven by how little it demands.",
+    "related": [
+      "convivial-min-attn",
+      "outcome-empower-crew"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "vision-human-scale",
+    "family": "Vision",
+    "title": "Truth at Human Scale",
+    "quote": "Technology should fit the worker, not the other way around.",
+    "tagline": "The future of automation is proportional.",
+    "why": "Scaling automation without proportion breaks trust and usability.",
+    "how": [
+      "Keep control surfaces simple",
+      "Show direct action-feedback",
+      "Apply depth only where humans cannot sense",
+      "Preserve local agency"
+    ],
+    "reflection": "Human-scaled automation preserves comprehension.",
+    "related": [
+      "convivial-tools",
+      "design-integrity-by-design"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "vision-ground-up",
+    "family": "Vision",
+    "title": "Field Truth as the First Layer",
+    "quote": "The map begins at the site.",
+    "tagline": "Reality defines the data model.",
+    "why": "Start from field truth and let structure emerge.",
+    "how": [
+      "Treat on-site events as primary keys",
+      "Build abstractions from verified events",
+      "Reject inputs lacking physical correlation",
+      "Keep layers reproducible"
+    ],
+    "reflection": "Alignment stays permanent when built from reality.",
+    "related": [
+      "flow-critical",
+      "language-provenance"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "vision-invisible-burden",
+    "family": "Vision",
+    "title": "Visible Systems, Invisible Burden",
+    "quote": "The best system is the one you don’t have to notice.",
+    "tagline": "Function without demand for attention.",
+    "why": "Every visible control costs focus. Hide complexity and foreground work.",
+    "how": [
+      "Prefer passive detection",
+      "Show only anomalies",
+      "Measure success by interaction avoided",
+      "Keep complexity internal"
+    ],
+    "reflection": "Mature systems stop interrupting.",
+    "related": [
+      "convivial-tools",
+      "metric-cognitive-load"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "vision-truth-enterprise",
+    "family": "Vision",
+    "title": "Truth-Based Enterprise",
+    "quote": "An organization that runs on reality instead of reports.",
+    "tagline": "Replace assumption with observation.",
+    "why": "When verified data flows natively, strategy aligns with what is happening.",
+    "how": [
+      "Derive metrics from verified events",
+      "Update forecasts continuously",
+      "Converge planning and execution",
+      "Shift debate to optimization"
+    ],
+    "reflection": "Self-correcting governance begins in fact.",
+    "related": [
+      "outcome-precision-finance",
+      "outcome-manage-clarity"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "vision-truth-commons",
+    "family": "Vision",
+    "title": "Truth as a Commons",
+    "quote": "Shared truth sustains cooperation.",
+    "tagline": "One truth, accessible to all roles.",
+    "why": "Fragmented data creates friction. Shared verified base reduces coordination cost.",
+    "how": [
+      "Publish verified truth to all systems",
+      "Maintain consistent identifiers",
+      "Remove shadow ledgers",
+      "Treat access as a right"
+    ],
+    "reflection": "Mutual visibility outperforms control.",
+    "related": [
+      "language-provenance",
+      "design-integrity-by-design"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "vision-living-twin",
+    "family": "Vision",
+    "title": "The Living Twin",
+    "quote": "Every site, crew, and asset represented in real time.",
+    "tagline": "A system that reflects, not predicts.",
+    "why": "A living twin shows the present so action happens inside reality.",
+    "how": [
+      "Auto-update digital counterparts",
+      "Propagate changes instantly",
+      "Read from current state",
+      "Operate on the twin, not reports"
+    ],
+    "reflection": "The enterprise sees itself as it exists.",
+    "related": [
+      "mechanism-edge-autonomy",
+      "design-integrity-by-design"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "vision-autonomous-integrity",
+    "family": "Vision",
+    "title": "Autonomous Integrity",
+    "quote": "A system that proves itself.",
+    "tagline": "Integrity maintained without external audit.",
+    "why": "As verification matures, systems certify their own operations.",
+    "how": [
+      "Embed integrity tests in processes",
+      "Self-attest cryptographically",
+      "Quarantine failing subsystems",
+      "Expose integrity scores"
+    ],
+    "reflection": "Oversight becomes observation.",
+    "related": [
+      "design-integrity-by-design",
+      "outcome-audit-compression"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "vision-interoperable-truth",
+    "family": "Vision",
+    "title": "Interoperable Truth",
+    "quote": "Verification should cross boundaries.",
+    "tagline": "Trust that travels between systems.",
+    "why": "Enterprises must exchange verified data without translation loss.",
+    "how": [
+      "Adopt open provenance/signature standards",
+      "Expose verifiable claims, not raw data",
+      "Use universal identifiers",
+      "Record cross-system verification"
+    ],
+    "reflection": "Aligned proofs replace reconciliation.",
+    "related": [
+      "design-distributed-proof",
+      "language-provenance"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "vision-post-admin",
+    "family": "Vision",
+    "title": "Post-Administrative Work",
+    "quote": "Administration ends when proof is automatic.",
+    "tagline": "Systems handle evidence; people handle work.",
+    "why": "When capture, validation, and reporting are automatic, admin layers dissolve.",
+    "how": [
+      "Integrate verified presence with payroll",
+      "Remove manual approvals",
+      "Route only exceptions",
+      "Audit continuously in background"
+    ],
+    "reflection": "Bureaucracy has nothing left to do.",
+    "related": [
+      "outcome-empower-crew",
+      "metric-cognitive-load"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "mechanism-context-binding",
+    "family": "Mechanism",
+    "title": "Context Without Effort",
+    "quote": "Where the crew goes, the job follows.",
+    "tagline": "Location links people, place, and task.",
+    "why": "Context should emerge automatically from physical relationships.",
+    "how": [
+      "Passive tags on sites/assets",
+      "Assign context via proximity",
+      "Record who/where/what without input"
+    ],
+    "reflection": "Automation succeeds when context appears, not when it is typed.",
+    "related": [
+      "convivial-transparency",
+      "automation-automate-constraint"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "mechanism-presence-proof",
+    "family": "Mechanism",
+    "title": "Presence Becomes Proof",
+    "quote": "Field reality, faithfully mirrored.",
+    "tagline": "Existence is verification.",
+    "why": "Treat verified presence as proof of activity to remove manual confirmation.",
+    "how": [
+      "Detect motion and proximity",
+      "Timestamp + encrypt at source",
+      "Link presence to job codes"
+    ],
+    "reflection": "Verification occurs by design, not declaration.",
+    "related": [
+      "truth-395",
+      "design-integrity-by-design"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "mechanism-integration",
+    "family": "Mechanism",
+    "title": "Seamless Integration",
+    "quote": "No new portal. No new password.",
+    "tagline": "Truth flows through existing systems.",
+    "why": "Strengthen what exists instead of replacing it; deliver verified inputs to systems of record.",
+    "how": [
+      "Stream via APIs to payroll/ERP",
+      "Provide validated inputs, not raw signals",
+      "Eliminate duplicate entry"
+    ],
+    "reflection": "New value comes from clean inputs, not new interfaces.",
+    "related": [
+      "outcome-precision-finance",
+      "design-self-describing"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "flow-edge-origin",
+    "family": "Flow",
+    "title": "Edge-Origin Flow",
+    "quote": "Truth begins where work begins.",
+    "tagline": "The edge defines sequence.",
+    "why": "Accept the edge as the point of origin so flow matches real operations.",
+    "how": [
+      "Initiate data at movement",
+      "Timestamp before network entry",
+      "Aggregate without reordering time"
+    ],
+    "reflection": "Order is observed, not imposed.",
+    "related": [
+      "flow-critical",
+      "mechanism-edge-autonomy"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "metric-latency-budget-hit",
+    "family": "Metric",
+    "title": "Latency Within Budget ≥ 95 %",
+    "quote": "Slow is okay; unknown is not.",
+    "tagline": "Timeliness is adherence to defined budget.",
+    "why": "Measuring budget adherence maintains usable freshness without chasing instant delivery.",
+    "how": [
+      "Report per-type latency percent",
+      "Flag violations for tuning",
+      "Correlate latency with decision impact"
+    ],
+    "reflection": "Timeliness is being on-budget, not instantaneous.",
+    "related": [
+      "flow-latency-budget",
+      "automation-feedback-latency"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  },
+  {
+    "id": "vision-truth-infrastructure",
+    "family": "Vision",
+    "title": "Truth as Infrastructure",
+    "quote": "A living map of how work really flows.",
+    "tagline": "Truth becomes the operating fabric.",
+    "why": "When verified truth connects people, places, and tools, it becomes shared infrastructure.",
+    "how": [
+      "Nodes: badge, tag, site",
+      "Events link automatically into a model",
+      "Everyone reads from the same factual layer"
+    ],
+    "reflection": "When truth is the medium, coordination becomes natural.",
+    "related": [
+      "vision-truth-commons",
+      "vision-living-twin"
+    ],
+    "audiences": [
+      "Field",
+      "Engineering",
+      "Finance",
+      "Leadership",
+      "Partners"
+    ]
+  }
+]
