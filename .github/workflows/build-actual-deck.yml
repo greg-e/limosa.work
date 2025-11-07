@@ -3,18 +3,12 @@ name: Build Actual Deck
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'app/actual-deck/**'
-      - 'actual-deck/*.json'
-      - '.github/workflows/build-actual-deck.yml'
   workflow_dispatch:
-
-permissions:
-  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,29 +16,22 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
 
-      - name: Install dependencies
+      - name: Install deps
         working-directory: app/actual-deck
-        run: npm install
+        run: npm ci || npm i
 
-      - name: Build Tailwind and bundle
+      - name: Build
         working-directory: app/actual-deck
-        run: |
-          npx tailwindcss -c ./tailwind.config.js -i ./styles.css -o ./app.css --minify --content "./**/*.{html,js,jsx,ts,tsx}"
-          npm run build
+        run: npm run build
 
-      - name: Clean mistaken nested output (if exists)
-        run: rm -rf assets/actual-deck/actual-deck || true
-
-      - name: Rebase and commit built assets
+      - name: Commit built assets
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -f assets/actual-deck
-          git commit -m "Build Actual Deck" || echo "No changes to commit"
-          git pull --rebase --autostash origin main || true
-          git push --force-with-lease
-
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/actual-deck/main.js assets/actual-deck/style.css
+          git diff --cached --quiet || git commit -m "chore: build actual-deck"
+          git push
 
 
