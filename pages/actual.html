@@ -426,9 +426,6 @@ permalink: /actual/
     outline: 3px solid #2563eb;
     outline-offset: 2px;
   }
-  .stack-btn {
-    border:1px solid #CBD5E1; padding:.25rem .5rem; border-radius:.5rem; font-size:.75rem;
-  }
   .stack-btn[data-active="1"] {
     background: color-mix(in oklab, var(--card-color, #c7d2fe) 45%, #fff 55%);
     border-color: color-mix(in oklab, var(--card-color, #a5b4fc) 60%, #000 0%);
@@ -506,8 +503,8 @@ permalink: /actual/
           </div>
           <div id="stack-list" class="space-y-3"></div>
           <div class="flex gap-2 flex-wrap">
-            <button id="stack-present" class="border px-3 py-2 rounded-lg" disabled>Start presentation</button>
-            <button id="stack-clear" class="border px-3 py-2 rounded-lg" disabled>Clear</button>
+            <button id="stack-present" class="dialog-btn" disabled>Start presentation</button>
+            <button id="stack-clear" class="dialog-btn" disabled>Clear</button>
           </div>
         </div>
       </aside>
@@ -536,17 +533,10 @@ permalink: /actual/
                 <p class="card-author" data-author></p>
               </div>
             </div>
-            <div class="mt-2 flex flex-wrap items-center gap-2 justify-between">
-              <span class="type-pill" data-family-pill></span>
-              <div class="flex items-center gap-2">
-                <button class="stack-btn" data-stack>Add to stack</button>
-                <button class="flip-btn" data-flip>Flip</button>
-              </div>
-            </div>
-            <blockquote class="mt-3 text-slate-800 italic" data-quote></blockquote>
-            <p class="mt-1 text-sm text-slate-500" data-author></p>
-            <p class="mt-4 text-sm" data-body></p>
-            <div class="mt-4 flex flex-wrap gap-2" data-tags></div>
+            <footer class="card-footer">
+              <div class="tag-list" data-tags></div>
+              <span class="card-id" data-id></span>
+            </footer>
           </div>
 
           <!-- BACK -->
@@ -570,16 +560,16 @@ permalink: /actual/
           <h2 id="presentation-title" class="text-lg font-semibold">Presentation mode</h2>
           <p id="presentation-meta" class="stack-meta"></p>
         </div>
-        <button id="presentation-close" class="border px-3 py-2 rounded-lg">Close</button>
+        <button id="presentation-close" class="dialog-btn">Close</button>
       </div>
       <div id="presentation-card" class="presentation-card"></div>
       <div class="presentation-controls">
         <div class="flex gap-2">
-          <button id="presentation-prev" class="border px-3 py-2 rounded-lg">Previous</button>
-          <button id="presentation-next" class="border px-3 py-2 rounded-lg">Next</button>
+          <button id="presentation-prev" class="dialog-btn">Previous</button>
+          <button id="presentation-next" class="dialog-btn">Next</button>
         </div>
         <div class="flex gap-2">
-          <button id="presentation-flip" class="border px-3 py-2 rounded-lg">Flip card</button>
+          <button id="presentation-flip" class="dialog-btn">Flip card</button>
         </div>
       </div>
     </div>
@@ -657,16 +647,139 @@ permalink: /actual/
     if (key === null) return undefined;
     return ALL_CARDS.find(c => normalizeId(c.id) === key);
   }
-  function buildBackHtml(c){
-    return c.back || c.notes || c.details ||
-      [
-        c.principle ? `<p><strong>Principle:</strong> ${escapeHtml(c.principle)}</p>` : "",
-        c.context ? `<p><strong>Context:</strong> ${escapeHtml(c.context)}</p>` : "",
-        c.actions?.length ? `<div><strong>Actions</strong><ul class="list-disc pl-5">${c.actions.map(a=>`<li>${escapeHtml(a)}</li>`).join("")}</ul></div>` : "",
-        c.references?.length ? `<div><strong>References</strong><ul class="list-disc pl-5">${c.references.map(r=>`<li>${escapeHtml(r)}</li>`).join("")}</ul></div>` : "",
-      ].filter(Boolean).join("") ||
-      `<pre class="text-xs bg-white/50 p-2 rounded border">${escapeHtml(JSON.stringify(c, null, 2))}</pre>`;
+  function normalizeList(items){
+    if (!Array.isArray(items)) return [];
+    return items
+      .map(item => {
+        if (item === null || item === undefined) return "";
+        return String(item).trim();
+      })
+      .filter(Boolean);
   }
+
+  function collectBackSections(card){
+    const sections = [];
+
+    const addText = (title, value) => {
+      if (!value) return;
+      const text = String(value).trim();
+      if (!text) return;
+      sections.push({ kind: "text", title, text });
+    };
+
+    const addList = (title, values) => {
+      const items = normalizeList(values);
+      if (!items.length) return;
+      sections.push({ kind: "list", title, items });
+    };
+
+    addText("Why it matters", card.why);
+    addList("How to act", card.how);
+    addText("Reflection", card.reflection);
+    addList("Related cards", card.related);
+    addList("Audiences", card.audiences);
+
+    if (!sections.length){
+      const fallback = card.tagline || card.details || card.notes;
+      addText("Details", fallback);
+    }
+
+    if (!sections.length){
+      sections.push({ kind: "empty" });
+    }
+
+    return sections;
+  }
+
+  function buildBackHtml(card){
+    return collectBackSections(card).map(section => {
+      if (section.kind === "empty"){
+        return `<p class="card-empty-note">No additional details for this card.</p>`;
+      }
+
+      const title = section.title ? `<h4 class="card-section-title">${escapeHtml(section.title)}</h4>` : "";
+      let body = "";
+      if (section.kind === "text"){
+        body = `<p class=\"card-section-text\">${escapeHtml(section.text)}</p>`;
+      }else if (section.kind === "list"){
+        body = `<ul class=\"card-section-list\">${section.items.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+      }
+
+      return `
+        <section class="card-section">
+          ${title}
+          ${body}
+        </section>
+      `;
+    }).join("");
+  }
+
+  function renderBackContent(container, card){
+    if (!container) return;
+
+    const sections = collectBackSections(card);
+    container.innerHTML = "";
+
+    sections.forEach(section => {
+      if (section.kind === "empty"){
+        const empty = document.createElement("p");
+        empty.className = "card-empty-note";
+        empty.textContent = "No additional details for this card.";
+        container.appendChild(empty);
+        return;
+      }
+
+      const block = document.createElement("section");
+      block.className = "card-section";
+
+      if (section.title){
+        const heading = document.createElement("h4");
+        heading.className = "card-section-title";
+        heading.textContent = section.title;
+        block.appendChild(heading);
+      }
+
+      if (section.kind === "text"){
+        const para = document.createElement("p");
+        para.className = "card-section-text";
+        para.textContent = section.text;
+        block.appendChild(para);
+      }else if (section.kind === "list"){
+        const list = document.createElement("ul");
+        list.className = "card-section-list";
+        section.items.forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = item;
+          list.appendChild(li);
+        });
+        block.appendChild(list);
+      }
+
+      container.appendChild(block);
+    });
+
+    if (container.childElementCount){
+      container.removeAttribute("hidden");
+    }else{
+      container.setAttribute("hidden", "");
+    }
+  }
+
+  function summarizeCard(card){
+    return card.tagline || card.why || card.reflection || "";
+  }
+
+  function setTextOrHide(element, value){
+    if (!element) return;
+    if (value){
+      element.textContent = value;
+      element.removeAttribute("hidden");
+    }else{
+      element.textContent = "";
+      element.setAttribute("hidden", "");
+    }
+  }
+
   function loadStack(){
     if (typeof localStorage === "undefined") return;
     try{
@@ -846,29 +959,41 @@ permalink: /actual/
     }
 
     const color = pickColor(card.family || card.type);
+    const familyLabel = card.family || card.type || "unspecified";
+    const cardIdText = card.id || card.id === 0 ? String(card.id) : "";
     const tagsHtml = (card.tags || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join(" ");
+    const summary = summarizeCard(card);
+    const initial = (familyLabel || card.title || "?").trim().charAt(0).toUpperCase() || "?";
+    const footerParts = [];
+    if (tagsHtml) footerParts.push(`<div class="tag-list">${tagsHtml}</div>`);
+    if (cardIdText) footerParts.push(`<span class="card-id">${escapeHtml(cardIdText)}</span>`);
+    const footerHtml = footerParts.length ? `<footer class="card-footer">${footerParts.join("")}</footer>` : "";
     const frontHtml = `
-      <article class="presentation-face" style="--card-color:${color}">
-        <div class="flex items-start justify-between gap-3">
-          <h3 class="text-xl font-semibold">${escapeHtml(card.title || "(untitled)")}</h3>
-          <span class="text-sm text-slate-500">${escapeHtml(card.id || "")}</span>
+      <article class="presentation-face card-front" style="--card-color:${color}">
+        <header class="card-header">
+          <span class="type-ribbon">${escapeHtml(familyLabel)}</span>
+          ${cardIdText ? `<span class="card-id">${escapeHtml(cardIdText)}</span>` : ""}
+        </header>
+        <div class="card-front-body">
+          <div class="card-illustration" aria-hidden="true">${escapeHtml(initial)}</div>
+          <div class="card-front-content">
+            <h3 class="card-title">${escapeHtml(card.title || "(untitled)")}</h3>
+            ${summary ? `<p class="card-summary">${escapeHtml(summary)}</p>` : ""}
+            ${card.quote ? `<blockquote class="card-quote">${escapeHtml(card.quote)}</blockquote>` : ""}
+            ${card.author ? `<p class="card-author">— ${escapeHtml(card.author)}</p>` : ""}
+          </div>
         </div>
-        <div class="mt-2 flex items-center gap-2">
-          <span class="type-pill">${escapeHtml(card.family || card.type || "unspecified")}</span>
-        </div>
-        ${card.quote ? `<blockquote class="mt-4 text-slate-800 italic">${escapeHtml(card.quote)}</blockquote>` : ""}
-        ${card.author ? `<p class="text-sm text-slate-500">— ${escapeHtml(card.author)}</p>` : ""}
-        ${card.body ? `<p class="mt-4 text-sm">${escapeHtml(card.body)}</p>` : ""}
-        ${tagsHtml ? `<div class="mt-4 flex flex-wrap gap-2">${tagsHtml}</div>` : ""}
+        ${footerHtml}
       </article>
     `;
     const backHtml = `
-      <article class="presentation-face" style="--card-color:${color}">
-        <div class="flex items-start justify-between gap-3">
-          <h3 class="text-xl font-semibold">Back</h3>
-          <span class="text-sm text-slate-500">${escapeHtml(card.id || "")}</span>
-        </div>
-        <div class="mt-4 text-sm space-y-3">${buildBackHtml(card)}</div>
+      <article class="presentation-face card-back back" style="--card-color:${color}">
+        <header class="card-header">
+          <span class="type-ribbon">${escapeHtml(familyLabel)}</span>
+          ${cardIdText ? `<span class="card-id">${escapeHtml(cardIdText)}</span>` : ""}
+        </header>
+        <h3 class="card-back-title">${escapeHtml(card.title || "(untitled)")}</h3>
+        <div class="card-back-body">${buildBackHtml(card)}</div>
       </article>
     `;
 
@@ -941,10 +1066,11 @@ permalink: /actual/
       root.setAttribute("data-in-stack", inStack ? "1" : "0");
 
       node.querySelector("[data-title]").textContent = c.title || "(untitled)";
-      node.querySelector("[data-id]").textContent = cardId || cardId === 0 ? String(cardId) : "";
-      node.querySelector("[data-quote]").textContent = c.quote || "";
-      node.querySelector("[data-author]").textContent = c.author ? `— ${c.author}` : "";
-      node.querySelector("[data-body]").textContent = c.body || "";
+      const idText = normalizedId !== null ? normalizedId : "";
+      setTextOrHide(node.querySelector("[data-id]"), idText);
+      setTextOrHide(node.querySelector("[data-summary]"), summarizeCard(c));
+      setTextOrHide(node.querySelector("[data-quote]"), c.quote);
+      setTextOrHide(node.querySelector("[data-author]"), c.author ? `— ${c.author}` : "");
 
       const pill = node.querySelector("[data-family-pill]");
       const familyLabel = c.family || c.type || "unspecified";
@@ -959,23 +1085,6 @@ permalink: /actual/
         const seed = familyLabel || c.title || "?";
         illustration.textContent = seed.trim().charAt(0).toUpperCase() || "?";
         illustration.setAttribute("aria-hidden", "true");
-      }
-
-      const stackBtn = node.querySelector("[data-stack]");
-      if (cardId || cardId === 0){
-        stackBtn.textContent = inStack ? "Remove from stack" : "Add to stack";
-        stackBtn.dataset.active = inStack ? "1" : "0";
-        stackBtn.setAttribute("aria-pressed", inStack ? "true" : "false");
-        stackBtn.disabled = false;
-        stackBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          toggleStack(cardId);
-        });
-      }else{
-        stackBtn.disabled = true;
-        stackBtn.dataset.active = "0";
-        stackBtn.setAttribute("aria-pressed", "false");
-        stackBtn.textContent = "No ID";
       }
 
       const stackBtn = node.querySelector("[data-stack]");
@@ -1023,7 +1132,7 @@ permalink: /actual/
       }
 
       const backEl = node.querySelector("[data-back]");
-      backEl.innerHTML = buildBackHtml(c);
+      renderBackContent(backEl, c);
 
       // Flip handlers
       node.querySelectorAll("[data-flip]").forEach(btn => {
