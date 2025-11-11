@@ -12,83 +12,963 @@ permalink: /actual/
 <title>Actual Deck</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-  .card { perspective: 1200px }
-  .card-inner {
-    position: relative; transform-style: preserve-3d;
-    transition: transform .5s ease;
+  :root {
+    color-scheme: light;
+    font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --surface: #f1f2f6;
+    --ink: #0f172a;
+    --outline: #d6d8df;
+    --control-bg: #ffffff;
+    --control-ink: #0f172a;
+    --card-radius: 1.35rem;
+    --card-color: #1f2937;
+    --card-color-accent: #475569;
+    --card-color-pastel: #e2e8f0;
   }
-  .card[data-flipped="1"] .card-inner { transform: rotateY(180deg) }
-  .face {
-    position: relative; backface-visibility: hidden;
-    border-radius: 1rem; border: 1px solid color-mix(in oklab, var(--card-color, #CBD5E1) 50%, #000 0%);
-    background: color-mix(in oklab, var(--card-color, #F8FAFC) 12%, #fff 88%);
-    box-shadow: 0 2px 12px rgba(0,0,0,.06);
-    padding: 1.25rem; min-height: 14rem;
+
+  body {
+    background: var(--surface);
+    color: var(--ink);
   }
-  .face.back { transform: rotateY(180deg); position: absolute; inset: 0 }
-  .type-pill {
-    display:inline-block; padding:.125rem .5rem; border-radius:9999px;
-    background: color-mix(in oklab, var(--card-color, #EEF2FF) 36%, #fff 64%);
-    color:#111827; font-size:.7rem;
-    border:1px solid color-mix(in oklab, var(--card-color, #CBD5E1) 50%, #000 0%);
+
+  main {
+    position: relative;
+    padding-bottom: 4rem;
   }
-  .tag { background:#eef2ff; color:#3730a3; padding:.15rem .5rem; border-radius:9999px; font-size:.75rem }
-  .flip-btn {
-    border:1px solid #CBD5E1; padding:.25rem .5rem; border-radius:.5rem; font-size:.75rem;
+
+  .deck-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .deck-header {
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+  }
+
+  .deck-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+  }
+
+  .deck-select,
+  .deck-search {
+    appearance: none;
+    border: 1px solid var(--outline);
+    background: var(--control-bg);
+    color: var(--control-ink);
+    border-radius: 999px;
+    padding: 0.65rem 1.1rem;
+    font-size: 0.95rem;
+    line-height: 1;
+    box-shadow: 0 16px 24px rgba(15, 23, 42, 0.08);
+    transition: box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+
+  .deck-select:focus,
+  .deck-search:focus {
+    outline: none;
+    border-color: #475569;
+    box-shadow: 0 20px 32px rgba(15, 23, 42, 0.12);
+  }
+
+  .deck-select {
+    min-width: 9rem;
+    padding-right: 2.6rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23111827' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 10px 6px;
+  }
+
+  .deck-search {
+    flex: 1 1 16rem;
+    min-width: min(20rem, 100%);
+  }
+
+  .deck-search::placeholder {
+    color: #94a3b8;
+  }
+
+  .deck-control-btn {
+    border: 1px solid transparent;
+    background: #111827;
+    color: #f8fafc;
+    border-radius: 999px;
+    padding: 0.65rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1;
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.16);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .deck-control-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 18px 30px rgba(15, 23, 42, 0.2);
+  }
+
+  .deck-control-btn:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 2px;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: clamp(0.75rem, 1vw, 1rem);
+    align-items: start;
+  }
+
+  .card {
+    display: grid;
+    gap: clamp(0.55rem, 1vw, 0.75rem);
+    --card-padding: clamp(0.85rem, 1vw + 0.65rem, 1.25rem);
+    --card-radius: 0.95rem;
+    --card-front-ink: #f8fafc;
+    --card-front-muted: rgba(248, 250, 252, 0.72);
+  }
+
+  .card-face {
+    border-radius: var(--card-radius);
+    padding: var(--card-padding);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.6rem, 1vw, 0.9rem);
+    background: #fff;
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.12);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    min-height: 0;
+  }
+
+  .card-back {
+    background: #ffffff;
+    color: var(--ink);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+  }
+
+  .card-id {
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #475569;
+  }
+
+  .card-front {
+    background: var(--card-color, #1f2937);
+    color: var(--card-front-ink);
+    box-shadow: 0 16px 32px rgba(15, 23, 42, 0.22);
+    position: relative;
+  }
+
+  .card-front::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(130deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 55%);
+    opacity: 0.4;
+  }
+
+  .card[data-in-stack="1"] .card-front {
+    box-shadow: 0 24px 40px rgba(37, 99, 235, 0.32);
+  }
+
+  .card[data-highlight="1"] .card-front {
+    outline: 3px solid rgba(56, 189, 248, 0.85);
+    outline-offset: -4px;
+  }
+
+  .card-header,
+  .card-back-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .card-header {
+    margin-bottom: 0.2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-back-header {
+    margin-bottom: 0.2rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #64748b;
+  }
+
+  .card-face-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #475569;
+  }
+
+  .card-back-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .presentation-face.card-front .card-header,
+  .presentation-face.card-back .card-header {
+    margin-bottom: 1.4rem;
+  }
+
+  .card-front .card-front-body {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.45rem, 1vw, 0.65rem);
+    color: inherit;
+  }
+
+  .card-front-content {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.35rem, 0.9vw, 0.6rem);
+    color: inherit;
+  }
+
+  .card-title {
+    font-size: clamp(1.05rem, 2.1vw, 1.35rem);
+    font-weight: 700;
+    letter-spacing: -.01em;
+    line-height: 1.25;
+    color: inherit;
+    margin: 0;
+  }
+
+  .card-summary,
+  .card-quote,
+  .card-author {
+    margin: 0;
+    color: inherit;
+  }
+
+  .card-summary {
+    font-size: clamp(0.8rem, 1.5vw, 0.92rem);
+    line-height: 1.5;
+    color: var(--card-front-muted);
+    overflow-wrap: anywhere;
+  }
+
+  .card-quote {
+    position: relative;
+    padding-left: 0.75rem;
+    color: var(--card-front-muted);
+    font-style: italic;
+    line-height: 1.5;
+    font-size: clamp(0.78rem, 1.4vw, 0.9rem);
+    overflow-wrap: anywhere;
+  }
+
+  .card-quote::before {
+    content: "“";
+    font-size: 1.4rem;
+    position: absolute;
+    left: 0;
+    top: -0.4rem;
+    color: rgba(248, 250, 252, 0.35);
+  }
+
+  .card-author {
+    font-size: 0.7rem;
+    color: rgba(248, 250, 252, 0.7);
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 0.35rem;
+    margin-left: auto;
+  }
+
+  .icon-btn {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.6rem;
+    border: 1px solid rgba(248, 250, 252, 0.36);
+    background: rgba(248, 250, 252, 0.18);
+    color: var(--card-front-ink);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, color .18s ease;
+    cursor: pointer;
+  }
+
+  .icon-btn svg {
+    width: 1rem;
+    height: 1rem;
+    fill: currentColor;
+  }
+
+  .icon-btn:hover {
+    transform: translateY(-1px);
+    background: rgba(248, 250, 252, 0.28);
+    box-shadow: 0 14px 26px rgba(15, 23, 42, 0.28);
+    color: #0f172a;
+  }
+
+  .icon-btn:focus-visible {
+    outline: 2px solid #f8fafc;
+    outline-offset: 2px;
+  }
+
+  .type-ribbon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    text-transform: uppercase;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    white-space: nowrap;
+    background: rgba(248, 250, 252, 0.22);
+    color: inherit;
+  }
+
+  .card-back-family {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--card-color, #475569);
+  }
+
+  .card-front .card-footer {
+    position: relative;
+    z-index: 1;
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid rgba(248, 250, 252, 0.22);
+  }
+
+  .card-footer-top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .card-footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .card-front .card-id {
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--card-front-muted);
+  }
+
+  .stack-btn {
+    border-radius: 999px;
+    border: none;
+    background: #f8fafc;
+    color: var(--card-color, #1f2937);
+    font-weight: 600;
+    font-size: 0.78rem;
+    padding: 0.5rem 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.26);
+    cursor: pointer;
+    transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, color .18s ease;
+    margin-left: auto;
+  }
+
+  .stack-btn svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    fill: currentColor;
+  }
+
+  .stack-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 18px 32px rgba(15, 23, 42, 0.3);
+  }
+
+  .stack-btn[data-active="1"] {
+    background: rgba(248, 250, 252, 0.85);
+  }
+
+  .stack-btn:disabled {
+    opacity: 0.55;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  .dialog-btn,
+  .stack-panel button {
+    border-radius: 9999px;
+    border: 1px solid var(--outline);
+    padding: .45rem 1.1rem;
+    background: rgba(255, 255, 255, 0.95);
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, color .18s ease;
+    cursor: pointer;
+    box-shadow: 0 12px 22px rgba(15, 23, 42, 0.14);
+  }
+
+  .dialog-btn:hover,
+  .stack-panel button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 18px 32px rgba(15, 23, 42, 0.2);
+    background: #ffffff;
+  }
+
+  .dialog-btn:focus-visible,
+  .stack-panel button:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 2px;
+  }
+
+  #download-json.deck-control-btn[data-dirty="1"] {
+    background: #fbbf24;
+    color: #111827;
+  }
+
+  #download-json.deck-control-btn[data-dirty="1"]:hover {
+    background: #f59e0b;
+    color: #111827;
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+  }
+
+  .tag {
+    background: rgba(15, 23, 42, 0.08);
+    border-radius: 9999px;
+    padding: .2rem .68rem;
+    font-size: .66rem;
+    font-weight: 600;
+    color: #0f172a;
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease;
+  }
+
+  .tag:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.16);
+    background: rgba(15, 23, 42, 0.14);
+  }
+
+  .card-front .tag {
+    background: rgba(248, 250, 252, 0.18);
+    border: 1px solid rgba(248, 250, 252, 0.35);
+    color: rgba(248, 250, 252, 0.95);
+  }
+
+  .card-front .tag:hover {
+    background: rgba(248, 250, 252, 0.3);
+    color: var(--card-color, #0f172a);
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.32);
+  }
+
+  .card-front .type-ribbon {
+    background: rgba(248, 250, 252, 0.18);
+    border-color: rgba(248, 250, 252, 0.4);
+    color: #f8fafc;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.25);
+  }
+
+  .card-back h3.card-back-title {
+    font-size: clamp(0.98rem, 1.8vw, 1.2rem);
+    font-weight: 700;
+    color: var(--card-color, var(--ink));
+    letter-spacing: -.01em;
+    line-height: 1.25;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .card-back-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .card-section {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    gap: 0.55rem;
+    padding: 0.65rem;
+    border-radius: 0.85rem;
+    background: rgba(248, 250, 252, 0.86);
+    border: 1px solid var(--card-color-pastel, rgba(15, 23, 42, 0.12));
+  }
+
+  .card-section-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.5rem;
+    background: var(--card-color-pastel, rgba(15, 23, 42, 0.12));
+    color: var(--card-color, #1f2937);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .card-section-icon svg {
+    width: 1rem;
+    height: 1rem;
+    display: block;
+    fill: currentColor;
+  }
+
+  .card-section-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .card-section-title {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--card-color, #1f2937);
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .card-section-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.25rem;
+    color: var(--ink);
+    font-size: clamp(0.78rem, 1.6vw, 0.9rem);
+    line-height: 1.45;
+  }
+
+  .card-section-list li {
+    position: relative;
+    padding-left: 1.1rem;
+  }
+
+  .card-section-list li::before {
+    content: "";
+    position: absolute;
+    top: 0.55em;
+    left: 0.3rem;
+    width: 0.3rem;
+    height: 0.3rem;
+    border-radius: 999px;
+    background: var(--card-color, #1f2937);
+  }
+
+  .card-section-text {
+    color: var(--ink);
+    line-height: 1.5;
+    margin: 0;
+    overflow-wrap: anywhere;
+    font-size: clamp(0.8rem, 1.6vw, 0.92rem);
+  }
+
+  .card-empty-note {
+    font-size: .82rem;
+    color: #64748b;
+    font-style: italic;
+  }
+
+  .stack-dock {
+    position: sticky;
+    top: 1rem;
+    z-index: 30;
+    margin-bottom: 2rem;
+  }
+
+  .stack-panel {
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    border-radius: 1.35rem;
+    padding: 1.35rem 1.5rem;
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 28px 48px rgba(15, 23, 42, 0.18);
+    backdrop-filter: blur(12px);
+  }
+
+  #stack-list {
+    max-height: min(42vh, 24rem);
+    overflow-y: auto;
+    padding-right: .25rem;
+  }
+
+  .stack-card {
+    position: relative;
+    border-radius: 1rem;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 1rem 1rem 1rem 1.25rem;
+    display: flex;
+    gap: .85rem;
+    align-items: flex-start;
+    border-left: 6px solid var(--card-color, rgba(15, 23, 42, 0.2));
+    box-shadow: 0 18px 32px rgba(15, 23, 42, 0.16);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+
+  .stack-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 26px 44px rgba(15, 23, 42, 0.22);
+  }
+
+  .stack-card button {
+    padding: .35rem .8rem;
+    border-radius: .7rem;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    background: rgba(15, 23, 42, 0.05);
+    font-size: .75rem;
+    letter-spacing: .04em;
+    text-transform: none;
+    font-weight: 600;
+    color: #0f172a;
+    transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease;
+  }
+
+  .stack-card button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 18px rgba(15, 23, 42, 0.16);
+    background: rgba(15, 23, 42, 0.1);
+  }
+
+  .stack-card button:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+  }
+
+  .stack-card button:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+  }
+
+  .stack-card-main {
+    flex: 1;
+    cursor: pointer;
+  }
+
+  .stack-card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+  }
+
+  .stack-meta {
+    font-size: .74rem;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+  }
+
+  .stack-empty {
+    font-size: .85rem;
+    color: #475569;
+    font-style: italic;
+  }
+
+  .presentation-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 23, 42, 0.82);
+    z-index: 50;
+    padding: 1.5rem;
+  }
+
+  .presentation-overlay[hidden] {
+    display: none;
+  }
+
+  .presentation-dialog {
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.16);
+    border-radius: 1.5rem;
+    width: 100%;
+    max-width: 48rem;
+    max-height: 100%;
+    padding: 2.2rem;
+    box-shadow: 0 32px 60px rgba(15, 23, 42, 0.35);
+    display: flex;
+    flex-direction: column;
+    gap: 1.35rem;
+  }
+
+  .editor-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 23, 42, 0.65);
+    z-index: 60;
+    padding: 1.5rem;
+  }
+
+  .editor-overlay[hidden] {
+    display: none;
+  }
+
+  .editor-dialog {
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.15);
+    border-radius: 1.25rem;
+    width: min(56rem, 100%);
+    max-height: 100%;
+    padding: 1.8rem;
+    box-shadow: 0 32px 70px rgba(15, 23, 42, 0.32);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .editor-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .editor-top h2 {
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  .editor-subtitle {
+    font-size: .85rem;
+    color: #475569;
+    margin: .15rem 0 0;
+  }
+
+  .editor-help {
+    font-size: .85rem;
+    color: #475569;
+    margin: 0;
+  }
+
+  .editor-textarea {
+    width: 100%;
+    min-height: 18rem;
+    flex: 1;
+    border-radius: .9rem;
+    border: 1px solid rgba(15, 23, 42, 0.16);
+    padding: 1rem;
+    font-family: "JetBrains Mono", "Fira Code", Menlo, Monaco, Consolas, monospace;
+    font-size: .85rem;
+    line-height: 1.5;
+    resize: vertical;
+  }
+
+  .editor-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: .75rem;
+  }
+
+  .editor-error {
+    display: none;
+    background: rgba(239, 68, 68, 0.12);
+    color: #b91c1c;
+    border-radius: .9rem;
+    padding: .75rem 1rem;
+    font-size: .85rem;
+    white-space: pre-wrap;
+    margin: 0;
+  }
+
+  .editor-error[data-visible="1"] {
+    display: block;
+  }
+
+  .presentation-card {
+    flex: 1;
+    overflow: auto;
+  }
+
+  .presentation-controls {
+    display: flex;
+    gap: .6rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .presentation-face {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1rem, 1.6vw, 1.45rem);
+    border-radius: var(--card-radius);
+    --card-padding: clamp(1.8rem, 3vw, 2.6rem);
+    padding: var(--card-padding);
+    box-shadow: 0 44px 90px rgba(15, 23, 42, 0.34);
+  }
+
+  .presentation-face.card-back {
+    border: 1px solid rgba(15, 23, 42, 0.14);
+  }
+
+  .presentation-face:hover {
+    transform: none;
+    box-shadow: 0 44px 90px rgba(15, 23, 42, 0.34);
+  }
+
+  .tag:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
   }
 </style>
 </head>
-<body class="bg-white text-slate-900">
+<body>
   <main class="max-w-6xl mx-auto px-4 py-8">
-    <header class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <header class="deck-header">
       <div>
         <h1 class="text-2xl font-semibold">Actual Deck</h1>
         <p id="meta" class="text-sm text-slate-500">Loading…</p>
       </div>
 
-      <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
-        <select id="preset" class="border rounded-lg px-3 py-2">
+      <div class="deck-controls">
+        <select id="preset" class="deck-select">
           <option value="">All cards</option>
         </select>
-        <input id="q" type="search" placeholder="Search title, quote, tags"
-               class="border rounded-lg px-3 py-2 w-full sm:w-64" />
-        <button id="shuffle" class="border px-3 py-2 rounded-lg">Shuffle</button>
+        <input id="q" type="search" placeholder="Search cards, tags, quotes" class="deck-search" />
+        <button id="shuffle" class="deck-control-btn" type="button">Shuffle</button>
+        <button id="download-json" class="deck-control-btn" type="button">Download cards.json</button>
       </div>
     </header>
 
-    <section id="cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></section>
+    <aside class="stack-dock mt-6">
+      <div class="stack-panel space-y-4">
+        <div>
+          <h2 class="text-base font-semibold">Presentation stack</h2>
+          <p id="stack-meta" class="stack-meta">No cards selected yet.</p>
+        </div>
+        <div id="stack-list" class="space-y-3"></div>
+        <div class="flex gap-2 flex-wrap">
+          <button id="stack-present" class="dialog-btn" disabled>Start presentation</button>
+          <button id="stack-clear" class="dialog-btn" disabled>Clear</button>
+        </div>
+      </div>
+    </aside>
+
+    <section id="cards" class="cards-grid"></section>
 
     <template id="card-tpl">
       <article class="card">
-        <div class="card-inner">
-          <!-- FRONT -->
-          <div class="face front">
-            <div class="flex items-start justify-between gap-3">
-              <h2 class="text-lg font-semibold" data-title></h2>
-              <span class="text-xs text-slate-500" data-id></span>
+        <div class="card-face card-back">
+          <header class="card-back-header">
+            <span class="card-face-label">Back</span>
+            <div class="card-back-meta">
+              <span class="card-back-family" data-family-back></span>
+              <span class="card-id" data-id-back></span>
             </div>
-            <div class="mt-2 flex items-center gap-2">
-              <span class="type-pill" data-family-pill></span>
-              <button class="flip-btn" data-flip>Flip</button>
+          </header>
+          <h3 class="card-back-title" data-title-back></h3>
+          <div class="card-back-body" data-back></div>
+        </div>
+        <div class="card-face card-front">
+          <header class="card-header">
+            <span class="type-ribbon" data-family-pill></span>
+            <div class="card-actions">
+              <button class="icon-btn" data-edit type="button" title="Edit card" aria-label="Edit card">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17.25V20h2.75L17.81 8.94l-2.75-2.75L4 17.25Zm15.71-9.04a1 1 0 0 0 0-1.41l-2.5-2.5a1 1 0 0 0-1.41 0l-1.83 1.83 3.91 3.91 1.83-1.83Z"/></svg>
+              </button>
             </div>
-            <blockquote class="mt-3 text-slate-800 italic" data-quote></blockquote>
-            <p class="mt-1 text-sm text-slate-500" data-author></p>
-            <p class="mt-4 text-sm" data-body></p>
-            <div class="mt-4 flex flex-wrap gap-2" data-tags></div>
+          </header>
+          <div class="card-front-body">
+            <div class="card-front-content">
+              <h2 class="card-title" data-title></h2>
+              <p class="card-summary" data-summary></p>
+              <blockquote class="card-quote" data-quote></blockquote>
+              <p class="card-author" data-author></p>
+            </div>
           </div>
-
-          <!-- BACK -->
-          <div class="face back">
-            <div class="flex items-start justify-between gap-3">
-              <h3 class="text-base font-semibold">Back</h3>
-              <button class="flip-btn" data-flip>Flip</button>
+          <footer class="card-footer">
+            <div class="card-footer-top">
+              <div class="tag-list" data-tags></div>
             </div>
-            <div class="mt-3 text-sm space-y-3" data-back></div>
-          </div>
+            <div class="card-footer-bottom">
+              <span class="card-id" data-id></span>
+              <button class="stack-btn" data-stack type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 0 1 0-2h6V5a1 1 0 0 1 1-1Z"/></svg>
+                <span>Add to stack</span>
+              </button>
+            </div>
+          </footer>
         </div>
       </article>
     </template>
   </main>
+
+  <div id="editor" class="editor-overlay" hidden>
+    <div class="editor-dialog" role="dialog" aria-modal="true" aria-labelledby="editor-heading">
+      <div class="editor-top">
+        <div>
+          <h2 id="editor-heading">Edit card</h2>
+          <p id="editor-subtitle" class="editor-subtitle"></p>
+        </div>
+        <button id="editor-close" class="dialog-btn" type="button">Close</button>
+      </div>
+      <p class="editor-help">Update the JSON for this card and save to refresh the deck. Download the updated cards.json to persist your changes.</p>
+      <pre id="editor-error" class="editor-error" aria-live="assertive"></pre>
+      <textarea id="editor-json" class="editor-textarea" spellcheck="false"></textarea>
+      <div class="editor-actions">
+        <button id="editor-save" class="dialog-btn" type="button">Save changes</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="presentation" class="presentation-overlay" hidden>
+    <div class="presentation-dialog" role="dialog" aria-modal="true" aria-labelledby="presentation-title">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h2 id="presentation-title" class="text-lg font-semibold">Presentation mode</h2>
+          <p id="presentation-meta" class="stack-meta"></p>
+        </div>
+        <button id="presentation-close" class="dialog-btn">Close</button>
+      </div>
+      <div id="presentation-card" class="presentation-card"></div>
+      <div class="presentation-controls">
+        <div class="flex gap-2">
+          <button id="presentation-prev" class="dialog-btn">Previous</button>
+          <button id="presentation-next" class="dialog-btn">Next</button>
+        </div>
+        <div class="flex gap-2">
+          <button id="presentation-flip" class="dialog-btn">Flip card</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <script>
   // Config
@@ -98,35 +978,674 @@ permalink: /actual/
 
   // Simple color map by type/family
   const TYPE_COLORS = {
-    automation: "#dbeafe",   // blue-100
-    provenance: "#fde68a",   // amber-300
-    conviviality: "#bbf7d0", // green-200
-    philosophy: "#e9d5ff",   // purple-200
-    design: "#fecaca",       // red-200
-    flow: "#bae6fd",         // sky-200
+    automation: "#c2410c",
+    conviviality: "#047857",
+    design: "#1f2937",
+    flow: "#0ea5e9",
+    language: "#1d4ed8",
+    mechanism: "#7c3aed",
+    metric: "#0f172a",
+    outcome: "#4338ca",
+    truth: "#b45309",
+    vision: "#0369a1",
   };
-  const DEFAULT_COLOR = "#e5e7eb"; // gray-200
+  const DEFAULT_COLOR = "#334155";
+
+  const SECTION_META = {
+    why: { title: "Why it matters", icon: "bolt" },
+    how: { title: "How to act", icon: "list" },
+    reflection: { title: "Reflection", icon: "bubble" },
+    related: { title: "Related cards", icon: "link" },
+    audiences: { title: "Audiences", icon: "target" },
+    details: { title: "Details", icon: "note" },
+  };
+
+  const ICON_SVGS = {
+    bolt: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 2 5 13h6.2L9.9 22 19 10h-6.2L13.5 2Z"/></svg>',
+    list: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="6" r="1.5"/><circle cx="5" cy="12" r="1.5"/><circle cx="5" cy="18" r="1.5"/><path d="M9 5.25h11V7H9V5.25Zm0 6h11v1.75H9v-1.75Zm0 5.75h11V19H9v-1.75Z"/></svg>',
+    bubble: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v5a4 4 0 0 1-4 4h-3.59L9 19.41V15H8a4 4 0 0 1-4-4V6Z"/></svg>',
+    link: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 5A5.5 5.5 0 0 0 2 10.5v1A5.5 5.5 0 0 0 7.5 17h3a1 1 0 1 0 0-2h-3A3.5 3.5 0 0 1 4 11.5v-1A3.5 3.5 0 0 1 7.5 7h3a1 1 0 1 0 0-2h-3Zm9 0a5.5 5.5 0 0 1 5.5 5.5v1A5.5 5.5 0 0 1 16.5 17h-3a1 1 0 1 1 0-2h3a3.5 3.5 0 0 0 3.5-3.5v-1A3.5 3.5 0 0 0 16.5 7h-3a1 1 0 0 1 0-2h3Z"/><path d="M8.5 11a1 1 0 0 1 1-1h5a1 1 0 1 1 0 2h-5a1 1 0 0 1-1-1Z"/></svg>',
+    target: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 1 0 18 9 9 0 0 1 0-18Zm0 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Zm0 3a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Z"/></svg>',
+    note: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm7 1.5V9h4.5L14 4.5ZM9 11h6v1.5H9V11Zm0 3h6v1.5H9V14Z"/></svg>',
+  };
+
+  function iconSvg(key){
+    return ICON_SVGS[key] || ICON_SVGS.note;
+  }
 
   // State
   let ALL_CARDS = [];
   let PRESETS = [];
   let CURRENT = [];
+  let STACK = [];
+  const STACK_KEY = "actualDeckStack";
+  let presentationIndex = 0;
+  let presentationFlipped = false;
+  const highlightTimers = new Map();
+  let editingCardId = null;
+  let editorReturnFocus = null;
+  let hasChanges = false;
 
   // Elements
-  const elCards  = document.getElementById("cards");
-  const elPreset = document.getElementById("preset");
-  const elQ      = document.getElementById("q");
-  const elMeta   = document.getElementById("meta");
-  const elTpl    = document.getElementById("card-tpl");
-  const elShuffle= document.getElementById("shuffle");
+  const elCards   = document.getElementById("cards");
+  const elPreset  = document.getElementById("preset");
+  const elQ       = document.getElementById("q");
+  const elMeta    = document.getElementById("meta");
+  const elTpl     = document.getElementById("card-tpl");
+  const elShuffle = document.getElementById("shuffle");
+  const elDownload = document.getElementById("download-json");
+  const elStackList   = document.getElementById("stack-list");
+  const elStackMeta   = document.getElementById("stack-meta");
+  const elStackPresent= document.getElementById("stack-present");
+  const elStackClear  = document.getElementById("stack-clear");
+  const elPresentation      = document.getElementById("presentation");
+  const elPresentationMeta  = document.getElementById("presentation-meta");
+  const elPresentationCard  = document.getElementById("presentation-card");
+  const elPresentationPrev  = document.getElementById("presentation-prev");
+  const elPresentationNext  = document.getElementById("presentation-next");
+  const elPresentationFlip  = document.getElementById("presentation-flip");
+  const elPresentationClose = document.getElementById("presentation-close");
+  const elEditor            = document.getElementById("editor");
+  const elEditorHeading     = document.getElementById("editor-heading");
+  const elEditorSubtitle    = document.getElementById("editor-subtitle");
+  const elEditorJson        = document.getElementById("editor-json");
+  const elEditorSave        = document.getElementById("editor-save");
+  const elEditorClose       = document.getElementById("editor-close");
+  const elEditorError       = document.getElementById("editor-error");
   const qs = new URLSearchParams(location.search);
   const cb = Date.now();
+
+  updateDownloadButton();
 
   async function fetchJSON(url){ const r=await fetch(`${url}?cb=${cb}`); if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }
   function normalize(s){ return (s||"").toLowerCase(); }
   function pickColor(family){
     const key = normalize(family||"");
     return TYPE_COLORS[key] || DEFAULT_COLOR;
+  }
+  function parseHexColor(value){
+    if (typeof value !== "string") return null;
+    const match = value.trim().match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+    if (!match) return null;
+    let hex = match[1];
+    if (hex.length === 3){
+      hex = hex.split("").map(ch => ch + ch).join("");
+    }
+    const num = parseInt(hex, 16);
+    return {
+      r: (num >> 16) & 255,
+      g: (num >> 8) & 255,
+      b: num & 255,
+    };
+  }
+  function mixWithWhite(hex, ratio = 0.5){
+    const rgb = parseHexColor(hex);
+    if (!rgb) return hex;
+    const amount = Math.min(Math.max(ratio, 0), 1);
+    const blend = (channel) => Math.round(channel + (255 - channel) * amount);
+    return `rgb(${blend(rgb.r)}, ${blend(rgb.g)}, ${blend(rgb.b)})`;
+  }
+  function setCardColors(element, color){
+    if (!element) return;
+    element.style.setProperty("--card-color", color);
+    element.style.setProperty("--card-color-accent", mixWithWhite(color, 0.3));
+    element.style.setProperty("--card-color-pastel", mixWithWhite(color, 0.82));
+    element.style.setProperty("--card-front-ink", "#f8fafc");
+    element.style.setProperty("--card-front-muted", mixWithWhite(color, 0.68));
+  }
+  function cardDomId(id){
+    if (!id && id !== 0) return "";
+    return `card-${String(id).trim().replace(/[^a-zA-Z0-9_-]+/g, "-").toLowerCase()}`;
+  }
+  function normalizeId(id){
+    if (!id && id !== 0) return null;
+    return typeof id === "string" ? id : String(id);
+  }
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+  function getCardById(id){
+    const key = normalizeId(id);
+    if (key === null) return undefined;
+    return ALL_CARDS.find(c => normalizeId(c.id) === key);
+  }
+  function updateBodyScrollLock(){
+    if (typeof document === "undefined") return;
+    if (!document.body) return;
+    const presentationOpen = elPresentation && !elPresentation.hasAttribute("hidden");
+    const editorOpen = elEditor && !elEditor.hasAttribute("hidden");
+    document.body.style.overflow = presentationOpen || editorOpen ? "hidden" : "";
+  }
+  function updateDownloadButton(){
+    if (!elDownload) return;
+    elDownload.textContent = hasChanges ? "Download updated cards.json" : "Download cards.json";
+    if (hasChanges){
+      elDownload.dataset.dirty = "1";
+    }else{
+      delete elDownload.dataset.dirty;
+    }
+  }
+  function markDirty(){
+    if (!hasChanges){
+      hasChanges = true;
+    }
+    updateDownloadButton();
+  }
+  function showEditorError(message){
+    if (!elEditorError) return;
+    if (message){
+      elEditorError.textContent = message;
+      elEditorError.setAttribute("data-visible", "1");
+    }else{
+      elEditorError.textContent = "";
+      elEditorError.removeAttribute("data-visible");
+    }
+  }
+  function openCardEditor(id){
+    const key = normalizeId(id);
+    if (key === null) return;
+    const card = getCardById(key);
+    if (!card || !elEditor || !elEditorJson) return;
+    editingCardId = key;
+    editorReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const heading = card.title ? `Edit ${card.title}` : "Edit card";
+    if (elEditorHeading) elEditorHeading.textContent = heading;
+    if (elEditorSubtitle) elEditorSubtitle.textContent = card.id ? `ID: ${card.id}` : "";
+    elEditorJson.value = JSON.stringify(card, null, 2);
+    showEditorError("");
+    elEditor.removeAttribute("hidden");
+    updateBodyScrollLock();
+    setTimeout(() => {
+      if (!elEditorJson) return;
+      elEditorJson.focus({ preventScroll: true });
+      const len = elEditorJson.value.length;
+      elEditorJson.setSelectionRange(len, len);
+    }, 0);
+    document.addEventListener("keydown", handleEditorKeydown);
+  }
+  function closeCardEditor(){
+    if (!elEditor) return;
+    editingCardId = null;
+    if (elEditorJson) elEditorJson.value = "";
+    showEditorError("");
+    elEditor.setAttribute("hidden", "");
+    updateBodyScrollLock();
+    document.removeEventListener("keydown", handleEditorKeydown);
+    if (editorReturnFocus && typeof editorReturnFocus.focus === "function"){
+      editorReturnFocus.focus();
+    }
+    editorReturnFocus = null;
+  }
+  function handleEditorKeydown(event){
+    if (!elEditor || elEditor.hasAttribute("hidden")) return;
+    if (event.key === "Escape"){
+      event.preventDefault();
+      closeCardEditor();
+    }else if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s"){
+      event.preventDefault();
+      saveCardFromEditor();
+    }
+  }
+  function saveCardFromEditor(){
+    if (editingCardId === null || !elEditorJson) return;
+    showEditorError("");
+    let parsed;
+    try{
+      parsed = JSON.parse(elEditorJson.value);
+    }catch(err){
+      showEditorError(`Invalid JSON: ${err.message}`);
+      return;
+    }
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)){
+      showEditorError("Card JSON must be an object.");
+      return;
+    }
+    const nextId = normalizeId(parsed.id);
+    if (nextId === null){
+      showEditorError('Card must include an "id" value.');
+      return;
+    }
+    const idx = ALL_CARDS.findIndex(c => normalizeId(c.id) === editingCardId);
+    if (idx === -1){
+      showEditorError("Could not locate the original card to update.");
+      return;
+    }
+    const duplicate = ALL_CARDS.some((c, index) => index !== idx && normalizeId(c.id) === nextId);
+    if (duplicate){
+      showEditorError(`Another card already uses the id "${nextId}".`);
+      return;
+    }
+    ALL_CARDS[idx] = parsed;
+    if (nextId !== editingCardId){
+      STACK = STACK.map(id => id === editingCardId ? nextId : id);
+      PRESETS.forEach(p => {
+        if (Array.isArray(p.cards)){
+          p.cards = p.cards.map(id => id === editingCardId ? nextId : id);
+        }
+      });
+    }
+    editingCardId = nextId;
+    markDirty();
+    closeCardEditor();
+    renderStack();
+    saveStack();
+    applyFilters();
+  }
+  function normalizeList(items){
+    if (!Array.isArray(items)) return [];
+    return items
+      .map(item => {
+        if (item === null || item === undefined) return "";
+        return String(item).trim();
+      })
+      .filter(Boolean);
+  }
+
+  function collectBackSections(card){
+    const sections = [];
+
+    const addText = (slug, value) => {
+      if (!value) return;
+      const text = String(value).trim();
+      if (!text) return;
+      const meta = SECTION_META[slug];
+      sections.push({ kind: "text", slug, title: meta?.title, icon: meta?.icon, text });
+    };
+
+    const addList = (slug, values) => {
+      const items = normalizeList(values);
+      if (!items.length) return;
+      const meta = SECTION_META[slug];
+      sections.push({ kind: "list", slug, title: meta?.title, icon: meta?.icon, items });
+    };
+
+    addText("why", card.why);
+    addList("how", card.how);
+    addText("reflection", card.reflection);
+    addList("related", card.related);
+    addList("audiences", card.audiences);
+
+    if (!sections.length){
+      const fallback = card.tagline || card.details || card.notes;
+      if (fallback){
+        addText("details", fallback);
+      }
+    }
+
+    if (!sections.length){
+      sections.push({ kind: "empty" });
+    }
+
+    return sections;
+  }
+
+  function buildBackHtml(card){
+    return collectBackSections(card).map(section => {
+      if (section.kind === "empty"){
+        return `<p class="card-empty-note">No additional details for this card.</p>`;
+      }
+
+      const title = section.title ? `<h4 class="card-section-title">${escapeHtml(section.title)}</h4>` : "";
+      let body = "";
+      if (section.kind === "text"){
+        body = `<p class=\"card-section-text\">${escapeHtml(section.text)}</p>`;
+      }else if (section.kind === "list"){
+        body = `<ul class=\"card-section-list\">${section.items.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+      }
+
+      const icon = section.icon ? `<span class="card-section-icon">${iconSvg(section.icon)}</span>` : "";
+
+      return `
+        <section class="card-section">
+          ${icon}
+          <div class="card-section-content">
+            ${title}
+            ${body}
+          </div>
+        </section>
+      `;
+    }).join("");
+  }
+
+  function renderBackContent(container, card){
+    if (!container) return;
+
+    const sections = collectBackSections(card);
+    container.innerHTML = "";
+
+    sections.forEach(section => {
+      if (section.kind === "empty"){
+        const empty = document.createElement("p");
+        empty.className = "card-empty-note";
+        empty.textContent = "No additional details for this card.";
+        container.appendChild(empty);
+        return;
+      }
+
+      const block = document.createElement("section");
+      block.className = "card-section";
+
+      if (section.icon){
+        const iconWrap = document.createElement("span");
+        iconWrap.className = "card-section-icon";
+        iconWrap.innerHTML = iconSvg(section.icon);
+        block.appendChild(iconWrap);
+      }
+
+      const contentWrap = document.createElement("div");
+      contentWrap.className = "card-section-content";
+
+      if (section.title){
+        const heading = document.createElement("h4");
+        heading.className = "card-section-title";
+        heading.textContent = section.title;
+        contentWrap.appendChild(heading);
+      }
+
+      if (section.kind === "text"){
+        const para = document.createElement("p");
+        para.className = "card-section-text";
+        para.textContent = section.text;
+        contentWrap.appendChild(para);
+      }else if (section.kind === "list"){
+        const list = document.createElement("ul");
+        list.className = "card-section-list";
+        section.items.forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = item;
+          list.appendChild(li);
+        });
+        contentWrap.appendChild(list);
+      }
+
+      block.appendChild(contentWrap);
+
+      container.appendChild(block);
+    });
+
+    if (container.childElementCount){
+      container.removeAttribute("hidden");
+    }else{
+      container.setAttribute("hidden", "");
+    }
+  }
+
+  function summarizeCard(card){
+    return card.tagline || card.why || card.reflection || "";
+  }
+
+  function setTextOrHide(element, value){
+    if (!element) return;
+    if (value){
+      element.textContent = value;
+      element.removeAttribute("hidden");
+    }else{
+      element.textContent = "";
+      element.setAttribute("hidden", "");
+    }
+  }
+
+  function loadStack(){
+    if (typeof localStorage === "undefined") return;
+    try{
+      const raw = localStorage.getItem(STACK_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)){
+        STACK = parsed.map(normalizeId).filter(id => id !== null);
+      }
+    }catch(err){
+      console.warn("Failed to load stack", err);
+    }
+  }
+  function saveStack(){
+    if (typeof localStorage === "undefined") return;
+    try{ localStorage.setItem(STACK_KEY, JSON.stringify(STACK)); }
+    catch(err){ console.warn("Failed to save stack", err); }
+  }
+  function renderStack(){
+    const unique = [];
+    for (const id of STACK){
+      if (id !== null && !unique.includes(id) && getCardById(id)) unique.push(id);
+    }
+    if (unique.length !== STACK.length){
+      STACK = unique;
+      saveStack();
+    }
+
+    elStackList.innerHTML = "";
+    const hasCards = STACK.length > 0;
+    elStackMeta.textContent = hasCards
+      ? `Cards selected: ${STACK.length}`
+      : "No cards selected yet.";
+    elStackPresent.disabled = !hasCards;
+    elStackClear.disabled = !hasCards;
+
+    if (!hasCards){
+      closePresentation();
+      const p = document.createElement("p");
+      p.className = "stack-empty";
+      p.textContent = "Select cards to build your presentation stack.";
+      elStackList.appendChild(p);
+      return;
+    }
+
+    STACK.forEach((id, index) => {
+      const storedId = id;
+      const card = getCardById(storedId);
+      if (!card) return;
+
+      const item = document.createElement("div");
+      item.className = "stack-card";
+      const color = pickColor(card.family || card.type);
+      setCardColors(item, color);
+
+      const main = document.createElement("div");
+      main.className = "stack-card-main";
+      const title = document.createElement("p");
+      title.className = "text-sm font-medium";
+      title.textContent = card.title || "(untitled)";
+      const meta = document.createElement("p");
+      meta.className = "text-xs text-slate-500";
+      const metaBits = [card.family || card.type || "unspecified", card.id].filter(Boolean);
+      meta.textContent = metaBits.join(" • ");
+      main.appendChild(title);
+      main.appendChild(meta);
+
+      main.addEventListener("click", () => scrollToCard(storedId));
+
+      const actions = document.createElement("div");
+      actions.className = "stack-card-actions";
+
+      function makeBtn(label, title){
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = label;
+        btn.title = title;
+        btn.setAttribute("aria-label", title);
+        return btn;
+      }
+
+      const presentBtn = makeBtn("▶", "Present from this card");
+      presentBtn.addEventListener("click", (e) => { e.stopPropagation(); startPresentation(index); });
+
+      const upBtn = makeBtn("↑", "Move up");
+      upBtn.disabled = index === 0;
+      upBtn.addEventListener("click", (e) => { e.stopPropagation(); moveStack(storedId, -1); });
+
+      const downBtn = makeBtn("↓", "Move down");
+      downBtn.disabled = index === STACK.length - 1;
+      downBtn.addEventListener("click", (e) => { e.stopPropagation(); moveStack(storedId, 1); });
+
+      const removeBtn = makeBtn("✕", "Remove from stack");
+      removeBtn.addEventListener("click", (e) => { e.stopPropagation(); toggleStack(storedId); });
+
+      actions.appendChild(presentBtn);
+      actions.appendChild(upBtn);
+      actions.appendChild(downBtn);
+      actions.appendChild(removeBtn);
+
+      item.appendChild(main);
+      item.appendChild(actions);
+      elStackList.appendChild(item);
+    });
+
+    if (!elPresentation.hasAttribute("hidden")){
+      updatePresentation();
+    }
+  }
+  function toggleStack(id){
+    const key = normalizeId(id);
+    if (key === null) return;
+    const idx = STACK.indexOf(key);
+    if (idx > -1){
+      STACK.splice(idx, 1);
+    }else{
+      STACK.push(key);
+    }
+    renderStack();
+    renderCards(CURRENT);
+    saveStack();
+  }
+  function moveStack(id, dir){
+    const key = normalizeId(id);
+    if (key === null) return;
+    const idx = STACK.indexOf(key);
+    if (idx === -1) return;
+    const next = idx + dir;
+    if (next < 0 || next >= STACK.length) return;
+    const [item] = STACK.splice(idx, 1);
+    STACK.splice(next, 0, item);
+    renderStack();
+    saveStack();
+  }
+  function clearStack(){
+    STACK = [];
+    presentationIndex = 0;
+    renderStack();
+    renderCards(CURRENT);
+    saveStack();
+  }
+  function startPresentation(index = 0){
+    if (!STACK.length) return;
+    presentationIndex = Math.min(Math.max(index, 0), STACK.length - 1);
+    presentationFlipped = false;
+    updatePresentation();
+    elPresentation.removeAttribute("hidden");
+    updateBodyScrollLock();
+    document.addEventListener("keydown", handleKeydown);
+  }
+  function changePresentation(delta){
+    if (!STACK.length) return;
+    presentationIndex = Math.min(Math.max(presentationIndex + delta, 0), STACK.length - 1);
+    presentationFlipped = false;
+    updatePresentation();
+  }
+  function updatePresentation(){
+    if (!STACK.length){
+      closePresentation();
+      return;
+    }
+    if (presentationIndex < 0) presentationIndex = 0;
+    if (presentationIndex >= STACK.length) presentationIndex = STACK.length - 1;
+    const id = STACK[presentationIndex];
+    const card = getCardById(id);
+    if (!card){
+      STACK.splice(presentationIndex, 1);
+      renderStack();
+      saveStack();
+      if (!STACK.length){
+        closePresentation();
+      }else{
+        presentationIndex = Math.min(presentationIndex, STACK.length - 1);
+        updatePresentation();
+      }
+      return;
+    }
+
+    const color = pickColor(card.family || card.type);
+    const accent = mixWithWhite(color, 0.3);
+    const pastel = mixWithWhite(color, 0.82);
+    const styleVars = `--card-color:${color};--card-color-accent:${accent};--card-color-pastel:${pastel}`;
+    const familyLabel = card.family || card.type || "unspecified";
+    const cardIdText = card.id || card.id === 0 ? String(card.id) : "";
+    const tagsHtml = (card.tags || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join(" ");
+    const summary = summarizeCard(card);
+    const footerParts = [];
+    if (tagsHtml) footerParts.push(`<div class="tag-list">${tagsHtml}</div>`);
+    if (cardIdText) footerParts.push(`<span class="card-id">${escapeHtml(cardIdText)}</span>`);
+    const footerHtml = footerParts.length ? `<footer class="card-footer">${footerParts.join("")}</footer>` : "";
+    const frontHtml = `
+      <article class="card-surface presentation-face card-front" style="${styleVars}">
+        <header class="card-header">
+          <span class="type-ribbon">${escapeHtml(familyLabel)}</span>
+          ${cardIdText ? `<span class="card-id">${escapeHtml(cardIdText)}</span>` : ""}
+        </header>
+        <div class="card-front-body">
+          <div class="card-front-content">
+            <h3 class="card-title">${escapeHtml(card.title || "(untitled)")}</h3>
+            ${summary ? `<p class="card-summary">${escapeHtml(summary)}</p>` : ""}
+            ${card.quote ? `<blockquote class="card-quote">${escapeHtml(card.quote)}</blockquote>` : ""}
+            ${card.author ? `<p class="card-author">— ${escapeHtml(card.author)}</p>` : ""}
+          </div>
+        </div>
+        ${footerHtml}
+      </article>
+    `;
+    const backHtml = `
+      <article class="card-surface presentation-face card-back back" style="${styleVars}">
+        <header class="card-header">
+          <span class="type-ribbon">${escapeHtml(familyLabel)}</span>
+          ${cardIdText ? `<span class="card-id">${escapeHtml(cardIdText)}</span>` : ""}
+        </header>
+        <h3 class="card-back-title">${escapeHtml(card.title || "(untitled)")}</h3>
+        <div class="card-back-body">${buildBackHtml(card)}</div>
+      </article>
+    `;
+
+    elPresentationCard.innerHTML = presentationFlipped ? backHtml : frontHtml;
+    elPresentationCard.scrollTop = 0;
+    elPresentationMeta.textContent = `Card ${presentationIndex + 1} of ${STACK.length}`;
+    elPresentationPrev.disabled = presentationIndex === 0;
+    elPresentationNext.disabled = presentationIndex >= STACK.length - 1;
+    elPresentationFlip.textContent = presentationFlipped ? "Show front" : "Show back";
+  }
+  function closePresentation(){
+    elPresentation.setAttribute("hidden", "");
+    presentationFlipped = false;
+    updateBodyScrollLock();
+    document.removeEventListener("keydown", handleKeydown);
+  }
+  function handleKeydown(event){
+    if (elPresentation.hasAttribute("hidden")) return;
+    if (event.key === "Escape"){
+      closePresentation();
+    }else if (event.key === "ArrowRight" || event.key === "PageDown"){
+      event.preventDefault();
+      changePresentation(1);
+    }else if (event.key === "ArrowLeft" || event.key === "PageUp"){
+      event.preventDefault();
+      changePresentation(-1);
+    }else if (event.key === " " || event.key === "Spacebar"){
+      event.preventDefault();
+      presentationFlipped = !presentationFlipped;
+      updatePresentation();
+    }
+  }
+  function scrollToCard(id){
+    const key = normalizeId(id);
+    if (key === null) return;
+    const domId = cardDomId(key);
+    if (!domId) return;
+    const cardEl = document.getElementById(domId);
+    if (!cardEl) return;
+    cardEl.scrollIntoView({ behavior: "smooth", block: "center" });
+    cardEl.setAttribute("data-highlight", "1");
+    const existing = highlightTimers.get(domId);
+    if (existing) clearTimeout(existing);
+    const timeout = setTimeout(() => {
+      cardEl.removeAttribute("data-highlight");
+      highlightTimers.delete(domId);
+    }, 1600);
+    highlightTimers.set(domId, timeout);
   }
 
   function renderCards(list){
@@ -138,64 +1657,95 @@ permalink: /actual/
       const node = elTpl.content.cloneNode(true);
       const root = node.querySelector("article.card");
       const color = pickColor(c.family || c.type);
-      root.style.setProperty("--card-color", color);
+      const cardId = c.id;
+      const normalizedId = normalizeId(cardId);
+      setCardColors(root, color);
+      if (normalizedId !== null){
+        const domId = cardDomId(normalizedId);
+        if (domId) root.id = domId;
+      }
+      root.removeAttribute("data-highlight");
 
-      node.querySelector("[data-title]").textContent = c.title || "(untitled)";
-      node.querySelector("[data-id]").textContent = c.id || "";
-      node.querySelector("[data-quote]").textContent = c.quote || "";
-      node.querySelector("[data-author]").textContent = c.author ? `— ${c.author}` : "";
-      node.querySelector("[data-body]").textContent = c.body || "";
+      const inStack = normalizedId !== null ? STACK.includes(normalizedId) : false;
+      root.setAttribute("data-in-stack", inStack ? "1" : "0");
 
-      const pill = node.querySelector("[data-family-pill]");
-      pill.textContent = c.family || c.type || "unspecified";
+      const titleText = c.title || "(untitled)";
+      const idText = normalizedId !== null ? normalizedId : "";
+      setTextOrHide(node.querySelector("[data-title]"), titleText);
+      setTextOrHide(node.querySelector("[data-title-back]"), titleText);
+      setTextOrHide(node.querySelector("[data-id]"), idText);
+      setTextOrHide(node.querySelector("[data-id-back]"), idText);
+      setTextOrHide(node.querySelector("[data-summary]"), summarizeCard(c));
+      setTextOrHide(node.querySelector("[data-quote]"), c.quote);
+      setTextOrHide(node.querySelector("[data-author]"), c.author ? `— ${c.author}` : "");
 
-      // Tags
-      const tagsWrap = node.querySelector("[data-tags]");
-      (c.tags || []).forEach(t => {
-        const s = document.createElement("span");
-        s.className = "tag";
-        s.textContent = t;
-        s.dataset.tag = t;
-        s.addEventListener("click", () => { elQ.value = t; applyFilters(); });
-        tagsWrap.appendChild(s);
-      });
+      const familyLabel = c.family || c.type || "unspecified";
+      setTextOrHide(node.querySelector("[data-family-pill]"), familyLabel);
+      setTextOrHide(node.querySelector("[data-family-back]"), familyLabel);
 
-      // Back content strategy:
-      // prefer c.back; fallback to c.notes or c.details; else show a structured summary.
-      const backEl = node.querySelector("[data-back]");
-      const back =
-        c.back || c.notes || c.details ||
-        [
-          c.principle ? `<p><strong>Principle:</strong> ${c.principle}</p>` : "",
-          c.context ? `<p><strong>Context:</strong> ${c.context}</p>` : "",
-          c.actions?.length ? `<div><strong>Actions</strong><ul class="list-disc pl-5">${c.actions.map(a=>`<li>${a}</li>`).join("")}</ul></div>` : "",
-          c.references?.length ? `<div><strong>References</strong><ul class="list-disc pl-5">${c.references.map(r=>`<li>${r}</li>`).join("")}</ul></div>` : "",
-        ].filter(Boolean).join("") ||
-        `<pre class="text-xs bg-white/50 p-2 rounded border">${escapeHtml(JSON.stringify(c, null, 2))}</pre>`;
-      backEl.innerHTML = back;
+      const stackBtn = node.querySelector("[data-stack]");
+      const stackLabel = stackBtn?.querySelector("span");
+      if (stackBtn){
+        if (cardId || cardId === 0){
+          stackBtn.dataset.active = inStack ? "1" : "0";
+          stackBtn.setAttribute("aria-pressed", inStack ? "true" : "false");
+          const labelText = inStack ? "Remove from stack" : "Add to stack";
+          if (stackLabel) stackLabel.textContent = labelText;
+          stackBtn.setAttribute("aria-label", labelText);
+          stackBtn.disabled = false;
+          stackBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleStack(cardId);
+          });
+        }else{
+          stackBtn.disabled = true;
+          stackBtn.dataset.active = "0";
+          stackBtn.setAttribute("aria-pressed", "false");
+          if (stackLabel) stackLabel.textContent = "No ID";
+          stackBtn.setAttribute("aria-label", "Card has no ID");
+        }
+      }
 
-      // Flip handlers
-      node.querySelectorAll("[data-flip]").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const flipped = root.getAttribute("data-flipped")==="1" ? "0" : "1";
-          root.setAttribute("data-flipped", flipped);
+      const editBtn = node.querySelector("[data-edit]");
+      if (editBtn){
+        editBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const targetId = normalizedId !== null ? normalizedId : cardId;
+          openCardEditor(targetId);
         });
-      });
+      }
 
-      // Also flip by clicking anywhere on the card except links/buttons
-      node.querySelector(".card-inner").addEventListener("click", (e) => {
-        if (e.target.closest("button,a")) return;
-        const flipped = root.getAttribute("data-flipped")==="1" ? "0" : "1";
-        root.setAttribute("data-flipped", flipped);
-      });
+      const tagsWrap = node.querySelector("[data-tags]");
+      const tagsRow = tagsWrap ? tagsWrap.parentElement : null;
+      if (tagsWrap){
+        tagsWrap.innerHTML = "";
+        (c.tags || []).forEach(t => {
+          const s = document.createElement("span");
+          s.className = "tag";
+          s.textContent = t;
+          s.dataset.tag = t;
+          s.addEventListener("click", () => { elQ.value = t; applyFilters(); });
+          tagsWrap.appendChild(s);
+        });
+        if (tagsWrap.childElementCount){
+          tagsWrap.removeAttribute("hidden");
+          if (tagsRow) tagsRow.removeAttribute("hidden");
+        }else{
+          tagsWrap.setAttribute("hidden", "");
+          if (tagsRow) tagsRow.setAttribute("hidden", "");
+        }
+      }
+
+      const backEl = node.querySelector("[data-back]");
+      renderBackContent(backEl, c);
 
       frag.appendChild(node);
     }
     elCards.appendChild(frag);
     elMeta.textContent = `Cards: ${list.length} • Total: ${ALL_CARDS.length} • Presets: ${PRESETS.length}`;
   }
-
-  function escapeHtml(s){ return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
   function applyFilters(){
     const q = normalize(elQ.value);
@@ -212,6 +1762,10 @@ permalink: /actual/
       base = base.filter(c => {
         const hay = [
           c.title, c.quote, c.author, c.body, c.family, c.type,
+          c.tagline, c.why, c.reflection,
+          ...(c.how || []),
+          ...(c.related || []),
+          ...(c.audiences || []),
           ...(c.tags || [])
         ].map(normalize).join(" • ");
         return hay.includes(q);
@@ -233,6 +1787,48 @@ permalink: /actual/
   document.getElementById("preset").addEventListener("change", applyFilters);
   document.getElementById("q").addEventListener("input", applyFilters);
   document.getElementById("shuffle").addEventListener("click", () => { shuffle(CURRENT); renderCards(CURRENT); });
+  elStackPresent.addEventListener("click", () => startPresentation(0));
+  elStackClear.addEventListener("click", clearStack);
+  elPresentationPrev.addEventListener("click", () => changePresentation(-1));
+  elPresentationNext.addEventListener("click", () => changePresentation(1));
+  elPresentationFlip.addEventListener("click", () => { presentationFlipped = !presentationFlipped; updatePresentation(); });
+  elPresentationClose.addEventListener("click", closePresentation);
+  elPresentation.addEventListener("click", (event) => { if (event.target === elPresentation) closePresentation(); });
+  if (elDownload){
+    elDownload.addEventListener("click", () => {
+      const json = JSON.stringify(ALL_CARDS, null, 2);
+      const blob = new Blob([json], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "cards.json";
+      if (document.body){
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      hasChanges = false;
+      updateDownloadButton();
+    });
+  }
+  if (elEditorSave){
+    elEditorSave.addEventListener("click", (event) => {
+      event.preventDefault();
+      saveCardFromEditor();
+    });
+  }
+  if (elEditorClose){
+    elEditorClose.addEventListener("click", (event) => {
+      event.preventDefault();
+      closeCardEditor();
+    });
+  }
+  if (elEditor){
+    elEditor.addEventListener("click", (event) => {
+      if (event.target === elEditor) closeCardEditor();
+    });
+  }
 
   // Boot
   (async function init(){
@@ -250,6 +1846,9 @@ permalink: /actual/
       const initPreset = qs.get("preset"); const initQ = qs.get("q");
       if (initPreset) document.getElementById("preset").value = initPreset;
       if (initQ) document.getElementById("q").value = initQ;
+
+      loadStack();
+      renderStack();
 
       applyFilters();
     }catch(e){
