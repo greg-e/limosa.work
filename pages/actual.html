@@ -26,6 +26,18 @@ permalink: /actual/
     --card-color-pastel: #e2e8f0;
   }
 
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   body {
     background: var(--surface);
     color: var(--ink);
@@ -48,6 +60,18 @@ permalink: /actual/
       flex-direction: row;
       align-items: flex-end;
       justify-content: space-between;
+    }
+  }
+
+  .deck-content {
+    display: grid;
+    gap: clamp(1.25rem, 2vw, 1.75rem);
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .deck-content {
+      grid-template-columns: minmax(0, 1fr) auto;
     }
   }
 
@@ -129,15 +153,21 @@ permalink: /actual/
   }
 
   .card {
+    position: relative;
     display: grid;
-    gap: clamp(0.45rem, 0.8vw, 0.65rem);
     --card-padding: clamp(0.9rem, 1vw + 0.55rem, 1.35rem);
     --card-radius: 1rem;
     --card-front-ink: #f8fafc;
     --card-front-muted: rgba(248, 250, 252, 0.7);
   }
 
+  .card-faces {
+    position: relative;
+    display: grid;
+  }
+
   .card-face {
+    grid-area: 1 / 1 / -1 / -1;
     border-radius: var(--card-radius);
     padding: var(--card-padding);
     display: flex;
@@ -147,6 +177,7 @@ permalink: /actual/
     box-shadow: 0 16px 28px rgba(15, 23, 42, 0.08);
     border: 1px solid rgba(15, 23, 42, 0.08);
     min-height: 0;
+    position: relative;
   }
 
   .card-back {
@@ -154,6 +185,39 @@ permalink: /actual/
     color: var(--ink);
     border: 1px solid rgba(15, 23, 42, 0.08);
     box-shadow: 0 12px 26px rgba(15, 23, 42, 0.12);
+    z-index: 1;
+  }
+
+  .card-front {
+    z-index: 2;
+  }
+
+  .card[data-flipped="1"] .card-back {
+    z-index: 3;
+  }
+
+  .card[data-flipped="1"] .card-front {
+    z-index: 1;
+  }
+
+  .card[data-flipped="0"] .card-back {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: rotateY(-6deg) scale(0.985);
+  }
+
+  .card[data-flipped="1"] .card-front {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: rotateY(6deg) scale(0.985);
+  }
+
+  .card[data-flipped] .card-face {
+    transition: opacity 0.28s ease, transform 0.32s ease, visibility 0.28s ease;
+    backface-visibility: hidden;
+    transform: rotateY(0deg);
   }
 
   .card-id {
@@ -202,6 +266,7 @@ permalink: /actual/
     text-transform: uppercase;
     font-weight: 600;
     color: #64748b;
+    flex-wrap: wrap;
   }
 
   .card-face-label {
@@ -209,6 +274,13 @@ permalink: /actual/
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: #94a3b8;
+  }
+
+  .card-back-header-main {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
   }
 
   .card-back-meta {
@@ -313,6 +385,21 @@ permalink: /actual/
   .icon-btn:focus-visible {
     outline: 2px solid #f8fafc;
     outline-offset: 2px;
+  }
+
+  .card-back .card-actions .icon-btn {
+    border-color: rgba(15, 23, 42, 0.15);
+    background: rgba(15, 23, 42, 0.06);
+    color: #0f172a;
+  }
+
+  .card-back .card-actions .icon-btn:hover {
+    background: rgba(15, 23, 42, 0.12);
+    color: #0f172a;
+  }
+
+  .card-back .card-actions .icon-btn:focus-visible {
+    outline: 2px solid #2563eb;
   }
 
   .type-ribbon {
@@ -590,24 +677,125 @@ permalink: /actual/
 
   .stack-dock {
     position: sticky;
-    top: 1rem;
-    z-index: 30;
-    margin-bottom: 2rem;
+    top: 6.5rem;
+    z-index: 20;
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  @media (max-width: 1023px) {
+    .stack-dock {
+      position: relative;
+      top: auto;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .stack-dock {
+      width: min(22rem, 32vw);
+    }
+
+    .stack-dock[data-collapsed="1"] {
+      width: auto;
+    }
+  }
+
+  .stack-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    background: rgba(255, 255, 255, 0.92);
+    padding: 0.75rem 1.1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #0f172a;
+    box-shadow: 0 18px 30px rgba(15, 23, 42, 0.12);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .stack-toggle:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 24px 36px rgba(15, 23, 42, 0.16);
+  }
+
+  .stack-toggle:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 2px;
+  }
+
+  .stack-toggle-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .stack-toggle-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .stack-toggle-chevron {
+    width: 1rem;
+    height: 1rem;
+    display: block;
+    transform-origin: center;
+    transition: transform 0.2s ease;
+  }
+
+  .stack-dock[data-collapsed="1"] .stack-toggle-chevron {
+    transform: rotate(-90deg);
+  }
+
+  .stack-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.75rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.08);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #0f172a;
+  }
+
+  .stack-dock[data-count="0"] .stack-count {
+    background: rgba(15, 23, 42, 0.05);
+    color: #94a3b8;
   }
 
   .stack-panel {
     border: 1px solid rgba(15, 23, 42, 0.1);
     border-radius: 1.35rem;
     padding: 1.35rem 1.5rem;
-    background: rgba(255, 255, 255, 0.78);
+    background: rgba(255, 255, 255, 0.82);
     box-shadow: 0 28px 48px rgba(15, 23, 42, 0.18);
     backdrop-filter: blur(12px);
   }
 
+  .stack-panel > * + * {
+    margin-top: 1.1rem;
+  }
+
+  .stack-dock[data-collapsed="1"] .stack-panel {
+    display: none;
+  }
+
   #stack-list {
-    max-height: min(42vh, 24rem);
+    max-height: min(52vh, 26rem);
     overflow-y: auto;
     padding-right: .25rem;
+  }
+
+  #stack-list > * + * {
+    margin-top: 0.75rem;
   }
 
   .stack-card {
@@ -667,6 +855,12 @@ permalink: /actual/
     display: flex;
     flex-direction: column;
     gap: .35rem;
+  }
+
+  .stack-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
   .stack-meta {
@@ -852,67 +1046,86 @@ permalink: /actual/
       </div>
     </header>
 
-    <aside class="stack-dock mt-6">
-      <div class="stack-panel space-y-4">
-        <div>
-          <h2 class="text-base font-semibold">Presentation stack</h2>
+    <div class="deck-content">
+      <section id="cards" class="cards-grid"></section>
+      <aside class="stack-dock" data-collapsed="0">
+        <button type="button" class="stack-toggle" data-stack-toggle aria-expanded="true" aria-controls="stack-panel">
+          <span class="stack-toggle-label">Presentation stack</span>
+          <span class="stack-toggle-meta">
+            <span class="stack-count" data-stack-count>0</span>
+            <svg class="stack-toggle-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div id="stack-panel" class="stack-panel" data-stack-panel>
+          <h2 class="sr-only">Presentation stack</h2>
           <p id="stack-meta" class="stack-meta">No cards selected yet.</p>
+          <div id="stack-list"></div>
+          <div class="stack-actions">
+            <button id="stack-present" class="dialog-btn" disabled>Start presentation</button>
+            <button id="stack-clear" class="dialog-btn" disabled>Clear</button>
+          </div>
         </div>
-        <div id="stack-list" class="space-y-3"></div>
-        <div class="flex gap-2 flex-wrap">
-          <button id="stack-present" class="dialog-btn" disabled>Start presentation</button>
-          <button id="stack-clear" class="dialog-btn" disabled>Clear</button>
-        </div>
-      </div>
-    </aside>
-
-    <section id="cards" class="cards-grid"></section>
+      </aside>
+    </div>
 
     <template id="card-tpl">
-      <article class="card">
-        <div class="card-face card-back">
-          <header class="card-back-header">
-            <span class="card-face-label">Back</span>
-            <div class="card-back-meta">
-              <span class="card-back-family" data-family-back></span>
-              <span class="card-id" data-id-back></span>
+      <article class="card" data-flipped="0">
+        <div class="card-faces">
+          <section class="card-face card-front">
+            <header class="card-header">
+              <span class="type-ribbon" data-family-pill></span>
+              <div class="card-actions">
+                <button class="icon-btn" data-flip data-face-target="back" type="button" title="Show card back" aria-label="Show card back">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M10 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="icon-btn" data-edit type="button" title="Edit card" aria-label="Edit card">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17.25V20h2.75L17.81 8.94l-2.75-2.75L4 17.25Zm15.71-9.04a1 1 0 0 0 0-1.41l-2.5-2.5a1 1 0 0 0-1.41 0l-1.83 1.83 3.91 3.91 1.83-1.83Z"/></svg>
+                </button>
+              </div>
+            </header>
+            <div class="card-front-body">
+              <div class="card-front-content">
+                <h2 class="card-title" data-title></h2>
+                <p class="card-summary" data-summary></p>
+                <blockquote class="card-quote" data-quote></blockquote>
+                <p class="card-author" data-author></p>
+              </div>
             </div>
-          </header>
-          <h3 class="card-back-title" data-title-back></h3>
-          <div class="card-back-body" data-back></div>
-        </div>
-        <div class="card-face card-front">
-          <header class="card-header">
-            <span class="type-ribbon" data-family-pill></span>
-            <div class="card-actions">
-              <button class="icon-btn" data-edit type="button" title="Edit card" aria-label="Edit card">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17.25V20h2.75L17.81 8.94l-2.75-2.75L4 17.25Zm15.71-9.04a1 1 0 0 0 0-1.41l-2.5-2.5a1 1 0 0 0-1.41 0l-1.83 1.83 3.91 3.91 1.83-1.83Z"/></svg>
-              </button>
-            </div>
-          </header>
-          <div class="card-front-body">
-            <div class="card-front-content">
-              <h2 class="card-title" data-title></h2>
-              <p class="card-summary" data-summary></p>
-              <blockquote class="card-quote" data-quote></blockquote>
-              <p class="card-author" data-author></p>
-            </div>
-          </div>
-          <footer class="card-footer">
-            <div class="card-footer-top">
-              <div class="tag-list" data-tags></div>
-            </div>
-            <div class="card-footer-bottom">
-              <span class="card-id" data-id></span>
-              <button class="stack-btn" data-stack type="button">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-                <span>Add to Stack</span>
-              </button>
-            </div>
-          </footer>
+            <footer class="card-footer">
+              <div class="card-footer-top">
+                <div class="tag-list" data-tags></div>
+              </div>
+              <div class="card-footer-bottom">
+                <span class="card-id" data-id></span>
+                <button class="stack-btn" data-stack type="button">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                  <span>Add to Stack</span>
+                </button>
+              </div>
+            </footer>
+          </section>
+          <section class="card-face card-back">
+            <header class="card-back-header">
+              <div class="card-back-header-main">
+                <span class="card-face-label">Details</span>
+                <div class="card-back-meta">
+                  <span class="card-back-family" data-family-back></span>
+                  <span class="card-id" data-id-back></span>
+                </div>
+              </div>
+              <div class="card-actions">
+                <button class="icon-btn" data-flip data-face-target="front" type="button" title="Show card front" aria-label="Show card front">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H4m10 6 6-6-6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+            </header>
+            <h3 class="card-back-title" data-title-back></h3>
+            <div class="card-back-body" data-back></div>
+          </section>
         </div>
       </article>
     </template>
+
   </main>
 
   <div id="editor" class="editor-overlay" hidden>
@@ -1016,6 +1229,8 @@ permalink: /actual/
   let editorReturnFocus = null;
   let hasChanges = false;
   let balanceFrame = null;
+  let lastStackCount = 0;
+  let stackCollapsed = false;
 
   // Elements
   const elCards   = document.getElementById("cards");
@@ -1029,6 +1244,10 @@ permalink: /actual/
   const elStackMeta   = document.getElementById("stack-meta");
   const elStackPresent= document.getElementById("stack-present");
   const elStackClear  = document.getElementById("stack-clear");
+  const elStackDock   = document.querySelector(".stack-dock");
+  const elStackToggle = document.querySelector("[data-stack-toggle]");
+  const elStackPanel  = document.querySelector("[data-stack-panel]");
+  const elStackCount  = document.querySelector("[data-stack-count]");
   const elPresentation      = document.getElementById("presentation");
   const elPresentationMeta  = document.getElementById("presentation-meta");
   const elPresentationCard  = document.getElementById("presentation-card");
@@ -1044,6 +1263,11 @@ permalink: /actual/
   const elEditorClose       = document.getElementById("editor-close");
   const elEditorError       = document.getElementById("editor-error");
   const qs = new URLSearchParams(location.search);
+
+  if (elStackDock){
+    stackCollapsed = elStackDock.dataset.collapsed === "1";
+    setStackCollapsed(stackCollapsed);
+  }
   const cb = Date.now();
 
   updateDownloadButton();
@@ -1146,6 +1370,32 @@ permalink: /actual/
       elDownload.dataset.dirty = "1";
     }else{
       delete elDownload.dataset.dirty;
+    }
+  }
+
+  function setStackCollapsed(collapsed){
+    stackCollapsed = !!collapsed;
+    if (elStackDock){
+      elStackDock.setAttribute("data-collapsed", stackCollapsed ? "1" : "0");
+    }
+    if (elStackPanel){
+      if (stackCollapsed){
+        elStackPanel.setAttribute("hidden", "");
+      }else{
+        elStackPanel.removeAttribute("hidden");
+      }
+    }
+    if (elStackToggle){
+      elStackToggle.setAttribute("aria-expanded", stackCollapsed ? "false" : "true");
+    }
+  }
+
+  function updateStackCountDisplay(count){
+    if (elStackCount){
+      elStackCount.textContent = String(count);
+    }
+    if (elStackDock){
+      elStackDock.setAttribute("data-count", String(count));
     }
   }
   function markDirty(){
@@ -1470,9 +1720,16 @@ permalink: /actual/
     }
 
     elStackList.innerHTML = "";
-    const hasCards = STACK.length > 0;
+    const count = STACK.length;
+    const hasCards = count > 0;
+    updateStackCountDisplay(count);
+    if (hasCards && lastStackCount === 0 && stackCollapsed){
+      setStackCollapsed(false);
+    }
+    lastStackCount = count;
+
     elStackMeta.textContent = hasCards
-      ? `Cards selected: ${STACK.length}`
+      ? `Cards selected: ${count}`
       : "No cards selected yet.";
     elStackPresent.disabled = !hasCards;
     elStackClear.disabled = !hasCards;
@@ -1717,6 +1974,19 @@ permalink: /actual/
       const color = pickColor(c.family || c.type);
       const cardId = c.id;
       const normalizedId = normalizeId(cardId);
+      if (root){
+        root.setAttribute("data-flipped", "0");
+        root.setAttribute("tabindex", "0");
+        root.addEventListener("keydown", (event) => {
+          if (event.target !== root) return;
+          if (event.key === "Enter" || event.key === " "){
+            event.preventDefault();
+            const flippedNow = root.getAttribute("data-flipped") === "1";
+            root.setAttribute("data-flipped", flippedNow ? "0" : "1");
+            scheduleCardBalance();
+          }
+        });
+      }
       setCardColors(root, color);
       if (normalizedId !== null){
         const domId = cardDomId(normalizedId);
@@ -1774,6 +2044,27 @@ permalink: /actual/
           openCardEditor(targetId);
         });
       }
+
+      const flipButtons = node.querySelectorAll("[data-flip]");
+      flipButtons.forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const host = btn.closest("article.card");
+          if (!host) return;
+          const target = btn.getAttribute("data-face-target");
+          let flipped = host.getAttribute("data-flipped") === "1";
+          if (target === "back"){
+            flipped = true;
+          }else if (target === "front"){
+            flipped = false;
+          }else{
+            flipped = !flipped;
+          }
+          host.setAttribute("data-flipped", flipped ? "1" : "0");
+          scheduleCardBalance();
+        });
+      });
 
       const tagsWrap = node.querySelector("[data-tags]");
       const tagsRow = tagsWrap ? tagsWrap.parentElement : null;
@@ -1846,6 +2137,12 @@ permalink: /actual/
   document.getElementById("preset").addEventListener("change", applyFilters);
   document.getElementById("q").addEventListener("input", applyFilters);
   document.getElementById("shuffle").addEventListener("click", () => { shuffle(CURRENT); renderCards(CURRENT); });
+  if (elStackToggle){
+    elStackToggle.addEventListener("click", (event) => {
+      event.preventDefault();
+      setStackCollapsed(!stackCollapsed);
+    });
+  }
   elStackPresent.addEventListener("click", () => startPresentation(0));
   elStackClear.addEventListener("click", clearStack);
   elPresentationPrev.addEventListener("click", () => changePresentation(-1));
