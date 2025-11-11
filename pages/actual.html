@@ -15,9 +15,12 @@ permalink: /actual/
   :root {
     color-scheme: light;
     font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    --surface: #f4f4f5;
+    --surface: #f1f2f6;
     --ink: #0f172a;
-    --outline: #131b2b;
+    --outline: #d6d8df;
+    --control-bg: #ffffff;
+    --control-ink: #0f172a;
+    --card-radius: 1.35rem;
     --card-color: #1f2937;
     --card-color-accent: #475569;
     --card-color-pastel: #e2e8f0;
@@ -33,14 +36,101 @@ permalink: /actual/
     padding-bottom: 4rem;
   }
 
+  .deck-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .deck-header {
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+  }
+
+  .deck-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+  }
+
+  .deck-select,
+  .deck-search {
+    appearance: none;
+    border: 1px solid var(--outline);
+    background: var(--control-bg);
+    color: var(--control-ink);
+    border-radius: 999px;
+    padding: 0.65rem 1.1rem;
+    font-size: 0.95rem;
+    line-height: 1;
+    box-shadow: 0 16px 24px rgba(15, 23, 42, 0.08);
+    transition: box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+
+  .deck-select:focus,
+  .deck-search:focus {
+    outline: none;
+    border-color: #475569;
+    box-shadow: 0 20px 32px rgba(15, 23, 42, 0.12);
+  }
+
+  .deck-select {
+    min-width: 9rem;
+    padding-right: 2.6rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23111827' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 10px 6px;
+  }
+
+  .deck-search {
+    flex: 1 1 16rem;
+    min-width: min(20rem, 100%);
+  }
+
+  .deck-search::placeholder {
+    color: #94a3b8;
+  }
+
+  .deck-control-btn {
+    border: 1px solid transparent;
+    background: #111827;
+    color: #f8fafc;
+    border-radius: 999px;
+    padding: 0.65rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1;
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.16);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .deck-control-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 18px 30px rgba(15, 23, 42, 0.2);
+  }
+
+  .deck-control-btn:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 2px;
+  }
+
   .card {
     perspective: 1600px;
+    position: relative;
   }
 
   .card-inner {
     position: relative;
     transform-style: preserve-3d;
     transition: transform .6s ease;
+    height: 100%;
   }
 
   .card[data-flipped="1"] .card-inner {
@@ -50,96 +140,100 @@ permalink: /actual/
   .card-surface {
     position: relative;
     backface-visibility: hidden;
-    border-radius: 1rem;
-    --card-padding: clamp(0.85rem, 1.4vw + 0.4rem, 1.1rem);
+    border-radius: var(--card-radius);
+    --card-padding: clamp(1.1rem, 1.3vw + 0.9rem, 1.7rem);
     padding: var(--card-padding);
-    min-height: 15rem;
-    border: 1px solid rgba(15, 23, 42, 0.1);
-    background: #ffffff;
-    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.14);
+    min-height: clamp(17rem, 32vh, 21rem);
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: clamp(0.85rem, 1vw, 1.2rem);
     overflow: hidden;
     width: 100%;
+    box-shadow: 0 26px 46px rgba(15, 23, 42, 0.22);
     transition: transform .18s ease, box-shadow .18s ease;
   }
 
   .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16.5rem, 1fr));
-    gap: clamp(0.75rem, 1.6vw, 1.2rem);
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: clamp(1rem, 1.4vw, 1.35rem);
     align-items: stretch;
   }
 
-  .card-surface:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 26px 56px rgba(15, 23, 42, 0.18);
+  .card-front.card-surface:hover,
+  .card-front.card-surface:focus-within {
+    transform: translateY(-4px);
+    box-shadow: 0 34px 60px rgba(15, 23, 42, 0.28);
   }
 
-  .card-front,
+  .card-front {
+    background: var(--card-color, #1f2937);
+    color: #f8fafc;
+  }
+
+  .card-front::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(140deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 58%);
+    mix-blend-mode: screen;
+    opacity: 0.65;
+  }
+
   .card-back {
     background: #ffffff;
     color: var(--ink);
+    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.16);
+    border: 1px solid rgba(15, 23, 42, 0.08);
   }
 
   .card-front .card-header,
   .card-back .card-header {
-    margin: calc(var(--card-padding) * -1);
-    margin-bottom: 1rem;
-    padding: .85rem var(--card-padding);
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    border-top-left-radius: 1.25rem;
-    border-top-right-radius: 1.25rem;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin: 0 0 clamp(0.65rem, 1.1vw, 1rem);
+    padding: 0;
   }
 
   .card-front .card-header {
-    background: var(--card-color, #1f2937);
-    color: #f8fafc;
-    border-bottom: 1px solid rgba(248, 250, 252, 0.35);
-  }
-
-  .card-front .card-header .card-id {
-    color: rgba(248, 250, 252, 0.7);
+    position: relative;
+    z-index: 1;
   }
 
   .card-back .card-header {
-    background: var(--card-color-pastel, #e2e8f0);
-    color: var(--card-color, var(--ink));
+    padding-bottom: 0.35rem;
     border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-  }
-
-  .card-back .card-header .card-id {
-    color: rgba(15, 23, 42, 0.55);
   }
 
   .presentation-face.card-front .card-header,
   .presentation-face.card-back .card-header {
-    margin: calc(var(--card-padding) * -1);
-    margin-bottom: 1.6rem;
-    padding: 1.1rem var(--card-padding);
+    margin-bottom: 1.4rem;
   }
 
   .card-front .card-front-body {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
-    gap: clamp(0.8rem, 1.6vw, 1.1rem);
+    gap: clamp(0.9rem, 1.2vw, 1.25rem);
+    color: inherit;
   }
 
   .card-front-content {
     display: flex;
     flex-direction: column;
-    gap: clamp(.55rem, 1.2vw, .85rem);
+    gap: clamp(0.55rem, 1vw, 0.85rem);
+    color: inherit;
   }
 
   .card-title {
-    font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+    font-size: clamp(1.1rem, 2.6vw, 1.55rem);
     font-weight: 700;
     letter-spacing: -.01em;
-    line-height: 1.25;
+    line-height: 1.2;
     color: inherit;
     margin: 0;
   }
@@ -148,22 +242,23 @@ permalink: /actual/
   .card-quote,
   .card-author {
     margin: 0;
+    color: inherit;
   }
 
   .card-summary {
-    font-size: clamp(.82rem, 1.8vw, .92rem);
+    font-size: clamp(.85rem, 1.5vw, .98rem);
     line-height: 1.55;
-    color: #1f2937;
+    color: rgba(248, 250, 252, 0.92);
     overflow-wrap: anywhere;
   }
 
   .card-quote {
     position: relative;
-    padding-left: 1.1rem;
-    color: #1f2937;
+    padding-left: 1rem;
+    color: rgba(248, 250, 252, 0.92);
     font-style: italic;
     line-height: 1.55;
-    font-size: clamp(.82rem, 1.8vw, .92rem);
+    font-size: clamp(.82rem, 1.5vw, .96rem);
     overflow-wrap: anywhere;
   }
 
@@ -172,23 +267,29 @@ permalink: /actual/
     font-size: 1.8rem;
     position: absolute;
     left: 0;
-    top: -.6rem;
-    color: rgba(15, 23, 42, 0.16);
+    top: -.65rem;
+    color: rgba(248, 250, 252, 0.28);
   }
 
   .card-author {
-    font-size: .75rem;
-    color: #475569;
+    font-size: .78rem;
+    color: rgba(248, 250, 252, 0.7);
   }
 
   .card-front .card-footer {
-    border-top: 1px solid rgba(15, 23, 42, 0.1);
-    padding-top: .85rem;
+    position: relative;
+    z-index: 1;
     margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-top: clamp(0.65rem, 1vw, 0.9rem);
+    border-top: 1px solid rgba(248, 250, 252, 0.2);
   }
 
   .card-front .card-id {
-    color: #64748b;
+    color: rgba(248, 250, 252, 0.72);
   }
 
   .face.back {
@@ -197,88 +298,133 @@ permalink: /actual/
     inset: 0;
   }
 
-  .card[data-in-stack="1"] .card-surface {
-    box-shadow: 0 30px 55px rgba(37, 99, 235, 0.28);
+  .card[data-in-stack="1"] .card-front {
+    box-shadow: 0 36px 58px rgba(37, 99, 235, 0.3);
   }
 
-  .card[data-highlight="1"] .card-surface {
-    outline: 4px solid rgba(56, 189, 248, 0.85);
+  .card[data-highlight="1"] .card-front {
+    outline: 4px solid rgba(56, 189, 248, 0.9);
     outline-offset: -6px;
   }
 
   .card-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
+    align-items: flex-start;
+    gap: 0.65rem;
     flex-wrap: wrap;
   }
 
   .type-ribbon {
     display: inline-flex;
     align-items: center;
-    padding: .28rem .85rem;
+    justify-content: center;
+    padding: .36rem .9rem;
     border-radius: 9999px;
     text-transform: uppercase;
-    font-size: .64rem;
+    font-size: .62rem;
     font-weight: 700;
     letter-spacing: .18em;
-    background: transparent;
-    color: inherit;
-    border: 1px solid currentColor;
+    white-space: nowrap;
+    background: rgba(248, 250, 252, 0.18);
+    color: #f8fafc;
+    border: 1px solid rgba(248, 250, 252, 0.4);
   }
 
   .card-controls {
     display: flex;
-    gap: .5rem;
+    align-items: center;
+    gap: .4rem;
+    margin-left: auto;
     flex-wrap: wrap;
+    justify-content: flex-end;
   }
 
-  .flip-btn,
-  .stack-btn,
-  .edit-btn,
-  .dialog-btn,
-  .stack-panel button {
+  .card-controls button {
     border-radius: 9999px;
-    border: none;
-    padding: .32rem .95rem;
-    background: rgba(248, 250, 252, 0.9);
-    font-size: .7rem;
+    border: 1px solid rgba(248, 250, 252, 0.38);
+    padding: .38rem .95rem;
+    background: rgba(248, 250, 252, 0.18);
+    font-size: .78rem;
     font-weight: 600;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    color: #0f172a;
-    transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease;
+    letter-spacing: .04em;
+    text-transform: none;
+    color: rgba(248, 250, 252, 0.9);
+    white-space: nowrap;
+    transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, color .18s ease;
     cursor: pointer;
   }
 
-  .flip-btn:hover,
-  .stack-btn:hover,
-  .edit-btn:hover,
+  .card-controls button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 20px rgba(15, 23, 42, 0.28);
+    background: rgba(248, 250, 252, 0.3);
+    color: #0f172a;
+  }
+
+  .card-controls button:focus-visible {
+    outline: 2px solid #f8fafc;
+    outline-offset: 2px;
+  }
+
+  .card-controls .stack-btn {
+    background: #f8fafc;
+    color: var(--card-color, #1f2937);
+    border-color: transparent;
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.26);
+  }
+
+  .card-controls .stack-btn:hover {
+    background: #ffffff;
+    color: var(--card-color, #111827);
+  }
+
+  .card-controls .stack-btn[data-active="1"] {
+    background: rgba(248, 250, 252, 0.85);
+  }
+
+  .card-controls .flip-btn,
+  .card-controls .edit-btn {
+    backdrop-filter: blur(4px);
+    color: rgba(248, 250, 252, 0.82);
+  }
+
+  .dialog-btn,
+  .stack-panel button {
+    border-radius: 9999px;
+    border: 1px solid var(--outline);
+    padding: .45rem 1.1rem;
+    background: rgba(255, 255, 255, 0.95);
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, color .18s ease;
+    cursor: pointer;
+    box-shadow: 0 12px 22px rgba(15, 23, 42, 0.14);
+  }
+
   .dialog-btn:hover,
   .stack-panel button:hover {
     transform: translateY(-1px);
-    box-shadow: 0 10px 18px rgba(15, 23, 42, 0.16);
-    background: rgba(248, 250, 252, 1);
+    box-shadow: 0 18px 32px rgba(15, 23, 42, 0.2);
+    background: #ffffff;
   }
 
-  #download-json[data-dirty="1"] {
-    background: rgba(37, 99, 235, 0.12);
-    color: #1d4ed8;
+  .dialog-btn:focus-visible,
+  .stack-panel button:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 2px;
   }
 
-  #download-json[data-dirty="1"]:hover {
-    background: rgba(37, 99, 235, 0.18);
+  #download-json.deck-control-btn[data-dirty="1"] {
+    background: #fbbf24;
+    color: #111827;
   }
 
-  .stack-btn[data-active="1"] {
-    background: rgba(248, 250, 252, 0.6);
-  }
-
-  .stack-card button:hover {
-    background: rgba(15, 23, 42, 0.12);
-    box-shadow: none;
-    transform: none;
+  #download-json.deck-control-btn[data-dirty="1"]:hover {
+    background: #f59e0b;
+    color: #111827;
   }
 
   .card-footer {
@@ -323,16 +469,55 @@ permalink: /actual/
     background: rgba(15, 23, 42, 0.14);
   }
 
+  .card-front .tag {
+    background: rgba(248, 250, 252, 0.18);
+    border: 1px solid rgba(248, 250, 252, 0.35);
+    color: rgba(248, 250, 252, 0.95);
+  }
+
+  .card-front .tag:hover {
+    background: rgba(248, 250, 252, 0.3);
+    color: var(--card-color, #0f172a);
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.32);
+  }
+
   .card-front .type-ribbon {
     background: rgba(248, 250, 252, 0.18);
     border-color: rgba(248, 250, 252, 0.4);
     color: #f8fafc;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.25);
   }
 
   .card-back .type-ribbon {
     background: rgba(15, 23, 42, 0.08);
     border-color: transparent;
     color: var(--card-color, #0f172a);
+    box-shadow: none;
+  }
+
+  .card-back .flip-btn {
+    border-radius: 9999px;
+    border: 1px solid rgba(15, 23, 42, 0.14);
+    padding: .4rem .95rem;
+    background: rgba(15, 23, 42, 0.06);
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: none;
+    color: var(--card-color, #0f172a);
+    transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, color .18s ease;
+    cursor: pointer;
+  }
+
+  .card-back .flip-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.14);
+    background: rgba(15, 23, 42, 0.1);
+  }
+
+  .card-back .flip-btn:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.5);
+    outline-offset: 2px;
   }
 
   .card-back h3.card-back-title {
@@ -403,12 +588,12 @@ permalink: /actual/
   }
 
   .stack-panel {
-    border: 1px solid rgba(15, 23, 42, 0.12);
-    border-radius: 1.25rem;
-    padding: 1.5rem;
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.18);
-    backdrop-filter: blur(6px);
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    border-radius: 1.35rem;
+    padding: 1.35rem 1.5rem;
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 28px 48px rgba(15, 23, 42, 0.18);
+    backdrop-filter: blur(12px);
   }
 
   #stack-list {
@@ -418,26 +603,46 @@ permalink: /actual/
   }
 
   .stack-card {
+    position: relative;
     border-radius: 1rem;
-    border: 1px solid rgba(15, 23, 42, 0.12);
-    background: linear-gradient(135deg, rgba(248, 250, 252, 0.96), var(--card-color-pastel, #e2e8f0));
-    padding: .9rem;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 1rem 1rem 1rem 1.25rem;
     display: flex;
     gap: .85rem;
     align-items: flex-start;
-    border-left: 4px solid var(--card-color, rgba(15, 23, 42, 0.16));
+    border-left: 6px solid var(--card-color, rgba(15, 23, 42, 0.2));
+    box-shadow: 0 18px 32px rgba(15, 23, 42, 0.16);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+
+  .stack-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 26px 44px rgba(15, 23, 42, 0.22);
   }
 
   .stack-card button {
-    padding: .25rem .6rem;
-    border-radius: .6rem;
-    border: none;
-    background: rgba(15, 23, 42, 0.08);
-    font-size: .65rem;
-    letter-spacing: .1em;
-    text-transform: uppercase;
+    padding: .35rem .8rem;
+    border-radius: .7rem;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    background: rgba(15, 23, 42, 0.05);
+    font-size: .75rem;
+    letter-spacing: .04em;
+    text-transform: none;
     font-weight: 600;
     color: #0f172a;
+    transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease;
+  }
+
+  .stack-card button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 18px rgba(15, 23, 42, 0.16);
+    background: rgba(15, 23, 42, 0.1);
+  }
+
+  .stack-card button:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
   }
 
   .stack-card button:disabled {
@@ -599,24 +804,20 @@ permalink: /actual/
   .presentation-face {
     display: flex;
     flex-direction: column;
-    gap: 1.1rem;
-    border-radius: 1.2rem;
-    --card-padding: 1.4rem;
+    gap: clamp(1rem, 1.6vw, 1.45rem);
+    border-radius: var(--card-radius);
+    --card-padding: clamp(1.8rem, 3vw, 2.6rem);
     padding: var(--card-padding);
-    box-shadow: 0 32px 70px rgba(15, 23, 42, 0.32);
+    box-shadow: 0 44px 90px rgba(15, 23, 42, 0.34);
   }
 
   .presentation-face.card-back {
-    border: 1px solid rgba(15, 23, 42, 0.16);
+    border: 1px solid rgba(15, 23, 42, 0.14);
   }
 
   .presentation-face:hover {
     transform: none;
-    box-shadow: 0 32px 70px rgba(15, 23, 42, 0.32);
-  }
-
-  .dialog-btn {
-    border-radius: .75rem;
+    box-shadow: 0 44px 90px rgba(15, 23, 42, 0.34);
   }
 
   .card-back .card-section-list,
@@ -634,33 +835,27 @@ permalink: /actual/
     font-size: .88rem;
   }
 
-  .tag:focus-visible,
-  .flip-btn:focus-visible,
-  .stack-btn:focus-visible,
-  .edit-btn:focus-visible,
-  .dialog-btn:focus-visible,
-  .stack-panel button:focus-visible {
-    outline: 3px solid #2563eb;
+  .tag:focus-visible {
+    outline: 2px solid #2563eb;
     outline-offset: 2px;
   }
 </style>
 </head>
 <body>
   <main class="max-w-6xl mx-auto px-4 py-8">
-    <header class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <header class="deck-header">
       <div>
         <h1 class="text-2xl font-semibold">Actual Deck</h1>
         <p id="meta" class="text-sm text-slate-500">Loading…</p>
       </div>
 
-      <div class="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:items-center sm:justify-end">
-        <select id="preset" class="border rounded-lg px-3 py-2">
+      <div class="deck-controls">
+        <select id="preset" class="deck-select">
           <option value="">All cards</option>
         </select>
-        <input id="q" type="search" placeholder="Search title, quote, tags"
-               class="border rounded-lg px-3 py-2 w-full sm:w-64" />
-        <button id="shuffle" class="dialog-btn" type="button">Shuffle</button>
-        <button id="download-json" class="dialog-btn" type="button">Download cards.json</button>
+        <input id="q" type="search" placeholder="Search cards, tags, quotes" class="deck-search" />
+        <button id="shuffle" class="deck-control-btn" type="button">Shuffle</button>
+        <button id="download-json" class="deck-control-btn" type="button">Download cards.json</button>
       </div>
     </header>
 
