@@ -30,7 +30,7 @@ permalink: /actual/
 
   main {
     position: relative;
-    padding-bottom: 8rem;
+    padding-bottom: 4rem;
   }
 
   .card {
@@ -51,7 +51,7 @@ permalink: /actual/
     position: relative;
     backface-visibility: hidden;
     border-radius: 1rem;
-    --card-padding: 1.1rem;
+    --card-padding: clamp(0.85rem, 1.4vw + 0.4rem, 1.1rem);
     padding: var(--card-padding);
     min-height: 15rem;
     border: 1px solid rgba(15, 23, 42, 0.1);
@@ -63,6 +63,13 @@ permalink: /actual/
     overflow: hidden;
     width: 100%;
     transition: transform .18s ease, box-shadow .18s ease;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16.5rem, 1fr));
+    gap: clamp(0.75rem, 1.6vw, 1.2rem);
+    align-items: stretch;
   }
 
   .card-surface:hover {
@@ -119,13 +126,13 @@ permalink: /actual/
   .card-front .card-front-body {
     display: flex;
     flex-direction: column;
-    gap: 1.1rem;
+    gap: clamp(0.8rem, 1.6vw, 1.1rem);
   }
 
   .card-front-content {
     display: flex;
     flex-direction: column;
-    gap: .85rem;
+    gap: clamp(.55rem, 1.2vw, .85rem);
   }
 
   .card-title {
@@ -144,7 +151,7 @@ permalink: /actual/
   }
 
   .card-summary {
-    font-size: .92rem;
+    font-size: clamp(.82rem, 1.8vw, .92rem);
     line-height: 1.55;
     color: #1f2937;
     overflow-wrap: anywhere;
@@ -156,6 +163,7 @@ permalink: /actual/
     color: #1f2937;
     font-style: italic;
     line-height: 1.55;
+    font-size: clamp(.82rem, 1.8vw, .92rem);
     overflow-wrap: anywhere;
   }
 
@@ -228,6 +236,7 @@ permalink: /actual/
 
   .flip-btn,
   .stack-btn,
+  .edit-btn,
   .dialog-btn,
   .stack-panel button {
     border-radius: 9999px;
@@ -245,11 +254,21 @@ permalink: /actual/
 
   .flip-btn:hover,
   .stack-btn:hover,
+  .edit-btn:hover,
   .dialog-btn:hover,
   .stack-panel button:hover {
     transform: translateY(-1px);
     box-shadow: 0 10px 18px rgba(15, 23, 42, 0.16);
     background: rgba(248, 250, 252, 1);
+  }
+
+  #download-json[data-dirty="1"] {
+    background: rgba(37, 99, 235, 0.12);
+    color: #1d4ed8;
+  }
+
+  #download-json[data-dirty="1"]:hover {
+    background: rgba(37, 99, 235, 0.18);
   }
 
   .stack-btn[data-active="1"] {
@@ -367,7 +386,7 @@ permalink: /actual/
     line-height: 1.55;
     margin: 0;
     overflow-wrap: anywhere;
-    font-size: .9rem;
+    font-size: clamp(.82rem, 1.8vw, .9rem);
   }
 
   .card-empty-note {
@@ -378,8 +397,9 @@ permalink: /actual/
 
   .stack-dock {
     position: sticky;
-    bottom: 1.5rem;
+    top: 1rem;
     z-index: 30;
+    margin-bottom: 2rem;
   }
 
   .stack-panel {
@@ -392,7 +412,7 @@ permalink: /actual/
   }
 
   #stack-list {
-    max-height: min(40vh, 24rem);
+    max-height: min(42vh, 24rem);
     overflow-y: auto;
     padding-right: .25rem;
   }
@@ -478,6 +498,92 @@ permalink: /actual/
     gap: 1.35rem;
   }
 
+  .editor-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 23, 42, 0.65);
+    z-index: 60;
+    padding: 1.5rem;
+  }
+
+  .editor-overlay[hidden] {
+    display: none;
+  }
+
+  .editor-dialog {
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.15);
+    border-radius: 1.25rem;
+    width: min(56rem, 100%);
+    max-height: 100%;
+    padding: 1.8rem;
+    box-shadow: 0 32px 70px rgba(15, 23, 42, 0.32);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .editor-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .editor-top h2 {
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  .editor-subtitle {
+    font-size: .85rem;
+    color: #475569;
+    margin: .15rem 0 0;
+  }
+
+  .editor-help {
+    font-size: .85rem;
+    color: #475569;
+    margin: 0;
+  }
+
+  .editor-textarea {
+    width: 100%;
+    min-height: 18rem;
+    flex: 1;
+    border-radius: .9rem;
+    border: 1px solid rgba(15, 23, 42, 0.16);
+    padding: 1rem;
+    font-family: "JetBrains Mono", "Fira Code", Menlo, Monaco, Consolas, monospace;
+    font-size: .85rem;
+    line-height: 1.5;
+    resize: vertical;
+  }
+
+  .editor-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: .75rem;
+  }
+
+  .editor-error {
+    display: none;
+    background: rgba(239, 68, 68, 0.12);
+    color: #b91c1c;
+    border-radius: .9rem;
+    padding: .75rem 1rem;
+    font-size: .85rem;
+    white-space: pre-wrap;
+    margin: 0;
+  }
+
+  .editor-error[data-visible="1"] {
+    display: block;
+  }
+
   .presentation-card {
     flex: 1;
     overflow: auto;
@@ -531,6 +637,7 @@ permalink: /actual/
   .tag:focus-visible,
   .flip-btn:focus-visible,
   .stack-btn:focus-visible,
+  .edit-btn:focus-visible,
   .dialog-btn:focus-visible,
   .stack-panel button:focus-visible {
     outline: 3px solid #2563eb;
@@ -546,19 +653,18 @@ permalink: /actual/
         <p id="meta" class="text-sm text-slate-500">Loading…</p>
       </div>
 
-      <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
+      <div class="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:items-center sm:justify-end">
         <select id="preset" class="border rounded-lg px-3 py-2">
           <option value="">All cards</option>
         </select>
         <input id="q" type="search" placeholder="Search title, quote, tags"
                class="border rounded-lg px-3 py-2 w-full sm:w-64" />
-        <button id="shuffle" class="dialog-btn">Shuffle</button>
+        <button id="shuffle" class="dialog-btn" type="button">Shuffle</button>
+        <button id="download-json" class="dialog-btn" type="button">Download cards.json</button>
       </div>
     </header>
 
-    <section id="cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></section>
-
-    <aside class="stack-dock mt-8">
+    <aside class="stack-dock mt-6">
       <div class="stack-panel space-y-4">
         <div>
           <h2 class="text-base font-semibold">Presentation stack</h2>
@@ -572,19 +678,7 @@ permalink: /actual/
       </div>
     </aside>
 
-    <aside class="stack-dock mt-8">
-      <div class="stack-panel space-y-4">
-        <div>
-          <h2 class="text-base font-semibold">Presentation stack</h2>
-          <p id="stack-meta" class="stack-meta">No cards selected yet.</p>
-        </div>
-        <div id="stack-list" class="space-y-3"></div>
-        <div class="flex gap-2 flex-wrap">
-          <button id="stack-present" class="dialog-btn" disabled>Start presentation</button>
-          <button id="stack-clear" class="dialog-btn" disabled>Clear</button>
-        </div>
-      </div>
-    </aside>
+    <section id="cards" class="cards-grid"></section>
 
     <template id="card-tpl">
       <article class="card">
@@ -594,6 +688,7 @@ permalink: /actual/
             <header class="card-header">
               <span class="type-ribbon" data-family-pill></span>
               <div class="card-controls">
+                <button class="edit-btn" data-edit type="button">Edit</button>
                 <button class="stack-btn" data-stack>Add to stack</button>
                 <button class="flip-btn" data-flip>Flip</button>
               </div>
@@ -625,6 +720,24 @@ permalink: /actual/
       </article>
     </template>
   </main>
+
+  <div id="editor" class="editor-overlay" hidden>
+    <div class="editor-dialog" role="dialog" aria-modal="true" aria-labelledby="editor-heading">
+      <div class="editor-top">
+        <div>
+          <h2 id="editor-heading">Edit card</h2>
+          <p id="editor-subtitle" class="editor-subtitle"></p>
+        </div>
+        <button id="editor-close" class="dialog-btn" type="button">Close</button>
+      </div>
+      <p class="editor-help">Update the JSON for this card and save to refresh the deck. Download the updated cards.json to persist your changes.</p>
+      <pre id="editor-error" class="editor-error" aria-live="assertive"></pre>
+      <textarea id="editor-json" class="editor-textarea" spellcheck="false"></textarea>
+      <div class="editor-actions">
+        <button id="editor-save" class="dialog-btn" type="button">Save changes</button>
+      </div>
+    </div>
+  </div>
 
   <div id="presentation" class="presentation-overlay" hidden>
     <div class="presentation-dialog" role="dialog" aria-modal="true" aria-labelledby="presentation-title">
@@ -678,6 +791,9 @@ permalink: /actual/
   let presentationIndex = 0;
   let presentationFlipped = false;
   const highlightTimers = new Map();
+  let editingCardId = null;
+  let editorReturnFocus = null;
+  let hasChanges = false;
 
   // Elements
   const elCards   = document.getElementById("cards");
@@ -686,6 +802,7 @@ permalink: /actual/
   const elMeta    = document.getElementById("meta");
   const elTpl     = document.getElementById("card-tpl");
   const elShuffle = document.getElementById("shuffle");
+  const elDownload = document.getElementById("download-json");
   const elStackList   = document.getElementById("stack-list");
   const elStackMeta   = document.getElementById("stack-meta");
   const elStackPresent= document.getElementById("stack-present");
@@ -697,8 +814,17 @@ permalink: /actual/
   const elPresentationNext  = document.getElementById("presentation-next");
   const elPresentationFlip  = document.getElementById("presentation-flip");
   const elPresentationClose = document.getElementById("presentation-close");
+  const elEditor            = document.getElementById("editor");
+  const elEditorHeading     = document.getElementById("editor-heading");
+  const elEditorSubtitle    = document.getElementById("editor-subtitle");
+  const elEditorJson        = document.getElementById("editor-json");
+  const elEditorSave        = document.getElementById("editor-save");
+  const elEditorClose       = document.getElementById("editor-close");
+  const elEditorError       = document.getElementById("editor-error");
   const qs = new URLSearchParams(location.search);
   const cb = Date.now();
+
+  updateDownloadButton();
 
   async function fetchJSON(url){ const r=await fetch(`${url}?cb=${cb}`); if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }
   function normalize(s){ return (s||"").toLowerCase(); }
@@ -747,6 +873,128 @@ permalink: /actual/
     const key = normalizeId(id);
     if (key === null) return undefined;
     return ALL_CARDS.find(c => normalizeId(c.id) === key);
+  }
+  function updateBodyScrollLock(){
+    if (typeof document === "undefined") return;
+    if (!document.body) return;
+    const presentationOpen = elPresentation && !elPresentation.hasAttribute("hidden");
+    const editorOpen = elEditor && !elEditor.hasAttribute("hidden");
+    document.body.style.overflow = presentationOpen || editorOpen ? "hidden" : "";
+  }
+  function updateDownloadButton(){
+    if (!elDownload) return;
+    elDownload.textContent = hasChanges ? "Download updated cards.json" : "Download cards.json";
+    if (hasChanges){
+      elDownload.dataset.dirty = "1";
+    }else{
+      delete elDownload.dataset.dirty;
+    }
+  }
+  function markDirty(){
+    if (!hasChanges){
+      hasChanges = true;
+    }
+    updateDownloadButton();
+  }
+  function showEditorError(message){
+    if (!elEditorError) return;
+    if (message){
+      elEditorError.textContent = message;
+      elEditorError.setAttribute("data-visible", "1");
+    }else{
+      elEditorError.textContent = "";
+      elEditorError.removeAttribute("data-visible");
+    }
+  }
+  function openCardEditor(id){
+    const key = normalizeId(id);
+    if (key === null) return;
+    const card = getCardById(key);
+    if (!card || !elEditor || !elEditorJson) return;
+    editingCardId = key;
+    editorReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const heading = card.title ? `Edit ${card.title}` : "Edit card";
+    if (elEditorHeading) elEditorHeading.textContent = heading;
+    if (elEditorSubtitle) elEditorSubtitle.textContent = card.id ? `ID: ${card.id}` : "";
+    elEditorJson.value = JSON.stringify(card, null, 2);
+    showEditorError("");
+    elEditor.removeAttribute("hidden");
+    updateBodyScrollLock();
+    setTimeout(() => {
+      if (!elEditorJson) return;
+      elEditorJson.focus({ preventScroll: true });
+      const len = elEditorJson.value.length;
+      elEditorJson.setSelectionRange(len, len);
+    }, 0);
+    document.addEventListener("keydown", handleEditorKeydown);
+  }
+  function closeCardEditor(){
+    if (!elEditor) return;
+    editingCardId = null;
+    if (elEditorJson) elEditorJson.value = "";
+    showEditorError("");
+    elEditor.setAttribute("hidden", "");
+    updateBodyScrollLock();
+    document.removeEventListener("keydown", handleEditorKeydown);
+    if (editorReturnFocus && typeof editorReturnFocus.focus === "function"){
+      editorReturnFocus.focus();
+    }
+    editorReturnFocus = null;
+  }
+  function handleEditorKeydown(event){
+    if (!elEditor || elEditor.hasAttribute("hidden")) return;
+    if (event.key === "Escape"){
+      event.preventDefault();
+      closeCardEditor();
+    }else if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s"){
+      event.preventDefault();
+      saveCardFromEditor();
+    }
+  }
+  function saveCardFromEditor(){
+    if (editingCardId === null || !elEditorJson) return;
+    showEditorError("");
+    let parsed;
+    try{
+      parsed = JSON.parse(elEditorJson.value);
+    }catch(err){
+      showEditorError(`Invalid JSON: ${err.message}`);
+      return;
+    }
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)){
+      showEditorError("Card JSON must be an object.");
+      return;
+    }
+    const nextId = normalizeId(parsed.id);
+    if (nextId === null){
+      showEditorError('Card must include an "id" value.');
+      return;
+    }
+    const idx = ALL_CARDS.findIndex(c => normalizeId(c.id) === editingCardId);
+    if (idx === -1){
+      showEditorError("Could not locate the original card to update.");
+      return;
+    }
+    const duplicate = ALL_CARDS.some((c, index) => index !== idx && normalizeId(c.id) === nextId);
+    if (duplicate){
+      showEditorError(`Another card already uses the id "${nextId}".`);
+      return;
+    }
+    ALL_CARDS[idx] = parsed;
+    if (nextId !== editingCardId){
+      STACK = STACK.map(id => id === editingCardId ? nextId : id);
+      PRESETS.forEach(p => {
+        if (Array.isArray(p.cards)){
+          p.cards = p.cards.map(id => id === editingCardId ? nextId : id);
+        }
+      });
+    }
+    editingCardId = nextId;
+    markDirty();
+    closeCardEditor();
+    renderStack();
+    saveStack();
+    applyFilters();
   }
   function normalizeList(items){
     if (!Array.isArray(items)) return [];
@@ -1028,7 +1276,7 @@ permalink: /actual/
     presentationFlipped = false;
     updatePresentation();
     elPresentation.removeAttribute("hidden");
-    document.body.style.overflow = "hidden";
+    updateBodyScrollLock();
     document.addEventListener("keydown", handleKeydown);
   }
   function changePresentation(delta){
@@ -1109,7 +1357,7 @@ permalink: /actual/
   function closePresentation(){
     elPresentation.setAttribute("hidden", "");
     presentationFlipped = false;
-    document.body.style.overflow = "";
+    updateBodyScrollLock();
     document.removeEventListener("keydown", handleKeydown);
   }
   function handleKeydown(event){
@@ -1235,6 +1483,15 @@ permalink: /actual/
         stackBtn.textContent = "No ID";
       }
 
+      const editBtn = node.querySelector("[data-edit]");
+      if (editBtn){
+        editBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const targetId = normalizedId !== null ? normalizedId : cardId;
+          openCardEditor(targetId);
+        });
+      }
+
       // Tags
       const tagsWrap = node.querySelector("[data-tags]");
       tagsWrap.innerHTML = "";
@@ -1334,6 +1591,41 @@ permalink: /actual/
   elPresentationFlip.addEventListener("click", () => { presentationFlipped = !presentationFlipped; updatePresentation(); });
   elPresentationClose.addEventListener("click", closePresentation);
   elPresentation.addEventListener("click", (event) => { if (event.target === elPresentation) closePresentation(); });
+  if (elDownload){
+    elDownload.addEventListener("click", () => {
+      const json = JSON.stringify(ALL_CARDS, null, 2);
+      const blob = new Blob([json], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "cards.json";
+      if (document.body){
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      hasChanges = false;
+      updateDownloadButton();
+    });
+  }
+  if (elEditorSave){
+    elEditorSave.addEventListener("click", (event) => {
+      event.preventDefault();
+      saveCardFromEditor();
+    });
+  }
+  if (elEditorClose){
+    elEditorClose.addEventListener("click", (event) => {
+      event.preventDefault();
+      closeCardEditor();
+    });
+  }
+  if (elEditor){
+    elEditor.addEventListener("click", (event) => {
+      if (event.target === elEditor) closeCardEditor();
+    });
+  }
   window.addEventListener("resize", scheduleCardBalance);
   window.addEventListener("load", scheduleCardBalance);
 
