@@ -556,7 +556,21 @@ permalink: /actual/
       </div>
     </header>
 
-    <section id="cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></section>
+    <section id="cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></section>
+
+    <aside class="stack-dock mt-8">
+      <div class="stack-panel space-y-4">
+        <div>
+          <h2 class="text-base font-semibold">Presentation stack</h2>
+          <p id="stack-meta" class="stack-meta">No cards selected yet.</p>
+        </div>
+        <div id="stack-list" class="space-y-3"></div>
+        <div class="flex gap-2 flex-wrap">
+          <button id="stack-present" class="dialog-btn" disabled>Start presentation</button>
+          <button id="stack-clear" class="dialog-btn" disabled>Clear</button>
+        </div>
+      </div>
+    </aside>
 
     <aside class="stack-dock mt-8">
       <div class="stack-panel space-y-4">
