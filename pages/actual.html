@@ -957,9 +957,14 @@ permalink: /actual/
 
 <script>
   // Config
-  const JSON_BASE = "/data/actual-deck";
-  const CARDS_URL = `${JSON_BASE}/cards.json`;
-  const PRESETS_URL = `${JSON_BASE}/presets.json`;
+  const JSON_BASE_CANDIDATES_RAW = [
+    "{{ '/data/actual-deck' | relative_url }}",
+    "{{ '/actual-deck' | relative_url }}",
+    "{{ '/public/actual-deck' | relative_url }}",
+  ];
+  const JSON_BASE_CANDIDATES = [...new Set(JSON_BASE_CANDIDATES_RAW.map(sanitizeBasePath))].filter(Boolean);
+  let JSON_BASE = JSON_BASE_CANDIDATES[0] || "";
+
 
   // Simple color map by type/family
   const TYPE_COLORS = {
@@ -1010,6 +1015,7 @@ permalink: /actual/
   let editingCardId = null;
   let editorReturnFocus = null;
   let hasChanges = false;
+  let balanceFrame = null;
 
   // Elements
   const elCards   = document.getElementById("cards");
@@ -1042,7 +1048,31 @@ permalink: /actual/
 
   updateDownloadButton();
 
-  async function fetchJSON(url){ const r=await fetch(`${url}?cb=${cb}`); if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }
+  function withCacheBust(url){
+    return url.includes("?") ? `${url}&cb=${cb}` : `${url}?cb=${cb}`;
+  }
+  async function fetchJSON(url){
+    const response = await fetch(withCacheBust(url));
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return response.json();
+  }
+  async function fetchDeckData(){
+    let lastError = null;
+    for (const base of JSON_BASE_CANDIDATES){
+      const cardsUrl = `${base}/cards.json`;
+      const presetsUrl = `${base}/presets.json`;
+      try{
+        const cardsPromise = fetchJSON(cardsUrl);
+        const presetsPromise = fetchJSON(presetsUrl).catch(() => []);
+        const [cards, presets] = await Promise.all([cardsPromise, presetsPromise]);
+        JSON_BASE = base;
+        return { cards, presets };
+      }catch(err){
+        lastError = err;
+      }
+    }
+    throw lastError || new Error('Unable to load deck data');
+  }
   function normalize(s){ return (s||"").toLowerCase(); }
   function pickColor(family){
     const key = normalize(family||"");
@@ -1077,6 +1107,16 @@ permalink: /actual/
     element.style.setProperty("--card-color-pastel", mixWithWhite(color, 0.82));
     element.style.setProperty("--card-front-ink", "#f8fafc");
     element.style.setProperty("--card-front-muted", mixWithWhite(color, 0.68));
+  }
+
+  function sanitizeBasePath(path){
+    if (typeof path !== "string") return "";
+    let result = path.trim();
+    if (!result) return "";
+    while (result.endsWith("/")){
+      result = result.slice(0, -1);
+    }
+    return result;
   }
   function cardDomId(id){
     if (!id && id !== 0) return "";
@@ -1355,6 +1395,35 @@ permalink: /actual/
     }else{
       container.setAttribute("hidden", "");
     }
+  }
+
+  function balanceCardHeights(){
+    const cards = document.querySelectorAll(".card");
+    cards.forEach(card => {
+      const faces = card.querySelectorAll(".card-face");
+      if (!faces.length) return;
+      let tallest = 0;
+      faces.forEach(face => {
+        face.style.minHeight = "";
+        face.style.height = "";
+      });
+      faces.forEach(face => {
+        const height = face.offsetHeight;
+        if (height > tallest) tallest = height;
+      });
+      faces.forEach(face => {
+        face.style.minHeight = tallest ? `${tallest}px` : "";
+      });
+    });
+  }
+  function scheduleCardBalance(){
+    if (balanceFrame !== null){
+      cancelAnimationFrame(balanceFrame);
+    }
+    balanceFrame = requestAnimationFrame(() => {
+      balanceFrame = null;
+      balanceCardHeights();
+    });
   }
 
   function summarizeCard(card){
@@ -1820,13 +1889,18 @@ permalink: /actual/
     });
   }
 
+  if (typeof window !== 'undefined'){
+    window.addEventListener('resize', scheduleCardBalance);
+    window.addEventListener('orientationchange', scheduleCardBalance);
+  }
+  if (typeof document !== 'undefined' && document.fonts && document.fonts.addEventListener){
+    document.fonts.addEventListener('loadingdone', scheduleCardBalance);
+  }
+
   // Boot
   (async function init(){
     try{
-      const [cards, presets] = await Promise.all([
-        fetchJSON(CARDS_URL),
-        fetchJSON(PRESETS_URL).catch(()=>[])
-      ]);
+      const { cards, presets } = await fetchDeckData();
       ALL_CARDS = Array.isArray(cards)?cards:[];
       PRESETS = Array.isArray(presets)?presets:[];
       PRESETS.forEach(p => {
@@ -1843,7 +1917,11 @@ permalink: /actual/
       applyFilters();
     }catch(e){
       elMeta.textContent = `Error: ${e.message}`;
-      elCards.innerHTML = `<p class="text-red-700">Failed to load JSON from ${JSON_BASE}.</p>`;
+      const tried = JSON_BASE_CANDIDATES.length > 1
+        ? JSON_BASE_CANDIDATES.join(" or ")
+        : (JSON_BASE || JSON_BASE_CANDIDATES[0] || "");
+      const fallbackMessage = tried ? `Failed to load JSON from ${tried}.` : "Failed to load deck JSON.";
+      elCards.innerHTML = `<p class="text-red-700">${fallbackMessage}</p>`;
     }
   })();
 </script>
