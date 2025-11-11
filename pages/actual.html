@@ -121,105 +121,91 @@ permalink: /actual/
     outline-offset: 2px;
   }
 
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-    gap: clamp(0.75rem, 1vw, 1rem);
-    align-items: start;
-  }
-
   .card {
-    display: grid;
-    gap: clamp(0.55rem, 1vw, 0.75rem);
-    --card-padding: clamp(0.85rem, 1vw + 0.65rem, 1.25rem);
-    --card-radius: 0.95rem;
-    --card-front-ink: #f8fafc;
-    --card-front-muted: rgba(248, 250, 252, 0.72);
+    perspective: 1600px;
+    position: relative;
   }
 
-  .card-face {
+  .card-inner {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform .6s ease;
+    height: 100%;
+  }
+
+  .card[data-flipped="1"] .card-inner {
+    transform: rotateY(180deg);
+  }
+
+  .card-surface {
+    position: relative;
+    backface-visibility: hidden;
     border-radius: var(--card-radius);
+    --card-padding: clamp(1.1rem, 1.3vw + 0.9rem, 1.7rem);
     padding: var(--card-padding);
+    min-height: clamp(17rem, 32vh, 21rem);
     display: flex;
     flex-direction: column;
-    gap: clamp(0.6rem, 1vw, 0.9rem);
-    background: #fff;
-    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.12);
-    border: 1px solid rgba(15, 23, 42, 0.08);
-    min-height: 0;
+    gap: clamp(0.85rem, 1vw, 1.2rem);
+    overflow: hidden;
+    width: 100%;
+    box-shadow: 0 26px 46px rgba(15, 23, 42, 0.22);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: clamp(1rem, 1.4vw, 1.35rem);
+    align-items: stretch;
+  }
+
+  .card-front.card-surface:hover,
+  .card-front.card-surface:focus-within {
+    transform: translateY(-4px);
+    box-shadow: 0 34px 60px rgba(15, 23, 42, 0.28);
+  }
+
+  .card-front {
+    background: var(--card-color, #1f2937);
+    color: #f8fafc;
+  }
+
+  .card-front::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(140deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 58%);
+    mix-blend-mode: screen;
+    opacity: 0.65;
   }
 
   .card-back {
     background: #ffffff;
     color: var(--ink);
-    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.16);
+    border: 1px solid rgba(15, 23, 42, 0.08);
   }
 
-  .card-id {
-    font-size: 0.68rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: #475569;
-  }
-
-  .card-front {
-    background: var(--card-color, #1f2937);
-    color: var(--card-front-ink);
-    box-shadow: 0 16px 32px rgba(15, 23, 42, 0.22);
-    position: relative;
-  }
-
-  .card-front::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(130deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 55%);
-    opacity: 0.4;
-  }
-
-  .card[data-in-stack="1"] .card-front {
-    box-shadow: 0 24px 40px rgba(37, 99, 235, 0.32);
-  }
-
-  .card[data-highlight="1"] .card-front {
-    outline: 3px solid rgba(56, 189, 248, 0.85);
-    outline-offset: -4px;
-  }
-
-  .card-header,
-  .card-back-header {
+  .card-front .card-header,
+  .card-back .card-header {
     display: flex;
-    align-items: flex-start;
     justify-content: space-between;
-    gap: 0.5rem;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin: 0 0 clamp(0.65rem, 1.1vw, 1rem);
+    padding: 0;
   }
 
-  .card-header {
-    margin-bottom: 0.2rem;
+  .card-front .card-header {
     position: relative;
     z-index: 1;
   }
 
-  .card-back-header {
-    margin-bottom: 0.2rem;
-    font-size: 0.65rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: #64748b;
-  }
-
-  .card-face-label {
-    font-size: 0.62rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: #475569;
-  }
-
-  .card-back-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  .card-back .card-header {
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
   }
 
   .presentation-face.card-front .card-header,
@@ -232,22 +218,22 @@ permalink: /actual/
     z-index: 1;
     display: flex;
     flex-direction: column;
-    gap: clamp(0.45rem, 1vw, 0.65rem);
+    gap: clamp(0.9rem, 1.2vw, 1.25rem);
     color: inherit;
   }
 
   .card-front-content {
     display: flex;
     flex-direction: column;
-    gap: clamp(0.35rem, 0.9vw, 0.6rem);
+    gap: clamp(0.55rem, 1vw, 0.85rem);
     color: inherit;
   }
 
   .card-title {
-    font-size: clamp(1.05rem, 2.1vw, 1.35rem);
+    font-size: clamp(1.1rem, 2.6vw, 1.55rem);
     font-weight: 700;
     letter-spacing: -.01em;
-    line-height: 1.25;
+    line-height: 1.2;
     color: inherit;
     margin: 0;
   }
@@ -260,94 +246,34 @@ permalink: /actual/
   }
 
   .card-summary {
-    font-size: clamp(0.8rem, 1.5vw, 0.92rem);
-    line-height: 1.5;
-    color: var(--card-front-muted);
+    font-size: clamp(.85rem, 1.5vw, .98rem);
+    line-height: 1.55;
+    color: rgba(248, 250, 252, 0.92);
     overflow-wrap: anywhere;
   }
 
   .card-quote {
     position: relative;
-    padding-left: 0.75rem;
-    color: var(--card-front-muted);
+    padding-left: 1rem;
+    color: rgba(248, 250, 252, 0.92);
     font-style: italic;
-    line-height: 1.5;
-    font-size: clamp(0.78rem, 1.4vw, 0.9rem);
+    line-height: 1.55;
+    font-size: clamp(.82rem, 1.5vw, .96rem);
     overflow-wrap: anywhere;
   }
 
   .card-quote::before {
     content: "“";
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     position: absolute;
     left: 0;
-    top: -0.4rem;
-    color: rgba(248, 250, 252, 0.35);
+    top: -.65rem;
+    color: rgba(248, 250, 252, 0.28);
   }
 
   .card-author {
-    font-size: 0.7rem;
+    font-size: .78rem;
     color: rgba(248, 250, 252, 0.7);
-  }
-
-  .card-actions {
-    display: flex;
-    gap: 0.35rem;
-    margin-left: auto;
-  }
-
-  .icon-btn {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 0.6rem;
-    border: 1px solid rgba(248, 250, 252, 0.36);
-    background: rgba(248, 250, 252, 0.18);
-    color: var(--card-front-ink);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, color .18s ease;
-    cursor: pointer;
-  }
-
-  .icon-btn svg {
-    width: 1rem;
-    height: 1rem;
-    fill: currentColor;
-  }
-
-  .icon-btn:hover {
-    transform: translateY(-1px);
-    background: rgba(248, 250, 252, 0.28);
-    box-shadow: 0 14px 26px rgba(15, 23, 42, 0.28);
-    color: #0f172a;
-  }
-
-  .icon-btn:focus-visible {
-    outline: 2px solid #f8fafc;
-    outline-offset: 2px;
-  }
-
-  .type-ribbon {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.3rem 0.75rem;
-    border-radius: 999px;
-    text-transform: uppercase;
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    white-space: nowrap;
-    background: rgba(248, 250, 252, 0.22);
-    color: inherit;
-  }
-
-  .card-back-family {
-    font-size: 0.62rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--card-color, #475569);
   }
 
   .card-front .card-footer {
@@ -355,69 +281,111 @@ permalink: /actual/
     z-index: 1;
     margin-top: auto;
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding-top: 0.6rem;
-    border-top: 1px solid rgba(248, 250, 252, 0.22);
-  }
-
-  .card-footer-top {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-  }
-
-  .card-footer-bottom {
-    display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding-top: clamp(0.65rem, 1vw, 0.9rem);
+    border-top: 1px solid rgba(248, 250, 252, 0.2);
   }
 
   .card-front .card-id {
-    font-size: 0.68rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--card-front-muted);
+    color: rgba(248, 250, 252, 0.72);
   }
 
-  .stack-btn {
-    border-radius: 999px;
-    border: none;
-    background: #f8fafc;
-    color: var(--card-color, #1f2937);
-    font-weight: 600;
-    font-size: 0.78rem;
-    padding: 0.5rem 0.95rem;
+  .face.back {
+    transform: rotateY(180deg);
+    position: absolute;
+    inset: 0;
+  }
+
+  .card[data-in-stack="1"] .card-front {
+    box-shadow: 0 36px 58px rgba(37, 99, 235, 0.3);
+  }
+
+  .card[data-highlight="1"] .card-front {
+    outline: 4px solid rgba(56, 189, 248, 0.9);
+    outline-offset: -6px;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+
+  .type-ribbon {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.26);
-    cursor: pointer;
-    transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, color .18s ease;
+    justify-content: center;
+    padding: .36rem .9rem;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .18em;
+    white-space: nowrap;
+    background: rgba(248, 250, 252, 0.18);
+    color: #f8fafc;
+    border: 1px solid rgba(248, 250, 252, 0.4);
+  }
+
+  .card-controls {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
     margin-left: auto;
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
 
-  .stack-btn svg {
-    width: 0.95rem;
-    height: 0.95rem;
-    fill: currentColor;
+  .card-controls button {
+    border-radius: 9999px;
+    border: 1px solid rgba(248, 250, 252, 0.38);
+    padding: .38rem .95rem;
+    background: rgba(248, 250, 252, 0.18);
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: none;
+    color: rgba(248, 250, 252, 0.9);
+    white-space: nowrap;
+    transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, color .18s ease;
+    cursor: pointer;
   }
 
-  .stack-btn:hover {
+  .card-controls button:hover {
     transform: translateY(-1px);
-    box-shadow: 0 18px 32px rgba(15, 23, 42, 0.3);
+    box-shadow: 0 12px 20px rgba(15, 23, 42, 0.28);
+    background: rgba(248, 250, 252, 0.3);
+    color: #0f172a;
   }
 
-  .stack-btn[data-active="1"] {
+  .card-controls button:focus-visible {
+    outline: 2px solid #f8fafc;
+    outline-offset: 2px;
+  }
+
+  .card-controls .stack-btn {
+    background: #f8fafc;
+    color: var(--card-color, #1f2937);
+    border-color: transparent;
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.26);
+  }
+
+  .card-controls .stack-btn:hover {
+    background: #ffffff;
+    color: var(--card-color, #111827);
+  }
+
+  .card-controls .stack-btn[data-active="1"] {
     background: rgba(248, 250, 252, 0.85);
   }
 
-  .stack-btn:disabled {
-    opacity: 0.55;
-    box-shadow: none;
-    cursor: not-allowed;
+  .card-controls .flip-btn,
+  .card-controls .edit-btn {
+    backdrop-filter: blur(4px);
+    color: rgba(248, 250, 252, 0.82);
   }
 
   .dialog-btn,
@@ -457,6 +425,25 @@ permalink: /actual/
   #download-json.deck-control-btn[data-dirty="1"]:hover {
     background: #f59e0b;
     color: #111827;
+  }
+
+  .card-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .6rem;
+  }
+
+  .card-id {
+    font-size: .66rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #475569;
+  }
+
+  .card-footer .card-id {
+    margin-left: auto;
   }
 
   .tag-list {
@@ -501,12 +488,44 @@ permalink: /actual/
     box-shadow: 0 8px 18px rgba(15, 23, 42, 0.25);
   }
 
+  .card-back .type-ribbon {
+    background: rgba(15, 23, 42, 0.08);
+    border-color: transparent;
+    color: var(--card-color, #0f172a);
+    box-shadow: none;
+  }
+
+  .card-back .flip-btn {
+    border-radius: 9999px;
+    border: 1px solid rgba(15, 23, 42, 0.14);
+    padding: .4rem .95rem;
+    background: rgba(15, 23, 42, 0.06);
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: none;
+    color: var(--card-color, #0f172a);
+    transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, color .18s ease;
+    cursor: pointer;
+  }
+
+  .card-back .flip-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.14);
+    background: rgba(15, 23, 42, 0.1);
+  }
+
+  .card-back .flip-btn:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.5);
+    outline-offset: 2px;
+  }
+
   .card-back h3.card-back-title {
-    font-size: clamp(0.98rem, 1.8vw, 1.2rem);
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--card-color, var(--ink));
     letter-spacing: -.01em;
-    line-height: 1.25;
+    line-height: 1.3;
     margin: 0;
     overflow-wrap: anywhere;
   }
@@ -514,87 +533,45 @@ permalink: /actual/
   .card-back-body {
     display: flex;
     flex-direction: column;
-    gap: 0.65rem;
+    gap: .9rem;
   }
 
   .card-section {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: start;
-    gap: 0.55rem;
-    padding: 0.65rem;
-    border-radius: 0.85rem;
-    background: rgba(248, 250, 252, 0.86);
+    margin-top: .75rem;
+    padding: .85rem .95rem;
+    border-radius: .75rem;
     border: 1px solid var(--card-color-pastel, rgba(15, 23, 42, 0.12));
-  }
-
-  .card-section-icon {
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 0.5rem;
-    background: var(--card-color-pastel, rgba(15, 23, 42, 0.12));
-    color: var(--card-color, #1f2937);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .card-section-icon svg {
-    width: 1rem;
-    height: 1rem;
-    display: block;
-    fill: currentColor;
-  }
-
-  .card-section-content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
+    background: rgba(248, 250, 252, 0.75);
   }
 
   .card-section-title {
-    font-size: 0.68rem;
+    font-size: .68rem;
     text-transform: uppercase;
-    letter-spacing: 0.18em;
+    letter-spacing: .18em;
     color: var(--card-color, #1f2937);
     font-weight: 700;
-    margin: 0;
+    margin-bottom: .45rem;
   }
 
   .card-section-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: 0.25rem;
+    list-style: decimal;
+    padding-left: 1.2rem;
     color: var(--ink);
-    font-size: clamp(0.78rem, 1.6vw, 0.9rem);
-    line-height: 1.45;
+    line-height: 1.55;
+    margin: 0;
   }
 
   .card-section-list li {
-    position: relative;
-    padding-left: 1.1rem;
-  }
-
-  .card-section-list li::before {
-    content: "";
-    position: absolute;
-    top: 0.55em;
-    left: 0.3rem;
-    width: 0.3rem;
-    height: 0.3rem;
-    border-radius: 999px;
-    background: var(--card-color, #1f2937);
+    margin-bottom: .35rem;
+    overflow-wrap: anywhere;
   }
 
   .card-section-text {
     color: var(--ink);
-    line-height: 1.5;
+    line-height: 1.55;
     margin: 0;
     overflow-wrap: anywhere;
-    font-size: clamp(0.8rem, 1.6vw, 0.92rem);
+    font-size: clamp(.82rem, 1.8vw, .9rem);
   }
 
   .card-empty-note {
@@ -843,6 +820,21 @@ permalink: /actual/
     box-shadow: 0 44px 90px rgba(15, 23, 42, 0.34);
   }
 
+  .card-back .card-section-list,
+  .presentation-face .card-section-list {
+    list-style: decimal;
+  }
+
+  .card-back .card-section-list li,
+  .presentation-face .card-section-list li {
+    margin-bottom: .35rem;
+  }
+
+  .card-back .card-section-text,
+  .presentation-face .card-section-text {
+    font-size: .88rem;
+  }
+
   .tag:focus-visible {
     outline: 2px solid #2563eb;
     outline-offset: 2px;
@@ -885,46 +877,40 @@ permalink: /actual/
 
     <template id="card-tpl">
       <article class="card">
-        <div class="card-face card-back">
-          <header class="card-back-header">
-            <span class="card-face-label">Back</span>
-            <div class="card-back-meta">
-              <span class="card-back-family" data-family-back></span>
-              <span class="card-id" data-id-back></span>
+        <div class="card-inner">
+          <!-- FRONT -->
+          <div class="face front card-surface card-front">
+            <header class="card-header">
+              <span class="type-ribbon" data-family-pill></span>
+              <div class="card-controls">
+                <button class="edit-btn" data-edit type="button">Edit</button>
+                <button class="stack-btn" data-stack>Add to stack</button>
+                <button class="flip-btn" data-flip>Flip</button>
+              </div>
+            </header>
+            <div class="card-front-body">
+              <div class="card-front-content">
+                <h2 class="card-title" data-title></h2>
+                <p class="card-summary" data-summary></p>
+                <blockquote class="card-quote" data-quote></blockquote>
+                <p class="card-author" data-author></p>
+              </div>
             </div>
-          </header>
-          <h3 class="card-back-title" data-title-back></h3>
-          <div class="card-back-body" data-back></div>
-        </div>
-        <div class="card-face card-front">
-          <header class="card-header">
-            <span class="type-ribbon" data-family-pill></span>
-            <div class="card-actions">
-              <button class="icon-btn" data-edit type="button" title="Edit card" aria-label="Edit card">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17.25V20h2.75L17.81 8.94l-2.75-2.75L4 17.25Zm15.71-9.04a1 1 0 0 0 0-1.41l-2.5-2.5a1 1 0 0 0-1.41 0l-1.83 1.83 3.91 3.91 1.83-1.83Z"/></svg>
-              </button>
-            </div>
-          </header>
-          <div class="card-front-body">
-            <div class="card-front-content">
-              <h2 class="card-title" data-title></h2>
-              <p class="card-summary" data-summary></p>
-              <blockquote class="card-quote" data-quote></blockquote>
-              <p class="card-author" data-author></p>
-            </div>
-          </div>
-          <footer class="card-footer">
-            <div class="card-footer-top">
+            <footer class="card-footer">
               <div class="tag-list" data-tags></div>
-            </div>
-            <div class="card-footer-bottom">
               <span class="card-id" data-id></span>
-              <button class="stack-btn" data-stack type="button">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 0 1 0-2h6V5a1 1 0 0 1 1-1Z"/></svg>
-                <span>Add to stack</span>
-              </button>
-            </div>
-          </footer>
+            </footer>
+          </div>
+
+          <!-- BACK -->
+          <div class="face back card-surface card-back">
+            <header class="card-header">
+              <span class="type-ribbon" data-family-pill-back></span>
+              <button class="flip-btn" data-flip>Flip</button>
+            </header>
+            <h3 class="card-back-title" data-title-back></h3>
+            <div class="card-back-body" data-back></div>
+          </div>
         </div>
       </article>
     </template>
@@ -990,28 +976,6 @@ permalink: /actual/
     vision: "#0369a1",
   };
   const DEFAULT_COLOR = "#334155";
-
-  const SECTION_META = {
-    why: { title: "Why it matters", icon: "bolt" },
-    how: { title: "How to act", icon: "list" },
-    reflection: { title: "Reflection", icon: "bubble" },
-    related: { title: "Related cards", icon: "link" },
-    audiences: { title: "Audiences", icon: "target" },
-    details: { title: "Details", icon: "note" },
-  };
-
-  const ICON_SVGS = {
-    bolt: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 2 5 13h6.2L9.9 22 19 10h-6.2L13.5 2Z"/></svg>',
-    list: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="6" r="1.5"/><circle cx="5" cy="12" r="1.5"/><circle cx="5" cy="18" r="1.5"/><path d="M9 5.25h11V7H9V5.25Zm0 6h11v1.75H9v-1.75Zm0 5.75h11V19H9v-1.75Z"/></svg>',
-    bubble: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v5a4 4 0 0 1-4 4h-3.59L9 19.41V15H8a4 4 0 0 1-4-4V6Z"/></svg>',
-    link: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 5A5.5 5.5 0 0 0 2 10.5v1A5.5 5.5 0 0 0 7.5 17h3a1 1 0 1 0 0-2h-3A3.5 3.5 0 0 1 4 11.5v-1A3.5 3.5 0 0 1 7.5 7h3a1 1 0 1 0 0-2h-3Zm9 0a5.5 5.5 0 0 1 5.5 5.5v1A5.5 5.5 0 0 1 16.5 17h-3a1 1 0 1 1 0-2h3a3.5 3.5 0 0 0 3.5-3.5v-1A3.5 3.5 0 0 0 16.5 7h-3a1 1 0 0 1 0-2h3Z"/><path d="M8.5 11a1 1 0 0 1 1-1h5a1 1 0 1 1 0 2h-5a1 1 0 0 1-1-1Z"/></svg>',
-    target: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 1 0 18 9 9 0 0 1 0-18Zm0 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Zm0 3a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Z"/></svg>',
-    note: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm7 1.5V9h4.5L14 4.5ZM9 11h6v1.5H9V11Zm0 3h6v1.5H9V14Z"/></svg>',
-  };
-
-  function iconSvg(key){
-    return ICON_SVGS[key] || ICON_SVGS.note;
-  }
 
   // State
   let ALL_CARDS = [];
@@ -1090,8 +1054,6 @@ permalink: /actual/
     element.style.setProperty("--card-color", color);
     element.style.setProperty("--card-color-accent", mixWithWhite(color, 0.3));
     element.style.setProperty("--card-color-pastel", mixWithWhite(color, 0.82));
-    element.style.setProperty("--card-front-ink", "#f8fafc");
-    element.style.setProperty("--card-front-muted", mixWithWhite(color, 0.68));
   }
   function cardDomId(id){
     if (!id && id !== 0) return "";
@@ -1242,32 +1204,28 @@ permalink: /actual/
   function collectBackSections(card){
     const sections = [];
 
-    const addText = (slug, value) => {
+    const addText = (title, value) => {
       if (!value) return;
       const text = String(value).trim();
       if (!text) return;
-      const meta = SECTION_META[slug];
-      sections.push({ kind: "text", slug, title: meta?.title, icon: meta?.icon, text });
+      sections.push({ kind: "text", title, text });
     };
 
-    const addList = (slug, values) => {
+    const addList = (title, values) => {
       const items = normalizeList(values);
       if (!items.length) return;
-      const meta = SECTION_META[slug];
-      sections.push({ kind: "list", slug, title: meta?.title, icon: meta?.icon, items });
+      sections.push({ kind: "list", title, items });
     };
 
-    addText("why", card.why);
-    addList("how", card.how);
-    addText("reflection", card.reflection);
-    addList("related", card.related);
-    addList("audiences", card.audiences);
+    addText("Why it matters", card.why);
+    addList("How to act", card.how);
+    addText("Reflection", card.reflection);
+    addList("Related cards", card.related);
+    addList("Audiences", card.audiences);
 
     if (!sections.length){
       const fallback = card.tagline || card.details || card.notes;
-      if (fallback){
-        addText("details", fallback);
-      }
+      addText("Details", fallback);
     }
 
     if (!sections.length){
@@ -1291,15 +1249,10 @@ permalink: /actual/
         body = `<ul class=\"card-section-list\">${section.items.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
       }
 
-      const icon = section.icon ? `<span class="card-section-icon">${iconSvg(section.icon)}</span>` : "";
-
       return `
         <section class="card-section">
-          ${icon}
-          <div class="card-section-content">
-            ${title}
-            ${body}
-          </div>
+          ${title}
+          ${body}
         </section>
       `;
     }).join("");
@@ -1323,28 +1276,18 @@ permalink: /actual/
       const block = document.createElement("section");
       block.className = "card-section";
 
-      if (section.icon){
-        const iconWrap = document.createElement("span");
-        iconWrap.className = "card-section-icon";
-        iconWrap.innerHTML = iconSvg(section.icon);
-        block.appendChild(iconWrap);
-      }
-
-      const contentWrap = document.createElement("div");
-      contentWrap.className = "card-section-content";
-
       if (section.title){
         const heading = document.createElement("h4");
         heading.className = "card-section-title";
         heading.textContent = section.title;
-        contentWrap.appendChild(heading);
+        block.appendChild(heading);
       }
 
       if (section.kind === "text"){
         const para = document.createElement("p");
         para.className = "card-section-text";
         para.textContent = section.text;
-        contentWrap.appendChild(para);
+        block.appendChild(para);
       }else if (section.kind === "list"){
         const list = document.createElement("ul");
         list.className = "card-section-list";
@@ -1353,10 +1296,8 @@ permalink: /actual/
           li.textContent = item;
           list.appendChild(li);
         });
-        contentWrap.appendChild(list);
+        block.appendChild(list);
       }
-
-      block.appendChild(contentWrap);
 
       container.appendChild(block);
     });
@@ -1648,6 +1589,42 @@ permalink: /actual/
     highlightTimers.set(domId, timeout);
   }
 
+  let balanceFrame = null;
+
+  function balanceCardHeights(){
+    if (!elCards) return;
+    const cards = elCards.querySelectorAll(".card");
+    cards.forEach(card => {
+      const inner = card.querySelector(".card-inner");
+      const front = card.querySelector(".card-front");
+      const back = card.querySelector(".card-back");
+      if (!front || !back) return;
+
+      front.style.minHeight = "";
+      back.style.minHeight = "";
+      if (inner) inner.style.minHeight = "";
+
+      const frontMin = parseFloat(getComputedStyle(front).minHeight) || 0;
+      const backMin = parseFloat(getComputedStyle(back).minHeight) || 0;
+      const base = Math.max(frontMin, backMin);
+      const target = Math.max(front.scrollHeight, back.scrollHeight, base);
+
+      if (target > 0){
+        front.style.minHeight = `${target}px`;
+        back.style.minHeight = `${target}px`;
+        if (inner) inner.style.minHeight = `${target}px`;
+      }
+    });
+  }
+
+  function scheduleCardBalance(){
+    cancelAnimationFrame(balanceFrame);
+    balanceFrame = requestAnimationFrame(() => {
+      balanceFrame = null;
+      balanceCardHeights();
+    });
+  }
+
   function renderCards(list){
     elCards.innerHTML = "";
     if(!list.length){ elCards.innerHTML = `<p class="text-slate-600">No cards match.</p>`; return; }
@@ -1669,77 +1646,91 @@ permalink: /actual/
       const inStack = normalizedId !== null ? STACK.includes(normalizedId) : false;
       root.setAttribute("data-in-stack", inStack ? "1" : "0");
 
-      const titleText = c.title || "(untitled)";
+      node.querySelector("[data-title]").textContent = c.title || "(untitled)";
       const idText = normalizedId !== null ? normalizedId : "";
-      setTextOrHide(node.querySelector("[data-title]"), titleText);
-      setTextOrHide(node.querySelector("[data-title-back]"), titleText);
       setTextOrHide(node.querySelector("[data-id]"), idText);
-      setTextOrHide(node.querySelector("[data-id-back]"), idText);
       setTextOrHide(node.querySelector("[data-summary]"), summarizeCard(c));
       setTextOrHide(node.querySelector("[data-quote]"), c.quote);
       setTextOrHide(node.querySelector("[data-author]"), c.author ? `— ${c.author}` : "");
 
+      const pill = node.querySelector("[data-family-pill]");
       const familyLabel = c.family || c.type || "unspecified";
-      setTextOrHide(node.querySelector("[data-family-pill]"), familyLabel);
-      setTextOrHide(node.querySelector("[data-family-back]"), familyLabel);
+      if (pill) pill.textContent = familyLabel;
+      const pillBack = node.querySelector("[data-family-pill-back]");
+      if (pillBack) pillBack.textContent = familyLabel;
+      const backTitle = node.querySelector("[data-title-back]");
+      if (backTitle) backTitle.textContent = c.title || "(untitled)";
 
       const stackBtn = node.querySelector("[data-stack]");
-      const stackLabel = stackBtn?.querySelector("span");
-      if (stackBtn){
-        if (cardId || cardId === 0){
-          stackBtn.dataset.active = inStack ? "1" : "0";
-          stackBtn.setAttribute("aria-pressed", inStack ? "true" : "false");
-          const labelText = inStack ? "Remove from stack" : "Add to stack";
-          if (stackLabel) stackLabel.textContent = labelText;
-          stackBtn.setAttribute("aria-label", labelText);
-          stackBtn.disabled = false;
-          stackBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleStack(cardId);
-          });
-        }else{
-          stackBtn.disabled = true;
-          stackBtn.dataset.active = "0";
-          stackBtn.setAttribute("aria-pressed", "false");
-          if (stackLabel) stackLabel.textContent = "No ID";
-          stackBtn.setAttribute("aria-label", "Card has no ID");
-        }
+      if (cardId || cardId === 0){
+        stackBtn.textContent = inStack ? "Remove from stack" : "Add to stack";
+        stackBtn.dataset.active = inStack ? "1" : "0";
+        stackBtn.setAttribute("aria-pressed", inStack ? "true" : "false");
+        stackBtn.disabled = false;
+        stackBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          toggleStack(cardId);
+        });
+      }else{
+        stackBtn.disabled = true;
+        stackBtn.dataset.active = "0";
+        stackBtn.setAttribute("aria-pressed", "false");
+        stackBtn.textContent = "No ID";
       }
 
       const editBtn = node.querySelector("[data-edit]");
       if (editBtn){
         editBtn.addEventListener("click", (e) => {
-          e.preventDefault();
           e.stopPropagation();
           const targetId = normalizedId !== null ? normalizedId : cardId;
           openCardEditor(targetId);
         });
       }
 
+      // Tags
       const tagsWrap = node.querySelector("[data-tags]");
-      const tagsRow = tagsWrap ? tagsWrap.parentElement : null;
-      if (tagsWrap){
-        tagsWrap.innerHTML = "";
-        (c.tags || []).forEach(t => {
-          const s = document.createElement("span");
-          s.className = "tag";
-          s.textContent = t;
-          s.dataset.tag = t;
-          s.addEventListener("click", () => { elQ.value = t; applyFilters(); });
-          tagsWrap.appendChild(s);
-        });
-        if (tagsWrap.childElementCount){
-          tagsWrap.removeAttribute("hidden");
-          if (tagsRow) tagsRow.removeAttribute("hidden");
+      tagsWrap.innerHTML = "";
+      (c.tags || []).forEach(t => {
+        const s = document.createElement("span");
+        s.className = "tag";
+        s.textContent = t;
+        s.dataset.tag = t;
+        s.addEventListener("click", () => { elQ.value = t; applyFilters(); });
+        tagsWrap.appendChild(s);
+      });
+      if (tagsWrap.childElementCount){
+        tagsWrap.removeAttribute("hidden");
+      }else{
+        tagsWrap.setAttribute("hidden", "");
+      }
+
+      const footer = node.querySelector(".card-footer");
+      if (footer){
+        const hasVisibleChild = Array.from(footer.children).some(child => !child.hasAttribute("hidden") && child.textContent.trim() !== "");
+        if (hasVisibleChild){
+          footer.removeAttribute("hidden");
         }else{
-          tagsWrap.setAttribute("hidden", "");
-          if (tagsRow) tagsRow.setAttribute("hidden", "");
+          footer.setAttribute("hidden", "");
         }
       }
 
       const backEl = node.querySelector("[data-back]");
       renderBackContent(backEl, c);
+
+      // Flip handlers
+      node.querySelectorAll("[data-flip]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const flipped = root.getAttribute("data-flipped")==="1" ? "0" : "1";
+          root.setAttribute("data-flipped", flipped);
+        });
+      });
+
+      // Also flip by clicking anywhere on the card except links/buttons
+      node.querySelector(".card-inner").addEventListener("click", (e) => {
+        if (e.target.closest("button,a")) return;
+        const flipped = root.getAttribute("data-flipped")==="1" ? "0" : "1";
+        root.setAttribute("data-flipped", flipped);
+      });
 
       frag.appendChild(node);
     }
@@ -1830,6 +1821,8 @@ permalink: /actual/
       if (event.target === elEditor) closeCardEditor();
     });
   }
+  window.addEventListener("resize", scheduleCardBalance);
+  window.addEventListener("load", scheduleCardBalance);
 
   // Boot
   (async function init(){
