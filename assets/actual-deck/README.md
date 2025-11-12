@@ -4,9 +4,13 @@ The `/actual/` route is now powered by a single browser-ready ES module in `actu
 
 ## Editing the deck
 
-1. Update copy, cards, or audience presets directly in `actual/assets/index.js`.
-2. Optional: run a lightweight static server (for example, `npx serve .`) and open <http://localhost:3000/actual/> to preview live changes.
+1. Update copy, cards, or audience presets directly in `actual/assets/index.js`, or use the in-app **New Card** / **Edit** controls to compose changes and then export the JSON snippets you need.
+2. Optional: run a lightweight static server (for example, `npx serve .`) and open <http://localhost:3000/actual/> to preview live changes. The in-app editor persists updates in memory so you can copy them back into the source file when you're happy with the wording.
 3. Commit the edited module and any supporting assets.
+
+### Stack presentation
+
+The stack drawer now supports a presentation view. Add cards to the stack, click **Present**, and advance with the on-screen arrows while flipping between front/back content for facilitation.
 
 ## Styling helpers
 
