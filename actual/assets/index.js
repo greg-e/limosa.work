@@ -20,7 +20,11 @@ import {
 
 const html = htm.bind(React.createElement);
 
-const CARDS_URL = new URL("../../assets/actual-deck/cards.json", import.meta.url);
+const rootElement = document.getElementById("root");
+const cardsDataUrl = rootElement?.dataset?.cardsUrl;
+const CARDS_URL = cardsDataUrl
+  ? new URL(cardsDataUrl, window.location.href)
+  : new URL("../../assets/actual-deck/cards.json", import.meta.url);
 
 const FAMILY_META = {
   Language: { color: "bg-slate-800", accent: "text-slate-300" },
