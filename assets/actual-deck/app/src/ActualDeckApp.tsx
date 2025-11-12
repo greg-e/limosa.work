@@ -32,7 +32,7 @@ const CARDS = [
     id: "language-provenance",
     family: "Language",
     title: "Provenance",
-    quote: "Truth requires protection.",
+    quote: "Truth requires protection. update",
     tagline: "Trust comes from traceability.",
     why: "Truth in data exists only when its origin can be proven. Provenance makes security measurable — verifiable origin, verified truth.",
     how: [
