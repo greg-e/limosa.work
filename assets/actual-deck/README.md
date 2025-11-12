@@ -2,11 +2,13 @@
 
 The `/actual/` route is now powered by a single browser-ready ES module in `actual/assets/index.js`. The module pulls React, React DOM, Lucide icons, and HTM from the esm.sh CDN so the deck renders without a bundler or build step. Tailwind utility classes continue to come from the CDN snippet inside `pages/actual.html`.
 
+Card copy now lives in `assets/actual-deck/cards.json`, which the module fetches at runtime. Updating that JSON file is all that is required to ship new or edited cards.
+
 ## Editing the deck
 
-1. Update copy, cards, or audience presets directly in `actual/assets/index.js`, or use the in-app **New Card** / **Edit** controls to compose changes and then export the JSON snippets you need.
-2. Optional: run a lightweight static server (for example, `npx serve .`) and open <http://localhost:3000/actual/> to preview live changes. The in-app editor persists updates in memory so you can copy them back into the source file when you're happy with the wording.
-3. Commit the edited module and any supporting assets.
+1. Edit `assets/actual-deck/cards.json` directly for permanent changes, or open `/actual/`, use the in-app **New Card** / **Edit** controls, and click **Download JSON** to export the full dataset.
+2. Optional: run a lightweight static server (for example, `npx serve .`) and open <http://localhost:3000/actual/> to preview live changes. The in-app editor keeps updates in memory until you refresh, so export the JSON before leaving the page.
+3. Commit the updated JSON (and any supporting tweaks such as preset changes in `actual/assets/index.js`).
 
 ### Stack presentation
 

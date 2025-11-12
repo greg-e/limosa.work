@@ -14,200 +14,17 @@ import {
   X,
   Play,
   ArrowLeft,
-  ArrowRight
+  ArrowRight,
+  Download
 } from "https://esm.sh/lucide-react@0.441.0?deps=react@18.2.0";
 
 const html = htm.bind(React.createElement);
 
-const CARDS = [
-  {
-    id: "language-provenance",
-    family: "Language",
-    title: "Provenance",
-    quote: "Truth requires protection.",
-    tagline: "Trust comes from traceability.",
-    why: "Truth in data exists only when its origin can be proven. Provenance makes security measurable — verifiable origin, verified truth.",
-    how: [
-      "Tag source with identity, location, timestamp",
-      "Sign and encrypt each transmission",
-      "Preserve lineage from badge to cloud",
-      "Audit values and chain of custody"
-    ],
-    reflection: "When origin is provable, truth stands on its own.",
-    related: ["design-integrity-by-design", "truth-395"],
-    audiences: ["Field", "Engineering", "Finance", "Leadership", "Partners"]
-  },
-  {
-    id: "automation-automate-constraint",
-    family: "Automation",
-    title: "Automate the Constraint",
-    quote: "Automation is good, as long as you know exactly where to put the machine.",
-    tagline: "Automate where proof depends on it.",
-    why: "Automation magnifies both correctness and error. Place it at the constraint so leverage is maximized.",
-    how: [
-      "Identify the limiting point",
-      "Capture time and presence directly",
-      "Leave judgment to humans",
-      "Align downstream systems automatically"
-    ],
-    reflection: "Focused automation strengthens the whole.",
-    related: ["truth-395", "flow-critical"],
-    audiences: ["Field", "Engineering", "Leadership", "Partners"]
-  },
-  {
-    id: "truth-395",
-    family: "Truth",
-    title: "395… Exactly",
-    quote: "‘395… exactly.’ — SGM Plumley",
-    tagline: "Truth is measured, not estimated.",
-    why: "Operational systems depend on exact counts — who was there, when, and for how long.",
-    how: [
-      "Measure presence by telemetry, not memory",
-      "Make each measure atomic",
-      "Verify before aggregation",
-      "Let precision propagate to finance"
-    ],
-    reflection: "Exact counts align decisions with reality.",
-    related: ["language-provenance", "design-integrity-by-design"],
-    audiences: ["Field", "Engineering", "Finance", "Leadership"]
-  },
-  {
-    id: "flow-critical",
-    family: "Flow",
-    title: "Critical Flow",
-    quote: "Flow starts at the edge.",
-    tagline: "Movement defines truth.",
-    why: "Work happens at the physical edge. Systems must follow the flow of the work itself or lose fidelity.",
-    how: [
-      "Begin capture at the edge",
-      "Store-forward when offline",
-      "Sync in smart intervals",
-      "Let edge events drive system state"
-    ],
-    reflection: "When the edge flows, the org follows.",
-    related: ["mechanism-edge-autonomy"],
-    audiences: ["Field", "Engineering", "Leadership", "Partners"]
-  },
-  {
-    id: "convivial-tools",
-    family: "Conviviality",
-    title: "Tools for Humans",
-    quote: "Most learning is not the result of instruction… — Ivan Illich",
-    tagline: "Systems should serve, not steer.",
-    why: "Technology must reduce cognitive load and preserve autonomy. The badge observes; people work.",
-    how: [
-      "Passive capture over check-ins",
-      "Minimize attention cost",
-      "Follow worker rhythm",
-      "Proof emerges from activity"
-    ],
-    reflection: "Convivial systems reveal truth without supervision.",
-    related: ["outcome-empower-crew", "convivial-reduce-load"],
-    audiences: ["Field", "Leadership"]
-  },
-  {
-    id: "design-integrity-by-design",
-    family: "Design",
-    title: "Integrity by Design",
-    quote: "Presence becomes proof.",
-    tagline: "The system must prove itself.",
-    why: "Integrity is architectural. Each step preserves verifiability so truth propagates automatically.",
-    how: [
-      "Sign + timestamp every event",
-      "Log transformations as transactions",
-      "Detect any alteration",
-      "Reproduce input from output"
-    ],
-    reflection: "Design that guarantees truth reduces oversight to confirmation.",
-    related: ["language-provenance", "truth-395"],
-    audiences: ["Engineering", "Finance", "Leadership", "Partners"]
-  },
-  {
-    id: "automation-necessary-not-sufficient",
-    family: "Automation",
-    title: "Necessary but Not Sufficient",
-    quote: "Technology is necessary, but rarely enough. — Eli Goldratt",
-    tagline: "Tools matter only when aligned to constraint.",
-    why: "Technology enables improvement but does not guarantee it. Progress occurs when it strengthens the limiting point.",
-    how: [
-      "Find the constraint first",
-      "Relieve it with automation",
-      "Measure overall flow, not local speed",
-      "Retire tools that add load"
-    ],
-    reflection: "Necessity is not sufficiency; alignment is.",
-    related: ["automation-automate-constraint"],
-    audiences: ["Leadership", "Engineering"]
-  },
-  {
-    id: "convivial-reduce-load",
-    family: "Conviviality",
-    title: "Reduce the Load",
-    quote: "The team is the means of delivery, not the toolchain. — Team Topologies",
-    tagline: "Technology should lighten thinking, not multiply it.",
-    why: "People deliver value. Tools must minimize cognitive and admin burden so attention stays on work.",
-    how: [
-      "Audit cognitive load",
-      "Automate repetitive admin",
-      "Hide infra complexity",
-      "Measure coordination overhead"
-    ],
-    reflection: "When tech gets lighter, teams get faster.",
-    related: ["convivial-tools", "outcome-empower-crew"],
-    audiences: ["Field", "Leadership"]
-  },
-  {
-    id: "mechanism-edge-autonomy",
-    family: "Mechanism",
-    title: "Edge Autonomy",
-    quote: "Work continues, even without connection.",
-    tagline: "Capture locally, transmit intelligently.",
-    why: "Connectivity is intermittent; work is continuous. Autonomy ensures truth is recorded where it happens.",
-    how: [
-      "Local store of events",
-      "Integrity checks before upload",
-      "Smart batches on available signal",
-      "No event loss; no blocked work"
-    ],
-    reflection: "Reliability comes from autonomy, not constant connection.",
-    related: ["flow-critical", "design-integrity-by-design"],
-    audiences: ["Engineering", "Field", "Partners"]
-  },
-  {
-    id: "outcome-empower-crew",
-    family: "Outcome",
-    title: "Empower the Crew",
-    quote: "Less admin, more work.",
-    tagline: "Automation returns time to production.",
-    why: "Administrative overhead is waste. Removing repetitive confirmation increases output and morale.",
-    how: [
-      "Eliminate manual time capture",
-      "Shift verification to telemetry",
-      "Reduce reconciliation cycles",
-      "Free time for craft work"
-    ],
-    reflection: "Efficiency happens when workers only do value work.",
-    related: ["convivial-tools", "metric-cognitive-load"],
-    audiences: ["Field", "Leadership", "Finance"]
-  },
-  {
-    id: "metric-cognitive-load",
-    family: "Metric",
-    title: "Cognitive Load ≤ 2 min/day",
-    quote: "Automation success is measured in attention saved.",
-    tagline: "Less thought on system, more on work.",
-    why: "Excess interaction cancels efficiency gains.",
-    how: [
-      "Log user interaction time",
-      "Average per user per day",
-      "Remove repetitive steps",
-      "Keep ≤ 2 min/day as design guardrail"
-    ],
-    reflection: "Worth proven by how little it demands.",
-    related: ["outcome-empower-crew", "convivial-reduce-load"],
-    audiences: ["Field", "Leadership"]
-  }
-];
+const rootElement = document.getElementById("root");
+const cardsDataUrl = rootElement?.dataset?.cardsUrl;
+const CARDS_URL = cardsDataUrl
+  ? new URL(cardsDataUrl, window.location.href)
+  : new URL("../../assets/actual-deck/cards.json", import.meta.url);
 
 const FAMILY_META = {
   Language: { color: "bg-slate-800", accent: "text-slate-300" },
@@ -434,7 +251,7 @@ function Stack({ ids, cardMap, onRemove, onEdit, onPresent }) {
   `;
 }
 
-function CardEditor({ initialCard, isEditing, onSave, onCancel, existingIds }) {
+function CardEditor({ initialCard, isEditing, onSave, onCancel, existingIds, onDownload }) {
   const [form, setForm] = useState(() => ({
     id: initialCard?.id || "",
     title: initialCard?.title || "",
@@ -525,13 +342,23 @@ function CardEditor({ initialCard, isEditing, onSave, onCancel, existingIds }) {
       <div className="bg-white rounded-2xl shadow-xl max-w-3xl w-full max-h-full overflow-hidden flex flex-col">
         <div className="flex items-center justify-between px-4 py-3 border-b border-black/10">
           <div className="text-sm font-semibold">${isEditing ? "Edit card" : "Create card"}</div>
-          <button
-            type="button"
-            onClick=${onCancel}
-            className="text-black/60 hover:text-black inline-flex items-center justify-center"
-          >
-            <${X} size=${18} />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick=${onDownload}
+              className="text-xs inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-black/10 text-black/70 hover:text-black hover:border-black/30 disabled:opacity-50"
+              disabled=${typeof onDownload !== "function"}
+            >
+              <${Download} size=${14} /> Download JSON
+            </button>
+            <button
+              type="button"
+              onClick=${onCancel}
+              className="text-black/60 hover:text-black inline-flex items-center justify-center"
+            >
+              <${X} size=${18} />
+            </button>
+          </div>
         </div>
         <form className="flex-1 overflow-y-auto px-4 py-3 space-y-3" onSubmit=${handleSubmit}>
           ${error
@@ -724,7 +551,9 @@ function StackPresentation({ cards, index, onClose, onPrev, onNext }) {
 }
 
 function ActualDeckApp() {
-  const [cards, setCards] = useState(CARDS);
+  const [cards, setCards] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
   const [query, setQuery] = useState("");
   const [audience, setAudience] = useState("Field");
   const [familyFilter, setFamilyFilter] = useState("All");
@@ -770,6 +599,42 @@ function ActualDeckApp() {
   );
 
   useEffect(() => {
+    let cancelled = false;
+
+    async function loadCards() {
+      try {
+        setIsLoading(true);
+        setLoadError("");
+        const response = await fetch(CARDS_URL);
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`);
+        }
+        const data = await response.json();
+        if (!Array.isArray(data)) {
+          throw new Error("Card dataset must be an array");
+        }
+        if (!cancelled) {
+          setCards(data);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setLoadError(error?.message || "Unable to load cards");
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    loadCards();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
     setStack((current) => {
       const filtered = current.filter((id) => cardMap[id]);
       return filtered.length === current.length ? current : filtered;
@@ -797,6 +662,20 @@ function ActualDeckApp() {
 
   function clearStack() {
     setStack([]);
+  }
+
+  function downloadCardsJson() {
+    const blob = new Blob([JSON.stringify(cards, null, 2)], {
+      type: "application/json"
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "cards.json";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   }
 
   function openNewCard() {
@@ -865,7 +744,13 @@ function ActualDeckApp() {
       </div>
       <${FamilyFilters} families=${families} active=${familyFilter} setActive=${setFamilyFilter} />
       <div className="px-3 pb-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-        ${visibleCards.length
+        ${isLoading
+          ? html`<div className="text-sm text-black/60 p-6">Loading cards…</div>`
+          : loadError
+          ? html`<div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl p-4">Failed to load cards. ${
+              loadError
+            }</div>`
+          : visibleCards.length
           ? visibleCards.map(
               (card) =>
                 html`<${Card}
@@ -893,6 +778,7 @@ function ActualDeckApp() {
             onSave=${handleSaveCard}
             onCancel=${closeEditor}
             existingIds=${existingIds}
+            onDownload=${downloadCardsJson}
           />`
         : null}
       ${isPresenting && stackCards.length
@@ -905,8 +791,8 @@ function ActualDeckApp() {
           />`
         : null}
       <div className="sr-only">
-        Draft new content with the in-app editor, then persist updates by extending the CARDS dataset and AUDIENCE_PRESETS map in
-        source.
+        Draft new content with the in-app editor, download the latest cards JSON, and replace assets/actual-deck/cards.json in source
+        control when you want to publish updates.
       </div>
     </div>
   `;
