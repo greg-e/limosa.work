@@ -44,7 +44,7 @@ const CARDS = [
       "Leave judgment to humans",
       "Align downstream systems automatically"
     ],
-    reflection: "We’re putting automation right at the constraint — knowing with certainty who was on site, when, and for how long.",
+    reflection: "Focused automation strengthens the whole.",
     related: ["truth-395", "flow-critical"],
     audiences: ["Field", "Engineering", "Leadership", "Partners"]
   },
