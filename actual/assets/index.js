@@ -44,8 +44,7 @@ const CARDS = [
       "Leave judgment to humans",
       "Align downstream systems automatically"
     ],
-    reflection: "Goldratt said automation is only good if you know exactly where to put the machine.  We’re not trying to automate every form, every approval, or every step of the day. We’re putting automation right at the constraint — knowing with certainty who was on site, when, and for how long. That’s the piece that every payroll run, every cost report, and every customer invoice depends on. Get that wrong, and all the automation downstream just makes the errors faster. Get it right, and everything flows.
-",
+    reflection: "We’re putting automation right at the constraint — knowing with certainty who was on site, when, and for how long.",
     related: ["truth-395", "flow-critical"],
     audiences: ["Field", "Engineering", "Leadership", "Partners"]
   },
