@@ -36,7 +36,7 @@ const FAMILY_META = {
   Mechanism: { color: "bg-zinc-800", accent: "text-zinc-100" },
   Outcome: { color: "bg-orange-700", accent: "text-orange-100" },
   Metric: { color: "bg-violet-800", accent: "text-violet-100" },
-  Vision: { color: "bg-white", accent: "text-neutral-700", border: "border" },
+  Vision: { color: "bg-yellow", accent: "text-neutral-700", border: "border" },
 
   // new Actual Deck families
   Principles: { color: "bg-blue-800", accent: "text-blue-100" },
