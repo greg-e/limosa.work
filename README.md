@@ -1,6 +1,6 @@
 # Actual Development Plan  
 ## Proof of Concept → Prototype → Pilot  
-**Version:** 1.0  
+**Version:** 1.1  
 **Author:** Gregory (“bruh”)  
 
 **Purpose:**  
@@ -8,6 +8,152 @@ Build Actual into a parcel-aware, equipment-aware, truth-based field telemetry s
 
 1. **Job Activity Data (Truth of Work)**  
 2. **Reverse Engineering Schedule & Estimate (Flow of Value)**
+
+---
+
+# NEW SECTION — SKILLS TO DEVELOP  
+## 1. Hardware Skills  
+- **PCB Design (KiCad or Altium)**
+  - Board layout  
+  - RF considerations for BLE antennas  
+  - Power regulation and battery management  
+
+- **Embedded Firmware Development**
+  - STM32 / ESP32-C3 / Nordic SDK basics  
+  - BLE scanning & advertisement parsing  
+  - Power optimization in low-power MCUs  
+  - Sleep/wake cycles  
+  - OTA firmware update patterns  
+
+- **Cellular IoT (LTE-M / NB-IoT)**
+  - AT command sets  
+  - Modem sleep behavior  
+  - Optimizing cellular wake intervals  
+  - Handling patchy rural coverage  
+
+---
+
+## 2. Cloud & Software Skills  
+- **Azure IoT Hub / Functions**
+  - Event ingestion  
+  - Data normalization  
+  - Secure device provisioning  
+  - Durable data pipelines  
+
+- **PostGIS Spatial Queries**
+  - Point-in-polygon  
+  - Spatial indexing (GiST, BRIN)  
+  - Polygon simplification  
+  - Parcel adjacency graphs  
+
+- **Power BI Advanced Modeling**
+  - Star schema design  
+  - Time intelligence  
+  - Geo-visualization  
+  - Custom DAX measures for flow & variance  
+
+- **API Design**
+  - REST fundamentals  
+  - JSON schema definition  
+  - Device → cloud → application data models  
+
+- **DevOps & Versioning**
+  - Git/GitHub  
+  - Semver for firmware  
+  - CI/CD for cloud functions  
+
+---
+
+## 3. Product & Operational Skills  
+- **Digital Twin Design**
+  - Ontologies  
+  - Relationships (badge ↔ tag ↔ parcel ↔ job)  
+  - Data provenance models  
+
+- **Estimating & Cost Modeling**
+  - Linking parcel characteristics → actual time  
+  - Understanding equipment cost curves  
+  - Interpreting labor flow across parcels  
+
+- **Flow-Based Thinking (Reinertsen, Goldratt)**
+  - Constraint identification  
+  - Flow distribution analysis  
+  - Throughput accounting  
+
+- **Project Network Diagrams**
+  - Work breakdown  
+  - Critical path / critical chain  
+  - Buffering and uncertainty management  
+
+---
+
+# NEW SECTION — PEOPLE TO INVOLVE  
+## 1. Hardware & Embedded Engineering  
+- **PCB Designer**  
+  Helps ensure v1.0 and v1.2 boards are manufacturable, low-noise, and power-efficient.
+
+- **Embedded Firmware Engineer**  
+  BLE scanning windows, IMU thresholds, OTA bootloader, power states.
+
+- **RF Engineer**  
+  BLE antenna tuning, enclosure interference checks.
+
+- **Cellular IoT Specialist**  
+  Carrier certification, NB-IoT/LTE-M debugging.
+
+---
+
+## 2. Cloud & Data Engineering  
+- **Azure Architect**  
+  Build scalable ingestion, provisioning, routing, logging.
+
+- **GIS Specialist**  
+  Parcel polygons, spatial indexing, accuracy analysis.
+
+- **Data Engineer**  
+  Truth pipeline, WorkSessions, EquipmentSessions, and travel-time logic.
+
+- **Power BI Expert**  
+  Building parcel-level dashboards for partners.
+
+---
+
+## 3. Field & Ops  
+- **Pilot Branch Operations Manager**  
+  Real-world testing, daily feedback loop.
+
+- **Crew Leaders**  
+  Provide the reality checks: ergonomics, usage friction, comfort.
+
+- **Equipment Manager**  
+  Tag placement, battery replacement strategy, asset inventory.
+
+---
+
+## 4. Business & Product  
+- **CFO or Controller**  
+  Validate payroll accuracy improvements and cost-model updates.
+
+- **Estimating Lead**  
+  Help compare estimated vs. actual parcel-time truth.
+
+- **Scheduling/Dispatch Manager**  
+  Validate route flow insights, parcel sequences, wait time, travel time.
+
+- **Legal/Compliance Advisor**  
+  Data retention + privacy for telemetry devices.
+
+---
+
+## 5. Manufacturing & Scale  
+- **Prototype Manufacturing Partner**  
+  Help assemble v1.0 and v1.2 badge and tag runs.
+
+- **Injection Molding Vendor (Future)**  
+  When moving from 3D-printed housings to mass-production shells.
+
+- **Supply Chain Consultant**  
+  Battery sourcing, BOM cost reduction, packaging.
 
 ---
 
@@ -344,7 +490,7 @@ Pilot = reliable, partner-ready, but not mass-production.
 
 ---
 
-## 3.4 Zettelkasten Entries (Phase 3)  
+## 3.4 Zettelkasten Entries (Phase 3)
 - **ZK-012 — ROI Friction Points**  
 - **ZK-013 — Flow-Based Routing**  
 - **ZK-014 — Pilot Lessons Learned**  
@@ -353,3 +499,4 @@ Pilot = reliable, partner-ready, but not mass-production.
 ---
 
 # END OF DOCUMENT
+
