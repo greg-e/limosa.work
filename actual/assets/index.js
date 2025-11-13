@@ -50,42 +50,53 @@ const FAMILY_META = {
 
 const AUDIENCE_PRESETS = {
   Field: [
-    "language-provenance",
-    "automation-automate-constraint",
-    "truth-395",
-    "flow-critical",
-    "convivial-tools",
-    "design-integrity-by-design",
-    "convivial-reduce-load",
-    "outcome-empower-crew",
-    "metric-cognitive-load"
+    "principles-truth-you-can-stand-on",
+    "principles-keep-the-work-moving",
+    "field-practice-effortless-proof",
+    "field-practice-context-without-effort",
+    "field-practice-get-paid-right",
+    "field-practice-presence-becomes-proof",
+    "flow-operations-critical-flow",
+    "flow-operations-clarity-beats-supervision"
   ],
+
   Engineering: [
-    "language-provenance",
-    "automation-automate-constraint",
-    "automation-necessary-not-sufficient",
-    "flow-critical",
-    "design-integrity-by-design",
-    "mechanism-edge-autonomy"
+    "automation-mechanisms-edge-autonomy",
+    "automation-mechanisms-store-and-forward",
+    "automation-mechanisms-smart-intervals",
+    "automation-mechanisms-passive-association",
+    "automation-mechanisms-no-app-no-terminal",
+    "data-integrity-integrity-by-design",
+    "data-integrity-provenance-of-truth"
   ],
+
   Finance: [
-    "language-provenance",
-    "truth-395",
-    "design-integrity-by-design",
-    "outcome-empower-crew"
+    "principles-395-exactly",
+    "field-practice-get-paid-right",
+    "finance-precision-finance",
+    "finance-recognition-built-on-proof",
+    "data-integrity-lineage-is-the-ledger",
+    "data-integrity-no-edits-without-evidence"
   ],
+
   Leadership: [
-    "automation-necessary-not-sufficient",
-    "convivial-reduce-load",
-    "convivial-tools",
-    "truth-395"
+    "principles-necessary-but-not-sufficient",
+    "principles-convivial-tools",
+    "flow-operations-real-time-reflection",
+    "flow-operations-flow-multiplied",
+    "vision-lead-by-knowing-not-assuming",
+    "vision-truth-as-infrastructure"
   ],
+
   Partners: [
-    "mechanism-edge-autonomy",
-    "design-integrity-by-design",
-    "automation-automate-constraint"
+    "finance-recognition-built-on-proof",
+    "data-integrity-provenance-of-truth",
+    "automation-mechanisms-passive-association",
+    "principles-automate-the-constraint",
+    "vision-the-living-map-of-work"
   ]
 };
+
 
 function Chip({ children, onClick, active }) {
   const classes = `px-3 py-1 rounded-full text-xs font-medium border ${
