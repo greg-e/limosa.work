@@ -45,7 +45,7 @@ const FAMILY_META = {
   "Data Integrity & Provenance": { color: "bg-slate-800", accent: "text-slate-300" },
   "Flow & Operations": { color: "bg-cyan-800", accent: "text-cyan-100" },
   "Finance & Reconciliation": { color: "bg-violet-800", accent: "text-violet-100" },
-  "Vision & Alignment": { color: "bg-white", accent: "text-neutral-700", border: "border" }
+  "Vision & Alignment": { color: "bg-yellow", accent: "text-neutral-700", border: "border" }
 };
 
 const AUDIENCE_PRESETS = {
