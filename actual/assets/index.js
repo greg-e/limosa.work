@@ -36,7 +36,7 @@ const FAMILY_META = {
   Mechanism: { color: "bg-zinc-800", accent: "text-zinc-100" },
   Outcome: { color: "bg-orange-700", accent: "text-orange-100" },
   Metric: { color: "bg-violet-800", accent: "text-violet-100" },
-  Vision: { color: "bg-yellow-700", accent: "text-neutral-700", border: "border" },
+  Vision: { color: "bg-yellow-400", accent: "text-neutral-700", border: "border" },
 
   // new Actual Deck families
   Principles: { color: "bg-blue-800", accent: "text-blue-100" },
@@ -45,7 +45,7 @@ const FAMILY_META = {
   "Data Integrity & Provenance": { color: "bg-slate-800", accent: "text-slate-300" },
   "Flow & Operations": { color: "bg-cyan-800", accent: "text-cyan-100" },
   "Finance & Reconciliation": { color: "bg-violet-800", accent: "text-violet-100" },
-  "Vision & Alignment": { color: "bg-yellow-700", accent: "text-neutral-700", border: "border" }
+  "Vision & Alignment": { color: "bg-yellow-400", accent: "text-neutral-700", border: "border" }
 };
 
 const AUDIENCE_PRESETS = {
