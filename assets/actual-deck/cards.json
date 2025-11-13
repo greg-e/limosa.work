@@ -1,886 +1,892 @@
 [
   {
-    "id": "architecture-integrity-by-design",
-    "family": "Architecture",
+    "id": "principles-automate-the-constraint",
+    "family": "Principles",
+    "title": "Automate the Constraint",
+    "quote": "Fix the choke point first.",
+    "tagline": "Put automation where the whole job depends on it.",
+    "why": "If you automate the easy parts and ignore the bottleneck, nothing really improves. Time and presence are the real constraint for truth.",
+    "how": [
+      "Find the actual bottleneck in the work, not the convenient one.",
+      "Aim automation at time and presence where they are weakest.",
+      "Keep judgment and exceptions in the hands of people."
+    ],
+    "reflection": "When you strengthen the weakest point, everything downstream gets easier.",
+    "related": [],
+    "audiences": ["Field", "Leadership", "Engineering"],
+    "color": "#1D4ED8"
+  },
+  {
+    "id": "principles-tools-for-humans",
+    "family": "Principles",
+    "title": "Tools for Humans",
+    "quote": "The tool should bend to the worker.",
+    "tagline": "Fit tech to the job, not the other way around.",
+    "why": "If tools fight the conditions in the field, crews either ignore them or slow down. A tool that respects real work ends up actually used.",
+    "how": [
+      "Design for gloves, dust, noise, and bad weather.",
+      "Remove screens and fiddly steps wherever possible.",
+      "Keep every interaction simple enough to do under pressure."
+    ],
+    "reflection": "If a tool feels like a good hammer, people reach for it without thinking.",
+    "related": [],
+    "audiences": ["Field", "Leadership"],
+    "color": "#1D4ED8"
+  },
+  {
+    "id": "principles-truth-you-can-stand-on",
+    "family": "Principles",
+    "title": "Truth You Can Stand On",
+    "quote": "Truth is only truth if you can show it.",
+    "tagline": "Make every record able to defend itself.",
+    "why": "If nobody can see where a number came from, trust disappears. Crews, finance, and customers all need proof, not just totals.",
+    "how": [
+      "Tie each record to who was there, where, and when.",
+      "Capture data while work happens, not hours later.",
+      "Make it easy to drill from a total back to the events."
+    ],
+    "reflection": "When people can follow the trail, they stop fighting the numbers.",
+    "related": [],
+    "audiences": ["Field", "Finance", "Leadership"],
+    "color": "#1D4ED8"
+  },
+  {
+    "id": "principles-keep-the-work-moving",
+    "family": "Principles",
+    "title": "Keep the Work Moving",
+    "quote": "Flow beats friction every time.",
+    "tagline": "Record the job without stopping the job.",
+    "why": "Every time crews stop to tap or type, momentum drops. The more the system runs in the background, the more work is actually finished.",
+    "how": [
+      "Capture time and location automatically as people move.",
+      "Avoid asking for data during tight or risky tasks.",
+      "Only interrupt crews when something truly needs attention."
+    ],
+    "reflection": "The best sign of good tooling is that people barely notice it while they work.",
+    "related": [],
+    "audiences": ["Field", "Leadership"],
+    "color": "#1D4ED8"
+  },
+  {
+    "id": "principles-395-exactly",
+    "family": "Principles",
+    "title": "395… Exactly",
+    "quote": "Count, don’t guess.",
+    "tagline": "Exact time and place build confidence.",
+    "why": "Estimates lead to pay disputes and billing questions. Exact counts align crews, managers, and customers around what really happened.",
+    "how": [
+      "Use the badge to measure presence, not memory.",
+      "Record events as they happen instead of at day’s end.",
+      "Let exact counts flow straight into payroll and costing."
+    ],
+    "reflection": "When everyone trusts the count, they can focus on the work instead of defending the numbers.",
+    "related": [],
+    "audiences": ["Field", "Finance", "Leadership"],
+    "color": "#1D4ED8"
+  },
+  {
+    "id": "principles-necessary-but-not-sufficient",
+    "family": "Principles",
+    "title": "Necessary but Not Sufficient",
+    "quote": "Tech is the tool, not the change.",
+    "tagline": "Automation only matters if it serves the real goal.",
+    "why": "New systems often get installed without fixing the real problem. Technology must support constraint, flow, and truth—not replace thinking.",
+    "how": [
+      "Start with the business problem, not the feature list.",
+      "Check if automation actually improves the constraint.",
+      "Measure system-wide flow, not just local speed gains."
+    ],
+    "reflection": "A system is better when people feel more in control, not less.",
+    "related": [],
+    "audiences": ["Leadership", "Engineering"],
+    "color": "#1D4ED8"
+  },
+  {
+    "id": "principles-flow-starts-at-the-edge",
+    "family": "Principles",
+    "title": "Flow Starts at the Edge",
+    "quote": "If it doesn’t work in the dirt, it doesn’t work.",
+    "tagline": "Design from the field inward.",
+    "why": "Most systems are built from the office down. Real flow happens when you start where the work happens and let the rest follow.",
+    "how": [
+      "Observe real jobs in real conditions before designing.",
+      "Capture events at the edge, not in the back office.",
+      "Adjust office processes to match field reality, not the reverse."
+    ],
+    "reflection": "When the edge runs smoothly, the whole company feels it.",
+    "related": [],
+    "audiences": ["Field", "Leadership", "Engineering"],
+    "color": "#1D4ED8"
+  },
+  {
+    "id": "principles-convivial-tools",
+    "family": "Principles",
+    "title": "Convivial Tools",
+    "quote": "The tool should help, then get out of the way.",
+    "tagline": "Support the worker’s judgment, don’t replace it.",
+    "why": "Systems that try to think for people end up ignored. Systems that quietly support good judgment get used every day.",
+    "how": [
+      "Automate recording, not decision-making.",
+      "Keep people in charge of exceptions and changes.",
+      "Show clear information instead of rigid rules."
+    ],
+    "reflection": "Tools earn trust when they extend people instead of overruling them.",
+    "related": [],
+    "audiences": ["Field", "Leadership"],
+    "color": "#1D4ED8"
+  },
+
+  {
+    "id": "field-practice-effortless-proof",
+    "family": "Field Practice",
+    "title": "Effortless Proof",
+    "quote": "The work proves itself.",
+    "tagline": "Let time and place record automatically.",
+    "why": "Clearing up missing or wrong time records costs hours. When proof is captured as crews move, there is nothing to chase later.",
+    "how": [
+      "Start tracking when a worker arrives on site.",
+      "Tie time records to actual locations, not just job names.",
+      "Keep storing events even when the signal drops."
+    ],
+    "reflection": "Good records feel like a side effect of doing the job right, not a second job.",
+    "related": [],
+    "audiences": ["Field"],
+    "color": "#059669"
+  },
+  {
+    "id": "field-practice-context-without-effort",
+    "family": "Field Practice",
+    "title": "Context Without Effort",
+    "quote": "The system should already know the job.",
+    "tagline": "Let place and tags set the paperwork.",
+    "why": "Picking job codes and tasks by hand slows crews and adds mistakes. Context should come from where you are and what you’re near.",
+    "how": [
+      "Map locations to sites and parcels ahead of time.",
+      "Use tags on equipment and zones to clarify work.",
+      "Only ask people to choose when there is real ambiguity."
+    ],
+    "reflection": "When the system understands the site, workers can focus on the work instead of the form.",
+    "related": [],
+    "audiences": ["Field"],
+    "color": "#059669"
+  },
+  {
+    "id": "field-practice-one-badge-whole-day",
+    "family": "Field Practice",
+    "title": "One Badge, Whole Day",
+    "quote": "Carry one thing and forget about it.",
+    "tagline": "Make the badge the only touchpoint.",
+    "why": "Phones, apps, and terminals all compete for attention. One simple badge that just works is easier to carry and easier to trust.",
+    "how": [
+      "Avoid depending on phones or on-site terminals.",
+      "Let the badge cover the entire shift from start to finish.",
+      "Design so crews rarely need to touch or think about it."
+    ],
+    "reflection": "The more the badge fades into the background, the more useful it becomes.",
+    "related": [],
+    "audiences": ["Field"],
+    "color": "#059669"
+  },
+  {
+    "id": "field-practice-know-the-truth-on-site",
+    "family": "Field Practice",
+    "title": "Know the Truth On Site",
+    "quote": "Don’t wait until tomorrow to know today.",
+    "tagline": "Give foremen live, simple facts.",
+    "why": "If supervisors only see yesterday’s report, they can’t fix today’s problems. They need clear status while crews are still on site.",
+    "how": [
+      "Show who is on which site right now.",
+      "Highlight crews that started late or left early.",
+      "Flag areas with unusual idle time for review."
+    ],
+    "reflection": "When leaders see reality in time, small adjustments prevent big issues.",
+    "related": [],
+    "audiences": ["Field", "Leadership"],
+    "color": "#059669"
+  },
+  {
+    "id": "field-practice-get-paid-right",
+    "family": "Field Practice",
+    "title": "Get Paid Right",
+    "quote": "Pay should match the work, every time.",
+    "tagline": "Let clean records protect both crew and company.",
+    "why": "Nothing damages trust faster than a short paycheck. When records are solid, both sides can see and fix problems quickly.",
+    "how": [
+      "Match each hour on the check to a site and job.",
+      "Show workers their own time history clearly.",
+      "Lock records once both sides have agreed."
+    ],
+    "reflection": "Reliable pay builds crews that stay instead of crews that leave.",
+    "related": [],
+    "audiences": ["Field", "Finance"],
+    "color": "#059669"
+  },
+  {
+    "id": "field-practice-less-admin-more-work",
+    "family": "Field Practice",
+    "title": "Less Admin, More Work",
+    "quote": "Crews are hired to build, not to type.",
+    "tagline": "Strip away busywork from the field.",
+    "why": "Time spent filling forms and correcting time is time not spent producing value.",
+    "how": [
+      "Remove manual time sheets where possible.",
+      "Use badge data as the first source of truth.",
+      "Reserve human input for real exceptions."
+    ],
+    "reflection": "When admin drops, output and morale rise together.",
+    "related": [],
+    "audiences": ["Field", "Leadership"],
+    "color": "#059669"
+  },
+  {
+    "id": "field-practice-proof-without-training",
+    "family": "Field Practice",
+    "title": "Proof Without Training",
+    "quote": "If you need a manual, it’s too complex.",
+    "tagline": "Make usage obvious at a glance.",
+    "why": "New tools often stall because training never reaches everyone. Field tools must make sense from day one.",
+    "how": [
+      "Keep physical interactions to one or two gestures.",
+      "Use simple light or vibration cues instead of menus.",
+      "Test with new hires who have never seen it before."
+    ],
+    "reflection": "When people understand a tool in seconds, adoption takes care of itself.",
+    "related": [],
+    "audiences": ["Field"],
+    "color": "#059669"
+  },
+  {
+    "id": "field-practice-presence-becomes-proof",
+    "family": "Field Practice",
+    "title": "Presence Becomes Proof",
+    "quote": "Being there creates the record.",
+    "tagline": "Turn normal movement into evidence of work.",
+    "why": "Manual check-ins create gaps and disputes. Continuous presence at a site is the simplest signal that work could happen.",
+    "how": [
+      "Use location as the base signal for time.",
+      "Treat leaving the site as the natural stop time.",
+      "Flag odd patterns for review instead of blocking work."
+    ],
+    "reflection": "When just being on site generates proof, good behavior becomes the easiest behavior.",
+    "related": [],
+    "audiences": ["Field", "Leadership"],
+    "color": "#059669"
+  },
+
+  {
+    "id": "automation-mechanisms-edge-autonomy",
+    "family": "Automation & Mechanisms",
+    "title": "Edge Autonomy",
+    "quote": "The work keeps going, even when the signal doesn’t.",
+    "tagline": "Capture locally, send when you can.",
+    "why": "Coverage comes and goes, but work cannot. Devices must keep a clean record even when completely offline.",
+    "how": [
+      "Store signed events on the badge until upload.",
+      "Queue data instead of failing on bad signal.",
+      "Guarantee no duplicates when resending."
+    ],
+    "reflection": "Reliability depends more on local autonomy than on perfect networks.",
+    "related": [],
+    "audiences": ["Engineering", "Field"],
+    "color": "#7C3AED"
+  },
+  {
+    "id": "automation-mechanisms-store-and-forward",
+    "family": "Automation & Mechanisms",
+    "title": "Store and Forward",
+    "quote": "Don’t drop the story when the line cuts out.",
+    "tagline": "Hold the record until it’s safely delivered.",
+    "why": "If events are lost during outages, the story of the day breaks. Store-and-forward keeps the chain unbroken.",
+    "how": [
+      "Write each event to durable storage first.",
+      "Mark events as delivered only after confirmation.",
+      "Retry with backoff to protect battery."
+    ],
+    "reflection": "A system you can trust never silently loses events.",
+    "related": [],
+    "audiences": ["Engineering"],
+    "color": "#7C3AED"
+  },
+  {
+    "id": "automation-mechanisms-passive-association",
+    "family": "Automation & Mechanisms",
+    "title": "Passive Association",
+    "quote": "Let gear and people find each other.",
+    "tagline": "Use tags to connect work without typing.",
+    "why": "Choosing equipment IDs by hand creates errors and takes time. Automatic proximity can link people, tools, and locations.",
+    "how": [
+      "Attach tags to equipment and critical zones.",
+      "Detect nearby tags from the badge quietly.",
+      "Associate time on site with the right assets."
+    ],
+    "reflection": "When association is automatic, the record better matches how the work really ran.",
+    "related": [],
+    "audiences": ["Field", "Engineering"],
+    "color": "#7C3AED"
+  },
+  {
+    "id": "automation-mechanisms-battery-constraint",
+    "family": "Automation & Mechanisms",
+    "title": "Battery as a Design Constraint",
+    "quote": "Dead batteries tell no stories.",
+    "tagline": "Protect runtime like any other safety margin.",
+    "why": "If devices die before the shift does, the record is broken. Battery life must shape sampling, radio use, and hardware choices.",
+    "how": [
+      "Set duty cycles to cover worst-case shifts.",
+      "Batch transmissions instead of constant chatter.",
+      "Alert before devices are at risk of not lasting the day."
+    ],
+    "reflection": "Design that respects battery life respects the worker’s time too.",
+    "related": [],
+    "audiences": ["Engineering", "Field"],
+    "color": "#7C3AED"
+  },
+  {
+    "id": "automation-mechanisms-no-app-no-terminal",
+    "family": "Automation & Mechanisms",
+    "title": "No App, No Terminal",
+    "quote": "Less to break, less to explain.",
+    "tagline": "Rely on the badge, not a stack of screens.",
+    "why": "Phones die, apps change, and kiosks get stuck inside trailers. A single-purpose device is more predictable in the field.",
+    "how": [
+      "Keep core capture on the badge itself.",
+      "Use servers to store and view results, not to capture.",
+      "Avoid requiring personal phones for basic tasks."
+    ],
+    "reflection": "Every removed screen is one less thing for crews to fight with.",
+    "related": [],
+    "audiences": ["Field", "Engineering", "Leadership"],
+    "color": "#7C3AED"
+  },
+  {
+    "id": "automation-mechanisms-smart-intervals",
+    "family": "Automation & Mechanisms",
+    "title": "Smart Intervals",
+    "quote": "Measure often enough, not all the time.",
+    "tagline": "Balance detail with battery and bandwidth.",
+    "why": "Constant reporting drains batteries and clogs networks. Smart timing gives enough detail without waste.",
+    "how": [
+      "Sample more often when movement changes.",
+      "Slow down checks during steady work.",
+      "Use different intervals for travel vs. on-site."
+    ],
+    "reflection": "The right rhythm of data keeps the story clear and the system light.",
+    "related": [],
+    "audiences": ["Engineering"],
+    "color": "#7C3AED"
+  },
+  {
+    "id": "automation-mechanisms-automating-hidden-steps",
+    "family": "Automation & Mechanisms",
+    "title": "Automating the Hidden Steps",
+    "quote": "The best automation erases chores nobody remembers doing.",
+    "tagline": "Find and remove invisible admin.",
+    "why": "Many delays come from small repeated tasks: copying IDs, matching times, fixing codes. Those are ideal targets for automation.",
+    "how": [
+      "List manual steps between field and finance.",
+      "Count how often each step happens in a week.",
+      "Automate the steps that are frequent and low risk."
+    ],
+    "reflection": "The easiest time savings are often in the work nobody talks about.",
+    "related": [],
+    "audiences": ["Engineering", "Leadership"],
+    "color": "#7C3AED"
+  },
+  {
+    "id": "automation-mechanisms-fail-safe-not-silent",
+    "family": "Automation & Mechanisms",
+    "title": "Fail Safe, Not Silent",
+    "quote": "If it breaks, someone should know right away.",
+    "tagline": "Surface problems before they become gaps.",
+    "why": "Silent failures create missing days of history. Visible failures let crews and managers fix issues quickly.",
+    "how": [
+      "Detect when devices stop reporting for too long.",
+      "Alert supervisors before a whole shift is lost.",
+      "Recover gracefully without double-counting events."
+    ],
+    "reflection": "A noisy failure is cheaper than a quiet one that nobody notices for weeks.",
+    "related": [],
+    "audiences": ["Engineering", "Leadership"],
+    "color": "#7C3AED"
+  },
+
+  {
+    "id": "data-integrity-integrity-by-design",
+    "family": "Data Integrity & Provenance",
     "title": "Integrity by Design",
     "quote": "Trust the chain, not a promise.",
-    "tagline": "End-to-end verifiability.",
-    "why": "Integrity must survive handoffs. Each step preserves proof without manual controls.",
+    "tagline": "Make it hard to fake and easy to prove.",
+    "why": "If records can be changed without a trail, they will be questioned. Integrity has to live in the design, not just in policy.",
     "how": [
-      "Edge-signed events only",
-      "Immutable event log",
-      "Idempotent processing",
-      "Complete audit trail"
+      "Sign each event at capture time.",
+      "Keep an immutable log of raw events.",
+      "Record every transformation as a separate step."
     ],
-    "reflection": "If you can trace it, you can trust it.",
-    "related": [
-      "philosophy-truth-you-can-stand-on",
-      "foundational-reasoning-integrity-by-design",
-      "architecture-provenance-of-truth"
-    ],
-    "audiences": [
-      "Engineering",
-      "Finance",
-      "Leadership"
-    ],
-    "color": "#4F46E5"
-  },
-  {
-    "id": "architecture-provenance-of-truth",
-    "family": "Architecture",
-    "title": "Provenance of Truth",
-    "quote": "Origin travels with data.",
-    "tagline": "Proof from field to finance.",
-    "why": "Edits break trust. Preserve edge signatures and context across all systems.",
-    "how": [
-      "Carry edge signatures forward",
-      "Attach context to every join",
-      "Detect tampering on read",
-      "Expose lineage in UI and APIs"
-    ],
-    "reflection": "Trust comes from proof, not policy.",
-    "related": [
-      "philosophy-truth-you-can-stand-on",
-      "foundational-reasoning-integrity-by-design",
-      "architecture-integrity-by-design"
-    ],
-    "audiences": [
-      "Engineering",
-      "Finance",
-      "Leadership",
-      "Partners"
-    ],
-    "color": "#4F46E5"
-  },
-  {
-    "id": "architecture-real-time-reflection",
-    "family": "Architecture",
-    "title": "Real-Time Reflection",
-    "quote": "See now, act now.",
-    "tagline": "Live truth beats late reports.",
-    "why": "Yesterday\u2019s report can\u2019t fix today. Verified live data reveals issues as they form.",
-    "how": [
-      "Stream verified events to views",
-      "Flag anomalies immediately",
-      "Show movement and progress live",
-      "Keep summaries reproducible"
-    ],
-    "reflection": "Visibility turns oversight into insight.",
+    "reflection": "When the system proves itself, oversight becomes confirmation, not suspicion.",
     "related": [],
-    "audiences": [
-      "Leadership",
-      "Field",
-      "Engineering"
-    ],
-    "color": "#4F46E5"
-  },
-  {
-    "id": "automation-automate-constraint",
-    "family": "Automation",
-    "title": "Automate the Constraint",
-    "quote": "Automation is good, as long as you know exactly where to put the machine.",
-    "tagline": "Automate where proof depends on it.",
-    "why": "Automation magnifies both correctness and error. Place it at the constraint so leverage is maximized.",
-    "how": [
-      "Identify the limiting point",
-      "Capture time and presence directly",
-      "Leave judgment to humans",
-      "Align downstream systems automatically"
-    ],
-    "reflection": "Focused automation strengthens the whole.",
-    "related": [
-      "truth-395",
-      "flow-critical"
-    ],
-    "audiences": [
-      "Field",
-      "Engineering",
-      "Leadership",
-      "Partners"
-    ],
-    "color": "#7C3AED"
-  },
-  {
-    "id": "automation-necessary-not-sufficient",
-    "family": "Automation",
-    "title": "Necessary but Not Sufficient",
-    "quote": "Technology is necessary, but rarely enough. \u2014 Eli Goldratt",
-    "tagline": "Tools matter only when aligned to constraint.",
-    "why": "Technology enables improvement but does not guarantee it. Progress occurs when it strengthens the limiting point.",
-    "how": [
-      "Find the constraint first",
-      "Relieve it with automation",
-      "Measure overall flow, not local speed",
-      "Retire tools that add load"
-    ],
-    "reflection": "Necessity is not sufficiency; alignment is.",
-    "related": [
-      "automation-automate-constraint"
-    ],
-    "audiences": [
-      "Leadership",
-      "Engineering"
-    ],
-    "color": "#7C3AED"
-  },
-  {
-    "id": "convivial-reduce-load",
-    "family": "Conviviality",
-    "title": "Reduce the Load",
-    "quote": "The team is the means of delivery, not the toolchain. \u2014 Team Topologies",
-    "tagline": "Technology should lighten thinking, not multiply it.",
-    "why": "People deliver value. Tools must minimize cognitive and admin burden so attention stays on work.",
-    "how": [
-      "Audit cognitive load",
-      "Automate repetitive admin",
-      "Hide infra complexity",
-      "Measure coordination overhead"
-    ],
-    "reflection": "When tech gets lighter, teams get faster.",
-    "related": [
-      "convivial-tools",
-      "outcome-empower-crew"
-    ],
-    "audiences": [
-      "Field",
-      "Leadership"
-    ],
-    "color": "#F97316"
-  },
-  {
-    "id": "convivial-tools",
-    "family": "Conviviality",
-    "title": "Tools for Humans",
-    "quote": "Most learning is not the result of instruction\u2026 \u2014 Ivan Illich",
-    "tagline": "Systems should serve, not steer.",
-    "why": "Technology must reduce cognitive load and preserve autonomy. The badge observes; people work.",
-    "how": [
-      "Passive capture over check-ins",
-      "Minimize attention cost",
-      "Follow worker rhythm",
-      "Proof emerges from activity"
-    ],
-    "reflection": "Convivial systems reveal truth without supervision.",
-    "related": [
-      "outcome-empower-crew",
-      "convivial-reduce-load"
-    ],
-    "audiences": [
-      "Field",
-      "Leadership"
-    ],
-    "color": "#F97316"
-  },
-  {
-    "id": "design-integrity-by-design",
-    "family": "Design",
-    "title": "Integrity by Design",
-    "quote": "Presence becomes proof.",
-    "tagline": "The system must prove itself.",
-    "why": "Integrity is architectural. Each step preserves verifiability so truth propagates automatically.",
-    "how": [
-      "Sign + timestamp every event",
-      "Log transformations as transactions",
-      "Detect any alteration",
-      "Reproduce input from output"
-    ],
-    "reflection": "Design that guarantees truth reduces oversight to confirmation.",
-    "related": [
-      "language-provenance",
-      "truth-395"
-    ],
-    "audiences": [
-      "Engineering",
-      "Finance",
-      "Leadership",
-      "Partners"
-    ],
-    "color": "#EC4899"
-  },
-  {
-    "id": "flow-critical",
-    "family": "Flow",
-    "title": "Critical Flow",
-    "quote": "Flow starts at the edge.",
-    "tagline": "Movement defines truth.",
-    "why": "Work happens at the physical edge. Systems must follow the flow of the work itself or lose fidelity.",
-    "how": [
-      "Begin capture at the edge",
-      "Store-forward when offline",
-      "Sync in smart intervals",
-      "Let edge events drive system state"
-    ],
-    "reflection": "When the edge flows, the org follows.",
-    "related": [
-      "mechanism-edge-autonomy"
-    ],
-    "audiences": [
-      "Field",
-      "Engineering",
-      "Leadership",
-      "Partners"
-    ],
-    "color": "#2563EB"
-  },
-  {
-    "id": "foundational-reasoning-395-exactly",
-    "family": "Foundational Reasoning",
-    "title": "395\u2026 Exactly",
-    "quote": "Count, don\u2019t guess.",
-    "tagline": "Precision builds confidence.",
-    "why": "Estimates cause payroll and billing disputes. Exact measures align crews, finance, and customers.",
-    "how": [
-      "Use telemetry, not memory",
-      "Keep events atomic and ordered",
-      "Verify before aggregation",
-      "Let precision flow to costing"
-    ],
-    "reflection": "Exact counts make decisions straightforward.",
-    "related": [],
-    "audiences": [
-      "Field",
-      "Finance",
-      "Leadership",
-      "Engineering"
-    ],
-    "color": "#EA580C"
-  },
-  {
-    "id": "foundational-reasoning-automate-the-constraint",
-    "family": "Foundational Reasoning",
-    "title": "Automate the Constraint",
-    "quote": "Fix the choke point.",
-    "tagline": "Put automation where leverage lives.",
-    "why": "Automation magnifies outcomes. Aim it at the limiting step\u2014time and presence\u2014so the whole system improves.",
-    "how": [
-      "Identify the true constraint",
-      "Capture time and presence directly",
-      "Let judgment stay with people",
-      "Feed downstream systems automatically"
-    ],
-    "reflection": "Focused automation strengthens everything it feeds.",
-    "related": [],
-    "audiences": [
-      "Field",
-      "Engineering",
-      "Leadership",
-      "Partners"
-    ],
-    "color": "#EA580C"
-  },
-  {
-    "id": "foundational-reasoning-critical-flow",
-    "family": "Foundational Reasoning",
-    "title": "Critical Flow",
-    "quote": "Flow starts at the edge.",
-    "tagline": "Let work drive the system.",
-    "why": "Work happens in the field. Recording must follow motion or fidelity is lost.",
-    "how": [
-      "Begin capture at the edge",
-      "Buffer locally during outages",
-      "Sync predictably on signal",
-      "Drive state from edge events"
-    ],
-    "reflection": "When the edge flows, the org follows.",
-    "related": [
-      "philosophy-keep-the-work-moving",
-      "metrics-flow-multiplied"
-    ],
-    "audiences": [
-      "Field",
-      "Engineering",
-      "Leadership",
-      "Partners"
-    ],
-    "color": "#EA580C"
-  },
-  {
-    "id": "foundational-reasoning-integrity-by-design",
-    "family": "Foundational Reasoning",
-    "title": "Integrity by Design",
-    "quote": "Make truth hold together.",
-    "tagline": "Integrity is architectural.",
-    "why": "If any step allows edits without evidence, trust collapses. Seal the record end-to-end.",
-    "how": [
-      "Sign and timestamp every event",
-      "Log transformations as transactions",
-      "Detect mismatches immediately",
-      "Reproduce inputs from outputs"
-    ],
-    "reflection": "Systems that prove themselves need less oversight.",
-    "related": [
-      "philosophy-truth-you-can-stand-on",
-      "architecture-provenance-of-truth",
-      "architecture-integrity-by-design"
-    ],
-    "audiences": [
-      "Engineering",
-      "Finance",
-      "Leadership",
-      "Partners"
-    ],
-    "color": "#EA580C"
-  },
-  {
-    "id": "foundational-reasoning-provenance-truth-you-can-trace",
-    "family": "Foundational Reasoning",
-    "title": "Provenance (Truth You Can Trace)",
-    "quote": "Proof travels with origin.",
-    "tagline": "Security as verifiable lineage.",
-    "why": "Data without origin becomes opinion. Provenance keeps a testable trail from badge to books.",
-    "how": [
-      "Attach identity, location, timestamp",
-      "Sign and encrypt at capture",
-      "Preserve chain of custody",
-      "Detect and flag any alteration"
-    ],
-    "reflection": "Traceability turns statements into facts.",
-    "related": [
-      "philosophy-truth-you-can-stand-on",
-      "foundational-reasoning-integrity-by-design",
-      "architecture-provenance-of-truth"
-    ],
-    "audiences": [
-      "Field",
-      "Engineering",
-      "Finance",
-      "Leadership",
-      "Partners"
-    ],
-    "color": "#EA580C"
-  },
-  {
-    "id": "foundational-reasoning-tools-for-humans",
-    "family": "Foundational Reasoning",
-    "title": "Tools for Humans",
-    "quote": "Fit the worker, not the system.",
-    "tagline": "Respect attention and autonomy.",
-    "why": "People deliver value. Tools must reduce cognitive load and match field conditions.",
-    "how": [
-      "Design for gloves, dust, noise",
-      "Remove screens and modes",
-      "Prefer single-purpose actions",
-      "Measure and reduce attention cost"
-    ],
-    "reflection": "The best tech feels like a good hammer: it just works.",
-    "related": [
-      "philosophy-the-right-tool-helps-not-hinders",
-      "outcomes-empower-the-crew"
-    ],
-    "audiences": [
-      "Field",
-      "Leadership"
-    ],
-    "color": "#EA580C"
-  },
-  {
-    "id": "language-provenance",
-    "family": "Language",
-    "title": "Provenanced",
-    "quote": "Truth requires protection.",
-    "tagline": "Trust comes from traceability.",
-    "why": "Truth in data exists only when its origin can be proven. Provenance makes security measurable \u2014 verifiable origin, verified truth.",
-    "how": [
-      "Tag source with identity, location, timestamp",
-      "Sign and encrypt each transmission",
-      "Preserve lineage from badge to cloud",
-      "Audit values and chain of custody"
-    ],
-    "reflection": "When origin is provable, truth stands on its own.",
-    "related": [
-      "design-integrity-by-design",
-      "truth-395"
-    ],
-    "audiences": [
-      "Field",
-      "Engineering",
-      "Finance",
-      "Leadership",
-      "Partners"
-    ],
+    "audiences": ["Engineering", "Finance", "Leadership"],
     "color": "#0F766E"
   },
   {
-    "id": "mechanism-edge-autonomy",
-    "family": "Mechanism",
-    "title": "Edge Autonomy",
-    "quote": "Work continues, even without connection.",
-    "tagline": "Capture locally, transmit intelligently.",
-    "why": "Connectivity is intermittent; work is continuous. Autonomy ensures truth is recorded where it happens.",
+    "id": "data-integrity-provenance-of-truth",
+    "family": "Data Integrity & Provenance",
+    "title": "Provenance of Truth",
+    "quote": "Origin travels with the data.",
+    "tagline": "Never lose sight of where a number came from.",
+    "why": "Totals without history are just guesses in a different format. Provenance keeps the story attached to the summary.",
     "how": [
-      "Local store of events",
-      "Integrity checks before upload",
-      "Smart batches on available signal",
-      "No event loss; no blocked work"
+      "Carry edge signatures through every system.",
+      "Include context on joins, not just IDs.",
+      "Flag any data that appears without a valid source."
     ],
-    "reflection": "Reliability comes from autonomy, not constant connection.",
-    "related": [
-      "flow-critical",
-      "design-integrity-by-design"
-    ],
-    "audiences": [
-      "Engineering",
-      "Field",
-      "Partners"
-    ],
-    "color": "#64748B"
+    "reflection": "When people ask “How do we know?”, the answer should be one click away.",
+    "related": [],
+    "audiences": ["Engineering", "Finance", "Leadership"],
+    "color": "#0F766E"
   },
   {
-    "id": "metric-cognitive-load",
-    "family": "Metric",
-    "title": "Cognitive Load \u2264 2 min/day",
-    "quote": "Automation success is measured in attention saved.",
-    "tagline": "Less thought on system, more on work.",
-    "why": "Excess interaction cancels efficiency gains.",
+    "id": "data-integrity-no-edits-without-evidence",
+    "family": "Data Integrity & Provenance",
+    "title": "No Edits Without Evidence",
+    "quote": "Fix the record, but leave footprints.",
+    "tagline": "Corrections should clarify, not erase.",
+    "why": "Sometimes records will be wrong. Trouble starts when changes hide what really happened.",
     "how": [
-      "Log user interaction time",
-      "Average per user per day",
-      "Remove repetitive steps",
-      "Keep \u2264 2 min/day as design guardrail"
+      "Allow edits only with a reason and a named owner.",
+      "Keep the original event alongside the correction.",
+      "Report on where and how often corrections happen."
     ],
-    "reflection": "Worth proven by how little it demands.",
-    "related": [
-      "outcome-empower-crew",
-      "convivial-reduce-load"
-    ],
-    "audiences": [
-      "Field",
-      "Leadership"
-    ],
-    "color": "#06B6D4"
+    "reflection": "Honest corrections strengthen trust; hidden ones destroy it.",
+    "related": [],
+    "audiences": ["Field", "Finance", "Leadership"],
+    "color": "#0F766E"
   },
   {
-    "id": "metrics-confidence-in-every-paycheck",
-    "family": "Metrics",
-    "title": "Confidence in Every Paycheck",
-    "quote": "Pay what happened.",
-    "tagline": "Every minute verified.",
-    "why": "Pay errors destroy trust. Exact capture removes disputes and rework.",
+    "id": "data-integrity-one-source-of-reality",
+    "family": "Data Integrity & Provenance",
+    "title": "One Source of Reality",
+    "quote": "Everyone should be looking at the same story.",
+    "tagline": "End the argument about which report is right.",
+    "why": "If crews, finance, and leaders all run from different systems, they end up debating whose numbers are correct instead of fixing problems.",
     "how": [
-      "Match badge time to payroll",
-      "Alert on gaps and overlaps",
-      "Lock events post-approval",
-      "Show trace for each check"
+      "Choose one system as the event record.",
+      "Feed other tools from that system instead of re-keying.",
+      "Stop creating side spreadsheets to “fix” the truth."
     ],
-    "reflection": "Friday is calm when records are right.",
-    "related": [
-      "outcomes-precision-finance",
-      "metrics-recognition-built-on-proof"
-    ],
-    "audiences": [
-      "Finance",
-      "Field",
-      "Leadership"
-    ],
-    "color": "#06B6D4"
+    "reflection": "Shared reality is the first step toward shared progress.",
+    "related": [],
+    "audiences": ["Leadership", "Field", "Finance"],
+    "color": "#0F766E"
   },
   {
-    "id": "metrics-flow-multiplied",
-    "family": "Metrics",
+    "id": "data-integrity-lineage-is-the-ledger",
+    "family": "Data Integrity & Provenance",
+    "title": "Lineage Is the Ledger",
+    "quote": "Follow the trail, not just the total.",
+    "tagline": "Treat event history like money.",
+    "why": "Financial audits follow every dollar from start to finish. Operational truth needs the same discipline to be trusted.",
+    "how": [
+      "Assign stable IDs to people, places, and events.",
+      "Keep links between raw data and rollups.",
+      "Use lineage views during reviews and disputes."
+    ],
+    "reflection": "When the history is clear, totals stop being mysterious.",
+    "related": [],
+    "audiences": ["Finance", "Engineering", "Leadership"],
+    "color": "#0F766E"
+  },
+  {
+    "id": "data-integrity-tamper-evident-by-default",
+    "family": "Data Integrity & Provenance",
+    "title": "Tamper-Evident by Default",
+    "quote": "You don’t have to prevent every edit; you do have to see it.",
+    "tagline": "Make quiet changes impossible.",
+    "why": "Absolute locks on data are impractical. But every change should leave a clear mark so trust can be checked.",
+    "how": [
+      "Detect broken chains or missing events immediately.",
+      "Alert on unusual edit patterns across the system.",
+      "Show tamper status in everyday dashboards."
+    ],
+    "reflection": "When tampering can’t hide, trust can be restored quickly.",
+    "related": [],
+    "audiences": ["Engineering", "Leadership"],
+    "color": "#0F766E"
+  },
+  {
+    "id": "data-integrity-edge-is-the-source-of-truth",
+    "family": "Data Integrity & Provenance",
+    "title": "Edge Is the Source of Truth",
+    "quote": "The story starts where the boots are.",
+    "tagline": "Trust what happens at the badge first.",
+    "why": "If truth is defined in a back office, it may not match what crews lived. Edge events should be the first version of the story.",
+    "how": [
+      "Prioritize badge data over manual backfill.",
+      "Only override edge data with strong justification.",
+      "Mark overrides clearly in all reports."
+    ],
+    "reflection": "Respect for field truth improves both records and relationships.",
+    "related": [],
+    "audiences": ["Field", "Leadership", "Finance"],
+    "color": "#0F766E"
+  },
+  {
+    "id": "data-integrity-simple-enough-to-explain",
+    "family": "Data Integrity & Provenance",
+    "title": "Simple Enough to Explain",
+    "quote": "If you can’t explain the record, no one will trust it.",
+    "tagline": "Make integrity understandable to non-engineers.",
+    "why": "Complex security that nobody understands becomes invisible. People need a plain-language way to know why they can trust the system.",
+    "how": [
+      "Use clear diagrams and stories in onboarding.",
+      "Describe data flow in everyday terms, not jargon.",
+      "Answer “how do we know?” with simple examples."
+    ],
+    "reflection": "Trust grows when non-technical people feel informed, not shut out.",
+    "related": [],
+    "audiences": ["Field", "Leadership", "Finance"],
+    "color": "#0F766E"
+  },
+
+  {
+    "id": "flow-operations-critical-flow",
+    "family": "Flow & Operations",
+    "title": "Critical Flow",
+    "quote": "A small snag can stop the whole line.",
+    "tagline": "Watch the movement, not just the totals.",
+    "why": "Bottlenecks often hide in handoffs and waits, not in the main task. Flow tells you where the real delays live.",
+    "how": [
+      "Map the steps from arrival to completion.",
+      "Measure time waiting, walking, and handing over.",
+      "Fix one choke point at a time and re-measure."
+    ],
+    "reflection": "Improving flow often matters more than improving individual speed.",
+    "related": [],
+    "audiences": ["Field", "Leadership"],
+    "color": "#EA580C"
+  },
+  {
+    "id": "flow-operations-real-time-reflection",
+    "family": "Flow & Operations",
+    "title": "Real-Time Reflection",
+    "quote": "You can’t steer with yesterday’s map.",
+    "tagline": "See what’s happening while it still matters.",
+    "why": "Late reports only explain what went wrong; they can’t prevent it. Live views turn surprises into manageable issues.",
+    "how": [
+      "Show live crew locations and site status.",
+      "Highlight exceptions, not every detail.",
+      "Update views quickly but consistently."
+    ],
+    "reflection": "Timely truth lets small course corrections prevent big corrections later.",
+    "related": [],
+    "audiences": ["Leadership", "Field"],
+    "color": "#EA580C"
+  },
+  {
+    "id": "flow-operations-flow-multiplied",
+    "family": "Flow & Operations",
     "title": "Flow Multiplied",
-    "quote": "Do more without more.",
-    "tagline": "Remove hidden drag.",
-    "why": "Manual steps steal time. Automation lifts output with the same headcount.",
+    "quote": "Do more with the same crew.",
+    "tagline": "Remove hidden drag, not just visible waste.",
+    "why": "Manual steps between systems slow everything down. Removing them frees capacity without adding people.",
     "how": [
-      "Measure interaction minutes",
-      "Eliminate repetitive steps",
-      "Automate field\u2013office handoffs",
-      "Track throughput per crew"
+      "List repeat admin tasks in a typical week.",
+      "Automate the biggest time sinks first.",
+      "Track crew throughput before and after changes."
     ],
-    "reflection": "The less you touch the system, the more it works for you.",
-    "related": [
-      "philosophy-keep-the-work-moving",
-      "foundational-reasoning-critical-flow"
+    "reflection": "When friction drops, productivity looks like magic even though nothing else changed.",
+    "related": [],
+    "audiences": ["Leadership", "Field"],
+    "color": "#EA580C"
+  },
+  {
+    "id": "flow-operations-clarity-beats-supervision",
+    "family": "Flow & Operations",
+    "title": "Clarity Beats Supervision",
+    "quote": "People don’t need more watching; they need better information.",
+    "tagline": "Show the work, don’t hover over it.",
+    "why": "Heavy supervision kills trust and initiative. Clear shared facts let crews self-correct without being micromanaged.",
+    "how": [
+      "Share simple views with crews, not just managers.",
+      "Use metrics that help workers adjust on their own.",
+      "Recognize teams for improvements they drive themselves."
     ],
-    "audiences": [
-      "Leadership",
-      "Field"
+    "reflection": "Good information turns supervisors into supporters instead of traffic cops.",
+    "related": [],
+    "audiences": ["Leadership", "Field"],
+    "color": "#EA580C"
+  },
+  {
+    "id": "flow-operations-map-the-work-not-the-paper",
+    "family": "Flow & Operations",
+    "title": "Map the Work, Not the Paper",
+    "quote": "The route the crew takes matters more than the route the forms take.",
+    "tagline": "Follow boots and machines, not just approvals.",
+    "why": "Paper trails rarely match actual paths on site. Mapping real movement shows how work truly flows.",
+    "how": [
+      "Draw actual paths of people and equipment.",
+      "Compare real paths to the official process map.",
+      "Adjust processes to match what works in practice."
     ],
+    "reflection": "When you design from real paths, both paperwork and jobs get simpler.",
+    "related": [],
+    "audiences": ["Field", "Leadership"],
+    "color": "#EA580C"
+  },
+  {
+    "id": "flow-operations-flow-before-forecast",
+    "family": "Flow & Operations",
+    "title": "Flow Before Forecast",
+    "quote": "Fix today’s jams before guessing about next month.",
+    "tagline": "Don’t model what you haven’t yet made smooth.",
+    "why": "Forecasts based on broken flow mislead. Clean operations make future planning more honest and more useful.",
+    "how": [
+      "Stabilize key routes and handoffs first.",
+      "Use real history from a stable period for planning.",
+      "Re-check forecasts as flow improves."
+    ],
+    "reflection": "A steady path today is worth more than a fancy prediction for tomorrow.",
+    "related": [],
+    "audiences": ["Leadership"],
+    "color": "#EA580C"
+  },
+  {
+    "id": "flow-operations-see-slack-as-a-signal",
+    "family": "Flow & Operations",
+    "title": "See Slack as a Signal",
+    "quote": "Idle time is information, not an enemy.",
+    "tagline": "Use gaps to understand system limits.",
+    "why": "A little slack keeps systems resilient. The goal is to understand it, not crush it to zero.",
+    "how": [
+      "Measure idle time along with busy time.",
+      "Learn where slack cushions risk vs. hides waste.",
+      "Trim only the slack that adds no stability."
+    ],
+    "reflection": "Trying to run at 100% all the time often leads to breakdowns and burnout.",
+    "related": [],
+    "audiences": ["Leadership"],
+    "color": "#EA580C"
+  },
+  {
+    "id": "flow-operations-work-with-the-weather",
+    "family": "Flow & Operations",
+    "title": "Work with the Weather of Operations",
+    "quote": "Conditions change; the system should bend, not break.",
+    "tagline": "Use live truth to adapt plans safely.",
+    "why": "Jobsites face weather, delays, and surprises. Operations need real-time input to adjust without panic.",
+    "how": [
+      "Use live maps to see shifting constraints.",
+      "Reassign crews when conditions change.",
+      "Review how adjustments impacted flow afterward."
+    ],
+    "reflection": "Flexible systems turn bad days into manageable ones.",
+    "related": [],
+    "audiences": ["Field", "Leadership"],
+    "color": "#EA580C"
+  },
+
+  {
+    "id": "finance-confidence-in-every-paycheck",
+    "family": "Finance & Reconciliation",
+    "title": "Confidence in Every Paycheck",
+    "quote": "Pay what happened, not what was remembered.",
+    "tagline": "Build trust by matching checks to reality.",
+    "why": "When pay doesn’t line up with the day, relationships suffer. Exact records protect both workers and the company.",
+    "how": [
+      "Feed payroll from verified badge events.",
+      "Highlight gaps and overlaps before running checks.",
+      "Give workers a clear view of their own hours."
+    ],
+    "reflection": "Solid pay builds crews that want to stay and grow.",
+    "related": [],
+    "audiences": ["Finance", "Field", "Leadership"],
     "color": "#06B6D4"
   },
   {
-    "id": "metrics-recognition-built-on-proof",
-    "family": "Metrics",
+    "id": "finance-recognition-built-on-proof",
+    "family": "Finance & Reconciliation",
     "title": "Recognition Built on Proof",
-    "quote": "Bill what\u2019s proven.",
-    "tagline": "Invoices with evidence.",
-    "why": "Memory-based billing erodes trust. Field proofs accelerate cash and reduce queries.",
+    "quote": "Bill what you can show.",
+    "tagline": "Use field evidence to close revenue faster.",
+    "why": "Invoices built on guesses invite disputes and delays. Attaching proof shortens arguments and the cash cycle.",
     "how": [
-      "Attach proofs to invoices",
-      "Expose lineage to customers",
-      "Close jobs on verified completion",
-      "Track days-sales-outstanding to truth"
+      "Attach time and presence proof to invoices.",
+      "Let customers see where and when crews worked.",
+      "Resolve questions by walking the record together."
     ],
-    "reflection": "Proof earns payment and respect.",
-    "related": [
-      "outcomes-precision-finance",
-      "metrics-confidence-in-every-paycheck"
-    ],
-    "audiences": [
-      "Finance",
-      "Leadership",
-      "Partners"
-    ],
+    "reflection": "Proof builds both payment and long-term trust with customers.",
+    "related": [],
+    "audiences": ["Finance", "Leadership", "Partners"],
     "color": "#06B6D4"
   },
   {
-    "id": "outcome-empower-crew",
-    "family": "Outcome",
-    "title": "Empower the Crew",
-    "quote": "Less admin, more work.",
-    "tagline": "Automation returns time to production.",
-    "why": "Administrative overhead is waste. Removing repetitive confirmation increases output and morale.",
-    "how": [
-      "Eliminate manual time capture",
-      "Shift verification to telemetry",
-      "Reduce reconciliation cycles",
-      "Free time for craft work"
-    ],
-    "reflection": "Efficiency happens when workers only do value work.",
-    "related": [
-      "convivial-tools",
-      "metric-cognitive-load"
-    ],
-    "audiences": [
-      "Field",
-      "Leadership",
-      "Finance"
-    ],
-    "color": "#D97706"
-  },
-  {
-    "id": "outcomes-empower-the-crew",
-    "family": "Outcomes",
-    "title": "Empower the Crew",
-    "quote": "Less admin, more work.",
-    "tagline": "Give time back to production.",
-    "why": "Admin is waste. Automation returns minutes to craft and output.",
-    "how": [
-      "Remove manual time capture",
-      "Shift verification to telemetry",
-      "Shorten reconciliation cycles",
-      "Let crews finish, not file"
-    ],
-    "reflection": "Trust flows up when admin flows down.",
-    "related": [
-      "philosophy-the-right-tool-helps-not-hinders"
-    ],
-    "audiences": [
-      "Field",
-      "Leadership",
-      "Finance"
-    ],
-    "color": "#D97706"
-  },
-  {
-    "id": "outcomes-manage-with-clarity",
-    "family": "Outcomes",
-    "title": "Manage with Clarity",
-    "quote": "Lead with facts.",
-    "tagline": "Reality on demand.",
-    "why": "Managers shouldn\u2019t chase updates. Live verified data supports timely decisions.",
-    "how": [
-      "One shared live picture",
-      "Exception-first dashboards",
-      "Trace issues to source events",
-      "Decide on what\u2019s true, not what\u2019s said"
-    ],
-    "reflection": "Clarity lowers noise and raises output.",
-    "related": [],
-    "audiences": [
-      "Leadership",
-      "Field"
-    ],
-    "color": "#D97706"
-  },
-  {
-    "id": "outcomes-precision-finance",
-    "family": "Outcomes",
+    "id": "finance-precision-finance",
+    "family": "Finance & Reconciliation",
     "title": "Precision Finance",
-    "quote": "Revenue follows truth.",
-    "tagline": "Clean books from clean data.",
-    "why": "Bad inputs ripple through AR, AP, and costing. Exact events settle dollars quickly.",
+    "quote": "Clean inputs make clean books.",
+    "tagline": "Let exact events drive dollars.",
+    "why": "If cost and revenue come from shaky data, every financial report is suspect. Precise operational data stabilizes finance.",
     "how": [
-      "Feed payroll with verified time",
-      "Auto-validate job costing",
-      "Accelerate invoicing with proofs",
-      "Shorten cash cycle"
+      "Tie labor cost to specific sites and jobs.",
+      "Use verified time for job costing and billing.",
+      "Check that billed work lines up with presence."
     ],
-    "reflection": "Profit grows where truth flows.",
-    "related": [
-      "metrics-confidence-in-every-paycheck",
-      "metrics-recognition-built-on-proof"
-    ],
-    "audiences": [
-      "Finance",
-      "Leadership"
-    ],
-    "color": "#D97706"
-  },
-  {
-    "id": "outcomes-truth-based-leadership",
-    "family": "Outcomes",
-    "title": "Truth-Based Leadership",
-    "quote": "Confidence from reality.",
-    "tagline": "Decide on what happened.",
-    "why": "Secondhand reports drift. Verified field data aligns plans and actions.",
-    "how": [
-      "Use verified summaries",
-      "Drill to signed events",
-      "Resolve disputes with lineage",
-      "Reward outcomes, not narratives"
-    ],
-    "reflection": "Truth gives leaders quiet confidence.",
-    "related": [
-      "philosophy-truth-you-can-stand-on",
-      "foundational-reasoning-integrity-by-design",
-      "architecture-provenance-of-truth"
-    ],
-    "audiences": [
-      "Leadership",
-      "Field"
-    ],
-    "color": "#D97706"
-  },
-  {
-    "id": "philosophy-keep-the-work-moving",
-    "family": "Philosophy",
-    "title": "Keep the Work Moving",
-    "quote": "Flow beats friction.",
-    "tagline": "Record without breaking rhythm.",
-    "why": "Stopping to enter data breaks focus and slows jobs. The badge records as work continues.",
-    "how": [
-      "Track motion and presence automatically",
-      "Store-forward when offline",
-      "Sync in small, smart batches",
-      "Surface exceptions, not everything"
-    ],
-    "reflection": "Flow appears when record and job move together.",
-    "related": [
-      "foundational-reasoning-critical-flow",
-      "metrics-flow-multiplied"
-    ],
-    "audiences": [
-      "Field",
-      "Leadership",
-      "Engineering"
-    ],
-    "color": "#1D4ED8"
-  },
-  {
-    "id": "philosophy-the-right-tool-helps-not-hinders",
-    "family": "Philosophy",
-    "title": "The Right Tool Helps, Not Hinders",
-    "quote": "Good tools disappear.",
-    "tagline": "Ease the job, don\u2019t add steps.",
-    "why": "Crew time is lost when tools demand attention. The badge works in the background so focus stays on production.",
-    "how": [
-      "Prefer passive capture over check-ins",
-      "Eliminate logins and manual entries",
-      "Let proof emerge from normal work",
-      "Treat attention as a scarce resource"
-    ],
-    "reflection": "When tools stay quiet, crews stay in flow.",
-    "related": [
-      "outcomes-empower-the-crew"
-    ],
-    "audiences": [
-      "Field",
-      "Leadership",
-      "Engineering"
-    ],
-    "color": "#1D4ED8"
-  },
-  {
-    "id": "philosophy-truth-you-can-stand-on",
-    "family": "Philosophy",
-    "title": "Truth You Can Stand On",
-    "quote": "Truth is traceable.",
-    "tagline": "Build trust with verifiable records.",
-    "why": "People trust numbers when origin is clear. Each event ties who, where, and when without edits.",
-    "how": [
-      "Bind identity, place, and time at capture",
-      "Sign each event at the edge",
-      "Keep lineage intact to finance",
-      "Make audits routine, not heroic"
-    ],
-    "reflection": "When origin is provable, arguments fade.",
-    "related": [
-      "foundational-reasoning-integrity-by-design",
-      "architecture-provenance-of-truth",
-      "architecture-integrity-by-design"
-    ],
-    "audiences": [
-      "Field",
-      "Finance",
-      "Leadership",
-      "Engineering"
-    ],
-    "color": "#1D4ED8"
-  },
-  {
-    "id": "product-always-connected-never-dependent",
-    "family": "Product",
-    "title": "Always Connected, Never Dependent",
-    "quote": "Work doesn\u2019t wait on signal.",
-    "tagline": "Store local, send smart.",
-    "why": "Remote sites drop coverage. Badges buffer locally and forward later without loss.",
-    "how": [
-      "Local queue of signed events",
-      "Retry with backoff on signal",
-      "Batch uploads to save battery",
-      "Guarantee no duplicate posting"
-    ],
-    "reflection": "Flow continues because autonomy is built in.",
+    "reflection": "Finance is calmer when it doesn’t have to fix operations on the fly.",
     "related": [],
-    "audiences": [
-      "Field",
-      "Engineering",
-      "Partners"
-    ],
-    "color": "#059669"
+    "audiences": ["Finance", "Leadership"],
+    "color": "#06B6D4"
   },
   {
-    "id": "product-context-without-effort",
-    "family": "Product",
-    "title": "Context Without Effort",
-    "quote": "The system should already know.",
-    "tagline": "Right job, no typing.",
-    "why": "Picking job codes slows crews. Place and tag data resolve context automatically.",
+    "id": "finance-remove-the-reconciliation-cycle",
+    "family": "Finance & Reconciliation",
+    "title": "Remove the Reconciliation Cycle",
+    "quote": "Stop fixing the same gaps every month.",
+    "tagline": "Prevent errors instead of patching them.",
+    "why": "Endless back-and-forth between field and finance wastes time. Eliminating root causes of mismatch saves everyone effort.",
     "how": [
-      "Map place to parcel and site",
-      "Associate tags to purpose",
-      "Auto-route events to jobs",
-      "Surface only unresolved cases"
+      "List common reasons for time and cost disputes.",
+      "Use automation to close those gaps at the source.",
+      "Keep a short, clear exception list for review."
     ],
-    "reflection": "Less entry, more work done.",
+    "reflection": "The best reconciliation is the one that rarely needs to happen.",
     "related": [],
-    "audiences": [
-      "Field",
-      "Leadership",
-      "Engineering"
-    ],
-    "color": "#059669"
+    "audiences": ["Finance", "Leadership"],
+    "color": "#06B6D4"
   },
   {
-    "id": "product-effortless-proof",
-    "family": "Product",
-    "title": "Effortless Proof",
-    "quote": "Proof without pause.",
-    "tagline": "Time tracks itself.",
-    "why": "Clock-ins and forms steal minutes. Automatic capture keeps crews moving and records clean.",
+    "id": "finance-revenue-follows-truth",
+    "family": "Finance & Reconciliation",
+    "title": "Revenue Follows Truth",
+    "quote": "Honest records make strong margins.",
+    "tagline": "Use reality to protect profitability.",
+    "why": "Under-billing and over-billing both damage the business. Accurate field truth keeps revenue in the healthy zone.",
     "how": [
-      "Sense motion and proximity",
-      "Auto-start/stop on presence",
-      "Bind events to place and job",
-      "Eliminate manual check-ins"
+      "Check that billed hours match verified presence.",
+      "Spot chronic under-recording of work.",
+      "Use event data to defend fair pricing."
     ],
-    "reflection": "Real proof doesn\u2019t ask for attention.",
+    "reflection": "Profit grows best when customers and crews both feel the numbers are fair.",
     "related": [],
-    "audiences": [
-      "Field",
-      "Leadership",
-      "Engineering"
-    ],
-    "color": "#059669"
+    "audiences": ["Finance", "Leadership", "Field"],
+    "color": "#06B6D4"
   },
   {
-    "id": "product-strength-through-connection",
-    "family": "Product",
-    "title": "Strength Through Connection",
-    "quote": "Use what you have\u2014better.",
-    "tagline": "Integrate, don\u2019t duplicate.",
-    "why": "New tools add training and risk. Verified data fuels existing payroll, costing, and scheduling.",
+    "id": "finance-close-the-books-faster",
+    "family": "Finance & Reconciliation",
+    "title": "Close the Books Faster",
+    "quote": "Less scrambling at month-end.",
+    "tagline": "Use live truth to shrink closing time.",
+    "why": "If finance waits on late or corrected field data, closing drags on. Clean continuous feeds speed up the whole cycle.",
     "how": [
-      "Feed systems via stable APIs",
-      "Preserve event lineage across systems",
-      "Reconcile automatically with proofs",
-      "Avoid new logins and roles"
+      "Update finance systems continuously, not in big dumps.",
+      "Flag missing data well before close.",
+      "Resolve issues while jobs are still fresh in memory."
     ],
-    "reflection": "Strong systems simplify instead of multiply.",
+    "reflection": "Fast, calm closes are a sign that operations and finance are finally in sync.",
     "related": [],
-    "audiences": [
-      "Finance",
-      "Leadership",
-      "Engineering",
-      "Partners"
-    ],
-    "color": "#059669"
+    "audiences": ["Finance", "Leadership"],
+    "color": "#06B6D4"
   },
+
   {
-    "id": "truth-395",
-    "family": "Truth",
-    "title": "395\u2026 Exactly",
-    "quote": "\u2018395\u2026 exactly.\u2019 \u2014 SGM Plumley",
-    "tagline": "Truth is measured, not estimated.",
-    "why": "Operational systems depend on exact counts \u2014 who was there, when, and for how long.",
+    "id": "vision-truth-as-infrastructure",
+    "family": "Vision & Alignment",
+    "title": "Truth as Infrastructure",
+    "quote": "Treat reality like a shared utility.",
+    "tagline": "Make accurate data something everyone can rely on.",
+    "why": "When truth is treated as a side project, every team makes its own version. As infrastructure, it supports every decision.",
     "how": [
-      "Measure presence by telemetry, not memory",
-      "Make each measure atomic",
-      "Verify before aggregation",
-      "Let precision propagate to finance"
+      "Invest in clean shared event data first.",
+      "Build other tools on top of that shared base.",
+      "Review major decisions against the same facts."
     ],
-    "reflection": "Exact counts align decisions with reality.",
-    "related": [
-      "language-provenance",
-      "design-integrity-by-design"
-    ],
-    "audiences": [
-      "Field",
-      "Engineering",
-      "Finance",
-      "Leadership"
-    ],
-    "color": "#16A34A"
-  },
-  {
-    "id": "vision-from-reactive-to-predictive",
-    "family": "Vision",
-    "title": "From Reactive to Predictive",
-    "quote": "See ahead because you see now.",
-    "tagline": "Truth that looks forward.",
-    "why": "Backwards reports can\u2019t steer. Live verified data reveals patterns you can plan on.",
-    "how": [
-      "Use live flows to forecast",
-      "Detect early warnings from anomalies",
-      "Pre-position crews and equipment",
-      "Continuously recalibrate schedules"
-    ],
-    "reflection": "Reliable truth turns surprises into schedules.",
+    "reflection": "Once truth is a backbone, every new tool gets easier to build and trust.",
     "related": [],
-    "audiences": [
-      "Leadership",
-      "Field",
-      "Engineering"
-    ],
+    "audiences": ["Leadership", "Engineering", "Finance"],
     "color": "#E11D48"
   },
   {
-    "id": "vision-truth-as-infrastructure",
-    "family": "Vision",
-    "title": "Truth as Infrastructure",
-    "quote": "One picture of reality.",
-    "tagline": "A backbone of verified events.",
-    "why": "Most systems show paperwork. A shared, living map aligns everyone to what\u2019s true.",
+    "id": "vision-from-reactive-to-predictive",
+    "family": "Vision & Alignment",
+    "title": "From Reactive to Predictive",
+    "quote": "See ahead because you finally see now.",
+    "tagline": "Use live history to plan instead of guess.",
+    "why": "Prediction built on bad data misleads. Solid live history makes simple forecasts far more valuable than complex models.",
     "how": [
-      "Unify views across roles",
-      "Keep lineage visible everywhere",
-      "Prevent divergence at integrations",
-      "Make the live map the starting point"
+      "Stabilize capture before building forecasts.",
+      "Use repeated patterns to anticipate load.",
+      "Refine forecasts as more clean data arrives."
     ],
-    "reflection": "When truth is the backbone, everything lines up.",
-    "related": [
-      "philosophy-truth-you-can-stand-on",
-      "foundational-reasoning-integrity-by-design",
-      "architecture-provenance-of-truth"
+    "reflection": "Prediction is just paying attention to honest patterns over time.",
+    "related": [],
+    "audiences": ["Leadership", "Field", "Engineering"],
+    "color": "#E11D48"
+  },
+  {
+    "id": "vision-lead-by-knowing-not-assuming",
+    "family": "Vision & Alignment",
+    "title": "Lead by Knowing, Not Assuming",
+    "quote": "Good leadership starts with seeing clearly.",
+    "tagline": "Let facts guide, not loud voices.",
+    "why": "When leaders rely on stories instead of data, decisions drift. Verified truth keeps direction steady even when opinions differ.",
+    "how": [
+      "Start reviews with simple shared views of reality.",
+      "Use data to test stories, not to silence people.",
+      "Change course openly when facts demand it."
     ],
-    "audiences": [
-      "Leadership",
-      "Finance",
-      "Field",
-      "Engineering",
-      "Partners"
+    "reflection": "Confidence grows when leaders show they are willing to be corrected by reality.",
+    "related": [],
+    "audiences": ["Leadership"],
+    "color": "#E11D48"
+  },
+  {
+    "id": "vision-the-living-map-of-work",
+    "family": "Vision & Alignment",
+    "title": "The Living Map of Work",
+    "quote": "See your operation like a moving picture, not a stack of reports.",
+    "tagline": "Give everyone a window into the same reality.",
+    "why": "Static reports hide the flow of work. A living map lets teams understand how all the pieces fit and move together.",
+    "how": [
+      "Show people, equipment, and sites in one view.",
+      "Keep the map simple enough to read in seconds.",
+      "Use the map in meetings instead of static slide decks."
     ],
+    "reflection": "When everyone can see the same picture, alignment stops being theoretical.",
+    "related": [],
+    "audiences": ["Leadership", "Field", "Engineering"],
+    "color": "#E11D48"
+  },
+  {
+    "id": "vision-the-business-seeing-itself",
+    "family": "Vision & Alignment",
+    "title": "The Business Seeing Itself",
+    "quote": "Most companies run blind to their own reality.",
+    "tagline": "Use Actual as a mirror, not just a tool.",
+    "why": "Without a clear view of how work really happens, strategy is built on hope. A faithful picture of operations grounds every plan.",
+    "how": [
+      "Review operations using live data, not anecdotes.",
+      "Invite crews to explain what the data shows.",
+      "Adjust both tools and policy in response."
+    ],
+    "reflection": "A company that can see itself clearly can change itself wisely.",
+    "related": [],
+    "audiences": ["Leadership"],
+    "color": "#E11D48"
+  },
+  {
+    "id": "vision-make-reality-the-workflow",
+    "family": "Vision & Alignment",
+    "title": "Make Reality the Workflow",
+    "quote": "Let what is actually happening drive what should happen next.",
+    "tagline": "Tie decisions directly to live truth.",
+    "why": "When workflows ignore reality, people work around them. When workflows respond to real conditions, they feel natural instead of forced.",
+    "how": [
+      "Trigger reviews from real events, not fixed dates.",
+      "Let live site status adjust schedules and priorities.",
+      "Escalate issues based on impact, not politics."
+    ],
+    "reflection": "When reality leads, people spend less time arguing and more time improving.",
+    "related": [],
+    "audiences": ["Leadership", "Field", "Engineering"],
     "color": "#E11D48"
   }
 ]
