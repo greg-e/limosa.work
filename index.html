@@ -3,37 +3,122 @@ layout: landing
 title: Actual - Proof of Work
 ---
 
-<section class="hero">
-  <img class="hero-logo" src="/assets/img/logo.png" alt="Actual logo" />
-  <h1>Automatic Proof of Work</h1>
-  <p class="tagline">Truth captured as the work happens — no apps, no check-ins, no lost time.</p>
-  <div class="cta">
-    <a class="button" href="/pages/partners.html">Truth of Work Data</a>
-    <a class="button ghost" href="/actual">Reverse Engineered Schedules and Estimates</a>
-  </div>
-</section>
+<main class="actual-landing">
 
-<section class="how">
-  <h2>How It Works</h2>
-  <p class="sub">From jobsite to proof, automatically.</p>
-  <div class="cards">
-    <article class="card">
-      <div class="chip">1</div>
-      <h3>Automatic</h3>
-      <p>Actual captures proof of work automatically — every arrival, every job, every finish.</p>
-    </article>
-    <article class="card">
-      <div class="chip">2</div>
-      <h3>Proof of Work</h3>
-      <p>Each job creates Proof of Work — a complete, trusted record ready for payroll or billing.</p>
-    </article>
-    <article class="card">
-      <div class="chip">3</div>
-      <h3>Truth in Action</h3>
-      <p>Proof shows up on its own, so crews focus on the job and managers see what’s done.</p>
-    </article>
-  </div>
- 
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>Automatic Proof of Work for Field Operations</h1>
+      <p class="hero-subtitle">
+        Actual captures time, location, and equipment use as crews move —
+        no apps, no check-ins, no extra steps.
+      </p>
 
-</section>
+      <div class="hero-actions">
+        <a class="btn primary" href="/pages/manifesto.html">Read the Manifesto</a>
+        <a class="btn secondary" href="/actual/">View the Deck</a>
+        <a class="btn tertiary" href="/pages/contact.html">Talk to Actual</a>
+      </div>
 
+      <p class="hero-tagline">
+        Proof of work, automatically — from jobsite to finance.
+      </p>
+    </div>
+  </section>
+
+  <!-- Two core outcomes -->
+  <section class="split-section">
+    <h2>Two Outcomes from the Same Truth Layer</h2>
+    <div class="split-grid">
+      <article>
+        <h3>1. Job Activity Data — The Truth of Work</h3>
+        <p>
+          Automatic, parcel-aware records of who was where, when, and with which tools.
+          No manual timecards. No memory bias. Just presence, motion, and proximity
+          turned into trustworthy work sessions.
+        </p>
+        <ul>
+          <li>Verified start/stop times per worker and crew</li>
+          <li>Tool usage derived from BLE proximity</li>
+          <li>Site entry/exit tied to tax parcels and geofences</li>
+          <li>Immutable event stream ready for payroll and costing</li>
+        </ul>
+      </article>
+      <article>
+        <h3>2. Reverse-Engineered Schedule & Estimate — The Flow of Value</h3>
+        <p>
+          Use real field data to see how work actually flows across parcels — and use that
+          truth to refine scheduling and estimating assumptions.
+        </p>
+        <ul>
+          <li>Planned vs. actual durations per parcel and route</li>
+          <li>Hidden constraints in setup, travel, and waiting time</li>
+          <li>Production rates grounded in real labor and equipment behavior</li>
+          <li>“Proof-based estimating” instead of historical guessing</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- How Actual works (short and concrete) -->
+  <section class="steps">
+    <h2>How Actual Works</h2>
+    <ol class="steps-list">
+      <li>
+        <h3>1. Capture at the Edge</h3>
+        <p>
+          Badges measure presence, motion, and nearby equipment tags as crews move.
+          Data is stored locally and uploaded in efficient batches.
+        </p>
+      </li>
+      <li>
+        <h3>2. Anchor to Parcels</h3>
+        <p>
+          Cloud services attach each event to a tax parcel geofence, deriving
+          <strong>WorkSessions</strong> and <strong>EquipmentSessions</strong> that reflect
+          the real day on site.
+        </p>
+      </li>
+      <li>
+        <h3>3. Turn Truth into Outcomes</h3>
+        <p>
+          Parcel-level truth flows into dashboards and integrations: payroll, job costing,
+          estimating, and scheduling all share the same underlying reality.
+        </p>
+      </li>
+    </ol>
+    <p class="steps-cta">
+      See more in <a href="/pages/product.html">Product</a> and
+      <a href="/pages/architecture.html">Architecture</a>.
+    </p>
+  </section>
+
+  <!-- Who benefits -->
+  <section class="audiences">
+    <h2>Who Actual Is For</h2>
+    <div class="audience-grid">
+      <article>
+        <h3>Crews</h3>
+        <p>Fewer callbacks and fewer time-card disputes. The badge quietly proves the work.</p>
+      </article>
+      <article>
+        <h3>Managers</h3>
+        <p>Clarity on who is where, what’s next, and what’s done — while the day is still in motion.</p>
+      </article>
+      <article>
+        <h3>Finance</h3>
+        <p>Payroll and job costing built on presence/time truth instead of edited spreadsheets.</p>
+      </article>
+      <article>
+        <h3>Leadership</h3>
+        <p>Roll-ups and flow analytics built on immutable truth, not estimates or anecdotes.</p>
+      </article>
+    </div>
+    <p class="audiences-cta">
+      Explore outcomes on the <a href="/pages/outcomes.html">Outcomes</a> and
+      <a href="/pages/proof-of-work.html">Proof of Work</a> pages, or
+      <a href="/pages/partners.html">see how partnership works</a>.
+    </p>
+  </section>
+
+</main>
