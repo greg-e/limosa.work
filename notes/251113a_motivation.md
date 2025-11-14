@@ -46,7 +46,7 @@ Actual bridges this gap by **making truth effortless and rewarding**.
 
 ### a. System Design
 - **Passive Capture:** No check-ins or manual actions; removes friction.  
-- **Feedback Loop:** Visible confirmation (on ReTerminal or dashboard) creates instant “feels great” moment.  
+- **Feedback Loop:** Visible confirmation (on [,,]) creates instant “feels great” moment.  
 - **Trustworthy Outcomes:** Crews see that the system *pays them accurately* and *represents them truthfully.*
 
 ### b. Messaging & Positioning
