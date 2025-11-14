@@ -11,7 +11,7 @@ Build Actual into a parcel-aware, equipment-aware, truth-based field telemetry s
 
 ---
 
-# NEW SECTION — SKILLS TO DEVELOP  
+# SKILLS TO DEVELOP  
 ## 1. Hardware Skills  
 - **PCB Design (KiCad or Altium)**
   - Board layout  
@@ -87,7 +87,7 @@ Build Actual into a parcel-aware, equipment-aware, truth-based field telemetry s
 
 ---
 
-# NEW SECTION — PEOPLE TO INVOLVE  
+# PEOPLE TO INVOLVE  
 ## 1. Hardware & Embedded Engineering  
 - **PCB Designer**  
   Helps ensure v1.0 and v1.2 boards are manufacturable, low-noise, and power-efficient.
