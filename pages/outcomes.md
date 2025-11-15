@@ -5,7 +5,7 @@ layout: default
 
 
 
-## 1. When I perform work, I want my activity to be recorded at the moment it happens,  
+# 1. When I perform work, I want my activity to be recorded at the moment it happens,  
 so I can provide trustworthy evidence of what I did without extra effort.
 
 ## 2. When I begin or finish a task, I want my time to be captured accurately,  
