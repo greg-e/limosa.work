@@ -12,9 +12,8 @@ Actual is built for the people who do the work and the people who support them. 
 
 Everything else follows from that.
 
----
 
-## 1. The person doing the work should never have to “prove” they worked  
+### The person doing the work should never have to “prove” they worked  
 Timecards, forms, photos, check-ins — all of that steals time from the job and forces people to explain themselves after the fact.
 
 Actual puts the truth right where the work happens.  
@@ -25,7 +24,7 @@ The record starts with you, not with paperwork.
 
 ---
 
-## 2. The badge isn’t a tracker — it’s a witness  
+### The badge isn’t a tracker — it’s a witness  
 Actual is not surveillance.
 
 The badge doesn’t spy. It doesn’t record conversations. It doesn’t monitor your day. It simply captures the basic facts of the job:
@@ -39,7 +38,7 @@ It only records what the work creates. Nothing more.
 
 ---
 
-## 3. The truth should never be editable  
+### The truth should never be editable  
 Once something happens, it shouldn’t get changed later.
 
 Actual saves every record exactly the way it happened. If something needs to be clarified, it gets added — not rewritten. That way, nobody has to argue about time, work, or what’s “really” true.
@@ -48,7 +47,7 @@ The truth stays the truth.
 
 ---
 
-## 4. Tools should make life easier, not harder  
+### Tools should make life easier, not harder  
 If a tool slows you down, it’s not a tool — it’s a burden.
 
 The badge doesn’t need Wi-Fi, Bluetooth, a phone, or a learning curve. It stores everything, then uploads on its own. You don’t have to manage it.
@@ -57,7 +56,7 @@ You work. The badge handles the rest.
 
 ---
 
-## 5. Real data makes the whole job run smoother  
+### Real data makes the whole job run smoother  
 When the truth is automatic, everything improves:
 
 - Pay is clean  
@@ -70,7 +69,7 @@ Actual creates a clear picture of how the job really flows — not how somebody 
 
 ---
 
-## 6. Better decisions come from what actually happened  
+### Better decisions come from what actually happened  
 Because the badge records the real story of the job, the system can show:
 
 - Where time goes  
@@ -83,7 +82,7 @@ This isn’t theory. It’s the job — as it happened.
 
 ---
 
-## 7. Simple always wins  
+### Simple always wins  
 Complicated systems break, confuse people, or get ignored.
 
 Actual is built to stay simple:
@@ -97,7 +96,7 @@ No forms. No steps. No training. No friction.
 
 ---
 
-## The promise  
+### The promise  
 Actual exists so the people who do the work finally get the benefit of the truth.
 
 It protects your time.  
