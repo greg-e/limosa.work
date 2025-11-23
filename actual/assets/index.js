@@ -15,7 +15,9 @@ import {
   Play,
   ArrowLeft,
   ArrowRight,
-  Download
+  Download,
+  ChevronDown,
+  ChevronUp
 } from "https://esm.sh/lucide-react@0.441.0?deps=react@18.2.0";
 
 const html = htm.bind(React.createElement);
@@ -36,67 +38,47 @@ const FAMILY_META = {
   Mechanism: { color: "bg-zinc-800", accent: "text-zinc-100" },
   Outcome: { color: "bg-orange-700", accent: "text-orange-100" },
   Metric: { color: "bg-violet-800", accent: "text-violet-100" },
-  Vision: { color: "bg-yellow-600", accent: "text-neutral-600", border: "border" },
-
-  // new Actual Deck families
-  Principles: { color: "bg-blue-800", accent: "text-blue-100" },
-  "Field Practice": { color: "bg-emerald-800", accent: "text-emerald-100" },
-  "Automation & Mechanisms": { color: "bg-amber-700", accent: "text-amber-100" },
-  "Data Integrity & Provenance": { color: "bg-slate-800", accent: "text-slate-300" },
-  "Flow & Operations": { color: "bg-cyan-800", accent: "text-cyan-100" },
-  "Finance & Reconciliation": { color: "bg-violet-800", accent: "text-violet-100" },
-  "Vision & Alignment": { color: "bg-yellow-600", accent: "text-neutral-600", border: "border" }
+  Vision: { color: "bg-white", accent: "text-neutral-700", border: "border" }
 };
 
 const AUDIENCE_PRESETS = {
   Field: [
-    "principles-truth-you-can-stand-on",
-    "principles-keep-the-work-moving",
-    "field-practice-effortless-proof",
-    "field-practice-context-without-effort",
-    "field-practice-get-paid-right",
-    "field-practice-presence-becomes-proof",
-    "flow-operations-critical-flow",
-    "flow-operations-clarity-beats-supervision"
+    "language-provenance",
+    "automation-automate-constraint",
+    "truth-395",
+    "flow-critical",
+    "convivial-tools",
+    "design-integrity-by-design",
+    "convivial-reduce-load",
+    "outcome-empower-crew",
+    "metric-cognitive-load"
   ],
-
   Engineering: [
-    "automation-mechanisms-edge-autonomy",
-    "automation-mechanisms-store-and-forward",
-    "automation-mechanisms-smart-intervals",
-    "automation-mechanisms-passive-association",
-    "automation-mechanisms-no-app-no-terminal",
-    "data-integrity-integrity-by-design",
-    "data-integrity-provenance-of-truth"
+    "language-provenance",
+    "automation-automate-constraint",
+    "automation-necessary-not-sufficient",
+    "flow-critical",
+    "design-integrity-by-design",
+    "mechanism-edge-autonomy"
   ],
-
   Finance: [
-    "principles-395-exactly",
-    "field-practice-get-paid-right",
-    "finance-precision-finance",
-    "finance-recognition-built-on-proof",
-    "data-integrity-lineage-is-the-ledger",
-    "data-integrity-no-edits-without-evidence"
+    "language-provenance",
+    "truth-395",
+    "design-integrity-by-design",
+    "outcome-empower-crew"
   ],
-
   Leadership: [
-    "principles-necessary-but-not-sufficient",
-    "principles-convivial-tools",
-    "flow-operations-real-time-reflection",
-    "flow-operations-flow-multiplied",
-    "vision-lead-by-knowing-not-assuming",
-    "vision-truth-as-infrastructure"
+    "automation-necessary-not-sufficient",
+    "convivial-reduce-load",
+    "convivial-tools",
+    "truth-395"
   ],
-
   Partners: [
-    "finance-recognition-built-on-proof",
-    "data-integrity-provenance-of-truth",
-    "automation-mechanisms-passive-association",
-    "principles-automate-the-constraint",
-    "vision-the-living-map-of-work"
+    "mechanism-edge-autonomy",
+    "design-integrity-by-design",
+    "automation-automate-constraint"
   ]
 };
-
 
 function Chip({ children, onClick, active }) {
   const classes = `px-3 py-1 rounded-full text-xs font-medium border ${
@@ -229,44 +211,57 @@ function Card({ card, onAdd, onEdit }) {
   `;
 }
 
-function Stack({ ids, cardMap, onRemove, onEdit, onPresent }) {
+function Stack({ ids, cardMap, onRemove, onEdit, onPresent, collapsed, onToggleCollapse }) {
   return html`
     <div className="p-3 border-t border-black/10 bg-white">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 text-sm font-medium">
           <${Layers3} size=${16} /> Stack (${ids.length})
         </div>
-        ${ids.length
-          ? html`<button
-              onClick=${onPresent}
-              className="text-xs inline-flex items-center gap-1 bg-black text-white px-3 py-1.5 rounded-lg"
-            >
-              <${Play} size=${14} /> Present
-            </button>`
-          : null}
+        <div className="flex items-center gap-2">
+          ${ids.length
+            ? html`<button
+                onClick=${onPresent}
+                className="text-xs inline-flex items-center gap-1 bg-black text-white px-3 py-1.5 rounded-lg"
+              >
+                <${Play} size=${14} /> Present
+              </button>`
+            : null}
+          <button
+            onClick=${onToggleCollapse}
+            className="text-xs inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-black/10 bg-black/5"
+            aria-expanded=${!collapsed}
+          >
+            ${collapsed
+              ? html`<${ChevronUp} size=${14} /> Expand`
+              : html`<${ChevronDown} size=${14} /> Collapse`}
+          </button>
+        </div>
       </div>
-      <div className="mt-2 grid grid-cols-2 gap-2">
-        ${ids.map((id) => {
-          const card = cardMap[id];
-          if (!card) return null;
-          const meta = FAMILY_META[card.family] || {};
-          const cardClass = `rounded-xl border ${meta.border || "border-black/10"} p-2`;
-          return html`
-            <div key=${id} className=${cardClass}>
-              <div className="text-[10px] uppercase tracking-wider text-black/60">${card.family}</div>
-              <div className="text-[13px] font-semibold leading-snug">${card.title}</div>
-              <div className="mt-2 flex items-center gap-3 text-[11px]">
-                <button onClick=${() => onEdit(id)} className="text-blue-600 inline-flex items-center gap-1">
-                  <${Edit3} size=${12} /> Edit
-                </button>
-                <button onClick=${() => onRemove(id)} className="text-red-600 inline-flex items-center gap-1">
-                  <${Trash2} size=${12} /> Remove
-                </button>
-              </div>
-            </div>
-          `;
-        })}
-      </div>
+      ${collapsed
+        ? null
+        : html`<div className="mt-2 grid grid-cols-2 gap-2">
+            ${ids.map((id) => {
+              const card = cardMap[id];
+              if (!card) return null;
+              const meta = FAMILY_META[card.family] || {};
+              const cardClass = `rounded-xl border ${meta.border || "border-black/10"} p-2`;
+              return html`
+                <div key=${id} className=${cardClass}>
+                  <div className="text-[10px] uppercase tracking-wider text-black/60">${card.family}</div>
+                  <div className="text-[13px] font-semibold leading-snug">${card.title}</div>
+                  <div className="mt-2 flex items-center gap-3 text-[11px]">
+                    <button onClick=${() => onEdit(id)} className="text-blue-600 inline-flex items-center gap-1">
+                      <${Edit3} size=${12} /> Edit
+                    </button>
+                    <button onClick=${() => onRemove(id)} className="text-red-600 inline-flex items-center gap-1">
+                      <${Trash2} size=${12} /> Remove
+                    </button>
+                  </div>
+                </div>
+              `;
+            })}
+          </div>`}
     </div>
   `;
 }
@@ -578,6 +573,7 @@ function ActualDeckApp() {
   const [audience, setAudience] = useState("Field");
   const [familyFilter, setFamilyFilter] = useState("All");
   const [stack, setStack] = useState([]);
+  const [isStackCollapsed, setIsStackCollapsed] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [editorCard, setEditorCard] = useState(null);
   const [editingExisting, setEditingExisting] = useState(false);
@@ -789,6 +785,8 @@ function ActualDeckApp() {
           onRemove=${removeFromStack}
           onEdit=${openEditCard}
           onPresent=${startPresentation}
+          collapsed=${isStackCollapsed}
+          onToggleCollapse=${() => setIsStackCollapsed((current) => !current)}
         />
       </div>
       ${isEditorOpen
