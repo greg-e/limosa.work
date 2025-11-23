@@ -29,7 +29,7 @@
     "id": "automation-automate-constraint",
     "family": "Automation",
     "title": "Automate the Constraint",
-    "quote": "Automation is good, as long as you know exactly where to put the machine.",
+    "quote": "Automation is good, as long as you know exactly where to put the machine. -Eli Goldratt",
     "tagline": "Automate where proof depends on it.",
     "why": "Automation magnifies both correctness and error. Place it at the constraint so leverage is maximized.",
     "how": [
