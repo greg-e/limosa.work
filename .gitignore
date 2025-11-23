@@ -1,3 +1,5 @@
-# keep data tracked
-!data/actual-deck/cards.json
-!data/actual-deck/presets.json
+node_modules
+.DS_Store
+npm-debug.log*
+pnpm-lock.yaml
+yarn.lock
