@@ -7,14 +7,14 @@ This repository hosts Markdown-driven slides powered by [Reveal.js](https://reve
 ```text
 .
 ├─ docs/
-│  ├─ index.html       # Reveal.js loader and configuration (served from CDN)
+│  ├─ index.html       # Reveal.js loader, configuration, and custom styling (served from CDN)
 │  ├─ slides.md        # Your slides in Markdown
 └─ README.md
 ```
 
 ## Local Preview
 
-You can open `docs/index.html` directly in a browser. The page loads Reveal.js, plugins, and themes from a CDN, so no build step is required.
+You can open `docs/index.html` directly in a browser. The page loads Reveal.js, plugins, themes, Google Fonts, and custom styling from a CDN/inlined CSS, so no build step is required.
 
 ## Updating Slides
 
