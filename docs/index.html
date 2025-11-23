@@ -5,18 +5,162 @@
     <title>My Reveal.js Slides</title>
 
     <!-- Core reveal.js styles from CDN -->
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="reveal/dist/reveal.css">
-<link rel="stylesheet" href="reveal/dist/theme/night.css" id="theme">
-<link rel="stylesheet" href="custom.css">
-
+    <link rel="stylesheet" href="https://unpkg.com/reveal.js@5.0.4/dist/reveal.css">
+    <!-- Dark theme: night.css -->
+    <link rel="stylesheet" href="https://unpkg.com/reveal.js@5.0.4/dist/theme/night.css" id="theme">
+    <!-- Syntax highlighting theme -->
+    <link rel="stylesheet" href="https://unpkg.com/reveal.js@5.0.4/plugin/highlight/monokai.css">
+    <!-- Fonts for custom styling -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto+Condensed:wght@400;700&family=Roboto+Mono&display=swap">
 
     <style>
-      /* Optional: make the markdown a bit wider 
+      /* ===== Global layout / background ===== */
+
+      .reveal {
+        font-family: "Roboto Condensed", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        font-size: 30px;
+        letter-spacing: 0.4px;
+        color: #e5e5e5;
+
+        /* Dark, slightly metallic gradient */
+        background: radial-gradient(circle at 10% 0%, #30343a 0, #181a1f 45%, #101115 100%);
+      }
+
+      /* keep slides centered but not too narrow */
       .reveal .slides {
         max-width: 1100px;
         margin: 0 auto;*/
+      }
+
+      /* ===== Headings (Orbitron, HAL-style) ===== */
+
+      .reveal h1,
+      .reveal h2,
+      .reveal h3 {
+        font-family: "Orbitron", system-ui, sans-serif;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 0.35em;
+        color: #ffffff;
+      }
+
+      .reveal h1 {
+        font-size: 72px;
+        margin-bottom: 0.6em;
+      }
+
+      .reveal h2 {
+        font-size: 54px;
+        margin-bottom: 0.5em;
+      }
+
+      .reveal h3 {
+        font-size: 40px;
+        margin-bottom: 0.5em;
+      }
+
+      /* Subtitle / small heading variant */
+      .reveal .subtitle {
+        font-family: "Roboto Condensed", system-ui, sans-serif;
+        font-size: 26px;
+        text-transform: uppercase;
+        letter-spacing: 0.25em;
+        color: #cfd2da;
+      }
+
+      /* ===== Body text ===== */
+
+      .reveal p {
+        margin: 0.4em 0 0.6em;
+      }
+
+      .reveal ul,
+      .reveal ol {
+        margin: 0.4em 0 0.6em;
+      }
+
+      .reveal li {
+        margin: 0.2em 0;
+      }
+
+      /* ===== Small technical / instruction text ===== */
+
+      .reveal .instruction {
+        font-size: 18px;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: #b3b6c1;
+        opacity: 0.9;
+      }
+
+      /* ===== Panel helpers (modernized HAL red panel) ===== */
+
+      .reveal .panel {
+        border-radius: 6px;
+        padding: 32px 40px;
+        border: 2px solid #b0b3bd33;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+      }
+
+      /* Red accent panel like the logic-center column */
+      .reveal .panel-red {
+        background: linear-gradient(135deg, #aa1220, #7e0c18);
+        border-color: #ff4a5c66;
+      }
+
+      /* Neutral “metal” panel */
+      .reveal .panel-metal {
+        background: linear-gradient(135deg, #3b3f46, #26282e);
+      }
+
+      /* Small label style (like MAXIMUM / RESTRICTED / ENTRY) */
+      .reveal .label-row {
+        display: flex;
+        gap: 32px;
+        justify-content: center;
+        font-family: "Orbitron", system-ui, sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.25em;
+        font-size: 20px;
+      }
+
+      /* Button-ish badge (like HAL 9000 label) */
+      .reveal .badge {
+        display: inline-block;
+        padding: 6px 18px;
+        border-radius: 3px;
+        font-family: "Orbitron", system-ui, sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-size: 18px;
+        background: #5aa8ff;
+        color: #05070a;
+      }
+
+      /* ===== Code blocks ===== */
+
+      .reveal pre code {
+        font-size: 22px;
+        font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+          Consolas, "Liberation Mono", "Courier New", monospace;
+        line-height: 1.5;
+      }
+
+      /* ===== Misc tuning ===== */
+
+      .reveal a {
+        color: #ff6b7a;
+      }
+
+      .reveal .progress {
+        background: #44464d;
+      }
+
+      .reveal .progress span {
+        background: #ff4a5c;
       }
     </style>
   </head>
