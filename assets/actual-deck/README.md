@@ -12,7 +12,7 @@ Card copy now lives in `assets/actual-deck/cards.json`, which the module fetches
 
 ### Stack presentation
 
-The stack drawer now supports a presentation view. Add cards to the stack, click **Present**, and advance with the on-screen arrows while flipping between front/back content for facilitation.
+The stack drawer now supports a presentation view. Add cards to the stack, click **Present**, and advance with the on-screen arrows while flipping between front/back content for facilitation. Collapse the drawer when you want more room to browse cards and expand it again to manage entries.
 
 ## Styling helpers
 
