@@ -7,9 +7,15 @@ This repository hosts Markdown-driven slides powered by [Reveal.js](https://reve
 ```text
 .
 ├─ docs/
-│  ├─ index.html       # Reveal.js loader and configuration
+│  ├─ index.html       # Reveal.js loader and configuration (served from CDN)
 │  ├─ slides.md        # Your slides in Markdown
-│  └─ reveal/          # Reveal.js library (dist + plugin)
-│      ├─ dist/
-│      └─ plugin/
 └─ README.md
+```
+
+## Local Preview
+
+You can open `docs/index.html` directly in a browser. The page loads Reveal.js, plugins, and themes from a CDN, so no build step is required.
+
+## Updating Slides
+
+Edit `docs/slides.md` in Markdown. Section breaks are defined by `---` (new slide), `--` (vertical stack), and `Note:` (speaker notes).
