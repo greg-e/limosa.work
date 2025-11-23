@@ -1,0 +1,33 @@
+/* Minimal, safe overrides: keep Reveal's default sizes/layout */
+
+/* Body text: condensed technical look */
+.reveal {
+  font-family: "Roboto Condensed", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
+
+/* Headings: HAL-style font, but keep theme-provided sizes */
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  font-family: "Orbitron", system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;  /* subtle spacing, not extreme */
+}
+
+/* Optional: small instruction text you can opt into */
+.reveal .instruction {
+  font-size: 0.6em;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  opacity: 0.9;
+}
+
+/* Optional: red panel accent you can use where you want */
+.reveal .panel-red {
+  background: linear-gradient(135deg, #aa1220, #7e0c18);
+  border-radius: 6px;
+  padding: 1.5em 2em;
+  border: 2px solid #ff4a5c66;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+}
