@@ -1,21 +1,22 @@
 ### “Everything that’s already in the world when you’re born is just normal."
-- [ ] Douglas Adams
+[x] Douglas Adams
 
 ---
 ### “Anything that gets invented between then and before you turn thirty is incredibly exciting… and with any luck you can make a career out of it.”
-- [ ] Douglas Adams
+[x] Douglas Adams
 
 ---
 ### “Anything that gets invented after you’re thirty is against the natural order of things…”
-- [] Douglas Adams
+[x] Douglas Adams
 
 ---
 ## Agenda
 
-- Why this topic matters
-- Key ideas
-- Examples
-- Q & A
+- [UPS 2976](https://youtu.be/Y6-9NmsJfRM?si=CZm4izabMYvulR4F)
+- [One of these things 1](https://youtu.be/4TMPXK9tw5U?si=JVhQIMXx7TOjuRP_)
+- [One of these things 2](https://youtu.be/6b0ftfKFEJg?si=NdC2ycOvJcA4hclU)
+- [One of these things 3](https://youtu.be/m6keZIUJBsQ?si=LAF8_p3NgOdMZLhQ)
+- [The Battle for your time](https://youtu.be/Y6-9NmsJfRM?si=CZm4izabMYvulR4F)
 
 ---
 
