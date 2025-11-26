@@ -1,22 +1,22 @@
 ### “Everything that’s already in the world when you’re born is just normal."
-[x] Douglas Adams
+Douglas Adams
 
 ---
 ### “Anything that gets invented between then and before you turn thirty is incredibly exciting… and with any luck you can make a career out of it.”
-[x] Douglas Adams
+Douglas Adams
 
 ---
 ### “Anything that gets invented after you’re thirty is against the natural order of things…”
-[x] Douglas Adams
+Douglas Adams
 
 ---
 ## Agenda
 
-- [UPS 2976](https://youtu.be/Y6-9NmsJfRM?si=CZm4izabMYvulR4F)
-- [One of these things 1](https://youtu.be/4TMPXK9tw5U?si=JVhQIMXx7TOjuRP_)
-- [One of these things 2](https://youtu.be/6b0ftfKFEJg?si=NdC2ycOvJcA4hclU)
-- [One of these things 3](https://youtu.be/m6keZIUJBsQ?si=LAF8_p3NgOdMZLhQ)
-- [The Battle for your time](https://youtu.be/Y6-9NmsJfRM?si=CZm4izabMYvulR4F)
+- [UPS 2976](https://youtu.be/Y6-9NmsJfRM?si=CZm4izabMYvulR4F) 19:52
+- [One of these things 1](https://youtu.be/4TMPXK9tw5U?si=JVhQIMXx7TOjuRP_) 00:30
+- [One of these things 2](https://youtu.be/6b0ftfKFEJg?si=NdC2ycOvJcA4hclU) 00:30
+- [One of these things 3](https://youtu.be/m6keZIUJBsQ?si=LAF8_p3NgOdMZLhQ) 00:30
+- [The Battle for your time](https://youtu.be/Y6-9NmsJfRM?si=CZm4izabMYvulR4F) 11:32
 
 ---
 
