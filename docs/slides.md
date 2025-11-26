@@ -3,10 +3,6 @@
 *James 3:13–18*
 
 ---
-### Technology will change our life, what will we choose to do with it?
-
-
----
 ### “Everything that’s already in the world when you’re born is just normal."
 *Douglas Adams*
 
@@ -18,6 +14,8 @@
 ### “Anything that gets invented after you’re thirty is against the natural order of things…”
 *Douglas Adams*
 
+---
+### Technology will change our life, what will we choose to do with it?
 ---
 ## Agenda
 
