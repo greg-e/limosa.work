@@ -1,6 +1,8 @@
 **“Who is wise and understanding among you? By his good conduct he should show his works done in the gentleness that wisdom brings. But if you have bitter jealousy and selfishness in your hearts, do not boast and tell lies against the truth. Such wisdom does not come from above but is earthly, natural, demonic. For where there is jealousy and selfishness, there is disorder and every evil practice. But the wisdom from above is first pure, then peaceable, gentle, accommodating, full of mercy and good fruit, impartial, and not hypocritical. And the fruit that consists of righteousness is planted in peace among those who make peace.”**  
 
 *James 3:13–18*
+---
+### Technology will change our life, what will we choose to do with it?
 
 ---
 ### “Everything that’s already in the world when you’re born is just normal."
@@ -14,6 +16,7 @@
 ### “Anything that gets invented after you’re thirty is against the natural order of things…”
 *Douglas Adams*
 
+---
 ### “Any sufficiently advanced technology is indistinguishable from magic."”
 *Arthur C. Clarke*
 
