@@ -25,11 +25,15 @@
 
 ---
 
-## Example Content Slide
 
-- Point one
-- Point two
-- Point three
+13 Who is wise and understanding among you? By his good conduct he should show his works done in the gentleness that wisdom brings.
+14 But if you have bitter jealousy and selfishness in your hearts, do not boast and tell lies against the truth.
+15 Such wisdom does not come from above but is earthly, natural, demonic.
+16 For where there is jealousy and selfishness, there is disorder and every evil practice.
+17 But the wisdom from above is first pure, then peaceable, gentle, accommodating, full of mercy and good fruit, impartial, and not hypocritical.
+18 And the fruit that consists of righteousness is planted in peace among those who make peace.
+
+*James 3:13–18 (NET)*
 
 ---
 
