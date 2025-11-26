@@ -3,7 +3,10 @@
 *James 3:13–18*
 
 ---
+## Technology will change our life, what will we choose to do with it? ##
+*Douglas Adams*
 
+---
 ### “Everything that’s already in the world when you’re born is just normal."
 *Douglas Adams*
 
@@ -27,7 +30,7 @@
 ---
 
 
-# What's next?
+> #  What's next?
 
 ---
 
