@@ -1,13 +1,18 @@
+***“Rejoice, young man, during your youth, and let your heart cheer you during the days of your youth. Follow the impulses of your heart and the desires of your eyes—but know that God will judge your motives and actions.”***
+Ecclesiastes 11:9 (NET)
+
+---
+
 ### “Everything that’s already in the world when you’re born is just normal."
-Douglas Adams
+*Douglas Adams*
 
 ---
 ### “Anything that gets invented between then and before you turn thirty is incredibly exciting… and with any luck you can make a career out of it.”
-Douglas Adams
+*Douglas Adams*
 
 ---
 ### “Anything that gets invented after you’re thirty is against the natural order of things…”
-Douglas Adams
+*Douglas Adams*
 
 ---
 ## Agenda
