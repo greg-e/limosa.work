@@ -14,8 +14,13 @@
 ### “Anything that gets invented after you’re thirty is against the natural order of things…”
 *Douglas Adams*
 
+### “Any sufficiently advanced technology is indistinguishable from magic."”
+*Arthur C. Clarke*
+
 ---
 ### Technology will change our life, what will we choose to do with it?
+
+
 ---
 ## Agenda
 
