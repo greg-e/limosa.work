@@ -2,7 +2,7 @@
 
 *James 3:13–18*
 ---
-### Technology will change our life, what will we choose to do with it?
+## Technology will change our life, what will we choose to do with it?
 
 ---
 ### “Everything that’s already in the world when you’re born is just normal."
@@ -21,10 +21,6 @@
 *Arthur C. Clarke*
 
 ---
-### Technology will change our life, what will we choose to do with it?
-
-
----
 ## Agenda
 
 - [UPS 2976](https://youtu.be/Y6-9NmsJfRM?si=CZm4izabMYvulR4F) 19:52
@@ -36,7 +32,7 @@
 ---
 
 
-# What's next?
+## What's next?
 
 ---
 
