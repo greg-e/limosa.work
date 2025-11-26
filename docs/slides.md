@@ -1,5 +1,5 @@
-***“Rejoice, young man, during your youth, and let your heart cheer you during the days of your youth. Follow the impulses of your heart and the desires of your eyes—but know that God will judge your motives and actions.”***
-Ecclesiastes 11:9 (NET)
+**“Rejoice, young man, during your youth, and let your heart cheer you during the days of your youth. Follow the impulses of your heart and the desires of your eyes—but know that God will judge your motives and actions.”**
+*Ecclesiastes 11:9 (NET)*
 
 ---
 
