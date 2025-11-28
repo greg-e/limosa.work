@@ -1,0 +1,11 @@
+import { CreateNoteOptions, ListOptions, NoteMetadata, NoteType } from './types';
+export declare const NOTE_TYPES_LIST: NoteType[];
+export declare const catalogRoot: (root?: string) => string;
+export declare const ensureCatalogStructure: (root?: string) => Promise<void>;
+export declare const generateNoteId: (title: string, created?: Date) => string;
+export declare const notePath: (id: string, type: NoteType, root?: string) => string;
+export declare const createNote: (options: CreateNoteOptions) => Promise<NoteMetadata>;
+export declare const listNotes: (options?: ListOptions) => Promise<NoteMetadata[]>;
+export declare const readNote: (filePath: string) => Promise<NoteMetadata | null>;
+export declare const readNoteById: (id: string, root?: string) => Promise<NoteMetadata | null>;
+export declare const summarizeNote: (note: NoteMetadata) => string;
