@@ -204,12 +204,16 @@
     const title = window.prompt('Title for the new note?');
     if (title === null) return;
 
+    const now = new Date();
     const id = generateId(title);
     const filename = `${id}.md`;
-    const frontMatter = ['---', `title: ${title || id}`, `created: ${new Date().toISOString()}`, '---', ''].join('\n');
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const folder = `zettels/${year}/${year}${month}`;
+    const frontMatter = ['---', `title: ${title || id}`, `created: ${now.toISOString()}`, '---', ''].join('\n');
     const body = `# ${title || id}\n\nStart writing…\n`;
     const template = `${frontMatter}${body}`;
-    const url = new URL(`https://github.com/${repoOwner}/${repoName}/new/${branch}/notes`);
+    const url = new URL(`https://github.com/${repoOwner}/${repoName}/new/${branch}/${folder}`);
     url.searchParams.set('filename', filename);
     url.searchParams.set('value', template);
     window.open(url.toString(), '_blank', 'noopener');
@@ -242,43 +246,51 @@
   }
 
   async function fetchLiveIndex() {
-    const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/notes?ref=${branch}`;
-    const response = await fetch(apiUrl, {
-      headers: { Accept: 'application/vnd.github.v3+json' },
-      cache: 'no-store',
-    });
-    if (!response.ok) {
-      throw new Error(`GitHub refresh failed: ${response.status}`);
+    const headers = { Accept: 'application/vnd.github.v3+json' };
+
+    async function fetchDirectoryContents(relativePath) {
+      const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${relativePath}?ref=${branch}`;
+      const response = await fetch(apiUrl, { headers, cache: 'no-store' });
+      if (!response.ok) {
+        throw new Error(`GitHub refresh failed (${relativePath}): ${response.status}`);
+      }
+      return response.json();
     }
-    const files = await response.json();
-    const mdFiles = (files || [])
-      .filter((item) => item && item.type === 'file' && item.name.endsWith('.md'))
-      .sort((a, b) => b.name.localeCompare(a.name));
 
     const liveNotes = [];
-    for (const file of mdFiles) {
-      try {
-        const rawResponse = await fetch(file.download_url, { cache: 'no-store' });
-        if (!rawResponse.ok) continue;
-        const content = await rawResponse.text();
-        const lines = content.split(/\r?\n/);
-        const id = file.name.replace(/\.md$/, '');
-        liveNotes.push({
-          id,
-          title: getTitle(lines, id),
-          path: `/notes/${file.name}`,
-          excerpt: getExcerpt(content),
-        });
-      } catch (error) {
-        console.warn('Skipping note', file.name, error);
+
+    async function walkDirectory(relativePath) {
+      const entries = await fetchDirectoryContents(relativePath);
+      for (const entry of entries) {
+        if (entry.type === 'dir') {
+          await walkDirectory(entry.path);
+        } else if (entry.type === 'file' && entry.name.endsWith('.md') && entry.name.toLowerCase() !== 'index.md') {
+          try {
+            const rawResponse = await fetch(entry.download_url, { cache: 'no-store' });
+            if (!rawResponse.ok) continue;
+            const content = await rawResponse.text();
+            const lines = content.split(/\r?\n/);
+            const id = entry.name.replace(/\.md$/, '');
+            liveNotes.push({
+              id,
+              title: getTitle(lines, id),
+              path: `/${entry.path}`,
+              excerpt: getExcerpt(content),
+            });
+          } catch (error) {
+            console.warn('Skipping note', entry.name, error);
+          }
+        }
       }
     }
+
+    await walkDirectory('zettels');
 
     if (!liveNotes.length) {
       throw new Error('No notes discovered via GitHub');
     }
 
-    return liveNotes;
+    return liveNotes.sort((a, b) => b.id.localeCompare(a.id));
   }
 
   async function loadIndex({ message = 'Loading index…', preserveSearch = true, preferLive = false } = {}) {

@@ -4,14 +4,14 @@
  *
  * Usage: node scripts/build-zk-index.js
  *
- * The script scans markdown files under /notes, extracts the first heading as the
- * title, grabs the first paragraph as an excerpt, and writes JSON to
+ * The script scans markdown files under /zettels (recursively), extracts the first
+ * heading as the title, grabs the first paragraph as an excerpt, and writes JSON to
  * assets/data/zettelkasten-index.json for the client UI to load.
  */
 const fs = require('fs');
 const path = require('path');
 
-const NOTES_DIR = path.join(__dirname, '..', 'notes');
+const ZETTEL_ROOT = path.join(__dirname, '..', 'zettels');
 const OUTPUT_PATH = path.join(__dirname, '..', 'assets', 'data', 'zettelkasten-index.json');
 
 function getTitle(lines, fallback) {
@@ -26,21 +26,41 @@ function getExcerpt(content) {
   return snippet.length > 240 ? `${snippet.slice(0, 240)}…` : snippet;
 }
 
-function buildIndex() {
-  const files = fs
-    .readdirSync(NOTES_DIR)
-    .filter((file) => file.endsWith('.md'))
-    .sort();
+function collectMarkdownFiles(rootDir) {
+  const entries = fs.readdirSync(rootDir, { withFileTypes: true });
+  let files = [];
 
-  const notes = files.map((file) => {
-    const absolutePath = path.join(NOTES_DIR, file);
+  for (const entry of entries) {
+    if (entry.isDirectory()) {
+      files = files.concat(collectMarkdownFiles(path.join(rootDir, entry.name)));
+    } else if (entry.isFile() && entry.name.endsWith('.md') && entry.name.toLowerCase() !== 'index.md') {
+      files.push(path.join(rootDir, entry.name));
+    }
+  }
+
+  return files;
+}
+
+function buildIndex() {
+  if (!fs.existsSync(ZETTEL_ROOT)) {
+    throw new Error(`Missing zettels directory: ${ZETTEL_ROOT}`);
+  }
+
+  const files = collectMarkdownFiles(ZETTEL_ROOT).sort((a, b) => {
+    const nameA = path.basename(a);
+    const nameB = path.basename(b);
+    return nameB.localeCompare(nameA);
+  });
+
+  const notes = files.map((absolutePath) => {
     const raw = fs.readFileSync(absolutePath, 'utf8');
     const lines = raw.split(/\r?\n/);
-    const id = path.basename(file, '.md');
+    const relativePath = path.relative(path.join(__dirname, '..'), absolutePath);
+    const id = path.basename(absolutePath, '.md');
     return {
       id,
       title: getTitle(lines, id),
-      path: `/notes/${file}`,
+      path: `/${relativePath.replace(/\\/g, '/')}`,
       excerpt: getExcerpt(raw),
     };
   });
