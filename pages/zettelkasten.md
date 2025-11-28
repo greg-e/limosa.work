@@ -9,8 +9,7 @@ permalink: /zettelkasten/
 <div class="zk-page">
   <div class="zk-lede">
     <h1>Zettelkasten</h1>
-    <p>A browser-based viewer that runs entirely on GitHub Pages. Notes stay in this repository; the UI fetches markdown files directly from <code>/notes</code> and renders them client-side.</p>
-    <p>Use the search to filter titles and excerpts, then hop between cards in the note reel to read or edit them. The viewer keeps your place while reloading the latest entries.</p>
+    
   </div>
 
   <div
