@@ -3,12 +3,19 @@
   const viewerEl = document.querySelector('[data-zk-viewer]');
   const searchEl = document.querySelector('[data-zk-search]');
   const statusEl = document.querySelector('[data-zk-status]');
+  const newButton = document.querySelector('[data-zk-new]');
+  const editLink = document.querySelector('[data-zk-edit]');
+  const appEl = document.querySelector('[data-zk-app]');
 
-  if (!listEl || !viewerEl || !searchEl || !statusEl) return;
+  if (!listEl || !viewerEl || !searchEl || !statusEl || !appEl) return;
 
   let notes = [];
   let filtered = [];
   let activeId = null;
+
+  const repoOwner = appEl.dataset.zkRepoOwner || 'greg-e';
+  const repoName = appEl.dataset.zkRepoName || 'limosa.work';
+  const branch = appEl.dataset.zkBranch || 'main';
 
   function escapeHtml(text) {
     return text
@@ -113,10 +120,21 @@
     activeId = id;
     renderList(filtered);
     const note = notes.find((n) => n.id === id);
-    if (!note) return;
+    if (!note) {
+      if (editLink) {
+        editLink.classList.add('is-disabled');
+        editLink.removeAttribute('href');
+      }
+      return;
+    }
 
     statusEl.textContent = 'Loading note…';
     viewerEl.innerHTML = '';
+
+    if (editLink) {
+      editLink.href = `https://github.com/${repoOwner}/${repoName}/edit/${branch}${note.path}`;
+      editLink.classList.remove('is-disabled');
+    }
 
     try {
       const response = await fetch(note.path);
@@ -128,6 +146,41 @@
       viewerEl.innerHTML = `<p class="zk-error">${escapeHtml(error.message)}</p>`;
       statusEl.textContent = 'Could not load note';
     }
+  }
+
+  function slugify(text) {
+    return text
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+  }
+
+  function generateId(title) {
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const hh = String(now.getHours()).padStart(2, '0');
+    const min = String(now.getMinutes()).padStart(2, '0');
+    const slug = slugify(title || 'note');
+    return `${yyyy}${mm}${dd}T${hh}${min}-${slug}`;
+  }
+
+  function openNewNote() {
+    const title = window.prompt('Title for the new note?');
+    if (title === null) return;
+
+    const id = generateId(title);
+    const filename = `${id}.md`;
+    const frontMatter = ['---', `title: ${title || id}`, `created: ${new Date().toISOString()}`, '---', ''].join('\n');
+    const body = `# ${title || id}\n\nStart writing…\n`;
+    const template = `${frontMatter}${body}`;
+    const url = new URL(`https://github.com/${repoOwner}/${repoName}/new/${branch}/notes`);
+    url.searchParams.set('filename', filename);
+    url.searchParams.set('value', template);
+    window.open(url.toString(), '_blank', 'noopener');
   }
 
   function applyFilter() {
@@ -144,6 +197,10 @@
       activeId = null;
       viewerEl.innerHTML = '<p class="zk-empty">No notes match your filter.</p>';
       statusEl.textContent = 'No notes match your filter';
+      if (editLink) {
+        editLink.classList.add('is-disabled');
+        editLink.removeAttribute('href');
+      }
       return;
     }
 
@@ -155,6 +212,11 @@
   async function loadIndex() {
     statusEl.textContent = 'Loading index…';
     listEl.innerHTML = '';
+
+    if (editLink) {
+      editLink.classList.add('is-disabled');
+      editLink.removeAttribute('href');
+    }
 
     try {
       const response = await fetch('/assets/data/zettelkasten-index.json');
@@ -174,6 +236,18 @@
   }
 
   searchEl.addEventListener('input', applyFilter);
+
+  if (newButton) {
+    newButton.addEventListener('click', openNewNote);
+  }
+
+  if (editLink) {
+    editLink.addEventListener('click', (event) => {
+      if (editLink.classList.contains('is-disabled')) {
+        event.preventDefault();
+      }
+    });
+  }
 
   loadIndex();
 })();

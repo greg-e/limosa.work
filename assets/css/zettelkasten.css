@@ -65,6 +65,43 @@
   font-weight: 600;
 }
 
+.zk-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.zk-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid #1d4ed8;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.zk-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18);
+}
+
+.zk-button.is-link {
+  border-color: #0f172a;
+  background: #0f172a;
+}
+
+.zk-button.is-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
 .zk-columns {
   display: grid;
   grid-template-columns: 320px 1fr;
