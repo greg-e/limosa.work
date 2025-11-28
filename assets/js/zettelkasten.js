@@ -1,6 +1,7 @@
 (function () {
-  const listEl = document.querySelector('[data-zk-list]');
   const viewerEl = document.querySelector('[data-zk-viewer]');
+  const reelEl = document.querySelector('[data-zk-reel]');
+  const countEl = document.querySelector('[data-zk-count]');
   const searchEl = document.querySelector('[data-zk-search]');
   const statusEl = document.querySelector('[data-zk-status]');
   const newButton = document.querySelector('[data-zk-new]');
@@ -8,7 +9,7 @@
   const editLink = document.querySelector('[data-zk-edit]');
   const appEl = document.querySelector('[data-zk-app]');
 
-  if (!listEl || !viewerEl || !searchEl || !statusEl || !appEl) return;
+  if (!viewerEl || !reelEl || !searchEl || !statusEl || !appEl) return;
 
   let notes = [];
   let filtered = [];
@@ -93,27 +94,46 @@
     return html;
   }
 
-  function renderList(items) {
-    listEl.innerHTML = '';
+  function getTitle(lines, fallback) {
+    const heading = lines.find((line) => /^#{1,6}\s+/.test(line));
+    return heading ? heading.replace(/^#{1,6}\s+/, '').trim() : fallback;
+  }
+
+  function getExcerpt(content) {
+    const paragraphs = content
+      .split(/\n\s*\n/)
+      .map((p) => p.trim())
+      .filter(Boolean);
+    if (!paragraphs.length) return '';
+    const snippet = paragraphs[0].replace(/^#{1,6}\s+/, '');
+    return snippet.length > 200 ? `${snippet.slice(0, 200)}…` : snippet;
+  }
+
+  function renderReel(items) {
+    reelEl.innerHTML = '';
+    if (countEl) {
+      countEl.textContent = `${items.length} note${items.length === 1 ? '' : 's'}`;
+    }
+
     if (!items.length) {
-      listEl.innerHTML = '<p class="zk-empty">No notes match your filter.</p>';
+      reelEl.innerHTML = '<p class="zk-empty">No cards to show yet.</p>';
       return;
     }
 
     for (const note of items) {
       const button = document.createElement('button');
-      button.className = 'zk-note-card';
+      button.className = 'zk-pill';
       button.type = 'button';
       button.dataset.noteId = note.id;
       button.innerHTML = `
-        <span class="zk-note-title">${note.title}</span>
-        <span class="zk-note-excerpt">${escapeHtml(note.excerpt || '')}</span>
+        <span class="zk-pill-title">${note.title}</span>
+        <span class="zk-pill-excerpt">${escapeHtml(note.excerpt || '')}</span>
       `;
       if (note.id === activeId) {
         button.classList.add('is-active');
       }
       button.addEventListener('click', () => selectNote(note.id));
-      listEl.appendChild(button);
+      reelEl.appendChild(button);
     }
   }
 
@@ -129,13 +149,14 @@
 
   async function selectNote(id) {
     activeId = id;
-    renderList(filtered);
+    renderReel(filtered);
     const note = notes.find((n) => n.id === id);
     if (!note) {
       if (editLink) {
         editLink.classList.add('is-disabled');
         editLink.removeAttribute('href');
       }
+      clearSelection('That note is no longer available');
       return;
     }
 
@@ -148,7 +169,7 @@
     }
 
     try {
-      const response = await fetch(note.path);
+      const response = await fetch(note.path, { cache: 'no-store' });
       if (!response.ok) throw new Error(`Failed to load note: ${response.status}`);
       const markdown = await response.text();
       viewerEl.innerHTML = renderMarkdown(markdown);
@@ -199,11 +220,11 @@
     if (!term) {
       filtered = [...notes];
     } else {
-      filtered = notes.filter((note) =>
-        note.title.toLowerCase().includes(term) || note.excerpt.toLowerCase().includes(term)
+      filtered = notes.filter(
+        (note) => note.title.toLowerCase().includes(term) || note.excerpt.toLowerCase().includes(term)
       );
     }
-    renderList(filtered);
+    renderReel(filtered);
     if (!filtered.length) {
       clearSelection('No notes match your filter');
       return;
@@ -213,31 +234,84 @@
     selectNote(stillActive ? activeId : filtered[0].id);
   }
 
-  async function loadIndex({ message = 'Loading index…', preserveSearch = true } = {}) {
+  async function fetchStaticIndex() {
+    const response = await fetch(`/assets/data/zettelkasten-index.json?t=${Date.now()}`, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`Index fetch failed: ${response.status}`);
+    const payload = await response.json();
+    return payload.notes || [];
+  }
+
+  async function fetchLiveIndex() {
+    const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/notes?ref=${branch}`;
+    const response = await fetch(apiUrl, {
+      headers: { Accept: 'application/vnd.github.v3+json' },
+      cache: 'no-store',
+    });
+    if (!response.ok) {
+      throw new Error(`GitHub refresh failed: ${response.status}`);
+    }
+    const files = await response.json();
+    const mdFiles = (files || [])
+      .filter((item) => item && item.type === 'file' && item.name.endsWith('.md'))
+      .sort((a, b) => b.name.localeCompare(a.name));
+
+    const liveNotes = [];
+    for (const file of mdFiles) {
+      try {
+        const rawResponse = await fetch(file.download_url, { cache: 'no-store' });
+        if (!rawResponse.ok) continue;
+        const content = await rawResponse.text();
+        const lines = content.split(/\r?\n/);
+        const id = file.name.replace(/\.md$/, '');
+        liveNotes.push({
+          id,
+          title: getTitle(lines, id),
+          path: `/notes/${file.name}`,
+          excerpt: getExcerpt(content),
+        });
+      } catch (error) {
+        console.warn('Skipping note', file.name, error);
+      }
+    }
+
+    if (!liveNotes.length) {
+      throw new Error('No notes discovered via GitHub');
+    }
+
+    return liveNotes;
+  }
+
+  async function loadIndex({ message = 'Loading index…', preserveSearch = true, preferLive = false } = {}) {
     statusEl.textContent = message;
-    listEl.innerHTML = '';
+    reelEl.innerHTML = '';
 
     if (editLink) {
       editLink.classList.add('is-disabled');
       editLink.removeAttribute('href');
     }
 
-    try {
-      const response = await fetch('/assets/data/zettelkasten-index.json');
-      if (!response.ok) throw new Error(`Index fetch failed: ${response.status}`);
-      const payload = await response.json();
-      notes = payload.notes || [];
-      if (!preserveSearch) {
-        searchEl.value = '';
+    const loaders = preferLive ? [fetchLiveIndex, fetchStaticIndex] : [fetchStaticIndex, fetchLiveIndex];
+
+    for (const load of loaders) {
+      try {
+        const fetched = await load();
+        notes = fetched;
+        if (!preserveSearch) {
+          searchEl.value = '';
+        }
+        applyFilter();
+        if (!notes.length) {
+          clearSelection('No notes available');
+        }
+        statusEl.textContent = preferLive ? 'Index refreshed from GitHub' : 'Index loaded';
+        return;
+      } catch (error) {
+        console.warn('Index load attempt failed:', error.message);
       }
-      applyFilter();
-      if (!notes.length) {
-        clearSelection('No notes available');
-      }
-    } catch (error) {
-      statusEl.textContent = 'Could not load index';
-      listEl.innerHTML = `<p class="zk-error">${escapeHtml(error.message)}</p>`;
     }
+
+    statusEl.textContent = 'Could not load index';
+    reelEl.innerHTML = '<p class="zk-error">Index unavailable.</p>';
   }
 
   searchEl.addEventListener('input', applyFilter);
@@ -248,7 +322,7 @@
 
   if (refreshButton) {
     refreshButton.addEventListener('click', () => {
-      loadIndex({ message: 'Refreshing index…', preserveSearch: true });
+      loadIndex({ message: 'Refreshing from GitHub…', preserveSearch: true, preferLive: true });
     });
   }
 
@@ -260,5 +334,5 @@
     });
   }
 
-  loadIndex();
+  loadIndex({ message: 'Loading index…', preserveSearch: true, preferLive: false });
 })();

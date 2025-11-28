@@ -10,7 +10,7 @@ permalink: /zettelkasten/
   <div class="zk-lede">
     <h1>Zettelkasten</h1>
     <p>A browser-based viewer that runs entirely on GitHub Pages. Notes stay in this repository; the UI fetches markdown files directly from <code>/notes</code> and renders them client-side.</p>
-    <p>Use the search to filter titles and excerpts, then click any note to read it. The index is generated from the markdown files in the repo (see <code>scripts/build-zk-index.js</code>).</p>
+    <p>Use the search to filter titles and excerpts, then hop between cards in the note reel to read or edit them. The viewer keeps your place while reloading the latest entries.</p>
   </div>
 
   <div
@@ -33,12 +33,19 @@ permalink: /zettelkasten/
       <div class="zk-status" data-zk-status>Loading index…</div>
     </div>
 
-    <div class="zk-columns">
-      <div class="zk-list" data-zk-list>
-        <p class="zk-empty">Loading…</p>
-      </div>
+    <div class="zk-stage">
       <div class="zk-viewer" data-zk-viewer>
         <p class="zk-empty">Select a note to view its contents.</p>
+      </div>
+
+      <div class="zk-reel">
+        <div class="zk-reel-header">
+          <div class="zk-count" data-zk-count>0 notes</div>
+          <div class="zk-legend">Use search, then pick a card below.</div>
+        </div>
+        <div class="zk-reel-body" data-zk-reel>
+          <p class="zk-empty">Loading…</p>
+        </div>
       </div>
     </div>
   </div>
