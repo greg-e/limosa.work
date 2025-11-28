@@ -2,18 +2,26 @@
   const viewerEl = document.querySelector('[data-zk-viewer]');
   const reelEl = document.querySelector('[data-zk-reel]');
   const countEl = document.querySelector('[data-zk-count]');
-  const searchEl = document.querySelector('[data-zk-search]');
   const statusEl = document.querySelector('[data-zk-status]');
   const newButton = document.querySelector('[data-zk-new]');
   const refreshButton = document.querySelector('[data-zk-refresh]');
   const editLink = document.querySelector('[data-zk-edit]');
   const appEl = document.querySelector('[data-zk-app]');
+  const catalogTrigger = document.querySelector('[data-zk-catalog-trigger]');
+  const catalogEl = document.querySelector('[data-zk-catalog]');
+  const catalogInput = document.querySelector('[data-zk-catalog-input]');
+  const catalogTagsEl = document.querySelector('[data-zk-catalog-tags]');
+  const catalogResultsEl = document.querySelector('[data-zk-catalog-results]');
 
-  if (!viewerEl || !reelEl || !searchEl || !statusEl || !appEl) return;
+  if (!viewerEl || !reelEl || !statusEl || !appEl) return;
 
   let notes = [];
   let filtered = [];
   let activeId = null;
+  let indexedCards = null;
+  let isBuildingIndex = false;
+  let catalogOpen = false;
+  let catalogFocusIndex = -1;
 
   const repoOwner = appEl.dataset.zkRepoOwner || 'greg-e';
   const repoName = appEl.dataset.zkRepoName || 'limosa.work';
@@ -107,6 +115,19 @@
     if (!paragraphs.length) return '';
     const snippet = paragraphs[0].replace(/^#{1,6}\s+/, '');
     return snippet.length > 200 ? `${snippet.slice(0, 200)}…` : snippet;
+  }
+
+  function stripMarkdown(text) {
+    return text
+      .replace(/`{1,3}[^`]*`{1,3}/g, '')
+      .replace(/\*\*(.+?)\*\*/g, '$1')
+      .replace(/\*(.+?)\*/g, '$1')
+      .replace(/\[(.+?)\]\((.+?)\)/g, '$1')
+      .replace(/^>\s?/gm, '')
+      .replace(/^#{1,6}\s+/gm, '')
+      .replace(/[*_-]{3,}/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 
   function renderReel(items) {
@@ -219,25 +240,6 @@
     window.open(url.toString(), '_blank', 'noopener');
   }
 
-  function applyFilter() {
-    const term = searchEl.value.trim().toLowerCase();
-    if (!term) {
-      filtered = [...notes];
-    } else {
-      filtered = notes.filter(
-        (note) => note.title.toLowerCase().includes(term) || note.excerpt.toLowerCase().includes(term)
-      );
-    }
-    renderReel(filtered);
-    if (!filtered.length) {
-      clearSelection('No notes match your filter');
-      return;
-    }
-
-    const stillActive = activeId && filtered.some((n) => n.id === activeId);
-    selectNote(stillActive ? activeId : filtered[0].id);
-  }
-
   async function fetchStaticIndex() {
     const response = await fetch(`/assets/data/zettelkasten-index.json?t=${Date.now()}`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`Index fetch failed: ${response.status}`);
@@ -308,11 +310,14 @@
       try {
         const fetched = await load();
         notes = fetched;
-        if (!preserveSearch) {
-          searchEl.value = '';
-        }
-        applyFilter();
-        if (!notes.length) {
+        filtered = [...notes];
+        indexedCards = null;
+        isBuildingIndex = false;
+        renderReel(filtered);
+        if (filtered.length) {
+          const stillActive = activeId && filtered.some((n) => n.id === activeId);
+          selectNote(stillActive ? activeId : filtered[0].id);
+        } else {
           clearSelection('No notes available');
         }
         statusEl.textContent = preferLive ? 'Index refreshed from GitHub' : 'Index loaded';
@@ -326,7 +331,254 @@
     reelEl.innerHTML = '<p class="zk-error">Index unavailable.</p>';
   }
 
-  searchEl.addEventListener('input', applyFilter);
+  async function buildCatalogIndex() {
+    if (indexedCards || isBuildingIndex) return indexedCards;
+    isBuildingIndex = true;
+    if (catalogResultsEl) {
+      catalogResultsEl.innerHTML = '<p class="zk-empty">Building catalog…</p>';
+    }
+
+    const cards = [];
+    for (const note of notes) {
+      try {
+        const response = await fetch(note.path, { cache: 'no-store' });
+        if (!response.ok) throw new Error(`Failed to fetch ${note.id}`);
+        const content = await response.text();
+        const tags = extractTags(content);
+        const body = stripFrontMatter(content);
+        const snippet = buildSnippet(body);
+        cards.push({
+          id: note.id,
+          title: note.title,
+          tags,
+          content: body,
+          updated: deriveUpdatedDate(note.id, content),
+          snippet,
+          path: note.path,
+        });
+      } catch (error) {
+        console.warn('Catalog skip', note.id, error.message);
+      }
+    }
+
+    indexedCards = cards;
+    isBuildingIndex = false;
+    renderTagFilters();
+    return indexedCards;
+  }
+
+  function deriveUpdatedDate(id, content) {
+    const createdMatch = content.match(/^created:\s*(.+)$/m);
+    if (createdMatch) {
+      const value = createdMatch[1].trim();
+      return value;
+    }
+    const isoCandidate = id.slice(0, 8);
+    if (/^\d{8}$/.test(isoCandidate)) {
+      return `${isoCandidate.slice(0, 4)}-${isoCandidate.slice(4, 6)}-${isoCandidate.slice(6, 8)}`;
+    }
+    return undefined;
+  }
+
+  function stripFrontMatter(content) {
+    const lines = content.split(/\r?\n/);
+    if (lines[0] !== '---') return content;
+    const endIndex = lines.indexOf('---', 1);
+    if (endIndex === -1) return content;
+    return lines.slice(endIndex + 1).join('\n').trim();
+  }
+
+  function extractTags(content) {
+    const lines = content.split(/\r?\n/);
+    if (lines[0] !== '---') return [];
+    const endIndex = lines.indexOf('---', 1);
+    if (endIndex === -1) return [];
+    const fmLines = lines.slice(1, endIndex);
+    const tagsIndex = fmLines.findIndex((line) => line.trim().startsWith('tags:'));
+    if (tagsIndex === -1) return [];
+    const inline = fmLines[tagsIndex].replace('tags:', '').trim();
+    if (!inline) {
+      const tagValues = [];
+      for (let i = tagsIndex + 1; i < fmLines.length; i += 1) {
+        const tagLine = fmLines[i];
+        if (!tagLine.trim().startsWith('-')) break;
+        tagValues.push(tagLine.replace(/^-\s*/, '').trim());
+      }
+      return tagValues.filter(Boolean);
+    }
+    return inline
+      .replace(/\[|\]/g, '')
+      .split(/[,\s]+/)
+      .map((tag) => tag.trim())
+      .filter(Boolean);
+  }
+
+  function buildSnippet(content) {
+    const plain = stripMarkdown(content);
+    return plain.length > 200 ? `${plain.slice(0, 200)}…` : plain;
+  }
+
+  function searchCards(cards, query, requiredTags) {
+    const tokens = query
+      .toLowerCase()
+      .split(/\s+/)
+      .map((t) => t.trim())
+      .filter(Boolean);
+
+    const filteredByTags = requiredTags.length
+      ? cards.filter((card) => requiredTags.every((tag) => card.tags.includes(tag)))
+      : [...cards];
+
+    const scored = filteredByTags
+      .map((card) => {
+        const searchText = `${card.title} ${card.content}`.toLowerCase();
+        const matchedCount = tokens.length
+          ? tokens.reduce((count, token) => (searchText.includes(token) ? count + 1 : count), 0)
+          : 1;
+        return { card, score: matchedCount };
+      })
+      .filter((entry) => tokens.length === 0 || entry.score > 0);
+
+    return scored
+      .sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        const dateA = a.card.updated ? Date.parse(a.card.updated) : NaN;
+        const dateB = b.card.updated ? Date.parse(b.card.updated) : NaN;
+        if (!Number.isNaN(dateA) && !Number.isNaN(dateB)) {
+          return dateB - dateA;
+        }
+        if (!Number.isNaN(dateA)) return -1;
+        if (!Number.isNaN(dateB)) return 1;
+        return a.card.title.localeCompare(b.card.title);
+      })
+      .map((entry) => entry.card);
+  }
+
+  function renderTagFilters() {
+    if (!catalogTagsEl || !indexedCards) return;
+    const tagSet = new Set();
+    indexedCards.forEach((card) => card.tags.forEach((tag) => tagSet.add(tag)));
+    const tags = Array.from(tagSet).sort((a, b) => a.localeCompare(b));
+    if (!tags.length) {
+      catalogTagsEl.innerHTML = '<p class="zk-empty">No tags available.</p>';
+      return;
+    }
+    catalogTagsEl.innerHTML = '';
+    for (const tag of tags) {
+      const id = `zk-tag-${tag.replace(/[^a-z0-9]+/gi, '-')}`;
+      const wrapper = document.createElement('label');
+      wrapper.className = 'zk-catalog__tag';
+      wrapper.innerHTML = `
+        <input type="checkbox" value="${escapeHtml(tag)}" id="${id}" />
+        <span>${escapeHtml(tag)}</span>
+      `;
+      wrapper.querySelector('input').addEventListener('change', runCatalogSearch);
+      catalogTagsEl.appendChild(wrapper);
+    }
+  }
+
+  function getSelectedTags() {
+    if (!catalogTagsEl) return [];
+    const inputs = Array.from(catalogTagsEl.querySelectorAll('input[type="checkbox"]'));
+    return inputs
+      .filter((input) => input.checked)
+      .map((input) => input.value)
+      .filter(Boolean);
+  }
+
+  function renderCatalogResults(results) {
+    if (!catalogResultsEl) return;
+    catalogResultsEl.innerHTML = '';
+    if (!results.length) {
+      catalogResultsEl.innerHTML = '<p class="zk-empty">No cards found.</p>';
+      return;
+    }
+    results.forEach((card, index) => {
+      const item = document.createElement('div');
+      item.className = 'zk-catalog__result';
+      item.setAttribute('role', 'option');
+      item.tabIndex = 0;
+      item.dataset.index = String(index);
+      item.innerHTML = `
+        <span class="zk-catalog__result-id">${escapeHtml(card.id)}</span>
+        <span class="zk-catalog__result-title">${escapeHtml(card.title)}</span>
+        <div class="zk-catalog__result-tags">${
+          card.tags.map((tag) => `<span class="zk-catalog__tag-pill">${escapeHtml(tag)}</span>`).join('') ||
+          '<span class="zk-catalog__tag-pill">untagged</span>'
+        }</div>
+        <span class="zk-catalog__result-snippet">${escapeHtml(card.snippet)}</span>
+      `;
+      item.addEventListener('click', () => {
+        closeCatalog();
+        selectNote(card.id);
+      });
+      item.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          closeCatalog();
+          selectNote(card.id);
+        }
+      });
+      catalogResultsEl.appendChild(item);
+    });
+    catalogFocusIndex = results.length ? 0 : -1;
+    focusCatalogItem(catalogFocusIndex);
+  }
+
+  function focusCatalogItem(index) {
+    if (!catalogResultsEl) return;
+    const items = Array.from(catalogResultsEl.querySelectorAll('.zk-catalog__result'));
+    items.forEach((item) => item.classList.remove('is-focused'));
+    if (index < 0 || index >= items.length) return;
+    items[index].classList.add('is-focused');
+    items[index].focus({ preventScroll: false });
+  }
+
+  async function runCatalogSearch() {
+    if (!indexedCards) {
+      await buildCatalogIndex();
+    }
+    if (!indexedCards) return;
+    const query = catalogInput ? catalogInput.value : '';
+    const tags = getSelectedTags();
+    const results = searchCards(indexedCards, query, tags);
+    renderCatalogResults(results);
+  }
+
+  function openCatalog() {
+    if (!catalogEl) return;
+    catalogEl.classList.add('is-open');
+    catalogEl.setAttribute('aria-hidden', 'false');
+    catalogOpen = true;
+    runCatalogSearch();
+    setTimeout(() => catalogInput && catalogInput.focus(), 20);
+  }
+
+  function closeCatalog() {
+    if (!catalogEl) return;
+    catalogEl.classList.remove('is-open');
+    catalogEl.setAttribute('aria-hidden', 'true');
+    catalogOpen = false;
+    catalogFocusIndex = -1;
+  }
+
+  function handleCatalogKeydown(event) {
+    if (!catalogOpen) return;
+    if (event.key === 'Escape') {
+      closeCatalog();
+    }
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      const items = catalogResultsEl
+        ? Array.from(catalogResultsEl.querySelectorAll('.zk-catalog__result'))
+        : [];
+      if (!items.length) return;
+      event.preventDefault();
+      catalogFocusIndex = event.key === 'ArrowDown'
+        ? Math.min(items.length - 1, catalogFocusIndex + 1)
+        : Math.max(0, catalogFocusIndex - 1);
+      focusCatalogItem(catalogFocusIndex);
+    }
+  }
 
   if (newButton) {
     newButton.addEventListener('click', openNewNote);
@@ -345,6 +597,38 @@
       }
     });
   }
+
+  if (catalogTrigger) {
+    catalogTrigger.addEventListener('click', () => {
+      openCatalog();
+    });
+  }
+
+  if (catalogInput) {
+    let debounceHandle = null;
+    catalogInput.addEventListener('input', () => {
+      clearTimeout(debounceHandle);
+      debounceHandle = setTimeout(() => runCatalogSearch(), 200);
+    });
+  }
+
+  if (catalogEl) {
+    catalogEl.addEventListener('keydown', handleCatalogKeydown);
+    const closeButtons = catalogEl.querySelectorAll('[data-zk-catalog-close]');
+    closeButtons.forEach((btn) => btn.addEventListener('click', closeCatalog));
+  }
+
+  window.addEventListener('keydown', (event) => {
+    const isCmdK = (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k';
+    if (isCmdK) {
+      event.preventDefault();
+      if (catalogOpen) {
+        closeCatalog();
+      } else {
+        openCatalog();
+      }
+    }
+  });
 
   loadIndex({ message: 'Loading index…', preserveSearch: true, preferLive: false });
 })();

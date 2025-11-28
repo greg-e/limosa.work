@@ -22,8 +22,10 @@ permalink: /zettelkasten/
   >
     <div class="zk-controls">
       <div class="zk-search">
-        <label for="zk-search">Search notes</label>
-        <input id="zk-search" data-zk-search type="search" placeholder="Filter by title or excerpt" />
+        <label>Card Catalog</label>
+        <button class="zk-button is-ghost" type="button" data-zk-catalog-trigger aria-haspopup="dialog">
+          Open catalog (Ctrl/Cmd + K)
+        </button>
       </div>
       <div class="zk-actions">
         <button class="zk-button" type="button" data-zk-new>New note</button>
@@ -45,6 +47,40 @@ permalink: /zettelkasten/
         </div>
         <div class="zk-reel-body" data-zk-reel>
           <p class="zk-empty">Loading…</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="zk-catalog" data-zk-catalog aria-hidden="true" role="dialog" aria-labelledby="zk-catalog-title">
+      <div class="zk-catalog__backdrop" data-zk-catalog-close></div>
+      <div class="zk-catalog__panel">
+        <div class="zk-catalog__header">
+          <div>
+            <div class="zk-catalog__eyebrow">Card Catalog</div>
+            <h2 id="zk-catalog-title">Search notes</h2>
+          </div>
+          <button class="zk-catalog__close" type="button" data-zk-catalog-close aria-label="Close catalog">
+            ×
+          </button>
+        </div>
+        <div class="zk-catalog__body">
+          <div class="zk-catalog__field">
+            <label class="zk-catalog__label" for="zk-catalog-input">Search cards…</label>
+            <input
+              id="zk-catalog-input"
+              class="zk-catalog__input"
+              type="search"
+              placeholder="Search cards…"
+              data-zk-catalog-input
+              aria-label="Search cards"
+            />
+          </div>
+          <div class="zk-catalog__layout">
+            <div class="zk-catalog__tags" aria-label="Filter by tags" data-zk-catalog-tags></div>
+            <div class="zk-catalog__results" role="listbox" aria-label="Search results" data-zk-catalog-results>
+              <p class="zk-empty">Type to search cards.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
