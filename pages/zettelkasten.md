@@ -18,7 +18,7 @@ permalink: /zettelkasten/
     data-zk-app
     data-zk-repo-owner="greg-e"
     data-zk-repo-name="limosa.work"
-    data-zk-branch="work"
+    data-zk-branch="main"
   >
     <div class="zk-controls">
       <div class="zk-search">
