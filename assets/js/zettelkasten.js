@@ -4,6 +4,7 @@
   const searchEl = document.querySelector('[data-zk-search]');
   const statusEl = document.querySelector('[data-zk-status]');
   const newButton = document.querySelector('[data-zk-new]');
+  const refreshButton = document.querySelector('[data-zk-refresh]');
   const editLink = document.querySelector('[data-zk-edit]');
   const appEl = document.querySelector('[data-zk-app]');
 
@@ -116,6 +117,16 @@
     }
   }
 
+  function clearSelection(message) {
+    activeId = null;
+    viewerEl.innerHTML = `<p class="zk-empty">${escapeHtml(message)}</p>`;
+    statusEl.textContent = message;
+    if (editLink) {
+      editLink.classList.add('is-disabled');
+      editLink.removeAttribute('href');
+    }
+  }
+
   async function selectNote(id) {
     activeId = id;
     renderList(filtered);
@@ -194,23 +205,16 @@
     }
     renderList(filtered);
     if (!filtered.length) {
-      activeId = null;
-      viewerEl.innerHTML = '<p class="zk-empty">No notes match your filter.</p>';
-      statusEl.textContent = 'No notes match your filter';
-      if (editLink) {
-        editLink.classList.add('is-disabled');
-        editLink.removeAttribute('href');
-      }
+      clearSelection('No notes match your filter');
       return;
     }
 
-    if (!activeId || !filtered.some((n) => n.id === activeId)) {
-      selectNote(filtered[0].id);
-    }
+    const stillActive = activeId && filtered.some((n) => n.id === activeId);
+    selectNote(stillActive ? activeId : filtered[0].id);
   }
 
-  async function loadIndex() {
-    statusEl.textContent = 'Loading index…';
+  async function loadIndex({ message = 'Loading index…', preserveSearch = true } = {}) {
+    statusEl.textContent = message;
     listEl.innerHTML = '';
 
     if (editLink) {
@@ -223,11 +227,12 @@
       if (!response.ok) throw new Error(`Index fetch failed: ${response.status}`);
       const payload = await response.json();
       notes = payload.notes || [];
-      filtered = [...notes];
-      renderList(filtered);
-      statusEl.textContent = notes.length ? 'Select a note to view' : 'No notes available';
-      if (notes.length) {
-        selectNote(notes[0].id);
+      if (!preserveSearch) {
+        searchEl.value = '';
+      }
+      applyFilter();
+      if (!notes.length) {
+        clearSelection('No notes available');
       }
     } catch (error) {
       statusEl.textContent = 'Could not load index';
@@ -239,6 +244,12 @@
 
   if (newButton) {
     newButton.addEventListener('click', openNewNote);
+  }
+
+  if (refreshButton) {
+    refreshButton.addEventListener('click', () => {
+      loadIndex({ message: 'Refreshing index…', preserveSearch: true });
+    });
   }
 
   if (editLink) {
