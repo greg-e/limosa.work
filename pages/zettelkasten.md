@@ -27,6 +27,7 @@ permalink: /zettelkasten/
       </div>
       <div class="zk-actions">
         <button class="zk-button" type="button" data-zk-new>New note</button>
+        <button class="zk-button" type="button" data-zk-refresh>Refresh</button>
         <a class="zk-button is-link is-disabled" data-zk-edit target="_blank" rel="noopener">Edit selected</a>
       </div>
       <div class="zk-status" data-zk-status>Loading index…</div>

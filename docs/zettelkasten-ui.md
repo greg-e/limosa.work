@@ -7,7 +7,9 @@ It runs entirely on GitHub Pages and pulls markdown straight from the `notes/` f
 - The page `pages/zettelkasten.md` loads `/assets/data/zettelkasten-index.json` for the note list and then fetches individual markdown files on demand.
 - A small inline markdown renderer in `assets/js/zettelkasten.js` handles headings, lists, emphasis, blockquotes, links, and inline code without external dependencies.
 - Styling lives in `assets/css/zettelkasten.css` to avoid conflicts with the rest of the site.
-- Quick authoring hooks are wired directly to GitHub: the **New note** button opens a pre-filled `notes/<id>.md` draft in the repo’s `work` branch, and the **Edit selected** link jumps to the GitHub editor for the currently selected note.
+- Quick authoring hooks are wired directly to GitHub: the **New note** button opens a pre-filled `notes/<id>.md` draft in the repo’s `main` branch, and the **Edit selected** link jumps to the GitHub editor for the currently selected note.
+
+Use the **Refresh** button on the page after removing or renaming a note to reload the latest index and re-select an available entry.
 
 ## Updating the index
 Run the helper script whenever you add or rename files in `notes/`:
