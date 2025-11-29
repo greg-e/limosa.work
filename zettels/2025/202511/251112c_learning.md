@@ -1,3 +1,12 @@
+---
+title: Ivan Illich on Learning
+created: 2025-02-11T15:30:00Z
+tags:
+  - Learning
+links:
+
+---
+
 ## Interpreting Ivan Illich on Learning
 
 > “Most learning is not the result of instruction.  
