@@ -1,13 +1,3 @@
----
-title: Interpreting Ivan Illich on Learning
-created: 2025-11-11
-source: "Illich, Deschooling Society (1971)"
-tags:
-  - learning
-  - illich
-  - education
----
-
 ## Interpreting Ivan Illich on Learning
 
 > “Most learning is not the result of instruction.
@@ -71,3 +61,13 @@ Systems should therefore **remove friction, not add structure.**
 
 **Source:**  
 [Illich, *Deschooling Society* (1971), p. 39–40](https://monoskop.org/images/3/3e/Illich_Ivan_Deschooling_Society.pdf)
+
+---
+title: Interpreting Ivan Illich on Learning
+created: 2025-11-11
+source: "Illich, Deschooling Society (1971)"
+tags:
+  - learning
+  - illich
+  - education
+---
