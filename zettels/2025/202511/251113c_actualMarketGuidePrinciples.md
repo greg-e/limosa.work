@@ -1,3 +1,13 @@
+---
+title: Actual Market Guide Principles
+created: 2025-11-13
+tags:
+  - actual
+  - market
+  - principles
+  - hardware
+---
+
 # How Actual Meets Our Guiding Criteria
 
 ---
