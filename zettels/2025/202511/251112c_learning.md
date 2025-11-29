@@ -61,3 +61,6 @@ Systems should therefore **remove friction, not add structure.**
 
 **Source:**  
 [Illich, *Deschooling Society* (1971), p. 39–40](https://monoskop.org/images/3/3e/Illich_Ivan_Deschooling_Society.pdf)
+
+tags:
+- learn
