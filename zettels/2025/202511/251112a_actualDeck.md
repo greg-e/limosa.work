@@ -1,3 +1,13 @@
+---
+title: Actual Deck — Operator Edition
+created: 2025-11-12
+tags:
+  - actual
+  - philosophy
+  - operations
+  - tools
+---
+
 # Actual Deck — Operator Edition
 ## Philosophy
 ### The Right Tool Helps, Not Hinders
