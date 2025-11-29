@@ -580,7 +580,7 @@
     items[index].focus({ preventScroll: false });
   }
 
-  async function runCatalogSearch({ preserveFocus = false } = {}) {
+  async function runCatalogSearch({ preserveFocus = false, keepInputFocus = false } = {}) {
     if (!indexedCards) {
       await buildCatalogIndex();
     }
@@ -592,6 +592,12 @@
     const tags = getSelectedTags();
     const results = searchCards(indexedCards, query, tags);
     renderCatalogResults(results);
+
+    if (keepInputFocus && catalogOpen && catalogInput && document.activeElement !== catalogInput) {
+      const end = catalogInput.value.length;
+      catalogInput.focus({ preventScroll: true });
+      catalogInput.setSelectionRange(end, end);
+    }
   }
 
   function openCatalog() {
@@ -665,7 +671,7 @@
     let debounceHandle = null;
     catalogInput.addEventListener('input', () => {
       clearTimeout(debounceHandle);
-      debounceHandle = setTimeout(() => runCatalogSearch(), 200);
+      debounceHandle = setTimeout(() => runCatalogSearch({ keepInputFocus: true }), 200);
     });
   }
 
