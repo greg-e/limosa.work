@@ -147,6 +147,11 @@
     }
   }
 
+  function noteFetchUrl(note) {
+    if (!note) return null;
+    return note.raw || note.path;
+  }
+
   async function selectNote(id) {
     activeId = id;
     const note = notes.find((n) => n.id === id);
@@ -177,8 +182,16 @@
       editLink.classList.remove('is-disabled');
     }
 
+    const fetchUrl = noteFetchUrl(note);
+
+    if (!fetchUrl) {
+      viewerEl.innerHTML = '<p class="zk-error">No fetch path for this note.</p>';
+      statusEl.textContent = 'Could not load note';
+      return;
+    }
+
     try {
-      const response = await fetch(note.path, { cache: 'no-store' });
+      const response = await fetch(fetchUrl, { cache: 'no-store' });
       if (!response.ok) throw new Error(`Failed to load note: ${response.status}`);
       const markdown = await response.text();
       viewerEl.innerHTML = renderMarkdown(markdown);
@@ -267,22 +280,23 @@
           await walkDirectory(entry.path);
         } else if (entry.type === 'file' && entry.name.endsWith('.md') && entry.name.toLowerCase() !== 'index.md') {
           try {
-            const rawResponse = await fetch(entry.download_url, { cache: 'no-store' });
-            if (!rawResponse.ok) continue;
-            const content = await rawResponse.text();
-            const lines = content.split(/\r?\n/);
-            const id = entry.name.replace(/\.md$/, '');
-            liveNotes.push({
-              id,
-              title: getTitle(lines, id),
-              tags: extractTags(content),
-              path: `/${entry.path}`,
-              excerpt: getExcerpt(content),
-            });
-          } catch (error) {
-            console.warn('Skipping note', entry.name, error);
-          }
+          const rawResponse = await fetch(entry.download_url, { cache: 'no-store' });
+          if (!rawResponse.ok) continue;
+          const content = await rawResponse.text();
+          const lines = content.split(/\r?\n/);
+          const id = entry.name.replace(/\.md$/, '');
+          liveNotes.push({
+            id,
+            title: getTitle(lines, id),
+            tags: extractTags(content),
+            path: `/${entry.path}`,
+            raw: entry.download_url,
+            excerpt: getExcerpt(content),
+          });
+        } catch (error) {
+          console.warn('Skipping note', entry.name, error);
         }
+      }
       }
     }
 
@@ -339,7 +353,7 @@
     const cards = [];
     for (const note of notes) {
       try {
-        const response = await fetch(note.path, { cache: 'no-store' });
+        const response = await fetch(noteFetchUrl(note), { cache: 'no-store' });
         if (!response.ok) throw new Error(`Failed to fetch ${note.id}`);
         const content = await response.text();
         const tags = extractTags(content);
