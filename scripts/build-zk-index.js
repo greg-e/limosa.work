@@ -14,6 +14,25 @@ const path = require('path');
 const ZETTEL_ROOT = path.join(__dirname, '..', 'zettels');
 const OUTPUT_PATH = path.join(__dirname, '..', 'assets', 'data', 'zettelkasten-index.json');
 
+function stripFrontMatter(content) {
+  const lines = content.split(/\r?\n/);
+  if (lines[0] !== '---') return content;
+  const endIndex = lines.indexOf('---', 1);
+  if (endIndex === -1) return content;
+  return lines.slice(endIndex + 1).join('\n').trim();
+}
+
+function extractFrontMatterTitle(content) {
+  const lines = content.split(/\r?\n/);
+  if (lines[0] !== '---') return null;
+  const endIndex = lines.indexOf('---', 1);
+  if (endIndex === -1) return null;
+  const fmLines = lines.slice(1, endIndex);
+  const titleLine = fmLines.find((line) => line.trim().toLowerCase().startsWith('title:'));
+  if (!titleLine) return null;
+  return titleLine.replace(/^[Tt]itle:\s*/, '').trim();
+}
+
 function getTitle(lines, fallback) {
   const heading = lines.find((line) => /^#{1,6}\s+/.test(line));
   return heading ? heading.replace(/^#{1,6}\s+/, '').trim() : fallback;
@@ -54,14 +73,16 @@ function buildIndex() {
 
   const notes = files.map((absolutePath) => {
     const raw = fs.readFileSync(absolutePath, 'utf8');
-    const lines = raw.split(/\r?\n/);
+    const fmTitle = extractFrontMatterTitle(raw);
+    const body = stripFrontMatter(raw);
+    const lines = body.split(/\r?\n/);
     const relativePath = path.relative(path.join(__dirname, '..'), absolutePath);
     const id = path.basename(absolutePath, '.md');
     return {
       id,
-      title: getTitle(lines, id),
+      title: fmTitle || getTitle(lines, id),
       path: `/${relativePath.replace(/\\/g, '/')}`,
-      excerpt: getExcerpt(raw),
+      excerpt: getExcerpt(body),
     };
   });
 
