@@ -243,7 +243,17 @@
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const folder = `zettels/${year}/${year}${month}`;
-    const frontMatter = ['---', `title: ${title || id}`, `created: ${now.toISOString()}`, '---', ''].join('\n');
+    const frontMatter = [
+      '---',
+      `title: ${title || id}`,
+      `created: ${now.toISOString()}`,
+      'tags:',
+      '  - topic/example',
+      'links:',
+      '  -',
+      '---',
+      '',
+    ].join('\n');
     const body = `# ${title || id}\n\nStart writing…\n`;
     const template = `${frontMatter}${body}`;
     const url = new URL(`https://github.com/${repoOwner}/${repoName}/new/${branch}/${folder}`);
@@ -309,6 +319,21 @@
     return liveNotes.sort((a, b) => b.id.localeCompare(a.id));
   }
 
+  function applyIndex(fetchedNotes, label) {
+    notes = fetchedNotes;
+    indexedCards = null;
+    isBuildingIndex = false;
+
+    if (notes.length) {
+      const stillActive = activeId && notes.some((n) => n.id === activeId);
+      selectNote(stillActive ? activeId : notes[0].id);
+    } else {
+      clearSelection('No notes available');
+    }
+
+    statusEl.textContent = label;
+  }
+
   async function loadIndex({ message = 'Loading index…', preserveSearch = true, preferLive = false } = {}) {
     statusEl.textContent = message;
     viewerEl.innerHTML = '<p class="zk-empty">Loading…</p>';
@@ -319,20 +344,24 @@
     }
 
     const loaders = preferLive ? [fetchLiveIndex, fetchStaticIndex] : [fetchStaticIndex, fetchLiveIndex];
+    const triedStaticFirst = !preferLive;
 
     for (const load of loaders) {
       try {
         const fetched = await load();
-        notes = fetched;
-        indexedCards = null;
-        isBuildingIndex = false;
-        if (notes.length) {
-          const stillActive = activeId && notes.some((n) => n.id === activeId);
-          selectNote(stillActive ? activeId : notes[0].id);
-        } else {
-          clearSelection('No notes available');
+        applyIndex(fetched, preferLive ? 'Index refreshed from GitHub' : 'Index loaded');
+
+        if (triedStaticFirst && load === fetchStaticIndex) {
+          fetchLiveIndex()
+            .then((live) => {
+              if (!live || !live.length) return;
+              applyIndex(live, 'Index refreshed from GitHub');
+            })
+            .catch((error) => {
+              console.warn('Background live refresh failed:', error.message);
+            });
         }
-        statusEl.textContent = preferLive ? 'Index refreshed from GitHub' : 'Index loaded';
+
         return;
       } catch (error) {
         console.warn('Index load attempt failed:', error.message);

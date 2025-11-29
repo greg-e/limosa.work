@@ -16,7 +16,7 @@ permalink: /zettelkasten/
   <div class="zk-guide">
     <h2>Quick instructions</h2>
     <ul>
-      <li><strong>Create a note:</strong> Click <em>New note</em>. The link opens a new file on <code>main</code> under <code>zettels/&lt;year&gt;/&lt;yyyymm&gt;/</code>. Keep the filename as suggested. Replace the template front matter with your details and add your content below it.</li>
+      <li><strong>Create a note:</strong> Click <em>New note</em>. The link opens a new file on <code>main</code> under <code>zettels/&lt;year&gt;/&lt;yyyymm&gt;/</code>. Keep the filename as suggested. Replace the template front matter with your details (fill in tags) and add your content below it. After saving/committing, hit <em>Refresh</em> (or wait for the background refresh) to pull the new card into the catalog.</li>
       <li><strong>Edit an existing note:</strong> Select a card (via the deck controls or catalog) and click <em>Edit selected</em>. The button activates only when a note is active and opens the GitHub editor for that file on <code>main</code>.</li>
       <li><strong>Search the catalog:</strong> Click <em>Open catalog</em> or press Ctrl/Cmd + K. Type to search by title or content; check tags on the left to filter. Use arrows + Enter to open a highlighted result, or click it.</li>
     </ul>
