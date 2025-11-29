@@ -10,7 +10,7 @@ permalink: /zettelkasten/
   <div class="zk-lede">
     <h1>Zettelkasten</h1>
     <p>A browser-based viewer that runs entirely on GitHub Pages. Notes stay in this repository; the UI reads markdown from <code>/zettels/&lt;year&gt;/&lt;yyyymm&gt;/&lt;id&gt;.md</code> and renders them client-side.</p>
-    <p>Use the search to filter titles and excerpts, then hop between cards in the note reel to read or edit them. The viewer keeps your place while reloading the latest entries.</p>
+    <p>Use the Card Catalog to find a note, or cycle through entries with the deck controls. The viewer keeps your place while reloading the latest entries.</p>
   </div>
 
   <div
@@ -40,13 +40,14 @@ permalink: /zettelkasten/
         <p class="zk-empty">Select a note to view its contents.</p>
       </div>
 
-      <div class="zk-reel">
-        <div class="zk-reel-header">
+      <div class="zk-deck" aria-live="polite">
+        <div class="zk-deck__meta">
           <div class="zk-count" data-zk-count>0 notes</div>
-          <div class="zk-legend">Use search, then pick a card below.</div>
+          <div class="zk-active" data-zk-active>Nothing selected</div>
         </div>
-        <div class="zk-reel-body" data-zk-reel>
-          <p class="zk-empty">Loading…</p>
+        <div class="zk-deck__controls">
+          <button class="zk-button is-ghost" type="button" data-zk-prev aria-label="Previous note">◀ Prev</button>
+          <button class="zk-button is-ghost" type="button" data-zk-next aria-label="Next note">Next ▶</button>
         </div>
       </div>
     </div>

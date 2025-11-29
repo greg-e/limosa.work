@@ -9,7 +9,7 @@ It runs entirely on GitHub Pages and pulls markdown straight from `zettels/<year
 - Styling lives in `assets/css/zettelkasten.css` to avoid conflicts with the rest of the site.
 - Quick authoring hooks are wired directly to GitHub: the **New note** button opens a pre-filled `zettels/<year>/<yyyymm>/<id>.md` draft in the repo’s `main` branch, and the **Edit selected** link jumps to the GitHub editor for the currently selected note.
 
-Use the **Refresh** button after removing, renaming, or adding a note. It will pull a fresh list from GitHub if the static index hasn’t caught up and keep your place while reselecting the closest available entry.
+Use the **Refresh** button after removing, renaming, or adding a note. It will pull a fresh list from GitHub if the static index hasn’t caught up and keep your place while reselecting the closest available entry. The deck controls below the viewer let you step forward/backward through the loaded set without exposing a long list.
 
 Open the **Card Catalog** (button or <kbd>Ctrl/Cmd</kbd>+<kbd>K</kbd>) to search titles, full text, and tags without disturbing the main viewer. Check one or more tags to narrow results, navigate with the arrow keys, and hit <kbd>Enter</kbd> to open the focused card in the existing reader.
 
