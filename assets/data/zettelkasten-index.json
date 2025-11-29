@@ -1,0 +1,106 @@
+{
+  "generatedAt": "2025-11-29T16:26:06.744Z",
+  "notes": [
+    {
+      "id": "251115_actualZettelkasten",
+      "title": "Actual Zettelkasten",
+      "tags": [
+        "actual",
+        "zettelkasten",
+        "knowledge-base"
+      ],
+      "path": "/zettels/2025/202511/251115_actualZettelkasten.md",
+      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251115_actualZettelkasten.md",
+      "excerpt": "Actual Zettelkasten\nVersion: 1.0\nAuthor: bruh"
+    },
+    {
+      "id": "251113c_actualMarketGuidePrinciples",
+      "title": "Actual Market Guide Principles",
+      "tags": [
+        "actual",
+        "market",
+        "principles",
+        "hardware"
+      ],
+      "path": "/zettels/2025/202511/251113c_actualMarketGuidePrinciples.md",
+      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251113c_actualMarketGuidePrinciples.md",
+      "excerpt": "How Actual Meets Our Guiding Criteria"
+    },
+    {
+      "id": "251113b_actualPitch",
+      "title": "Actual Pitch — Closing Field Data Gaps",
+      "tags": [
+        "actual",
+        "pitch",
+        "badge",
+        "field-data"
+      ],
+      "path": "/zettels/2025/202511/251113b_actualPitch.md",
+      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251113b_actualPitch.md",
+      "excerpt": "The Problem Today"
+    },
+    {
+      "id": "251113a_motivation",
+      "title": "Applying Self-Determination Theory to Actual",
+      "tags": [
+        "motivation",
+        "self-determination",
+        "autonomy",
+        "actual"
+      ],
+      "path": "/zettels/2025/202511/251113a_motivation.md",
+      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251113a_motivation.md",
+      "excerpt": "Applying Self-Determination Theory to Actual"
+    },
+    {
+      "id": "251112c_learning",
+      "title": "Interpreting Ivan Illich on Learning",
+      "tags": [
+        "learning",
+        "illich",
+        "education"
+      ],
+      "path": "/zettels/2025/202511/251112c_learning.md",
+      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251112c_learning.md",
+      "excerpt": "Interpreting Ivan Illich on Learning"
+    },
+    {
+      "id": "251112b_conv_proven",
+      "title": "Conviviality and Provenance",
+      "tags": [
+        "conviviality",
+        "provenance",
+        "philosophy",
+        "actual"
+      ],
+      "path": "/zettels/2025/202511/251112b_conv_proven.md",
+      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251112b_conv_proven.md",
+      "excerpt": "Conviviality\nConviviality, from Ivan Illich’s *Tools for Conviviality*, is the idea that technology should liberate human autonomy and creativity rather than enslave it. Convivial tools are those that extend people’s capabilities without de…"
+    },
+    {
+      "id": "251112a_actualDeck",
+      "title": "Actual Deck — Operator Edition",
+      "tags": [
+        "actual",
+        "philosophy",
+        "operations",
+        "tools"
+      ],
+      "path": "/zettels/2025/202511/251112a_actualDeck.md",
+      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251112a_actualDeck.md",
+      "excerpt": "Actual Deck — Operator Edition\n## Philosophy\n### The Right Tool Helps, Not Hinders\nid: philosophy_the-right-tool-helps-not-hinders_e4f627e5\n- **Principle:** Tools should make the job easier, not get in the way.\n- **Why use it:** If a tool a…"
+    },
+    {
+      "id": "251111a_learning",
+      "title": "Interpreting Ivan Illich on Learning",
+      "tags": [
+        "learning",
+        "illich",
+        "education"
+      ],
+      "path": "/zettels/2025/202511/251111a_learning.md",
+      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251111a_learning.md",
+      "excerpt": "Interpreting Ivan Illich on Learning"
+    }
+  ]
+}
