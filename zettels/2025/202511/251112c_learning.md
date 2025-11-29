@@ -1,7 +1,7 @@
 ---
 title: Interpreting Ivan Illich on Learning
-created: 2025-11-11
-source: "Illich, Deschooling Society (1971)"
+created: 2025-11-12
+source: "Illich, Deschooling Society (1971), p. 39–40"
 tags:
   - learning
   - illich
@@ -28,29 +28,29 @@ A new pilot learns far more from logged flight hours than from ground-school lec
 
 ### Clause 2 — “It is rather the result of unhampered participation…”
 **Meaning:**
-“Unhampered” means no bureaucratic or procedural interference.  
+“Unhampered” means no bureaucratic or procedural interference.
 Learners must be free to act, fail, and adjust within real contexts.
 
-**Example:**  
+**Example:**
 An apprentice allowed to try repairing equipment learns faster than one limited to observation or theory.
 
 ---
 
 ### Clause 3 — “…in a meaningful setting.”
-**Meaning:**  
-The environment must have authentic purpose — the learner’s actions matter to someone or something real.  
+**Meaning:**
+The environment must have authentic purpose — the learner’s actions matter to someone or something real.
 Learning occurs through participation in work that counts, not exercises invented only to teach.
 
-**Example:**  
+**Example:**
 Building an actual product, maintaining a live data pipeline, or flying a real aircraft—all carry stakes that make feedback real.
 
 ---
 
 ### Combined Principle
 Learning emerges naturally when people:
-1. Are free to act without unnecessary control  
-2. Engage directly in purposeful contexts  
-3. Reflect on outcomes that matter  
+1. Are free to act without unnecessary control
+2. Engage directly in purposeful contexts
+3. Reflect on outcomes that matter
 
 ---
 
@@ -66,8 +66,8 @@ Learning emerges naturally when people:
 ---
 
 ### Summary
-Illich’s point: **learning is the byproduct of doing real things in real settings**, not the result of being taught.  
+Illich’s point: **learning is the byproduct of doing real things in real settings**, not the result of being taught.
 Systems should therefore **remove friction, not add structure.**
 
-**Source:**  
+**Source:**
 [Illich, *Deschooling Society* (1971), p. 39–40](https://monoskop.org/images/3/3e/Illich_Ivan_Deschooling_Society.pdf)

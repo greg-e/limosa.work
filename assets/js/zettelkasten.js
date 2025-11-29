@@ -147,9 +147,16 @@
     }
   }
 
-  function noteFetchUrl(note) {
+  function cacheBust(url) {
+    if (!url) return null;
+    const separator = url.includes('?') ? '&' : '?';
+    return `${url}${separator}t=${Date.now()}`;
+  }
+
+  function noteFetchUrl(note, { bust = false } = {}) {
     if (!note) return null;
-    return note.raw || note.path;
+    const base = note.raw || note.path;
+    return bust ? cacheBust(base) : base;
   }
 
   async function selectNote(id) {
@@ -182,7 +189,7 @@
       editLink.classList.remove('is-disabled');
     }
 
-    const fetchUrl = noteFetchUrl(note);
+    const fetchUrl = noteFetchUrl(note, { bust: true });
 
     if (!fetchUrl) {
       viewerEl.innerHTML = '<p class="zk-error">No fetch path for this note.</p>';
@@ -290,7 +297,7 @@
           await walkDirectory(entry.path);
         } else if (entry.type === 'file' && entry.name.endsWith('.md') && entry.name.toLowerCase() !== 'index.md') {
           try {
-          const rawResponse = await fetch(entry.download_url, { cache: 'no-store' });
+          const rawResponse = await fetch(cacheBust(entry.download_url), { cache: 'no-store' });
           if (!rawResponse.ok) continue;
           const content = await rawResponse.text();
           const lines = content.split(/\r?\n/);
@@ -382,7 +389,7 @@
     const cards = [];
     for (const note of notes) {
       try {
-        const response = await fetch(noteFetchUrl(note), { cache: 'no-store' });
+        const response = await fetch(noteFetchUrl(note, { bust: true }), { cache: 'no-store' });
         if (!response.ok) throw new Error(`Failed to fetch ${note.id}`);
         const content = await response.text();
         const tags = extractTags(content);
