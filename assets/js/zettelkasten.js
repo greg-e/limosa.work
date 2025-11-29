@@ -1,22 +1,23 @@
 (function () {
   const viewerEl = document.querySelector('[data-zk-viewer]');
-  const reelEl = document.querySelector('[data-zk-reel]');
   const countEl = document.querySelector('[data-zk-count]');
+  const activeEl = document.querySelector('[data-zk-active]');
   const statusEl = document.querySelector('[data-zk-status]');
   const newButton = document.querySelector('[data-zk-new]');
   const refreshButton = document.querySelector('[data-zk-refresh]');
   const editLink = document.querySelector('[data-zk-edit]');
   const appEl = document.querySelector('[data-zk-app]');
+  const prevButton = document.querySelector('[data-zk-prev]');
+  const nextButton = document.querySelector('[data-zk-next]');
   const catalogTrigger = document.querySelector('[data-zk-catalog-trigger]');
   const catalogEl = document.querySelector('[data-zk-catalog]');
   const catalogInput = document.querySelector('[data-zk-catalog-input]');
   const catalogTagsEl = document.querySelector('[data-zk-catalog-tags]');
   const catalogResultsEl = document.querySelector('[data-zk-catalog-results]');
 
-  if (!viewerEl || !reelEl || !statusEl || !appEl) return;
+  if (!viewerEl || !statusEl || !appEl) return;
 
   let notes = [];
-  let filtered = [];
   let activeId = null;
   let indexedCards = null;
   let isBuildingIndex = false;
@@ -130,38 +131,16 @@
       .trim();
   }
 
-  function renderReel(items) {
-    reelEl.innerHTML = '';
-    if (countEl) {
-      countEl.textContent = `${items.length} note${items.length === 1 ? '' : 's'}`;
-    }
-
-    if (!items.length) {
-      reelEl.innerHTML = '<p class="zk-empty">No cards to show yet.</p>';
-      return;
-    }
-
-    for (const note of items) {
-      const button = document.createElement('button');
-      button.className = 'zk-pill';
-      button.type = 'button';
-      button.dataset.noteId = note.id;
-      button.innerHTML = `
-        <span class="zk-pill-title">${note.title}</span>
-        <span class="zk-pill-excerpt">${escapeHtml(note.excerpt || '')}</span>
-      `;
-      if (note.id === activeId) {
-        button.classList.add('is-active');
-      }
-      button.addEventListener('click', () => selectNote(note.id));
-      reelEl.appendChild(button);
-    }
-  }
-
   function clearSelection(message) {
     activeId = null;
     viewerEl.innerHTML = `<p class="zk-empty">${escapeHtml(message)}</p>`;
     statusEl.textContent = message;
+    if (countEl) {
+      countEl.textContent = `${notes.length} note${notes.length === 1 ? '' : 's'}`;
+    }
+    if (activeEl) {
+      activeEl.textContent = 'Nothing selected';
+    }
     if (editLink) {
       editLink.classList.add('is-disabled');
       editLink.removeAttribute('href');
@@ -170,7 +149,6 @@
 
   async function selectNote(id) {
     activeId = id;
-    renderReel(filtered);
     const note = notes.find((n) => n.id === id);
     if (!note) {
       if (editLink) {
@@ -183,6 +161,16 @@
 
     statusEl.textContent = 'Loading note…';
     viewerEl.innerHTML = '';
+
+    if (countEl) {
+      countEl.textContent = `${notes.length} note${notes.length === 1 ? '' : 's'}`;
+    }
+    if (activeEl) {
+      const position = notes.findIndex((n) => n.id === id);
+      if (position >= 0) {
+        activeEl.textContent = `Card ${position + 1} of ${notes.length}`;
+      }
+    }
 
     if (editLink) {
       editLink.href = `https://github.com/${repoOwner}/${repoName}/edit/${branch}${note.path}`;
@@ -199,6 +187,17 @@
       viewerEl.innerHTML = `<p class="zk-error">${escapeHtml(error.message)}</p>`;
       statusEl.textContent = 'Could not load note';
     }
+  }
+
+  function getActiveIndex() {
+    return notes.findIndex((n) => n.id === activeId);
+  }
+
+  function stepNote(delta) {
+    if (!notes.length) return;
+    const currentIndex = getActiveIndex();
+    const nextIndex = currentIndex === -1 ? 0 : (currentIndex + delta + notes.length) % notes.length;
+    selectNote(notes[nextIndex].id);
   }
 
   function slugify(text) {
@@ -297,7 +296,7 @@
 
   async function loadIndex({ message = 'Loading index…', preserveSearch = true, preferLive = false } = {}) {
     statusEl.textContent = message;
-    reelEl.innerHTML = '';
+    viewerEl.innerHTML = '<p class="zk-empty">Loading…</p>';
 
     if (editLink) {
       editLink.classList.add('is-disabled');
@@ -310,13 +309,11 @@
       try {
         const fetched = await load();
         notes = fetched;
-        filtered = [...notes];
         indexedCards = null;
         isBuildingIndex = false;
-        renderReel(filtered);
-        if (filtered.length) {
-          const stillActive = activeId && filtered.some((n) => n.id === activeId);
-          selectNote(stillActive ? activeId : filtered[0].id);
+        if (notes.length) {
+          const stillActive = activeId && notes.some((n) => n.id === activeId);
+          selectNote(stillActive ? activeId : notes[0].id);
         } else {
           clearSelection('No notes available');
         }
@@ -328,7 +325,7 @@
     }
 
     statusEl.textContent = 'Could not load index';
-    reelEl.innerHTML = '<p class="zk-error">Index unavailable.</p>';
+    viewerEl.innerHTML = '<p class="zk-error">Index unavailable.</p>';
   }
 
   async function buildCatalogIndex() {
@@ -497,7 +494,7 @@
       const item = document.createElement('div');
       item.className = 'zk-catalog__result';
       item.setAttribute('role', 'option');
-      item.tabIndex = 0;
+      item.tabIndex = -1;
       item.dataset.index = String(index);
       item.innerHTML = `
         <span class="zk-catalog__result-id">${escapeHtml(card.id)}</span>
@@ -521,8 +518,12 @@
       });
       catalogResultsEl.appendChild(item);
     });
-    catalogFocusIndex = results.length ? 0 : -1;
-    focusCatalogItem(catalogFocusIndex);
+    if (catalogFocusIndex >= results.length) {
+      catalogFocusIndex = results.length - 1;
+    }
+    if (catalogFocusIndex >= 0) {
+      focusCatalogItem(catalogFocusIndex);
+    }
   }
 
   function focusCatalogItem(index) {
@@ -534,11 +535,14 @@
     items[index].focus({ preventScroll: false });
   }
 
-  async function runCatalogSearch() {
+  async function runCatalogSearch({ preserveFocus = false } = {}) {
     if (!indexedCards) {
       await buildCatalogIndex();
     }
     if (!indexedCards) return;
+    if (!preserveFocus) {
+      catalogFocusIndex = -1;
+    }
     const query = catalogInput ? catalogInput.value : '';
     const tags = getSelectedTags();
     const results = searchCards(indexedCards, query, tags);
@@ -588,6 +592,14 @@
     refreshButton.addEventListener('click', () => {
       loadIndex({ message: 'Refreshing from GitHub…', preserveSearch: true, preferLive: true });
     });
+  }
+
+  if (prevButton) {
+    prevButton.addEventListener('click', () => stepNote(-1));
+  }
+
+  if (nextButton) {
+    nextButton.addEventListener('click', () => stepNote(1));
   }
 
   if (editLink) {
