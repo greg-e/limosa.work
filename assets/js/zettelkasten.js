@@ -275,6 +275,7 @@
             liveNotes.push({
               id,
               title: getTitle(lines, id),
+              tags: extractTags(content),
               path: `/${entry.path}`,
               excerpt: getExcerpt(content),
             });
@@ -342,12 +343,13 @@
         if (!response.ok) throw new Error(`Failed to fetch ${note.id}`);
         const content = await response.text();
         const tags = extractTags(content);
+        const fallbackTags = Array.isArray(note.tags) ? note.tags : [];
         const body = stripFrontMatter(content);
         const snippet = buildSnippet(body);
         cards.push({
           id: note.id,
           title: note.title,
-          tags,
+          tags: tags.length ? tags : fallbackTags,
           content: body,
           updated: deriveUpdatedDate(note.id, content),
           snippet,
@@ -399,7 +401,7 @@
       for (let i = tagsIndex + 1; i < fmLines.length; i += 1) {
         const tagLine = fmLines[i];
         if (!tagLine.trim().startsWith('-')) break;
-        tagValues.push(tagLine.replace(/^-\s*/, '').trim());
+        tagValues.push(tagLine.replace(/^\s*-\s*/, '').trim());
       }
       return tagValues.filter(Boolean);
     }
