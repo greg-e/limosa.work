@@ -1,6 +1,15 @@
-# Actual Zettelkasten  
-Version: 1.0  
-Author: bruh  
+---
+title: Actual Zettelkasten
+created: 2025-11-15
+tags:
+  - actual
+  - zettelkasten
+  - knowledge-base
+---
+
+# Actual Zettelkasten
+Version: 1.0
+Author: bruh
 
 A plain-Markdown Zettelkasten for guiding the philosophy, engineering, field practices, automation patterns, data integrity rules, flow mechanics, finance alignment, and strategic vision of **Actual**.
 
