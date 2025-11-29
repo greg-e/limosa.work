@@ -13,6 +13,35 @@ permalink: /zettelkasten/
     <p>Use the Card Catalog to find a note, or cycle through entries with the deck controls. The viewer keeps your place while reloading the latest entries.</p>
   </div>
 
+  <div class="zk-guide">
+    <h2>Quick instructions</h2>
+    <ul>
+      <li><strong>Create a note:</strong> Click <em>New note</em>. The link opens a new file on <code>main</code> under <code>zettels/&lt;year&gt;/&lt;yyyymm&gt;/</code>. Keep the filename as suggested. Replace the template front matter with your details and add your content below it.</li>
+      <li><strong>Edit an existing note:</strong> Select a card (via the deck controls or catalog) and click <em>Edit selected</em>. The button activates only when a note is active and opens the GitHub editor for that file on <code>main</code>.</li>
+      <li><strong>Search the catalog:</strong> Click <em>Open catalog</em> or press Ctrl/Cmd + K. Type to search by title or content; check tags on the left to filter. Use arrows + Enter to open a highlighted result, or click it.</li>
+    </ul>
+    <h3>Front matter format</h3>
+    <p>Each zettel starts with YAML:</p>
+    <pre><code>---
+title: Example note title
+created: 2025-02-11T15:30:00Z
+tags:
+  - concept/topic
+  - source/book
+links:
+  - related-id
+---
+
+# Example note title
+...</code></pre>
+    <ul>
+      <li><strong>title</strong>: Human-friendly headline.</li>
+      <li><strong>created</strong>: ISO date string. Use UTC (with <code>Z</code>) for consistency.</li>
+      <li><strong>tags</strong>: Hyphen-separated, lowercase when possible (e.g., <code>bible/john</code>, <code>productivity</code>). Add multiple lines for multiple tags.</li>
+      <li><strong>links</strong>: Optional related zettel IDs.</li>
+    </ul>
+  </div>
+
   <div
     class="zk-app"
     data-zk-app
