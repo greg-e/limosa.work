@@ -1,23 +1,33 @@
+---
+title: Interpreting Ivan Illich on Learning
+created: 2025-11-11
+source: "Illich, Deschooling Society (1971)"
+tags:
+  - learning
+  - illich
+  - education
+---
+
 ## Interpreting Ivan Illich on Learning
 
-> “Most learning is not the result of instruction.  
-> It is rather the result of unhampered participation in a meaningful setting.”  
+> “Most learning is not the result of instruction.
+> It is rather the result of unhampered participation in a meaningful setting.”
 > — *Ivan Illich, Deschooling Society* (1971)
 
 ---
 
 ### Clause 1 — “Most learning is not the result of instruction.”
-**Meaning:**  
-Formal teaching (lectures, curricula, exams) is not the main driver of understanding.  
+**Meaning:**
+Formal teaching (lectures, curricula, exams) is not the main driver of understanding.
 Knowledge sticks when people engage with real tasks, not when they passively receive information.
 
-**Example:**  
+**Example:**
 A new pilot learns far more from logged flight hours than from ground-school lectures.
 
 ---
 
 ### Clause 2 — “It is rather the result of unhampered participation…”
-**Meaning:**  
+**Meaning:**
 “Unhampered” means no bureaucratic or procedural interference.  
 Learners must be free to act, fail, and adjust within real contexts.
 
