@@ -13,6 +13,9 @@ const path = require('path');
 
 const ZETTEL_ROOT = path.join(__dirname, '..', 'zettels');
 const OUTPUT_PATH = path.join(__dirname, '..', 'assets', 'data', 'zettelkasten-index.json');
+const REPO_OWNER = process.env.ZK_REPO_OWNER || 'greg-e';
+const REPO_NAME = process.env.ZK_REPO_NAME || 'limosa.work';
+const BRANCH = process.env.ZK_BRANCH || 'main';
 
 function stripFrontMatter(content) {
   const lines = content.split(/\r?\n/);
@@ -106,11 +109,13 @@ function buildIndex() {
     const lines = body.split(/\r?\n/);
     const relativePath = path.relative(path.join(__dirname, '..'), absolutePath);
     const id = path.basename(absolutePath, '.md');
+    const rawUrl = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/${relativePath.replace(/\\/g, '/')}`;
     return {
       id,
       title: frontMatter.title || getTitle(lines, id),
       tags: frontMatter.tags || [],
       path: `/${relativePath.replace(/\\/g, '/')}`,
+      raw: rawUrl,
       excerpt: getExcerpt(body),
     };
   });
