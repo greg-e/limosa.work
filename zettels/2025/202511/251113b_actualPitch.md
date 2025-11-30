@@ -1,3 +1,13 @@
+---
+title: Actual Pitch — Closing Field Data Gaps
+created: 2025-11-13
+tags:
+  - actual
+  - pitch
+  - badge
+  - field-data
+---
+
 # The Problem Today
 
 The way time and tool use are tracked in the field today takes a lot of effort, and it still leaves gaps.  

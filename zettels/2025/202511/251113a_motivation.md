@@ -1,3 +1,13 @@
+---
+title: Applying Self-Determination Theory to Actual
+created: 2025-11-13
+tags:
+  - motivation
+  - self-determination
+  - autonomy
+  - actual
+---
+
 # Applying Self-Determination Theory to Actual
 
 ## 1. The Challenge with Guided Motivation (Extrinsic)
