@@ -48,58 +48,157 @@
   function renderMarkdown(md) {
     const lines = md.split(/\r?\n/);
     let html = '';
-    let inList = false;
+    let inUl = false;
+    let inOl = false;
+    let inCode = false;
+    let codeLang = '';
+    let codeBuffer = '';
 
-    const closeList = () => {
-      if (inList) {
+    const closeLists = () => {
+      if (inUl) {
         html += '</ul>';
-        inList = false;
+        inUl = false;
+      }
+      if (inOl) {
+        html += '</ol>';
+        inOl = false;
       }
     };
 
-    for (const line of lines) {
-      if (!line.trim()) {
-        closeList();
-        html += '';
+    const closeCode = () => {
+      if (!inCode) return;
+      html += `<pre><code${codeLang ? ` class="language-${escapeHtml(codeLang)}"` : ''}>${escapeHtml(codeBuffer.replace(/\n$/, ''))}</code></pre>`;
+      inCode = false;
+      codeBuffer = '';
+      codeLang = '';
+    };
+
+    const isTableHeader = (idx) => {
+      if (idx + 1 >= lines.length) return false;
+      const header = lines[idx];
+      const divider = lines[idx + 1];
+      const looksLikeRow = /\|/.test(header);
+      const looksLikeDivider = /^\s*\|?\s*:?[-]{3,}.*\|.*$/.test(divider.trim());
+      return looksLikeRow && looksLikeDivider;
+    };
+
+    const parseTableRow = (line) => line.trim().replace(/^\||\|$/g, '').split('|').map((cell) => formatInline(cell.trim()));
+
+    const buildTable = (startIdx) => {
+      const headers = parseTableRow(lines[startIdx]);
+      let i = startIdx + 2;
+      const rows = [];
+      while (i < lines.length) {
+        const current = lines[i];
+        if (!current.trim() || !/\|/.test(current)) break;
+        rows.push(parseTableRow(current));
+        i += 1;
+      }
+
+      const thead = `<thead><tr>${headers.map((h) => `<th>${h}</th>`).join('')}</tr></thead>`;
+      const tbody = `<tbody>${rows
+        .map((row) => `<tr>${row.map((cell) => `<td>${cell}</td>`).join('')}</tr>`)
+        .join('')}</tbody>`;
+      return { html: `<table class="zk-table">${thead}${tbody}</table>`, nextIndex: i - 1 };
+    };
+
+    const stripFrontMatter = () => {
+      if (lines[0] && lines[0].trim() === '---') {
+        let endIdx = 1;
+        while (endIdx < lines.length && lines[endIdx].trim() !== '---') {
+          endIdx += 1;
+        }
+        if (endIdx < lines.length) {
+          lines.splice(0, endIdx + 1);
+        }
+      }
+    };
+
+    stripFrontMatter();
+
+    for (let i = 0; i < lines.length; i += 1) {
+      const line = lines[i];
+      const trimmed = line.trim();
+
+      if (inCode) {
+        if (trimmed.startsWith('```')) {
+          closeCode();
+        } else {
+          codeBuffer += `${line}\n`;
+        }
         continue;
       }
 
-      if (/^---+$/.test(line.trim())) {
-        closeList();
+      if (!trimmed) {
+        closeLists();
+        continue;
+      }
+
+      if (trimmed.startsWith('```')) {
+        closeLists();
+        inCode = true;
+        codeLang = trimmed.slice(3).trim();
+        codeBuffer = '';
+        continue;
+      }
+
+      if (/^---+$/.test(trimmed)) {
+        closeLists();
         html += '<hr />';
         continue;
       }
 
-      const headingMatch = line.match(/^(#{1,6})\s+(.*)/);
+      if (isTableHeader(i)) {
+        closeLists();
+        const table = buildTable(i);
+        html += table.html;
+        i = table.nextIndex;
+        continue;
+      }
+
+      const headingMatch = trimmed.match(/^(#{1,6})\s+(.*)/);
       if (headingMatch) {
-        closeList();
+        closeLists();
         const level = headingMatch[1].length;
         html += `<h${level}>${formatInline(headingMatch[2].trim())}</h${level}>`;
         continue;
       }
 
-      const quoteMatch = line.match(/^>\s?(.*)/);
+      const quoteMatch = trimmed.match(/^>\s?(.*)/);
       if (quoteMatch) {
-        closeList();
+        closeLists();
         html += `<blockquote>${formatInline(quoteMatch[1].trim())}</blockquote>`;
         continue;
       }
 
-      const listMatch = line.match(/^[-*+]\s+(.*)/);
-      if (listMatch) {
-        if (!inList) {
-          html += '<ul>';
-          inList = true;
+      const olMatch = trimmed.match(/^(\d+)\.\s+(.*)/);
+      if (olMatch) {
+        if (!inOl) {
+          closeLists();
+          html += '<ol>';
+          inOl = true;
         }
-        html += `<li>${formatInline(listMatch[1].trim())}</li>`;
+        html += `<li>${formatInline(olMatch[2].trim())}</li>`;
         continue;
       }
 
-      closeList();
-      html += `<p>${formatInline(line.trim())}</p>`;
+      const ulMatch = trimmed.match(/^[-*+]\s+(.*)/);
+      if (ulMatch) {
+        if (!inUl) {
+          closeLists();
+          html += '<ul>';
+          inUl = true;
+        }
+        html += `<li>${formatInline(ulMatch[1].trim())}</li>`;
+        continue;
+      }
+
+      closeLists();
+      html += `<p>${formatInline(trimmed)}</p>`;
     }
 
-    closeList();
+    closeLists();
+    closeCode();
     return html;
   }
 

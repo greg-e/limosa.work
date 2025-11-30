@@ -447,6 +447,35 @@
   line-height: 1.45;
 }
 
+.zk-viewer table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.95rem;
+}
+
+.zk-viewer th,
+.zk-viewer td {
+  border: 1px solid #e2e8f0;
+  padding: 0.5rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.zk-viewer thead {
+  background: #f8fafc;
+  font-weight: 600;
+}
+
+.zk-viewer pre {
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 0.9rem;
+  border-radius: 10px;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+
 @media (max-width: 960px) {
   .zk-hero {
     grid-template-columns: 1fr;
