@@ -1,17 +1,106 @@
 {
-  "generatedAt": "2025-11-29T16:26:06.744Z",
+  "generatedAt": "2025-11-30T18:15:31.369Z",
   "notes": [
     {
-      "id": "251115_actualZettelkasten",
-      "title": "Actual Zettelkasten",
+      "id": "251115h_actualZettelkasten_vision",
+      "title": "Actual Zettelkasten · Vision & Alignment",
+      "tags": [
+        "actual",
+        "zettelkasten",
+        "vision",
+        "alignment"
+      ],
+      "path": "/zettels/2025/202511/251115h_actualZettelkasten_vision.md",
+      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251115h_actualZettelkasten_vision.md",
+      "excerpt": "Actual Zettelkasten · Vision & Alignment"
+    },
+    {
+      "id": "251115g_actualZettelkasten_finance",
+      "title": "Actual Zettelkasten · Finance & Reconciliation",
+      "tags": [
+        "actual",
+        "zettelkasten",
+        "finance",
+        "reconciliation"
+      ],
+      "path": "/zettels/2025/202511/251115g_actualZettelkasten_finance.md",
+      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251115g_actualZettelkasten_finance.md",
+      "excerpt": "Actual Zettelkasten · Finance & Reconciliation"
+    },
+    {
+      "id": "251115f_actualZettelkasten_flow",
+      "title": "Actual Zettelkasten · Flow & Operations",
+      "tags": [
+        "actual",
+        "zettelkasten",
+        "flow",
+        "operations"
+      ],
+      "path": "/zettels/2025/202511/251115f_actualZettelkasten_flow.md",
+      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251115f_actualZettelkasten_flow.md",
+      "excerpt": "Actual Zettelkasten · Flow & Operations"
+    },
+    {
+      "id": "251115e_actualZettelkasten_integrity",
+      "title": "Actual Zettelkasten · Data Integrity & Provenance",
+      "tags": [
+        "actual",
+        "zettelkasten",
+        "data-integrity",
+        "provenance"
+      ],
+      "path": "/zettels/2025/202511/251115e_actualZettelkasten_integrity.md",
+      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251115e_actualZettelkasten_integrity.md",
+      "excerpt": "Actual Zettelkasten · Data Integrity & Provenance"
+    },
+    {
+      "id": "251115d_actualZettelkasten_automation",
+      "title": "Actual Zettelkasten · Automation & Mechanisms",
+      "tags": [
+        "actual",
+        "zettelkasten",
+        "automation",
+        "mechanisms"
+      ],
+      "path": "/zettels/2025/202511/251115d_actualZettelkasten_automation.md",
+      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251115d_actualZettelkasten_automation.md",
+      "excerpt": "Actual Zettelkasten · Automation & Mechanisms"
+    },
+    {
+      "id": "251115c_actualZettelkasten_field-practice",
+      "title": "Actual Zettelkasten · Field Practice",
+      "tags": [
+        "actual",
+        "zettelkasten",
+        "field-practice"
+      ],
+      "path": "/zettels/2025/202511/251115c_actualZettelkasten_field-practice.md",
+      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251115c_actualZettelkasten_field-practice.md",
+      "excerpt": "Actual Zettelkasten · Field Practice"
+    },
+    {
+      "id": "251115b_actualZettelkasten_principles",
+      "title": "Actual Zettelkasten · Principles",
+      "tags": [
+        "actual",
+        "zettelkasten",
+        "principles"
+      ],
+      "path": "/zettels/2025/202511/251115b_actualZettelkasten_principles.md",
+      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251115b_actualZettelkasten_principles.md",
+      "excerpt": "Actual Zettelkasten · Principles"
+    },
+    {
+      "id": "251115a_actualZettelkasten_overview",
+      "title": "Actual Zettelkasten Overview",
       "tags": [
         "actual",
         "zettelkasten",
         "knowledge-base"
       ],
-      "path": "/zettels/2025/202511/251115_actualZettelkasten.md",
-      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251115_actualZettelkasten.md",
-      "excerpt": "Actual Zettelkasten\nVersion: 1.0\nAuthor: bruh"
+      "path": "/zettels/2025/202511/251115a_actualZettelkasten_overview.md",
+      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251115a_actualZettelkasten_overview.md",
+      "excerpt": "Actual Zettelkasten Overview\nVersion: 1.0\nAuthor: bruh"
     },
     {
       "id": "251113c_actualMarketGuidePrinciples",
