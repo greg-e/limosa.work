@@ -1,4 +1,3 @@
-const STORAGE_KEY = 'cardcatalog.cards';
 const libraryEl = document.getElementById('library');
 const viewButtons = document.querySelectorAll('.view-toggle button');
 const cardForm = document.getElementById('card-form');
@@ -7,47 +6,90 @@ const clearFiltersBtn = document.getElementById('clear-filters');
 const detailEl = document.getElementById('detail');
 const editPanel = document.getElementById('edit-panel');
 const editForm = document.getElementById('edit-form');
+const storageWarning = document.getElementById('storage-warning');
 let currentView = 'grid';
 let selectedCardId = null;
 
-function storageAvailable() {
+const DB_NAME = 'cardcatalog';
+const DB_STORE = 'cards';
+const imageUrlCache = new Map();
+
+function openDatabase() {
+  return new Promise((resolve, reject) => {
+    if (!('indexedDB' in window)) {
+      reject(new Error('IndexedDB unavailable'));
+      return;
+    }
+
+    const request = indexedDB.open(DB_NAME, 1);
+    request.onupgradeneeded = () => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains(DB_STORE)) {
+        db.createObjectStore(DB_STORE, { keyPath: 'id' });
+      }
+    };
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => resolve(request.result);
+  });
+}
+
+async function withDb(callback) {
   try {
-    const key = '__cardcatalog_test__';
-    localStorage.setItem(key, 'ok');
-    localStorage.removeItem(key);
-    return true;
-  } catch (err) {
-    return false;
+    const db = await openDatabase();
+    return callback(db);
+  } catch (error) {
+    storageWarning.classList.remove('hidden');
+    console.warn('Storage unavailable', error);
+    throw error;
   }
 }
 
-function readCards() {
-  if (!storageAvailable()) return [];
+async function getAllCards() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch (err) {
-    console.warn('Unable to read cards from localStorage', err);
+    return await withDb(
+      (db) =>
+        new Promise((resolve, reject) => {
+          const transaction = db.transaction(DB_STORE, 'readonly');
+          const store = transaction.objectStore(DB_STORE);
+          const request = store.getAll();
+          request.onsuccess = () => resolve(request.result || []);
+          request.onerror = () => reject(request.error);
+        }),
+    );
+  } catch (error) {
     return [];
   }
 }
 
-function writeCards(cards) {
-  if (!storageAvailable()) return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(cards));
+async function getCard(id) {
+  if (!id) return null;
+  try {
+    return await withDb(
+      (db) =>
+        new Promise((resolve, reject) => {
+          const transaction = db.transaction(DB_STORE, 'readonly');
+          const store = transaction.objectStore(DB_STORE);
+          const request = store.get(id);
+          request.onsuccess = () => resolve(request.result || null);
+          request.onerror = () => reject(request.error);
+        }),
+    );
+  } catch (error) {
+    return null;
+  }
 }
 
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = reader.result || '';
-      const base64 = result.toString().split(',')[1];
-      resolve(base64);
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
+async function putCard(card) {
+  return withDb(
+    (db) =>
+      new Promise((resolve, reject) => {
+        const transaction = db.transaction(DB_STORE, 'readwrite');
+        const store = transaction.objectStore(DB_STORE);
+        const request = store.put(card);
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error);
+      }),
+  );
 }
 
 function formValue(id) {
@@ -55,7 +97,7 @@ function formValue(id) {
 }
 
 function relatedDisplay(list) {
-  return list && list.length ? list.join(', ') : '—';
+  return list && list.length ? list.join(', ') : '';
 }
 
 function parseList(value) {
@@ -96,9 +138,21 @@ function applyFilters(cards) {
   return filtered;
 }
 
-function loadCards() {
-  const cards = applyFilters(readCards());
+async function loadCards() {
+  const cards = applyFilters(await hydrateCards(await getAllCards()));
   renderCards(cards);
+}
+
+function hydrateCards(cards) {
+  return cards.map((card) => {
+    if (card.imageUrl) return card;
+    if (imageUrlCache.has(card.id)) {
+      return { ...card, imageUrl: imageUrlCache.get(card.id) };
+    }
+    const url = URL.createObjectURL(card.imageBlob);
+    imageUrlCache.set(card.id, url);
+    return { ...card, imageUrl: url };
+  });
 }
 
 function renderCards(cards) {
@@ -125,16 +179,17 @@ function renderCards(cards) {
   });
 }
 
-function showCardDetail(id) {
-  const card = readCards().find((entry) => entry.id === id);
+async function showCardDetail(id) {
+  const card = await getCard(id);
   if (!card) {
     detailEl.innerHTML = '<p class="placeholder">Card not found.</p>';
     editPanel.classList.add('hidden');
     return;
   }
-  selectedCardId = card.id;
-  renderDetail(card);
-  populateEdit(card);
+  const hydrated = hydrateCards([card])[0];
+  selectedCardId = hydrated.id;
+  renderDetail(hydrated);
+  populateEdit(hydrated);
 }
 
 function renderDetail(card) {
@@ -190,7 +245,7 @@ async function handleCreate(event) {
   const file = document.getElementById('image').files[0];
   if (!file) return;
 
-  const cards = readCards();
+  const cards = await getAllCards();
   const id = formValue('card-id');
   if (cards.some((card) => card.id === id)) {
     document.getElementById('form-message').textContent = 'A card with that ID already exists.';
@@ -204,22 +259,28 @@ async function handleCreate(event) {
     parentId: formValue('parent'),
     relatedIds: parseList(formValue('related')),
     tags: parseList(formValue('tags')),
-    imageUrl: `data:${file.type || 'image/*'};base64,${await fileToBase64(file)}`,
+    imageBlob: file,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
 
-  cards.push(payload);
-  writeCards(cards);
-  document.getElementById('form-message').textContent = 'Card saved locally. The analog card remains the source of truth.';
-  cardForm.reset();
-  loadCards();
+  try {
+    await putCard(payload);
+    document.getElementById('form-message').textContent =
+      'Card saved locally in your browser. The analog card remains the source of truth.';
+    cardForm.reset();
+    await loadCards();
+  } catch (error) {
+    document.getElementById('form-message').textContent =
+      'Unable to save. Check your browser storage permissions and try again.';
+    console.warn('Failed to save card', error);
+  }
 }
 
-function handleEdit(event) {
+async function handleEdit(event) {
   event.preventDefault();
   if (!selectedCardId) return;
-  const cards = readCards();
+  const cards = await getAllCards();
   const index = cards.findIndex((card) => card.id === selectedCardId);
   if (index === -1) return;
 
@@ -241,12 +302,23 @@ function handleEdit(event) {
     updatedAt: new Date().toISOString(),
   };
 
-  cards[index] = updated;
-  writeCards(cards);
-  selectedCardId = updated.id;
-  document.getElementById('edit-message').textContent = 'Metadata updated locally. Images stay untouched.';
-  renderDetail(updated);
-  loadCards();
+  try {
+    await putCard(updated);
+    selectedCardId = updated.id;
+    document.getElementById('edit-message').textContent = 'Metadata updated locally. Images stay untouched.';
+    if (existing.id !== updated.id && imageUrlCache.has(existing.id)) {
+      const url = imageUrlCache.get(existing.id);
+      imageUrlCache.delete(existing.id);
+      imageUrlCache.set(updated.id, url);
+    }
+    const hydrated = hydrateCards([updated])[0];
+    renderDetail(hydrated);
+    await loadCards();
+  } catch (error) {
+    document.getElementById('edit-message').textContent =
+      'Unable to update. Check storage permissions and try again.';
+    console.warn('Failed to update card', error);
+  }
 }
 
 function wireViewToggle() {

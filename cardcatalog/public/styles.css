@@ -274,6 +274,11 @@ button:disabled {
   color: var(--accent);
 }
 
+.warning {
+  color: #b35000;
+  font-weight: 600;
+}
+
 .edit-panel {
   margin-top: 12px;
   padding-top: 12px;
