@@ -1,3 +1,4 @@
+const STORAGE_KEY = 'cardcatalog.cards';
 const libraryEl = document.getElementById('library');
 const viewButtons = document.querySelectorAll('.view-toggle button');
 const cardForm = document.getElementById('card-form');
@@ -8,6 +9,33 @@ const editPanel = document.getElementById('edit-panel');
 const editForm = document.getElementById('edit-form');
 let currentView = 'grid';
 let selectedCardId = null;
+
+function storageAvailable() {
+  try {
+    const key = '__cardcatalog_test__';
+    localStorage.setItem(key, 'ok');
+    localStorage.removeItem(key);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+function readCards() {
+  if (!storageAvailable()) return [];
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (err) {
+    console.warn('Unable to read cards from localStorage', err);
+    return [];
+  }
+}
+
+function writeCards(cards) {
+  if (!storageAvailable()) return;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(cards));
+}
 
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
@@ -30,16 +58,46 @@ function relatedDisplay(list) {
   return list && list.length ? list.join(', ') : '—';
 }
 
-async function loadCards() {
-  const params = new URLSearchParams();
-  if (formValue('filter-id')) params.set('id', formValue('filter-id'));
-  if (formValue('filter-box')) params.set('box', formValue('filter-box'));
-  if (formValue('filter-tag')) params.set('tag', formValue('filter-tag'));
-  const sort = document.getElementById('sort').value;
-  if (sort !== 'created') params.set('sort', sort);
+function parseList(value) {
+  if (!value) return [];
+  return value
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+}
 
-  const response = await fetch(`/api/cards?${params.toString()}`);
-  const cards = await response.json();
+function applyFilters(cards) {
+  const searchId = formValue('filter-id');
+  const box = formValue('filter-box');
+  const tag = formValue('filter-tag');
+
+  let filtered = cards;
+  if (searchId) {
+    filtered = filtered.filter((card) => card.id.toLowerCase().includes(searchId.toLowerCase()));
+  }
+  if (box) {
+    filtered = filtered.filter(
+      (card) => card.boxOrCollection && card.boxOrCollection.toLowerCase() === box.toLowerCase(),
+    );
+  }
+  if (tag) {
+    filtered = filtered.filter((card) => (card.tags || []).some((entry) => entry.toLowerCase() === tag.toLowerCase()));
+  }
+
+  const sort = document.getElementById('sort').value;
+  if (sort === 'id') {
+    filtered = [...filtered].sort((a, b) => a.id.localeCompare(b.id));
+  } else if (sort === 'box') {
+    filtered = [...filtered].sort((a, b) => (a.boxOrCollection || '').localeCompare(b.boxOrCollection || ''));
+  } else {
+    filtered = [...filtered].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  return filtered;
+}
+
+function loadCards() {
+  const cards = applyFilters(readCards());
   renderCards(cards);
 }
 
@@ -67,14 +125,13 @@ function renderCards(cards) {
   });
 }
 
-async function showCardDetail(id) {
-  const res = await fetch(`/api/cards/${encodeURIComponent(id)}`);
-  if (!res.ok) {
+function showCardDetail(id) {
+  const card = readCards().find((entry) => entry.id === id);
+  if (!card) {
     detailEl.innerHTML = '<p class="placeholder">Card not found.</p>';
     editPanel.classList.add('hidden');
     return;
   }
-  const card = await res.json();
   selectedCardId = card.id;
   renderDetail(card);
   populateEdit(card);
@@ -96,7 +153,7 @@ function renderDetail(card) {
     ? `<span class="link-like" data-card="${card.parentId}">${card.parentId}</span>`
     : '—';
   const related = card.relatedIds && card.relatedIds.length
-    ? card.relatedIds.map((id) => `<span class="link-like" data-card="${id}">${id}</span>`).join(', ')
+    ? card.relatedIds.map((entry) => `<span class="link-like" data-card="${entry}">${entry}</span>`).join(', ')
     : '—';
 
   meta.innerHTML = `
@@ -133,65 +190,61 @@ async function handleCreate(event) {
   const file = document.getElementById('image').files[0];
   if (!file) return;
 
-  const payload = {
-    id: formValue('card-id'),
-    title: formValue('title'),
-    boxOrCollection: formValue('box'),
-    parentId: formValue('parent'),
-    relatedIds: formValue('related'),
-    tags: formValue('tags'),
-    imageData: await fileToBase64(file),
-    imageType: file.type,
-  };
-
-  const message = document.getElementById('form-message');
-  message.textContent = 'Saving…';
-  const res = await fetch('/api/cards', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  });
-
-  if (!res.ok) {
-    const error = await res.json();
-    message.textContent = error.error || 'Unable to save card.';
+  const cards = readCards();
+  const id = formValue('card-id');
+  if (cards.some((card) => card.id === id)) {
+    document.getElementById('form-message').textContent = 'A card with that ID already exists.';
     return;
   }
 
-  message.textContent = 'Card saved. The analog card remains the source of truth.';
+  const payload = {
+    id,
+    title: formValue('title'),
+    boxOrCollection: formValue('box'),
+    parentId: formValue('parent'),
+    relatedIds: parseList(formValue('related')),
+    tags: parseList(formValue('tags')),
+    imageUrl: `data:${file.type || 'image/*'};base64,${await fileToBase64(file)}`,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  cards.push(payload);
+  writeCards(cards);
+  document.getElementById('form-message').textContent = 'Card saved locally. The analog card remains the source of truth.';
   cardForm.reset();
   loadCards();
 }
 
-async function handleEdit(event) {
+function handleEdit(event) {
   event.preventDefault();
   if (!selectedCardId) return;
-  const payload = {
-    id: formValue('edit-id'),
-    title: formValue('edit-title'),
-    boxOrCollection: formValue('edit-box'),
-    parentId: formValue('edit-parent'),
-    relatedIds: formValue('edit-related'),
-    tags: formValue('edit-tags'),
-  };
+  const cards = readCards();
+  const index = cards.findIndex((card) => card.id === selectedCardId);
+  if (index === -1) return;
 
-  const message = document.getElementById('edit-message');
-  message.textContent = 'Updating…';
-  const res = await fetch(`/api/cards/${encodeURIComponent(selectedCardId)}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  });
-
-  if (!res.ok) {
-    const error = await res.json();
-    message.textContent = error.error || 'Unable to update card.';
+  const incomingId = formValue('edit-id') || selectedCardId;
+  if (incomingId !== selectedCardId && cards.some((card) => card.id === incomingId)) {
+    document.getElementById('edit-message').textContent = 'A different card already uses that ID.';
     return;
   }
 
-  const updated = await res.json();
-  message.textContent = 'Metadata updated. No changes made to the image.';
+  const existing = cards[index];
+  const updated = {
+    ...existing,
+    id: incomingId,
+    title: formValue('edit-title'),
+    boxOrCollection: formValue('edit-box'),
+    parentId: formValue('edit-parent'),
+    relatedIds: parseList(formValue('edit-related')),
+    tags: parseList(formValue('edit-tags')),
+    updatedAt: new Date().toISOString(),
+  };
+
+  cards[index] = updated;
+  writeCards(cards);
   selectedCardId = updated.id;
+  document.getElementById('edit-message').textContent = 'Metadata updated locally. Images stay untouched.';
   renderDetail(updated);
   loadCards();
 }

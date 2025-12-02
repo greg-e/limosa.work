@@ -7,26 +7,26 @@ CardCatalog is a lightweight, analog-first catalog for handwritten Zettelkasten 
 - **No automation.** No OCR, no AI assistance, and no automatic linking. Relationships are entered manually with card IDs.
 - **Minimal metadata.** Metadata exists only to help you find the right paper card: ID, optional title, box/collection, parent ID, related IDs, and tags.
 
-## Requirements
-- Node.js 18+
+## Running the app on GitHub Pages
+The app now runs entirely in the browser (no Node server). Open the published page and everything you add stays in your browser storage:
 
-## Running the app
-1. From the repo root, start the server:
-   ```bash
-   npm run cardcatalog
-   ```
-   The server listens on port `4000` by default.
-2. Open `http://localhost:4000` in your browser.
+```
+https://limosa.work/cardcatalog/public/
+```
+
+Cards are saved to your browser's `localStorage` and the images are stored as base64 data URLs. Nothing leaves your machine, and each browser keeps its own library. Back up your work by exporting the data from `localStorage` if you switch devices.
+
+## Running locally without a server
+Because the experience is static, you can also open `cardcatalog/public/index.html` directly from disk. Everything still saves to the browser that opened the file.
 
 ## Key flows
-- **Add a card:** Provide a card ID, optional metadata, and upload a photo/scan. The server stores the image on disk and metadata in `cardcatalog/data/cards.json`.
+- **Add a card:** Provide a card ID, optional metadata, and upload a photo/scan. The app stores the image as a data URL in your browser alongside the metadata.
 - **Browse cards:** Use the grid/list toggle and sorting options to scan thumbnails quickly.
 - **Filter/search:** Filter by partial ID, box/collection, or tag, and sort by created date, ID, or box.
 - **View details:** Click a card to see the full image, metadata, and manual links to parent/related IDs.
 - **Edit metadata:** Update ID, title, box/collection, parent ID, related IDs, and tags without touching the stored image.
 
 ## Data locations
-- Images: `cardcatalog/data/images/`
-- Metadata: `cardcatalog/data/cards.json`
+- Images and metadata live in your browser's `localStorage` under the `cardcatalog.cards` key.
 
-Back up these folders to safeguard your digital catalog. The analog cards remain the authoritative source.
+Back up your storage periodically if you need to preserve the catalog outside this browser. The analog cards remain the authoritative source.

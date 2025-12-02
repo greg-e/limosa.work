@@ -48,6 +48,10 @@ body {
   color: var(--accent);
 }
 
+.subtle {
+  color: var(--muted);
+}
+
 .layout {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
