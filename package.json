@@ -10,7 +10,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/cli.js",
-    "dev": "ts-node src/cli.ts"
+    "dev": "ts-node src/cli.ts",
+    "cardcatalog": "node cardcatalog/server.js"
   },
   "keywords": [
     "zettelkasten",

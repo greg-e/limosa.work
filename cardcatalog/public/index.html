@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CardCatalog</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="page-header">
+      <div>
+        <h1>CardCatalog</h1>
+        <p class="tagline">A calm, analog-first catalog for handwritten Zettels.</p>
+      </div>
+      <p class="philosophy">Images are the source of truth. No OCR. No AI. Just your cards.</p>
+      <p class="philosophy subtle">Runs entirely in your browser; everything you add stays in local storage.</p>
+    </header>
+
+    <main class="layout">
+      <section class="panel">
+        <h2>Add a card</h2>
+        <p class="hint">
+          Capture a photo of your handwritten Zettel and add only the light metadata you need to find it later.
+        </p>
+        <form id="card-form" class="form">
+          <label>
+            Card image (photo or scan)
+            <input type="file" id="image" accept="image/*" required />
+          </label>
+          <div class="row">
+            <label>
+              Card ID
+              <input type="text" id="card-id" placeholder="4500/1a" required />
+            </label>
+            <label>
+              Title (short cue)
+              <input type="text" id="title" placeholder="Optional" />
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              Box / Collection
+              <input type="text" id="box" placeholder="Drawer A" />
+            </label>
+            <label>
+              Parent ID
+              <input type="text" id="parent" placeholder="4500/1" />
+            </label>
+          </div>
+          <label>
+            Related IDs (comma separated)
+            <input type="text" id="related" placeholder="4500/1b, 4500/2" />
+          </label>
+          <label>
+            Tags (comma separated, minimal)
+            <input type="text" id="tags" placeholder="soil, design" />
+          </label>
+          <button type="submit">Save card</button>
+          <p id="form-message" class="message"></p>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2>Library</h2>
+          <div class="view-toggle">
+            <button data-view="grid" class="active">Grid</button>
+            <button data-view="list">List</button>
+          </div>
+        </div>
+        <form id="filters" class="filters">
+          <input type="text" id="filter-id" placeholder="Filter by ID" />
+          <input type="text" id="filter-box" placeholder="Filter by box / collection" />
+          <input type="text" id="filter-tag" placeholder="Filter by tag" />
+          <select id="sort">
+            <option value="created">Newest first</option>
+            <option value="id">ID (lexical)</option>
+            <option value="box">Box / collection</option>
+          </select>
+          <button type="submit">Apply</button>
+          <button type="button" id="clear-filters" class="ghost">Clear</button>
+        </form>
+        <div id="library" class="library grid"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Card detail</h2>
+        <div id="detail" class="detail placeholder">
+          <p>Select a card to view its image and metadata.</p>
+        </div>
+        <div id="edit-panel" class="edit-panel hidden">
+          <h3>Edit metadata</h3>
+          <form id="edit-form" class="form">
+            <label>Card ID<input type="text" id="edit-id" /></label>
+            <label>Title<input type="text" id="edit-title" /></label>
+            <label>Box / Collection<input type="text" id="edit-box" /></label>
+            <label>Parent ID<input type="text" id="edit-parent" /></label>
+            <label>Related IDs (comma separated)<input type="text" id="edit-related" /></label>
+            <label>Tags (comma separated)<input type="text" id="edit-tags" /></label>
+            <button type="submit">Save metadata</button>
+            <p id="edit-message" class="message"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <p>
+        CardCatalog honors analog thinking: images are primary, metadata is minimal, and there is no automation or OCR.
+      </p>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
