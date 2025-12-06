@@ -1,144 +1,16 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CardCatalog Drawer</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <header class="page-header">
-      <div>
-        <p class="eyebrow">CardCatalog</p>
-        <h1>The Drawer</h1>
-        <p class="tagline">A slip-box native, analog-first catalog. No dashboards, no clouds—just cards and their fixed addresses.</p>
-      </div>
-      <p class="philosophy">Images are the source of truth. No OCR unless you explicitly request it. No AI. Just your cards.</p>
-      <p id="storage-warning" class="philosophy warning hidden">Browser storage is unavailable, so new cards cannot be saved.</p>
-      <p class="philosophy subtle">Runs entirely in your browser; everything you add stays in local IndexedDB storage.</p>
-    </header>
-
-    <section class="controls">
-      <button id="register-button" class="ghost">Open register</button>
-      <button id="pull-button">Pull a card</button>
-      <button id="table-button" class="ghost">Jump to the Table</button>
-      <button id="map-toggle" class="ghost">Toggle line map</button>
-      <div class="trail" id="link-trail">Link trail: —</div>
-      <div class="pins" id="pin-pile" aria-live="polite"></div>
-    </section>
-
-    <main class="drawer-layout">
-      <section class="drawer-column">
-        <div class="drawer-label">The Drawer</div>
-        <p class="hint">A single vertical stack of cards. IDs in the corner, light indentation for branches. Click to slide one out.</p>
-        <div id="drawer" class="drawer"></div>
-        <div id="drawer-empty" class="placeholder">No filed cards yet. File cards from the Table once you scan them.</div>
-      </section>
-
-      <aside id="card-overlay" class="card-overlay hidden" aria-live="polite">
-        <div class="card-shell">
-          <div class="overlay-header">
-            <div>
-              <div class="card-id" id="detail-id"></div>
-              <div class="card-title" id="detail-title"></div>
-            </div>
-            <div class="overlay-actions">
-              <button id="close-overlay" class="ghost">Close</button>
-              <button id="pin-toggle" class="ghost">Paper clip</button>
-            </div>
-          </div>
-          <div class="card-body" id="detail-body"></div>
-          <div class="card-transcription hidden" id="detail-transcription"></div>
-          <div class="card-links" id="detail-links"></div>
-          <div class="card-meta" id="detail-meta"></div>
-          <div class="link-actions">
-            <button id="add-link" class="ghost">Red pencil: add link</button>
-            <button id="branch-suggest" class="ghost">Suggest next branch</button>
-          </div>
-        </div>
-      </aside>
-    </main>
-
-    <section id="line-map" class="line-map hidden">
-      <div class="drawer-label">Chain map</div>
-      <pre id="map-output"></pre>
-    </section>
-
-    <section id="table" class="table-section">
-      <div class="drawer-label">The Table (inbox)</div>
-      <p class="hint">New scans land here before you file them behind an address. Drag your eyes like a desk spread.</p>
-      <div id="table-list" class="table-list"></div>
-    </section>
-
-    <section class="scan-panel">
-      <div class="drawer-label">Scan &amp; add a card</div>
-      <p class="hint">Capture a handwritten card, give it an address, and place it on the Table or file it immediately.</p>
-      <form id="card-form" class="form">
-        <label class="upload">
-          Card image (photo or scan)
-          <input type="file" id="image" accept="image/*" required />
-        </label>
-        <div class="scan-preview" id="scan-preview">Drop in an image to see a preview framed like A6.</div>
-        <div class="row">
-          <label>
-            Card ID
-            <input type="text" id="card-id" placeholder="21/3d7a" required />
-          </label>
-          <label>
-            Title (cue)
-            <input type="text" id="title" placeholder="Optional" />
-          </label>
-        </div>
-        <div class="row">
-          <label>
-            Box / Collection
-            <input type="text" id="box" placeholder="Drawer A" />
-          </label>
-          <label>
-            Parent ID (file behind)
-            <input type="text" id="parent" placeholder="21/3d7" />
-          </label>
-        </div>
-        <label>
-          Related IDs (comma separated)
-          <input type="text" id="related" placeholder="21/3d7b, 99a2" />
-        </label>
-        <label>
-          Tags (comma separated, minimal)
-          <input type="text" id="tags" placeholder="systems, causality" />
-        </label>
-        <label>
-          Optional transcription (for your eyes only)
-          <textarea id="transcription" placeholder="Write the first lines if you like. No OCR happens unless you copy it in."></textarea>
-        </label>
-        <label class="inline">
-          <input type="checkbox" id="file-immediately" />
-          File directly behind the parent ID (skip the Table)
-        </label>
-        <button type="submit">Save to my slip-box</button>
-        <p id="form-message" class="message"></p>
-      </form>
-    </section>
-
-    <div id="register-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="register-title">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div>
-            <p class="eyebrow">Register</p>
-            <h2 id="register-title">Entry points</h2>
-          </div>
-          <button id="close-register" class="ghost">Close</button>
-        </div>
-        <p class="hint">Type a keyword to pull 1–3 starting addresses, just like the index cards in the physical register.</p>
-        <input type="text" id="register-input" placeholder="causality" />
-        <div id="register-results" class="register-results"></div>
-      </div>
-    </div>
-
-    <footer class="page-footer">
-      <p>CardCatalog honors analog thinking: images are primary, metadata is minimal, and there is no automation or OCR without your say.</p>
-    </footer>
-
-    <script src="app.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CardCatalog Drawer</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="app.js"></script>
+</body>
 </html>
