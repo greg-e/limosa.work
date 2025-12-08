@@ -1,68 +1,86 @@
-const { useEffect, useMemo, useState } = React;
+import React, { useEffect, useMemo, useState } from "https://esm.sh/react@18.2.0";
+import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";
+import htm from "https://esm.sh/htm@3.1.1";
+import { marked } from "https://cdn.jsdelivr.net/npm/marked@12.0.2/+esm";
+import {
+  Search,
+  Shuffle,
+  Inbox,
+  FileText,
+  Download,
+  Save,
+  Edit3,
+} from "https://esm.sh/lucide-react@0.441.0?deps=react@18.2.0";
 
-const LOCAL_NOTES_KEY = 'cardcatalog-local-notes';
-const TABLE_KEY = 'cardcatalog-table-drafts';
+const html = htm.bind(React.createElement);
+
+const rootEl = document.getElementById("root");
+const INDEX_URL = rootEl?.dataset?.indexUrl
+  ? new URL(rootEl.dataset.indexUrl, window.location.href)
+  : new URL("./data/index.json", import.meta.url);
 
 function parseFrontMatter(markdown) {
   const lines = markdown.split(/\r?\n/);
-  if (lines[0] !== '---') return { data: {}, body: markdown.trim() };
-  const end = lines.indexOf('---', 1);
+  if (lines[0] !== "---") return { data: {}, body: markdown.trim() };
+  const end = lines.indexOf("---", 1);
   if (end === -1) return { data: {}, body: markdown.trim() };
-
   const fmLines = lines.slice(1, end);
   const data = {};
   let currentKey = null;
   fmLines.forEach((line) => {
     if (/^\s*-/.test(line) && currentKey) {
       data[currentKey] = data[currentKey] || [];
-      data[currentKey].push(line.replace(/^\s*-\s*/, '').replace(/^"|"$/g, ''));
+      data[currentKey].push(line.replace(/^\s*-\s*/, "").replace(/^\"|\"$/g, ""));
       return;
     }
-    const [key, ...rest] = line.split(':');
+    const [key, ...rest] = line.split(":");
     if (!key) return;
     currentKey = key.trim();
-    const rawValue = rest.join(':').trim();
+    const rawValue = rest.join(":").trim();
     if (!rawValue) {
-      data[currentKey] = '';
+      data[currentKey] = "";
       return;
     }
-    if (rawValue.startsWith('[') && rawValue.endsWith(']')) {
+    if (rawValue.startsWith("[") && rawValue.endsWith("]")) {
       data[currentKey] = rawValue
         .slice(1, -1)
-        .split(',')
-        .map((v) => v.trim().replace(/^"|"$/g, ''))
+        .split(",")
+        .map((v) => v.trim().replace(/^\"|\"$/g, ""))
         .filter(Boolean);
       return;
     }
-    data[currentKey] = rawValue.replace(/^"|"$/g, '');
+    data[currentKey] = rawValue.replace(/^\"|\"$/g, "");
   });
-
-  const body = lines.slice(end + 1).join('\n').trim();
+  const body = lines.slice(end + 1).join("\n").trim();
   return { data, body };
 }
 
 function buildMarkdown(note) {
-  const lines = ['---'];
+  const lines = ["---"];
   lines.push(`id: "${note.id}"`);
   if (note.title) lines.push(`title: "${note.title}"`);
   const writeArray = (key, arr) => {
     lines.push(`${key}:`);
     (arr || []).forEach((item) => lines.push(`  - "${item}"`));
-    if (!arr || !arr.length) lines.push('  -');
+    if (!arr || !arr.length) lines.push("  -");
   };
-  writeArray('links', note.links || []);
-  writeArray('backlinks', note.backlinks || []);
-  writeArray('tags', note.tags || []);
+  writeArray("links", note.links || []);
+  writeArray("backlinks", note.backlinks || []);
+  writeArray("tags", note.tags || []);
   if (note.created) lines.push(`created: "${note.created}"`);
   if (note.scanImage) lines.push(`scanImage: "${note.scanImage}"`);
-  lines.push('---', '', note.body || '');
-  return lines.join('\n');
+  lines.push("---", "", note.body || "");
+  return lines.join("\n");
 }
 
-function downloadFile(filename, content) {
-  const blob = new Blob([content], { type: 'text/markdown' });
+function idToFilename(id) {
+  return id.replace(/\//g, "_");
+}
+
+function downloadText(filename, content) {
+  const blob = new Blob([content], { type: "text/markdown" });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
+  const a = document.createElement("a");
   a.href = url;
   a.download = filename;
   document.body.appendChild(a);
@@ -71,435 +89,430 @@ function downloadFile(filename, content) {
   URL.revokeObjectURL(url);
 }
 
-function makeSnippet(body) {
-  if (!body) return '';
-  const clean = body.trim().replace(/\s+/g, ' ');
-  return clean.length > 200 ? `${clean.slice(0, 200)}…` : clean;
+function downloadFile(file, filename) {
+  const url = URL.createObjectURL(file);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 
-function useStoredState(key, initialValue) {
-  const [value, setValue] = useState(() => {
-    const raw = window.localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : initialValue;
-  });
-
-  useEffect(() => {
-    window.localStorage.setItem(key, JSON.stringify(value));
-  }, [key, value]);
-
-  return [value, setValue];
+function Markdown({ body }) {
+  const htmlContent = useMemo(() => ({ __html: marked.parse(body || "") }), [body]);
+  return html`<div class="prose prose-stone max-w-none" dangerouslySetInnerHTML=${htmlContent}></div>`;
 }
 
-function recomputeBacklinks(notes) {
-  const map = new Map(notes.map((n) => [n.id, { ...n, backlinks: [] }]));
-  map.forEach((note) => {
-    (note.links || []).forEach((target) => {
-      if (map.has(target)) {
-        const targetNote = map.get(target);
-        if (!targetNote.backlinks.includes(note.id)) {
-          targetNote.backlinks.push(note.id);
-        }
-      }
-    });
-  });
-  return Array.from(map.values()).sort((a, b) => a.id.localeCompare(b.id));
-}
-
-function Drawer({ notes, onOpen, onRandom }) {
-  return (
-    <div className="drawer">
-      <div className="drawer-header">
-        <div>
-          <div className="eyebrow">Drawer</div>
-          <h2>Slip-box cards</h2>
-        </div>
-        <button className="ghost" onClick={onRandom}>Pull a card</button>
+function DrawerCard({ note, onOpen }) {
+  return html`
+    <button
+      class="drawer-card w-full text-left bg-white/80 paper-grid border border-amber-100 rounded-lg px-4 py-3 mb-2 drawer-shadow"
+      onClick=${() => onOpen(note.id)}
+    >
+      <div class="flex items-start justify-between text-sm text-amber-900 font-semibold">
+        <span class="tracking-tight">${note.id}</span>
+        ${note.created
+          ? html`<span class="text-[11px] text-amber-700">${new Date(note.created).toLocaleDateString()}</span>`
+          : null}
       </div>
-      <div className="drawer-stack">
-        {notes.map((note) => (
-          <button key={note.id} className="card-row" onClick={() => onOpen(note.id)}>
-            <div className="card-row-id">[{note.id}]</div>
-            <div className="card-row-title">{note.title || 'Untitled card'}</div>
-            <div className="card-row-body">{note.snippet || '—'}</div>
-            {note.tags && note.tags.length > 0 ? (
-              <div className="tags-row">{note.tags.map((t) => <span key={t} className="tag">{t}</span>)}</div>
-            ) : null}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
+      <div class="text-lg font-semibold text-stone-900">${note.title || "Untitled"}</div>
+      <div class="text-sm text-stone-600 leading-snug">${note.snippet || ""}</div>
+      ${note.tags && note.tags.length
+        ? html`<div class="flex flex-wrap gap-2 mt-2">${note.tags.map(
+            (tag) => html`<span class="tag text-xs px-2 py-1 rounded">${tag}</span>`
+          )}</div>`
+        : null}
+    </button>
+  `;
 }
 
 function LinkList({ label, ids, onOpen }) {
   if (!ids || !ids.length) return null;
-  return (
-    <div className="link-line">
-      <span className="link-label">{label}</span>
-      {ids.map((id) => (
-        <button key={id} className="link-chip" onClick={() => onOpen(id)}>{id}</button>
-      ))}
+  return html`
+    <div class="mt-3">
+      <div class="text-xs uppercase tracking-[0.2em] text-amber-700 mb-1">${label}</div>
+      <div class="flex flex-wrap gap-2">
+        ${ids.map(
+          (id) => html`<button
+            class="px-3 py-1 text-sm rounded-full bg-white/80 border border-amber-200 hover:border-amber-400 transition"
+            onClick=${() => onOpen(id)}
+          >${id}</button>`
+        )}
+      </div>
     </div>
-  );
+  `;
 }
 
-function CardView({ note, onBack, onEdit, onOpenLink }) {
+function CardView({ note, onOpen, onStartEdit }) {
   if (!note) return null;
-  const renderedBody = typeof marked !== 'undefined' && marked.parse ? marked.parse(note.body || '') : (note.body || '');
-  return (
-    <div className="card-view">
-      <div className="card-toolbar">
-        <button className="ghost" onClick={onBack}>← Drawer</button>
-        <div className="id-pill">{note.id}</div>
-        <button className="ghost" onClick={() => onEdit(note)}>Edit</button>
-      </div>
-      <div className="card-paper">
-        {note.scanImage ? (
-          <div className="scan-block">
-            <img src={note.scanImage} alt={`Scan for ${note.id}`} />
-          </div>
-        ) : null}
-        <h2>{note.title || 'Untitled card'}</h2>
-        <div className="metadata-line">
-          {note.created ? <span>Created: {new Date(note.created).toLocaleDateString()}</span> : null}
-          {note.tags && note.tags.length ? <span>Tags: {note.tags.join(', ')}</span> : null}
-        </div>
-        <div className="card-body" dangerouslySetInnerHTML={{ __html: renderedBody }} />
-        <LinkList label="Links →" ids={note.links} onOpen={onOpenLink} />
-        <LinkList label="Backlinks →" ids={note.backlinks} onOpen={onOpenLink} />
-      </div>
-    </div>
-  );
-}
-
-function NoteEditor({ initial, onCancel, onSave }) {
-  const [draft, setDraft] = useState(() => ({
-    id: '',
-    title: '',
-    body: '',
-    links: [],
-    tags: [],
-    scanImage: '',
-    ...initial,
-  }));
-  const [linkInput, setLinkInput] = useState('');
-  const [tagInput, setTagInput] = useState('');
-
-  const update = (key, value) => setDraft((d) => ({ ...d, [key]: value }));
-
-  const addLink = () => {
-    if (!linkInput.trim()) return;
-    update('links', Array.from(new Set([...(draft.links || []), linkInput.trim()])));
-    setLinkInput('');
-  };
-  const addTag = () => {
-    if (!tagInput.trim()) return;
-    update('tags', Array.from(new Set([...(draft.tags || []), tagInput.trim()])));
-    setTagInput('');
-  };
-
-  const handleSave = () => {
-    onSave({ ...draft, links: draft.links || [], tags: draft.tags || [] });
-  };
-
-  return (
-    <div className="editor">
-      <div className="editor-grid">
-        <label>ID
-          <input value={draft.id} onChange={(e) => update('id', e.target.value)} />
-        </label>
-        <label>Title
-          <input value={draft.title} onChange={(e) => update('title', e.target.value)} />
-        </label>
-        <label>Scan image path (relative)
-          <input value={draft.scanImage} onChange={(e) => update('scanImage', e.target.value)} placeholder="scans/your-scan.jpg" />
-        </label>
-        <label>Links
-          <div className="chips-input">
-            <div className="chip-list">{(draft.links || []).map((l) => (
-              <span key={l} className="tag" onClick={() => update('links', (draft.links || []).filter((x) => x !== l))}>✕ {l}</span>
-            ))}</div>
-            <div className="chip-adder">
-              <input value={linkInput} onChange={(e) => setLinkInput(e.target.value)} placeholder="12a / 12a1" />
-              <button type="button" onClick={addLink}>Add</button>
-            </div>
-          </div>
-        </label>
-        <label>Tags
-          <div className="chips-input">
-            <div className="chip-list">{(draft.tags || []).map((t) => (
-              <span key={t} className="tag" onClick={() => update('tags', (draft.tags || []).filter((x) => x !== t))}>✕ {t}</span>
-            ))}</div>
-            <div className="chip-adder">
-              <input value={tagInput} onChange={(e) => setTagInput(e.target.value)} placeholder="systems" />
-              <button type="button" onClick={addTag}>Add</button>
-            </div>
-          </div>
-        </label>
-      </div>
-      <label>Body
-        <textarea value={draft.body} onChange={(e) => update('body', e.target.value)} rows={12} />
-      </label>
-      <div className="editor-actions">
-        <button className="ghost" onClick={onCancel}>Cancel</button>
-        <button onClick={handleSave}>Save & download</button>
-      </div>
-    </div>
-  );
-}
-
-function TableView({ drafts, onUpdateDraft, onCreate }) {
-  const addDraft = () => onUpdateDraft([...drafts, { id: '', title: '', body: '', links: [], tags: [], scanImage: '', scanDataUrl: '' }]);
-
-  const handleFile = (idx, file) => {
-    const reader = new FileReader();
-    reader.onload = (evt) => {
-      const next = drafts.slice();
-      next[idx] = { ...next[idx], scanDataUrl: evt.target.result, scanImage: file.name };
-      onUpdateDraft(next);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  return (
-    <div className="table-view">
-      <div className="table-header">
+  return html`
+    <div class="card-surface rounded-2xl p-6 border border-amber-100">
+      <div class="flex items-center justify-between">
         <div>
-          <div className="eyebrow">The Table</div>
-          <h2>Unfiled scans</h2>
+          <div class="text-xs tracking-[0.3em] text-amber-700 uppercase">Card</div>
+          <div class="text-2xl font-extrabold text-stone-900">${note.id}</div>
+          <div class="text-lg text-stone-700">${note.title || "Untitled"}</div>
         </div>
-        <button className="ghost" onClick={addDraft}>Place a card</button>
-      </div>
-      {drafts.length === 0 ? <p className="muted">No scans yet. Place a card to stage it.</p> : null}
-      <div className="table-grid">
-        {drafts.map((draft, idx) => (
-          <div key={idx} className="table-card">
-            {draft.scanDataUrl ? <img src={draft.scanDataUrl} alt="Staged scan" /> : <div className="scan-placeholder">Scan preview</div>}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => e.target.files && e.target.files[0] && handleFile(idx, e.target.files[0])}
-            />
-            <input placeholder="ID" value={draft.id} onChange={(e) => {
-              const next = drafts.slice();
-              next[idx] = { ...draft, id: e.target.value };
-              onUpdateDraft(next);
-            }} />
-            <input placeholder="Title" value={draft.title} onChange={(e) => {
-              const next = drafts.slice();
-              next[idx] = { ...draft, title: e.target.value };
-              onUpdateDraft(next);
-            }} />
-            <textarea placeholder="Body / transcription" value={draft.body} onChange={(e) => {
-              const next = drafts.slice();
-              next[idx] = { ...draft, body: e.target.value };
-              onUpdateDraft(next);
-            }} />
-            <button onClick={() => onCreate(draft, idx)}>Create note file</button>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function SearchView({ term, onChange, results, onOpen }) {
-  return (
-    <div className="search-view">
-      <div className="search-bar">
-        <input value={term} onChange={(e) => onChange(e.target.value)} placeholder="Register lookup" />
-      </div>
-      <div className="search-results">
-        {results.length === 0 ? <p className="muted">No matches yet.</p> : results.map((note) => (
-          <button key={note.id} className="card-row" onClick={() => onOpen(note.id)}>
-            <div className="card-row-id">[{note.id}]</div>
-            <div className="card-row-title">{note.title || 'Untitled card'}</div>
-            <div className="card-row-body">{note.snippet || '—'}</div>
+        <div class="flex gap-2">
+          <button
+            class="flex items-center gap-2 px-3 py-2 bg-amber-700 text-white rounded-lg shadow"
+            onClick=${onStartEdit}
+          >
+            ${html`<${Edit3} size="16" />`} Edit
           </button>
-        ))}
+        </div>
       </div>
+      ${note.scanImage
+        ? html`<div class="mt-4">
+            <div class="text-xs text-amber-700 mb-1">Scan</div>
+            <img src=${note.scanImage} alt="Scan" class="rounded-lg border border-amber-100 max-h-64" />
+          </div>`
+        : null}
+      <div class="mt-4 text-sm leading-relaxed bg-white/80 border border-amber-100 rounded-xl p-4 paper-grid">
+        <${Markdown} body=${note.body} />
+      </div>
+      <${LinkList} label="Links" ids=${note.links || []} onOpen=${onOpen} />
+      <${LinkList} label="Backlinks" ids=${note.backlinks || []} onOpen=${onOpen} />
+      ${note.tags && note.tags.length
+        ? html`<div class="mt-3 flex flex-wrap gap-2">
+            ${note.tags.map((tag) => html`<span class="tag text-xs px-3 py-1 rounded-full">${tag}</span>`)}
+          </div>`
+        : null}
     </div>
-  );
+  `;
 }
 
-function App() {
-  const [indexNotes, setIndexNotes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [view, setView] = useState('drawer');
-  const [selectedId, setSelectedId] = useState(null);
-  const [currentNote, setCurrentNote] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [localNotes, setLocalNotes] = useStoredState(LOCAL_NOTES_KEY, []);
-  const [tableDrafts, setTableDrafts] = useStoredState(TABLE_KEY, []);
+function EditPanel({ note, onClose }) {
+  const [title, setTitle] = useState(note?.title || "");
+  const [body, setBody] = useState(note?.body || "");
+  const [links, setLinks] = useState((note?.links || []).join(", "));
+  const [tags, setTags] = useState((note?.tags || []).join(", "));
+  const [scanImage, setScanImage] = useState(note?.scanImage || "");
 
-  useEffect(() => {
-    async function loadIndex() {
-      try {
-        const res = await fetch('data/index.json');
-        if (!res.ok) throw new Error('index missing');
-        const json = await res.json();
-        setIndexNotes(json.notes || []);
-      } catch (err) {
-        setError('Unable to load the static drawer index. Run scripts/build-cardcatalog.js and commit the output.');
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadIndex();
-  }, []);
-
-  const notes = useMemo(() => recomputeBacklinks([...indexNotes, ...localNotes]), [indexNotes, localNotes]);
-
-  function dataURLToBlob(dataUrl) {
-    const [header, base64] = dataUrl.split(',');
-    const mime = header.match(/:(.*?);/)[1];
-    const binary = atob(base64);
-    const array = new Uint8Array(binary.length);
-    for (let i = 0; i < binary.length; i += 1) {
-      array[i] = binary.charCodeAt(i);
-    }
-    return new Blob([array], { type: mime });
-  }
-
-  function downloadBinary(filename, blob) {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  }
-
-  const openNote = async (id) => {
-    setSelectedId(id);
-    const meta = notes.find((n) => n.id === id);
-    if (!meta) return;
-    // Use local body if we already have it
-    if (meta.body) {
-      setCurrentNote(meta);
-      setView('card');
-      return;
-    }
-    try {
-      const res = await fetch(meta.path);
-      if (!res.ok) throw new Error('not found');
-      const raw = await res.text();
-      const parsed = parseFrontMatter(raw);
-      setCurrentNote({ ...meta, ...parsed.data, body: parsed.body });
-      setView('card');
-    } catch (err) {
-      setError(`Unable to read ${meta.path}. Make sure the note file is published.`);
-    }
+  const handleDownload = () => {
+    const updated = {
+      ...note,
+      title,
+      body,
+      links: links
+        .split(/,|\n/)
+        .map((l) => l.trim())
+        .filter(Boolean),
+      tags: tags
+        .split(/,|\n/)
+        .map((t) => t.trim())
+        .filter(Boolean),
+      scanImage,
+    };
+    const markdown = buildMarkdown(updated);
+    downloadText(`${idToFilename(updated.id)}.md`, markdown);
   };
 
-  const handleSave = (note) => {
-    if (!note.id.trim()) {
-      setError('Every card needs an ID.');
-      return;
-    }
-    const completed = { ...note, created: note.created || new Date().toISOString() };
-    const markdown = buildMarkdown(completed);
-    const filename = `${note.id.replace(/\//g, '_')}.md`;
-    downloadFile(filename, markdown);
-    setLocalNotes((existing) => {
-      const filtered = existing.filter((n) => n.id !== note.id);
-      return [...filtered, { ...completed, path: `../notes/${filename}`, snippet: makeSnippet(note.body) }];
-    });
-    setCurrentNote(completed);
-    setView('card');
-  };
+  return html`
+    <div class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-20 p-4">
+      <div class="bg-white rounded-2xl shadow-xl w-full max-w-3xl p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-xs uppercase tracking-[0.3em] text-amber-700">Edit card</div>
+            <div class="text-xl font-semibold">${note.id}</div>
+          </div>
+          <button class="text-sm text-amber-800" onClick=${onClose}>Close</button>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <label class="text-sm space-y-1">
+            <span class="text-amber-800">Title</span>
+            <input value=${title} onInput=${(e) => setTitle(e.target.value)} class="w-full rounded-lg border border-amber-200 px-3 py-2" />
+          </label>
+          <label class="text-sm space-y-1">
+            <span class="text-amber-800">Scan image path</span>
+            <input value=${scanImage} onInput=${(e) => setScanImage(e.target.value)} class="w-full rounded-lg border border-amber-200 px-3 py-2" placeholder="scans/21_3d7a7.jpg" />
+          </label>
+        </div>
+        <label class="text-sm space-y-2 block">
+          <span class="text-amber-800">Body</span>
+          <textarea
+            class="w-full rounded-lg border border-amber-200 px-3 py-2 h-40"
+            value=${body}
+            onInput=${(e) => setBody(e.target.value)}
+          ></textarea>
+        </label>
+        <div class="grid md:grid-cols-2 gap-4">
+          <label class="text-sm space-y-1">
+            <span class="text-amber-800">Links (comma or newline)</span>
+            <textarea
+              class="w-full rounded-lg border border-amber-200 px-3 py-2 h-24"
+              value=${links}
+              onInput=${(e) => setLinks(e.target.value)}
+            ></textarea>
+          </label>
+          <label class="text-sm space-y-1">
+            <span class="text-amber-800">Tags (comma or newline)</span>
+            <textarea
+              class="w-full rounded-lg border border-amber-200 px-3 py-2 h-24"
+              value=${tags}
+              onInput=${(e) => setTags(e.target.value)}
+            ></textarea>
+          </label>
+        </div>
+        <div class="flex justify-between items-center pt-2">
+          <button class="flex items-center gap-2 px-4 py-2 bg-amber-700 text-white rounded-lg" onClick=${handleDownload}>
+            <${Download} size="16" /> Download updated card
+          </button>
+          <button class="text-sm text-stone-600" onClick=${onClose}>Done</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
 
-  const handleCreateFromTable = (draft, idx) => {
-    if (!draft.id.trim()) {
-      setError('Assign an ID before filing a staged scan.');
+function TableInbox({ onCreate }) {
+  const [id, setId] = useState("");
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [links, setLinks] = useState("");
+  const [tags, setTags] = useState("");
+  const [scanFile, setScanFile] = useState(null);
+  const [message, setMessage] = useState("");
+
+  const handleCreate = () => {
+    if (!id.trim()) {
+      setMessage("Provide a Zettel ID before filing.");
       return;
     }
     const note = {
-      id: draft.id,
-      title: draft.title,
-      body: draft.body,
-      links: draft.links || [],
-      tags: draft.tags || [],
-      scanImage: draft.scanImage || '',
+      id: id.trim(),
+      title: title.trim(),
+      body,
+      links: links
+        .split(/,|\n/)
+        .map((l) => l.trim())
+        .filter(Boolean),
       backlinks: [],
+      tags: tags
+        .split(/,|\n/)
+        .map((t) => t.trim())
+        .filter(Boolean),
       created: new Date().toISOString(),
+      scanImage: scanFile ? `scans/${idToFilename(id.trim())}${scanFile.name.includes(".") ? scanFile.name.slice(scanFile.name.lastIndexOf(".")) : ""}` : "",
     };
-    handleSave(note);
-    if (draft.scanDataUrl && draft.scanImage) {
-      const blob = dataURLToBlob(draft.scanDataUrl);
-      downloadBinary(draft.scanImage, blob);
+    const markdown = buildMarkdown(note);
+    downloadText(`${idToFilename(note.id)}.md`, markdown);
+    if (scanFile) {
+      const ext = scanFile.name.includes(".") ? scanFile.name.slice(scanFile.name.lastIndexOf(".")) : "";
+      downloadFile(scanFile, `${idToFilename(note.id)}${ext}`);
     }
-    const nextDrafts = tableDrafts.slice();
-    nextDrafts.splice(idx, 1);
-    setTableDrafts(nextDrafts);
+    setMessage("Downloaded card file" + (scanFile ? " and scan." : "."));
+    onCreate?.(note.id);
   };
 
-  const runSearch = useMemo(() => {
-    const term = searchTerm.toLowerCase();
-    if (!term) return [];
-    return notes.filter((note) => {
-      return (
-        note.id.toLowerCase().includes(term) ||
-        (note.title || '').toLowerCase().includes(term) ||
-        (note.snippet || '').toLowerCase().includes(term)
-      );
-    });
-  }, [searchTerm, notes]);
-
-  const pullRandom = () => {
-    if (!notes.length) return;
-    const choice = notes[Math.floor(Math.random() * notes.length)];
-    openNote(choice.id);
-  };
-
-  return (
-    <div className="page">
-      <header className="topbar">
-        <div>
-          <div className="eyebrow">CardCatalog</div>
-          <h1>Slip-box drawer (static)</h1>
-        </div>
-        <div className="nav">
-          <button onClick={() => setView('drawer')}>Drawer</button>
-          <button onClick={() => setView('table')}>Table</button>
-          <button onClick={() => setView('search')}>Register</button>
-          <button onClick={pullRandom}>Pull a card</button>
-          <button onClick={() => { setCurrentNote({ id: '', title: '', body: '', links: [], tags: [], scanImage: '' }); setView('edit'); }}>New card</button>
-        </div>
-      </header>
-
-      <div className="notice">Static Pages build: cards are files in this repo. Use the "Save & download" action to produce markdown (and scans) locally, then add them to the repository before publishing.</div>
-      {loading ? <p className="muted">Loading drawer…</p> : null}
-      {error ? <p className="error">{error}</p> : null}
-
-      {view === 'drawer' && (
-        <Drawer notes={notes} onOpen={openNote} onRandom={pullRandom} />
-      )}
-
-      {view === 'card' && currentNote ? (
-        <CardView note={currentNote} onBack={() => setView('drawer')} onEdit={(n) => { setCurrentNote(n); setView('edit'); }} onOpenLink={openNote} />
-      ) : null}
-
-      {view === 'edit' && (
-        <NoteEditor
-          initial={currentNote || { id: '', title: '', body: '', links: [], tags: [], scanImage: '' }}
-          onCancel={() => setView(selectedId ? 'card' : 'drawer')}
-          onSave={handleSave}
-        />
-      )}
-
-      {view === 'table' && (
-        <TableView drafts={tableDrafts} onUpdateDraft={setTableDrafts} onCreate={handleCreateFromTable} />
-      )}
-
-      {view === 'search' && (
-        <SearchView term={searchTerm} onChange={setSearchTerm} results={runSearch} onOpen={openNote} />
-      )}
+  return html`
+    <div class="bg-white/80 paper-grid border border-amber-100 rounded-2xl p-5 drawer-shadow">
+      <div class="flex items-center gap-2 text-amber-800 font-semibold mb-3">
+        <${Inbox} size="18" /> The Table (inbox)
+      </div>
+      <div class="grid md:grid-cols-2 gap-4">
+        <label class="text-sm space-y-1">
+          <span class="text-amber-800">Card ID</span>
+          <input class="w-full border border-amber-200 rounded-lg px-3 py-2" value=${id} onInput=${(e) => setId(e.target.value)} placeholder="21/3d7a7" />
+        </label>
+        <label class="text-sm space-y-1">
+          <span class="text-amber-800">Title</span>
+          <input class="w-full border border-amber-200 rounded-lg px-3 py-2" value=${title} onInput=${(e) => setTitle(e.target.value)} placeholder="Causality within systems theory" />
+        </label>
+      </div>
+      <label class="text-sm space-y-2 block mt-3">
+        <span class="text-amber-800">Body</span>
+        <textarea class="w-full border border-amber-200 rounded-lg px-3 py-2 h-32" value=${body} onInput=${(e) => setBody(e.target.value)}></textarea>
+      </label>
+      <div class="grid md:grid-cols-2 gap-4 mt-3">
+        <label class="text-sm space-y-1">
+          <span class="text-amber-800">Links (comma or newline)</span>
+          <textarea class="w-full border border-amber-200 rounded-lg px-3 py-2 h-20" value=${links} onInput=${(e) => setLinks(e.target.value)}></textarea>
+        </label>
+        <label class="text-sm space-y-1">
+          <span class="text-amber-800">Tags</span>
+          <textarea class="w-full border border-amber-200 rounded-lg px-3 py-2 h-20" value=${tags} onInput=${(e) => setTags(e.target.value)}></textarea>
+        </label>
+      </div>
+      <div class="mt-3 flex items-center gap-3">
+        <label class="text-sm text-amber-800 flex items-center gap-2">
+          Scan file
+          <input type="file" accept="image/*" onChange=${(e) => setScanFile(e.target.files?.[0] || null)} />
+        </label>
+        ${scanFile
+          ? html`<span class="text-xs text-stone-600">${scanFile.name}</span>`
+          : html`<span class="text-xs text-stone-500">Optional</span>`}
+      </div>
+      <div class="mt-4 flex items-center gap-3">
+        <button class="px-4 py-2 bg-amber-700 text-white rounded-lg flex items-center gap-2" onClick=${handleCreate}>
+          <${Save} size="16" /> Download note file
+        </button>
+        ${message ? html`<div class="text-sm text-stone-700">${message}</div>` : null}
+      </div>
     </div>
-  );
+  `;
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+function RegisterPanel({ query, onQueryChange, results, onOpen }) {
+  return html`
+    <div class="bg-white/80 paper-grid border border-amber-100 rounded-2xl p-5 drawer-shadow">
+      <div class="flex items-center gap-2 text-amber-800 font-semibold mb-3">
+        <${Search} size="18" /> Register
+      </div>
+      <input
+        class="w-full border border-amber-200 rounded-lg px-3 py-2 mb-3"
+        placeholder="Find an entry point"
+        value=${query}
+        onInput=${(e) => onQueryChange(e.target.value)}
+      />
+      <div class="space-y-2">
+        ${results.map(
+          (note) => html`<button
+            class="w-full text-left px-3 py-2 rounded-lg border border-amber-100 bg-white/70 hover:border-amber-400"
+            onClick=${() => onOpen(note.id)}
+          >
+            <div class="text-sm text-amber-800">${note.id}</div>
+            <div class="text-base font-semibold">${note.title || "Untitled"}</div>
+            <div class="text-sm text-stone-600">${note.snippet || ""}</div>
+          </button>`
+        )}
+      </div>
+    </div>
+  `;
+}
+
+function Trail({ trail, onOpen }) {
+  if (!trail.length) return null;
+  return html`
+    <div class="flex items-center gap-2 text-xs text-amber-800 flex-wrap">
+      ${trail.map((id, idx) =>
+        html`<button
+          class="px-2 py-1 bg-white/80 border border-amber-200 rounded"
+          onClick=${() => onOpen(id)}
+        >
+          ${id}${idx < trail.length - 1 ? html`<span class="text-amber-500"> →</span>` : null}
+        </button>`
+      )}
+    </div>
+  `;
+}
+
+function App() {
+  const [notes, setNotes] = useState([]);
+  const [currentNote, setCurrentNote] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState("");
+  const [showEdit, setShowEdit] = useState(false);
+  const [trail, setTrail] = useState([]);
+
+  useEffect(() => {
+    fetch(INDEX_URL)
+      .then((res) => res.json())
+      .then((data) => setNotes(data.notes || []))
+      .catch(() => setNotes([]));
+  }, []);
+
+  const openNote = async (id) => {
+    const entry = notes.find((n) => n.id === id);
+    if (!entry) return;
+    setLoading(true);
+    try {
+      const noteUrl = new URL(entry.path, INDEX_URL);
+      const text = await fetch(noteUrl).then((r) => r.text());
+      const parsed = parseFrontMatter(text);
+      const note = {
+        id,
+        title: parsed.data.title || entry.title,
+        links: parsed.data.links || [],
+        backlinks: parsed.data.backlinks || [],
+        tags: parsed.data.tags || entry.tags || [],
+        created: parsed.data.created || entry.created,
+        scanImage: parsed.data.scanImage || entry.scanImage,
+        body: parsed.body,
+      };
+      setCurrentNote(note);
+      setShowEdit(false);
+      setTrail((prev) => (prev[prev.length - 1] === id ? prev : [...prev, id].slice(-8)));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const randomNote = () => {
+    if (!notes.length) return;
+    const pick = notes[Math.floor(Math.random() * notes.length)];
+    openNote(pick.id);
+  };
+
+  const filtered = useMemo(() => {
+    const term = query.toLowerCase();
+    if (!term) return notes.slice(0, 12);
+    return notes.filter(
+      (n) =>
+        n.id.toLowerCase().includes(term) ||
+        (n.title || "").toLowerCase().includes(term) ||
+        (n.snippet || "").toLowerCase().includes(term)
+    );
+  }, [notes, query]);
+
+  return html`
+    <div class="max-w-6xl mx-auto px-4 py-6 space-y-6">
+      <div class="flex flex-wrap items-center gap-3 justify-between">
+        <div>
+          <div class="text-xs uppercase tracking-[0.4em] text-amber-700">CardCatalog</div>
+          <div class="text-2xl font-extrabold text-stone-900">Slip-box drawer</div>
+          <p class="text-sm text-stone-700 max-w-2xl">
+            A tactile, paper-first drawer that mirrors the physical slip-box. Cards live as Markdown files with scans alongside; edits download fresh files for you to place in the repo.
+          </p>
+        </div>
+        <div class="flex gap-2">
+          <button class="px-3 py-2 bg-amber-700 text-white rounded-lg flex items-center gap-2" onClick=${randomNote}>
+            <${Shuffle} size="16" /> Pull a card
+          </button>
+          <button class="px-3 py-2 bg-white border border-amber-200 rounded-lg flex items-center gap-2" onClick=${() => openNote(notes[0]?.id)}>
+            <${FileText} size="16" /> First card
+          </button>
+        </div>
+      </div>
+
+      <${Trail} trail=${trail} onOpen=${openNote} />
+
+      <div class="grid lg:grid-cols-3 gap-5">
+        <div class="lg:col-span-2 space-y-4">
+          <div class="bg-white/80 border border-amber-100 rounded-2xl p-4 drawer-shadow">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2 text-amber-800 font-semibold">
+                <${Search} size="18" /> Drawer
+              </div>
+              <input
+                class="border border-amber-200 rounded-lg px-3 py-2 text-sm"
+                placeholder="Filter by ID or title"
+                value=${query}
+                onInput=${(e) => setQuery(e.target.value)}
+              />
+            </div>
+            <div class="max-h-[520px] overflow-y-auto pr-1">
+              ${filtered.map((note) => html`<${DrawerCard} key=${note.id} note=${note} onOpen=${openNote} />`)}
+            </div>
+          </div>
+          ${currentNote
+            ? html`<${CardView} note=${currentNote} onOpen=${openNote} onStartEdit=${() => setShowEdit(true)} />`
+            : html`<div class="text-sm text-stone-600 px-2">Select a card to open the drawer.</div>`}
+        </div>
+        <div class="space-y-4">
+          <${RegisterPanel} query=${query} onQueryChange=${setQuery} results=${filtered.slice(0, 6)} onOpen=${openNote} />
+          <${TableInbox} onCreate=${openNote} />
+        </div>
+      </div>
+
+      ${loading
+        ? html`<div class="fixed bottom-4 right-4 bg-amber-700 text-white px-4 py-2 rounded-lg shadow">Loading card…</div>`
+        : null}
+      ${showEdit && currentNote ? html`<${EditPanel} note=${currentNote} onClose=${() => setShowEdit(false)} />` : null}
+    </div>
+  `;
+}
+
+createRoot(rootEl).render(html`<${App} />`);
