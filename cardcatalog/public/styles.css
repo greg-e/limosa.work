@@ -1,0 +1,52 @@
+:root {
+  --paper: #f8f3eb;
+  --ink: #1f1b16;
+  --edge: #d8cfc2;
+}
+
+body {
+  background: radial-gradient(circle at 10% 20%, #f7f0e6 0, #f5ede0 40%, #efe4d4 100%);
+  min-height: 100vh;
+}
+
+.drawer-shadow {
+  box-shadow: 0 20px 60px rgba(55, 47, 36, 0.25);
+}
+
+.card-surface {
+  background: linear-gradient(180deg, #fffdf7 0%, #f9f3ea 100%);
+  box-shadow: 0 12px 30px rgba(46, 34, 20, 0.2);
+}
+
+.paper-grid {
+  background-image: linear-gradient(to bottom, rgba(217, 189, 154, 0.25) 1px, transparent 1px),
+    linear-gradient(to right, rgba(217, 189, 154, 0.15) 1px, transparent 1px);
+  background-size: 100% 36px, 36px 100%;
+}
+
+.ribbon {
+  background: linear-gradient(90deg, #7c4a00, #b8791c);
+  color: #fff7e8;
+  letter-spacing: 0.02em;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #b8791c;
+  outline-offset: 3px;
+}
+
+.tag {
+  background: #f1e4d3;
+  color: #7b5428;
+  border: 1px dashed rgba(123, 84, 40, 0.4);
+}
+
+.drawer-card:hover {
+  transform: translateX(4px);
+}
+
+.drawer-card {
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
