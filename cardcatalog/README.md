@@ -1,6 +1,6 @@
 # CardCatalog slip-box (static)
 
-A minimal slip-box web UI that runs as a static page on GitHub Pages. Cards are Markdown files with YAML front matter inside this repository (`cardcatalog/notes/`), and scans live under `cardcatalog/scans/`. The client reads those files directly; saving creates downloadable files for you to place in the repo before committing.
+A tactile, drawer-like slip-box UI that runs as a static GitHub Pages view at `/cardcatalog/`. Cards are Markdown files with YAML front matter inside this repository (`cardcatalog/notes/`), and scans live under `cardcatalog/scans/`. The client pulls those files directly and lets you download new or edited cards as Markdown plus optional scan files for manual placement.
 
 ## Storage layout
 - `cardcatalog/notes/` — one Markdown file per card (filename derived from the Zettel ID; `/` becomes `_`).
@@ -30,9 +30,9 @@ node scripts/build-cardcatalog.js
 This writes `cardcatalog/public/data/index.json`. Commit that file along with your note changes before pushing to Pages.
 
 ## Using the static UI on Pages
-- The UI lives in `cardcatalog/public/` and works directly from GitHub Pages (no backend needed).
-- Drawer, card view, register search, and random pulls read from `data/index.json` and the `notes/` files published with the site.
-- “Save & download” in the editor and “Create note file” in The Table generate Markdown (and optional scan files) for you to place into `cardcatalog/notes/` and `cardcatalog/scans/`. After copying them into the repo, rerun the build script and commit.
+- Open `/cardcatalog/` (see `pages/cardcatalog.html`) on GitHub Pages to load the drawer UI.
+- Drawer, card view, register, and random pulls read from `public/data/index.json` and the published note files.
+- “Download note file” in The Table and the edit overlay both emit Markdown files (and an image download if you attach a scan). Move them into `cardcatalog/notes/` and `cardcatalog/scans/`, rerun the build script, and commit.
 
 ## Slip-box flows preserved
 - **Drawer:** scrolling column of IDs with short snippets.
