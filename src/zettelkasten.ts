@@ -6,11 +6,11 @@ import { CreateNoteOptions, ListOptions, NoteMetadata, NoteType } from './types'
 const NOTE_TYPES: NoteType[] = ['permanent', 'literature', 'fleeting', 'index'];
 const CATALOG_ROOT = 'catalog';
 
-const ensureType = (type: string): asserts type is NoteType => {
+function ensureType(type: string): asserts type is NoteType {
   if (!NOTE_TYPES.includes(type as NoteType)) {
     throw new Error(`Invalid note type: ${type}. Expected one of ${NOTE_TYPES.join(', ')}`);
   }
-};
+}
 
 const formatDate = (date: Date): string => {
   const year = date.getFullYear();
