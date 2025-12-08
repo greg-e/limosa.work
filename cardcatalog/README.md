@@ -1,11 +1,11 @@
-# CardCatalog slip-box
+# CardCatalog slip-box (static)
 
-A minimal slip-box web app that runs against Markdown files stored in this repository. Notes are plain files with YAML front matter; scans live in a `scans/` folder. The app serves a single-page React UI that feels like leafing through a drawer of index cards.
+A minimal slip-box web UI that runs as a static page on GitHub Pages. Cards are Markdown files with YAML front matter inside this repository (`cardcatalog/notes/`), and scans live under `cardcatalog/scans/`. The client reads those files directly; saving creates downloadable files for you to place in the repo before committing.
 
 ## Storage layout
 - `cardcatalog/notes/` — one Markdown file per card (filename derived from the Zettel ID; `/` becomes `_`).
-- `cardcatalog/scans/` — uploaded JPEG/PNG scans tied to cards.
-- `cardcatalog/config.json` — optional overrides for `notesDir` and `scansDir` if you want to point at another repo path.
+- `cardcatalog/scans/` — JPEG/PNG scans referenced by the `scanImage` field in notes.
+- `cardcatalog/public/data/index.json` — generated drawer index the client loads on Pages.
 
 Example note file:
 ```markdown
@@ -22,31 +22,23 @@ scanImage: "scans/21_3d7a7.jpg"
 Body text starts here.
 ```
 
-## Running the app locally
+## Building the static drawer index
+Run this script whenever you add or edit notes locally so the static UI has an updated list:
 ```bash
-npm install
-npm run cardcatalog
-# visit http://localhost:4000
+node scripts/build-cardcatalog.js
 ```
+This writes `cardcatalog/public/data/index.json`. Commit that file along with your note changes before pushing to Pages.
 
-The server reads `cardcatalog/config.json` to find the notes and scans directories. All changes are simple file writes—commit and push the repo yourself when ready.
+## Using the static UI on Pages
+- The UI lives in `cardcatalog/public/` and works directly from GitHub Pages (no backend needed).
+- Drawer, card view, register search, and random pulls read from `data/index.json` and the `notes/` files published with the site.
+- “Save & download” in the editor and “Create note file” in The Table generate Markdown (and optional scan files) for you to place into `cardcatalog/notes/` and `cardcatalog/scans/`. After copying them into the repo, rerun the build script and commit.
 
-## API sketch
-- `GET /api/notes` — list drawer summaries.
-- `GET /api/notes/:id` — full card.
-- `POST /api/notes` — create; adds backlinks on linked notes.
-- `PUT /api/notes/:id` — update metadata/body; refreshes backlinks.
-- `GET /api/random-note` — pull a random card.
-- `GET /api/search?q=` — register search over title/body.
-- `GET /api/suggest-next-id?parent=` — helper for branching.
-- `POST /api/scans` — multipart upload for scans; attach to a card when `id` is provided.
-- `GET /api/scans/:filename` — serve an image from scans.
+## Slip-box flows preserved
+- **Drawer:** scrolling column of IDs with short snippets.
+- **Card view:** ID-forward layout with scans, links, backlinks (derived from links), and Markdown body rendering.
+- **Table (Inbox):** stage scanned images locally and turn them into note files for the repo.
+- **Register:** simple search over IDs, titles, and snippets—no semantic or AI search.
+- **Pull a card:** random entry for serendipity.
 
-## Frontend flows
-- **Drawer:** scrolling column of cards showing ID, title, and a short snippet.
-- **Card view:** centered card with ID, title, body, links/backlinks, optional scan thumbnail, and a lightweight editor.
-- **Table (Inbox):** upload a scan, type an ID/title, and create a new note that writes straight to the `notes/` directory.
-- **Register:** small search box over titles/bodies; click through to open a card.
-- **Pull a card:** jumps to a random card for serendipitous browsing.
-
-The UI keeps the card image and fixed ID front-and-center to preserve the tactile slip-box feel—no dashboards, AI helpers, or auto-linking.
+The experience stays analog-first: fixed addresses, manual links, scans as the authoritative content, and no dashboards or AI conveniences.

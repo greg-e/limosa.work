@@ -1,302 +1,301 @@
-const { useEffect, useState } = React;
+const { useEffect, useMemo, useState } = React;
 
-const api = {
-  async listNotes() {
-    const res = await fetch('/api/notes');
-    return res.json();
-  },
-  async fetchNote(id) {
-    const res = await fetch(`/api/notes/${encodeURIComponent(id)}`);
-    if (!res.ok) throw new Error('Not found');
-    return res.json();
-  },
-  async createNote(payload) {
-    const res = await fetch('/api/notes', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    if (!res.ok) throw new Error((await res.json()).error || 'Create failed');
-    return res.json();
-  },
-  async updateNote(id, payload) {
-    const res = await fetch(`/api/notes/${encodeURIComponent(id)}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    if (!res.ok) throw new Error((await res.json()).error || 'Update failed');
-    return res.json();
-  },
-  async search(q) {
-    const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
-    return res.json();
-  },
-  async random() {
-    const res = await fetch('/api/random-note');
-    if (!res.ok) throw new Error('No notes');
-    return res.json();
-  },
-  async suggest(parent) {
-    const res = await fetch(`/api/suggest-next-id?parent=${encodeURIComponent(parent)}`);
-    return res.json();
-  },
-  async uploadScan(file, id) {
-    const form = new FormData();
-    form.append('file', file);
-    if (id) form.append('id', id);
-    const res = await fetch('/api/scans', { method: 'POST', body: form });
-    if (!res.ok) throw new Error((await res.json()).error || 'Upload failed');
-    return res.json();
-  }
-};
+const LOCAL_NOTES_KEY = 'cardcatalog-local-notes';
+const TABLE_KEY = 'cardcatalog-table-drafts';
 
-function Header({ view, setView, onRandom }) {
-  return (
-    <header className="topbar">
-      <div className="logo">Slip-box Drawer</div>
-      <nav>
-        <button className={view === 'drawer' ? 'active' : ''} onClick={() => setView('drawer')}>Drawer</button>
-        <button className={view === 'inbox' ? 'active' : ''} onClick={() => setView('inbox')}>Table</button>
-        <button className={view === 'search' ? 'active' : ''} onClick={() => setView('search')}>Register</button>
-        <button onClick={onRandom}>Pull a card</button>
-      </nav>
-    </header>
-  );
+function parseFrontMatter(markdown) {
+  const lines = markdown.split(/\r?\n/);
+  if (lines[0] !== '---') return { data: {}, body: markdown.trim() };
+  const end = lines.indexOf('---', 1);
+  if (end === -1) return { data: {}, body: markdown.trim() };
+
+  const fmLines = lines.slice(1, end);
+  const data = {};
+  let currentKey = null;
+  fmLines.forEach((line) => {
+    if (/^\s*-/.test(line) && currentKey) {
+      data[currentKey] = data[currentKey] || [];
+      data[currentKey].push(line.replace(/^\s*-\s*/, '').replace(/^"|"$/g, ''));
+      return;
+    }
+    const [key, ...rest] = line.split(':');
+    if (!key) return;
+    currentKey = key.trim();
+    const rawValue = rest.join(':').trim();
+    if (!rawValue) {
+      data[currentKey] = '';
+      return;
+    }
+    if (rawValue.startsWith('[') && rawValue.endsWith(']')) {
+      data[currentKey] = rawValue
+        .slice(1, -1)
+        .split(',')
+        .map((v) => v.trim().replace(/^"|"$/g, ''))
+        .filter(Boolean);
+      return;
+    }
+    data[currentKey] = rawValue.replace(/^"|"$/g, '');
+  });
+
+  const body = lines.slice(end + 1).join('\n').trim();
+  return { data, body };
 }
 
-function Drawer({ notes, onOpen }) {
+function buildMarkdown(note) {
+  const lines = ['---'];
+  lines.push(`id: "${note.id}"`);
+  if (note.title) lines.push(`title: "${note.title}"`);
+  const writeArray = (key, arr) => {
+    lines.push(`${key}:`);
+    (arr || []).forEach((item) => lines.push(`  - "${item}"`));
+    if (!arr || !arr.length) lines.push('  -');
+  };
+  writeArray('links', note.links || []);
+  writeArray('backlinks', note.backlinks || []);
+  writeArray('tags', note.tags || []);
+  if (note.created) lines.push(`created: "${note.created}"`);
+  if (note.scanImage) lines.push(`scanImage: "${note.scanImage}"`);
+  lines.push('---', '', note.body || '');
+  return lines.join('\n');
+}
+
+function downloadFile(filename, content) {
+  const blob = new Blob([content], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function makeSnippet(body) {
+  if (!body) return '';
+  const clean = body.trim().replace(/\s+/g, ' ');
+  return clean.length > 200 ? `${clean.slice(0, 200)}…` : clean;
+}
+
+function useStoredState(key, initialValue) {
+  const [value, setValue] = useState(() => {
+    const raw = window.localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : initialValue;
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue];
+}
+
+function recomputeBacklinks(notes) {
+  const map = new Map(notes.map((n) => [n.id, { ...n, backlinks: [] }]));
+  map.forEach((note) => {
+    (note.links || []).forEach((target) => {
+      if (map.has(target)) {
+        const targetNote = map.get(target);
+        if (!targetNote.backlinks.includes(note.id)) {
+          targetNote.backlinks.push(note.id);
+        }
+      }
+    });
+  });
+  return Array.from(map.values()).sort((a, b) => a.id.localeCompare(b.id));
+}
+
+function Drawer({ notes, onOpen, onRandom }) {
   return (
     <div className="drawer">
-      {notes.map((note) => (
-        <div key={note.id} className="card-tab" onClick={() => onOpen(note.id)}>
-          <div className="card-id">{note.id}</div>
-          <div className="card-title">{note.title || 'Untitled'}</div>
-          <div className="card-snippet">{note.snippet}</div>
+      <div className="drawer-header">
+        <div>
+          <div className="eyebrow">Drawer</div>
+          <h2>Slip-box cards</h2>
         </div>
-      ))}
-      {notes.length === 0 && <div className="empty">No cards yet. Add one from the Table.</div>}
-    </div>
-  );
-}
-
-function TagList({ tags }) {
-  if (!tags || !tags.length) return null;
-  return (
-    <div className="tags">
-      {tags.map((t) => (
-        <span key={t} className="tag">{t}</span>
-      ))}
-    </div>
-  );
-}
-
-function LinkList({ label, links, onOpen }) {
-  if (!links || !links.length) return null;
-  return (
-    <div className="links">
-      <div className="links-label">{label}</div>
-      <div className="links-list">
-        {links.map((l) => (
-          <button key={l} className="link-chip" onClick={() => onOpen(l)}>{l}</button>
+        <button className="ghost" onClick={onRandom}>Pull a card</button>
+      </div>
+      <div className="drawer-stack">
+        {notes.map((note) => (
+          <button key={note.id} className="card-row" onClick={() => onOpen(note.id)}>
+            <div className="card-row-id">[{note.id}]</div>
+            <div className="card-row-title">{note.title || 'Untitled card'}</div>
+            <div className="card-row-body">{note.snippet || '—'}</div>
+            {note.tags && note.tags.length > 0 ? (
+              <div className="tags-row">{note.tags.map((t) => <span key={t} className="tag">{t}</span>)}</div>
+            ) : null}
+          </button>
         ))}
       </div>
     </div>
   );
 }
 
-function Editor({ note, onSave }) {
-  const [title, setTitle] = useState(note.title);
-  const [body, setBody] = useState(note.body);
-  const [links, setLinks] = useState((note.links || []).join(', '));
-  const [tags, setTags] = useState((note.tags || []).join(', '));
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
+function LinkList({ label, ids, onOpen }) {
+  if (!ids || !ids.length) return null;
+  return (
+    <div className="link-line">
+      <span className="link-label">{label}</span>
+      {ids.map((id) => (
+        <button key={id} className="link-chip" onClick={() => onOpen(id)}>{id}</button>
+      ))}
+    </div>
+  );
+}
 
-  const save = async () => {
-    setSaving(true);
-    setError('');
-    try {
-      const payload = {
-        title,
-        body,
-        links: links.split(',').map((l) => l.trim()).filter(Boolean),
-        tags: tags.split(',').map((t) => t.trim()).filter(Boolean)
-      };
-      await onSave(payload);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setSaving(false);
-    }
+function CardView({ note, onBack, onEdit, onOpenLink }) {
+  if (!note) return null;
+  const renderedBody = typeof marked !== 'undefined' && marked.parse ? marked.parse(note.body || '') : (note.body || '');
+  return (
+    <div className="card-view">
+      <div className="card-toolbar">
+        <button className="ghost" onClick={onBack}>← Drawer</button>
+        <div className="id-pill">{note.id}</div>
+        <button className="ghost" onClick={() => onEdit(note)}>Edit</button>
+      </div>
+      <div className="card-paper">
+        {note.scanImage ? (
+          <div className="scan-block">
+            <img src={note.scanImage} alt={`Scan for ${note.id}`} />
+          </div>
+        ) : null}
+        <h2>{note.title || 'Untitled card'}</h2>
+        <div className="metadata-line">
+          {note.created ? <span>Created: {new Date(note.created).toLocaleDateString()}</span> : null}
+          {note.tags && note.tags.length ? <span>Tags: {note.tags.join(', ')}</span> : null}
+        </div>
+        <div className="card-body" dangerouslySetInnerHTML={{ __html: renderedBody }} />
+        <LinkList label="Links →" ids={note.links} onOpen={onOpenLink} />
+        <LinkList label="Backlinks →" ids={note.backlinks} onOpen={onOpenLink} />
+      </div>
+    </div>
+  );
+}
+
+function NoteEditor({ initial, onCancel, onSave }) {
+  const [draft, setDraft] = useState(() => ({
+    id: '',
+    title: '',
+    body: '',
+    links: [],
+    tags: [],
+    scanImage: '',
+    ...initial,
+  }));
+  const [linkInput, setLinkInput] = useState('');
+  const [tagInput, setTagInput] = useState('');
+
+  const update = (key, value) => setDraft((d) => ({ ...d, [key]: value }));
+
+  const addLink = () => {
+    if (!linkInput.trim()) return;
+    update('links', Array.from(new Set([...(draft.links || []), linkInput.trim()])));
+    setLinkInput('');
+  };
+  const addTag = () => {
+    if (!tagInput.trim()) return;
+    update('tags', Array.from(new Set([...(draft.tags || []), tagInput.trim()])));
+    setTagInput('');
+  };
+
+  const handleSave = () => {
+    onSave({ ...draft, links: draft.links || [], tags: draft.tags || [] });
   };
 
   return (
     <div className="editor">
-      <div className="field">
-        <label>Title</label>
-        <input value={title} onChange={(e) => setTitle(e.target.value)} />
+      <div className="editor-grid">
+        <label>ID
+          <input value={draft.id} onChange={(e) => update('id', e.target.value)} />
+        </label>
+        <label>Title
+          <input value={draft.title} onChange={(e) => update('title', e.target.value)} />
+        </label>
+        <label>Scan image path (relative)
+          <input value={draft.scanImage} onChange={(e) => update('scanImage', e.target.value)} placeholder="scans/your-scan.jpg" />
+        </label>
+        <label>Links
+          <div className="chips-input">
+            <div className="chip-list">{(draft.links || []).map((l) => (
+              <span key={l} className="tag" onClick={() => update('links', (draft.links || []).filter((x) => x !== l))}>✕ {l}</span>
+            ))}</div>
+            <div className="chip-adder">
+              <input value={linkInput} onChange={(e) => setLinkInput(e.target.value)} placeholder="12a / 12a1" />
+              <button type="button" onClick={addLink}>Add</button>
+            </div>
+          </div>
+        </label>
+        <label>Tags
+          <div className="chips-input">
+            <div className="chip-list">{(draft.tags || []).map((t) => (
+              <span key={t} className="tag" onClick={() => update('tags', (draft.tags || []).filter((x) => x !== t))}>✕ {t}</span>
+            ))}</div>
+            <div className="chip-adder">
+              <input value={tagInput} onChange={(e) => setTagInput(e.target.value)} placeholder="systems" />
+              <button type="button" onClick={addTag}>Add</button>
+            </div>
+          </div>
+        </label>
       </div>
-      <div className="field">
-        <label>Body</label>
-        <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={8} />
+      <label>Body
+        <textarea value={draft.body} onChange={(e) => update('body', e.target.value)} rows={12} />
+      </label>
+      <div className="editor-actions">
+        <button className="ghost" onClick={onCancel}>Cancel</button>
+        <button onClick={handleSave}>Save & download</button>
       </div>
-      <div className="field grid">
-        <div>
-          <label>Links (comma-separated IDs)</label>
-          <input value={links} onChange={(e) => setLinks(e.target.value)} />
-        </div>
-        <div>
-          <label>Tags (comma-separated)</label>
-          <input value={tags} onChange={(e) => setTags(e.target.value)} />
-        </div>
-      </div>
-      {error && <div className="error">{error}</div>}
-      <button onClick={save} disabled={saving}>{saving ? 'Saving...' : 'Save changes'}</button>
     </div>
   );
 }
 
-function CardView({ note, onOpenLink, refresh }) {
-  const [editing, setEditing] = useState(false);
+function TableView({ drafts, onUpdateDraft, onCreate }) {
+  const addDraft = () => onUpdateDraft([...drafts, { id: '', title: '', body: '', links: [], tags: [], scanImage: '', scanDataUrl: '' }]);
 
-  const save = async (payload) => {
-    await api.updateNote(note.id, payload);
-    await refresh();
-    setEditing(false);
+  const handleFile = (idx, file) => {
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const next = drafts.slice();
+      next[idx] = { ...next[idx], scanDataUrl: evt.target.result, scanImage: file.name };
+      onUpdateDraft(next);
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
-    <div className="card-view">
-      <div className="card-head">
+    <div className="table-view">
+      <div className="table-header">
         <div>
-          <div className="card-id-large">{note.id}</div>
-          <div className="card-title-large">{note.title}</div>
-          <TagList tags={note.tags} />
+          <div className="eyebrow">The Table</div>
+          <h2>Unfiled scans</h2>
         </div>
-        <div className="card-actions">
-          <button onClick={() => setEditing((v) => !v)}>{editing ? 'Close editor' : 'Edit'}</button>
-        </div>
+        <button className="ghost" onClick={addDraft}>Place a card</button>
       </div>
-      {note.scanImage && (
-        <div className="scan">
-          <img src={`/${note.scanImage}`} alt="scan" />
-        </div>
-      )}
-      <div className="card-body">{note.body}</div>
-      <LinkList label="Links →" links={note.links} onOpen={onOpenLink} />
-      <LinkList label="Backlinks →" links={note.backlinks} onOpen={onOpenLink} />
-      {editing && <Editor note={note} onSave={save} />}
-    </div>
-  );
-}
-
-function Inbox({ onCreate }) {
-  const [id, setId] = useState('');
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
-  const [links, setLinks] = useState('');
-  const [tags, setTags] = useState('');
-  const [scan, setScan] = useState(null);
-  const [scanPath, setScanPath] = useState('');
-  const [message, setMessage] = useState('');
-
-  const uploadScan = async () => {
-    if (!scan) return;
-    const uploaded = await api.uploadScan(scan, id || undefined);
-    setScanPath(uploaded.path);
-  };
-
-  const create = async () => {
-    setMessage('');
-    if (!id || !title) {
-      setMessage('ID and title are required.');
-      return;
-    }
-    try {
-      await onCreate({
-        id,
-        title,
-        body,
-        links: links.split(',').map((l) => l.trim()).filter(Boolean),
-        tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
-        scanImage: scanPath
-      });
-      setMessage('Created card');
-      setId('');
-      setTitle('');
-      setBody('');
-      setLinks('');
-      setTags('');
-      setScan(null);
-      setScanPath('');
-    } catch (err) {
-      setMessage(err.message);
-    }
-  };
-
-  return (
-    <div className="inbox">
-      <div className="field grid">
-        <div>
-          <label>Card ID</label>
-          <input value={id} onChange={(e) => setId(e.target.value)} placeholder="21/3d7a" />
-        </div>
-        <div>
-          <label>Title</label>
-          <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Short label" />
-        </div>
-      </div>
-      <div className="field">
-        <label>Body</label>
-        <textarea rows={6} value={body} onChange={(e) => setBody(e.target.value)} placeholder="Optional transcription or summary" />
-      </div>
-      <div className="field grid">
-        <div>
-          <label>Links</label>
-          <input value={links} onChange={(e) => setLinks(e.target.value)} placeholder="1a, 1b" />
-        </div>
-        <div>
-          <label>Tags</label>
-          <input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="paper, systems" />
-        </div>
-      </div>
-      <div className="field">
-        <label>Scan / photo</label>
-        <input type="file" accept="image/*" onChange={(e) => setScan(e.target.files[0])} />
-        <button onClick={uploadScan} disabled={!scan}>Upload scan</button>
-        {scanPath && <div className="hint">Attached scan at {scanPath}</div>}
-      </div>
-      {message && <div className="hint">{message}</div>}
-      <button className="primary" onClick={create}>Create note</button>
-    </div>
-  );
-}
-
-function Register({ onOpen }) {
-  const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
-
-  const runSearch = async () => {
-    const data = await api.search(query);
-    setResults(data);
-  };
-
-  return (
-    <div className="register">
-      <div className="field">
-        <label>Search the register</label>
-        <div className="row">
-          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="keyword" />
-          <button onClick={runSearch}>Search</button>
-        </div>
-      </div>
-      <div className="drawer slim">
-        {results.map((note) => (
-          <div key={note.id} className="card-tab" onClick={() => onOpen(note.id)}>
-            <div className="card-id">{note.id}</div>
-            <div className="card-title">{note.title}</div>
-            <div className="card-snippet">{note.snippet}</div>
+      {drafts.length === 0 ? <p className="muted">No scans yet. Place a card to stage it.</p> : null}
+      <div className="table-grid">
+        {drafts.map((draft, idx) => (
+          <div key={idx} className="table-card">
+            {draft.scanDataUrl ? <img src={draft.scanDataUrl} alt="Staged scan" /> : <div className="scan-placeholder">Scan preview</div>}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => e.target.files && e.target.files[0] && handleFile(idx, e.target.files[0])}
+            />
+            <input placeholder="ID" value={draft.id} onChange={(e) => {
+              const next = drafts.slice();
+              next[idx] = { ...draft, id: e.target.value };
+              onUpdateDraft(next);
+            }} />
+            <input placeholder="Title" value={draft.title} onChange={(e) => {
+              const next = drafts.slice();
+              next[idx] = { ...draft, title: e.target.value };
+              onUpdateDraft(next);
+            }} />
+            <textarea placeholder="Body / transcription" value={draft.body} onChange={(e) => {
+              const next = drafts.slice();
+              next[idx] = { ...draft, body: e.target.value };
+              onUpdateDraft(next);
+            }} />
+            <button onClick={() => onCreate(draft, idx)}>Create note file</button>
           </div>
         ))}
       </div>
@@ -304,66 +303,201 @@ function Register({ onOpen }) {
   );
 }
 
+function SearchView({ term, onChange, results, onOpen }) {
+  return (
+    <div className="search-view">
+      <div className="search-bar">
+        <input value={term} onChange={(e) => onChange(e.target.value)} placeholder="Register lookup" />
+      </div>
+      <div className="search-results">
+        {results.length === 0 ? <p className="muted">No matches yet.</p> : results.map((note) => (
+          <button key={note.id} className="card-row" onClick={() => onOpen(note.id)}>
+            <div className="card-row-id">[{note.id}]</div>
+            <div className="card-row-title">{note.title || 'Untitled card'}</div>
+            <div className="card-row-body">{note.snippet || '—'}</div>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function App() {
-  const [view, setView] = useState('drawer');
-  const [notes, setNotes] = useState([]);
-  const [selected, setSelected] = useState(null);
+  const [indexNotes, setIndexNotes] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
-  const loadNotes = async () => {
-    const list = await api.listNotes();
-    setNotes(list);
-  };
-
-  const openNote = async (id) => {
-    setError('');
-    try {
-      const data = await api.fetchNote(id);
-      setSelected(data);
-      setView('card');
-    } catch (err) {
-      setError(err.message);
-    }
-  };
+  const [view, setView] = useState('drawer');
+  const [selectedId, setSelectedId] = useState(null);
+  const [currentNote, setCurrentNote] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [localNotes, setLocalNotes] = useStoredState(LOCAL_NOTES_KEY, []);
+  const [tableDrafts, setTableDrafts] = useStoredState(TABLE_KEY, []);
 
   useEffect(() => {
-    loadNotes();
+    async function loadIndex() {
+      try {
+        const res = await fetch('data/index.json');
+        if (!res.ok) throw new Error('index missing');
+        const json = await res.json();
+        setIndexNotes(json.notes || []);
+      } catch (err) {
+        setError('Unable to load the static drawer index. Run scripts/build-cardcatalog.js and commit the output.');
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadIndex();
   }, []);
 
-  const randomCard = async () => {
+  const notes = useMemo(() => recomputeBacklinks([...indexNotes, ...localNotes]), [indexNotes, localNotes]);
+
+  function dataURLToBlob(dataUrl) {
+    const [header, base64] = dataUrl.split(',');
+    const mime = header.match(/:(.*?);/)[1];
+    const binary = atob(base64);
+    const array = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i += 1) {
+      array[i] = binary.charCodeAt(i);
+    }
+    return new Blob([array], { type: mime });
+  }
+
+  function downloadBinary(filename, blob) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  const openNote = async (id) => {
+    setSelectedId(id);
+    const meta = notes.find((n) => n.id === id);
+    if (!meta) return;
+    // Use local body if we already have it
+    if (meta.body) {
+      setCurrentNote(meta);
+      setView('card');
+      return;
+    }
     try {
-      const n = await api.random();
-      setSelected(n);
+      const res = await fetch(meta.path);
+      if (!res.ok) throw new Error('not found');
+      const raw = await res.text();
+      const parsed = parseFrontMatter(raw);
+      setCurrentNote({ ...meta, ...parsed.data, body: parsed.body });
       setView('card');
     } catch (err) {
-      setError(err.message);
+      setError(`Unable to read ${meta.path}. Make sure the note file is published.`);
     }
   };
 
-  const createNote = async (payload) => {
-    await api.createNote(payload);
-    await loadNotes();
-    setView('drawer');
+  const handleSave = (note) => {
+    if (!note.id.trim()) {
+      setError('Every card needs an ID.');
+      return;
+    }
+    const completed = { ...note, created: note.created || new Date().toISOString() };
+    const markdown = buildMarkdown(completed);
+    const filename = `${note.id.replace(/\//g, '_')}.md`;
+    downloadFile(filename, markdown);
+    setLocalNotes((existing) => {
+      const filtered = existing.filter((n) => n.id !== note.id);
+      return [...filtered, { ...completed, path: `../notes/${filename}`, snippet: makeSnippet(note.body) }];
+    });
+    setCurrentNote(completed);
+    setView('card');
+  };
+
+  const handleCreateFromTable = (draft, idx) => {
+    if (!draft.id.trim()) {
+      setError('Assign an ID before filing a staged scan.');
+      return;
+    }
+    const note = {
+      id: draft.id,
+      title: draft.title,
+      body: draft.body,
+      links: draft.links || [],
+      tags: draft.tags || [],
+      scanImage: draft.scanImage || '',
+      backlinks: [],
+      created: new Date().toISOString(),
+    };
+    handleSave(note);
+    if (draft.scanDataUrl && draft.scanImage) {
+      const blob = dataURLToBlob(draft.scanDataUrl);
+      downloadBinary(draft.scanImage, blob);
+    }
+    const nextDrafts = tableDrafts.slice();
+    nextDrafts.splice(idx, 1);
+    setTableDrafts(nextDrafts);
+  };
+
+  const runSearch = useMemo(() => {
+    const term = searchTerm.toLowerCase();
+    if (!term) return [];
+    return notes.filter((note) => {
+      return (
+        note.id.toLowerCase().includes(term) ||
+        (note.title || '').toLowerCase().includes(term) ||
+        (note.snippet || '').toLowerCase().includes(term)
+      );
+    });
+  }, [searchTerm, notes]);
+
+  const pullRandom = () => {
+    if (!notes.length) return;
+    const choice = notes[Math.floor(Math.random() * notes.length)];
+    openNote(choice.id);
   };
 
   return (
-    <div className="app">
-      <Header view={view} setView={setView} onRandom={randomCard} />
-      {error && <div className="error banner">{error}</div>}
-      {view === 'drawer' && <Drawer notes={notes} onOpen={openNote} />}
-      {view === 'card' && selected && (
-        <CardView
-          note={selected}
-          onOpenLink={openNote}
-          refresh={async () => {
-            const refreshed = await api.fetchNote(selected.id);
-            setSelected(refreshed);
-            await loadNotes();
-          }}
+    <div className="page">
+      <header className="topbar">
+        <div>
+          <div className="eyebrow">CardCatalog</div>
+          <h1>Slip-box drawer (static)</h1>
+        </div>
+        <div className="nav">
+          <button onClick={() => setView('drawer')}>Drawer</button>
+          <button onClick={() => setView('table')}>Table</button>
+          <button onClick={() => setView('search')}>Register</button>
+          <button onClick={pullRandom}>Pull a card</button>
+          <button onClick={() => { setCurrentNote({ id: '', title: '', body: '', links: [], tags: [], scanImage: '' }); setView('edit'); }}>New card</button>
+        </div>
+      </header>
+
+      <div className="notice">Static Pages build: cards are files in this repo. Use the "Save & download" action to produce markdown (and scans) locally, then add them to the repository before publishing.</div>
+      {loading ? <p className="muted">Loading drawer…</p> : null}
+      {error ? <p className="error">{error}</p> : null}
+
+      {view === 'drawer' && (
+        <Drawer notes={notes} onOpen={openNote} onRandom={pullRandom} />
+      )}
+
+      {view === 'card' && currentNote ? (
+        <CardView note={currentNote} onBack={() => setView('drawer')} onEdit={(n) => { setCurrentNote(n); setView('edit'); }} onOpenLink={openNote} />
+      ) : null}
+
+      {view === 'edit' && (
+        <NoteEditor
+          initial={currentNote || { id: '', title: '', body: '', links: [], tags: [], scanImage: '' }}
+          onCancel={() => setView(selectedId ? 'card' : 'drawer')}
+          onSave={handleSave}
         />
       )}
-      {view === 'inbox' && <Inbox onCreate={createNote} />}
-      {view === 'search' && <Register onOpen={openNote} />}
+
+      {view === 'table' && (
+        <TableView drafts={tableDrafts} onUpdateDraft={setTableDrafts} onCreate={handleCreateFromTable} />
+      )}
+
+      {view === 'search' && (
+        <SearchView term={searchTerm} onChange={setSearchTerm} results={runSearch} onOpen={openNote} />
+      )}
     </div>
   );
 }
