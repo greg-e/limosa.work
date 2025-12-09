@@ -425,8 +425,10 @@ function App() {
       const note = {
         id,
         title: parsed.data.title || entry.title,
-        links: parsed.data.links || [],
-        backlinks: parsed.data.backlinks || [],
+        links: parsed.data.links || entry.links || [],
+        backlinks: (parsed.data.backlinks && parsed.data.backlinks.length
+          ? parsed.data.backlinks
+          : entry.backlinks) || [],
         tags: parsed.data.tags || entry.tags || [],
         created: parsed.data.created || entry.created,
         scanImage: parsed.data.scanImage || entry.scanImage,

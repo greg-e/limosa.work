@@ -1,0 +1,133 @@
+name: CardCatalog
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'cardcatalog/notes/**'
+      - 'cardcatalog/scans/**'
+      - 'cardcatalog/public/**'
+      - 'scripts/build-cardcatalog.js'
+      - 'cardcatalog/fileSystemNotes.js'
+      - 'cardcatalog/storageConfig.js'
+  workflow_dispatch:
+    inputs:
+      id:
+        description: 'Zettel ID (e.g., 21/3d7a7)'
+        required: true
+      title:
+        description: 'Card title'
+        required: true
+      body:
+        description: 'Card body text'
+        required: false
+      links:
+        description: 'Comma-separated linked IDs'
+        required: false
+      tags:
+        description: 'Comma-separated tags'
+        required: false
+      scanUrl:
+        description: 'Optional public JPEG/PNG URL to store as the scan for this ID'
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  update-catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Use Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies (no lockfile)
+        run: npm install --no-package-lock --no-fund --no-audit
+
+      - name: Create card (workflow dispatch only)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          CARD_ID: ${{ inputs.id }}
+          CARD_TITLE: ${{ inputs.title }}
+          CARD_BODY: ${{ inputs.body }}
+          CARD_LINKS: ${{ inputs.links }}
+          CARD_TAGS: ${{ inputs.tags }}
+          CARD_SCAN_URL: ${{ inputs.scanUrl }}
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+          const { createNote, idToFilename } = require('./cardcatalog/fileSystemNotes');
+          const { loadConfig } = require('./cardcatalog/storageConfig');
+
+          const cardId = process.env.CARD_ID;
+          const cardTitle = process.env.CARD_TITLE;
+          const cardBody = process.env.CARD_BODY || '';
+          const linksRaw = process.env.CARD_LINKS || '';
+          const tagsRaw = process.env.CARD_TAGS || '';
+          const scanUrl = process.env.CARD_SCAN_URL || '';
+
+          if (!cardId || !cardTitle) {
+            throw new Error('CARD_ID and CARD_TITLE are required');
+          }
+
+          const parseList = (value) =>
+            value
+              .split(',')
+              .map((v) => v.trim())
+              .filter(Boolean);
+
+          const maybeDownloadScan = async () => {
+            if (!scanUrl) return '';
+            const { scansDir } = loadConfig();
+            const url = new URL(scanUrl);
+            const ext = path.extname(url.pathname) || '.jpg';
+            const safeBase = idToFilename(cardId).replace(/\.md$/, '');
+            const dest = path.join(scansDir, `${safeBase}${ext}`);
+            const res = await fetch(scanUrl);
+            if (!res.ok) {
+              throw new Error(`Failed to download scan: ${res.status} ${res.statusText}`);
+            }
+            const buffer = Buffer.from(await res.arrayBuffer());
+            fs.mkdirSync(path.dirname(dest), { recursive: true });
+            fs.writeFileSync(dest, buffer);
+            return path.relative(path.join(__dirname, 'cardcatalog'), dest).split(path.sep).join('/');
+          };
+
+          (async () => {
+            const scanImage = await maybeDownloadScan();
+            const note = createNote({
+              id: cardId,
+              title: cardTitle,
+              body: cardBody,
+              links: parseList(linksRaw),
+              tags: parseList(tagsRaw),
+              scanImage,
+            });
+            console.log(`Created card ${note.id}`);
+          })().catch((err) => {
+            console.error(err);
+            process.exit(1);
+          });
+          NODE
+
+      - name: Rebuild static drawer index
+        run: node scripts/build-cardcatalog.js
+
+      - name: Commit and push updates
+        run: |
+          if git status --porcelain | grep .; then
+            git config user.name "cardcatalog-bot"
+            git config user.email "actions@github.com"
+            git add cardcatalog/notes cardcatalog/scans cardcatalog/public/data/index.json
+            git commit -m "Update CardCatalog data"
+            git push
+          else
+            echo "No changes to commit"
+          fi
