@@ -29,6 +29,16 @@ node scripts/build-cardcatalog.js
 ```
 This writes `cardcatalog/public/data/index.json`. Commit that file along with your note changes before pushing to Pages.
 
+## Creating cards directly in the repo
+Use the helper to write a new Markdown card (with backlinks) and optional scan straight into `cardcatalog/notes/`:
+```bash
+npm run new-card -- --id 21/3d7a7 --title "Causality within systems theory" --body-file path/to/body.md --links 21/3d7a6,99a2 --scan path/to/scan.jpg --build-index
+```
+- `--body` lets you inline text instead of `--body-file`.
+- `--links` and `--tags` accept comma-separated lists.
+- `--scan` copies an image into `cardcatalog/scans/` with a filename derived from the ID.
+- `--build-index` reruns the static indexer so Pages stays in sync.
+
 ## Using the static UI on Pages
 - Open `/cardcatalog/` (see `pages/cardcatalog.html`) on GitHub Pages to load the drawer UI.
 - Drawer, card view, register, and random pulls read from `public/data/index.json` and the published note files.
