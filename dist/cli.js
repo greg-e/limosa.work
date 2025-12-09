@@ -1,100 +1,79 @@
 #!/usr/bin/env node
 "use strict";
-const { argv, cwd } = require('process');
-const zk = require('./zettelkasten');
-
-const printHelp = () => {
-  console.log(`Usage: zk <command> [options]\n\nCommands:\n  init                 Ensure catalog folders exist\n  new <title>          Create a new note\n  list                 List notes\n  show <id>            Show a note by ID\n\nOptions:\n  --root <path>        Set project root (default: current directory)\n  --type <type>        Note type (permanent|literature|fleeting|index)\n  --tag <tag>          Tag filter or repeated tag for new\n  --link <id>          Link to another note (repeatable)\n  --source <source>    Optional source for new note\n  --help               Show help\n`);
-};
-
-const args = argv.slice(2);
-const command = args[0];
-
-const collectValues = (flag) => {
-  const collected = [];
-  let index = args.indexOf(flag);
-  while (index !== -1) {
-    const value = args[index + 1];
-    if (value && !value.startsWith('--')) collected.push(value);
-    args.splice(index, value && !value.startsWith('--') ? 2 : 1);
-    index = args.indexOf(flag);
-  }
-  return collected;
-};
-
-const getOption = (flag, fallback) => {
-  const index = args.indexOf(flag);
-  if (index !== -1 && index < args.length - 1) {
-    const value = args[index + 1];
-    args.splice(index, 2);
-    return value;
-  }
-  return fallback;
-};
-
-const getRoot = () => getOption('--root', cwd());
-
-const run = async () => {
-  switch (command) {
-    case 'init': {
-      const root = getRoot();
-      await zk.ensureCatalogStructure(root);
-      console.log(`Catalog ready at ${zk.catalogRoot(root)}`);
-      break;
-    }
-    case 'new': {
-      const title = args[1];
-      if (!title) {
-        console.error('Title is required for new notes.');
-        return;
-      }
-      const root = getRoot();
-      const type = getOption('--type', 'permanent');
-      const tags = collectValues('--tag');
-      const links = collectValues('--link');
-      const source = getOption('--source', '');
-      const note = await zk.createNote({ title, type, tags, links, source, root });
-      console.log('Created note:');
-      console.log(zk.summarizeNote(note));
-      break;
-    }
-    case 'list': {
-      const root = getRoot();
-      const type = getOption('--type');
-      const tag = getOption('--tag');
-      const notes = await zk.listNotes({ type, tag, root });
-      if (!notes.length) {
+Object.defineProperty(exports, "__esModule", { value: true });
+const commander_1 = require("commander");
+const zettelkasten_1 = require("./zettelkasten");
+const program = new commander_1.Command();
+program
+    .name('zk')
+    .description('Zettelkasten CLI for managing markdown notes in this repo.')
+    .version('0.1.0');
+program
+    .command('init')
+    .description('Ensure the catalog folders exist')
+    .option('--root <path>', 'Project root (defaults to current directory)', process.cwd())
+    .action(async (options) => {
+    await (0, zettelkasten_1.ensureCatalogStructure)(options.root);
+    console.log(`Catalog ready at ${(0, zettelkasten_1.catalogRoot)(options.root)}`);
+});
+program
+    .command('new')
+    .argument('<title>', 'Note title')
+    .description('Create a new Zettelkasten note')
+    .option('-t, --type <type>', `Note type (${zettelkasten_1.NOTE_TYPES_LIST.join(', ')})`, 'permanent')
+    .option('--tag <tag...>', 'One or more tags')
+    .option('--link <id...>', 'Link to existing note IDs')
+    .option('--source <source>', 'Optional source reference')
+    .option('--root <path>', 'Project root (defaults to current directory)', process.cwd())
+    .action(async (title, options) => {
+    const type = options.type;
+    const tags = options.tag || [];
+    const links = options.link || [];
+    const note = await (0, zettelkasten_1.createNote)({
+        title,
+        type,
+        tags,
+        links,
+        source: options.source || '',
+        root: options.root,
+    });
+    console.log('Created note:');
+    console.log((0, zettelkasten_1.summarizeNote)(note));
+});
+program
+    .command('list')
+    .description('List notes')
+    .option('-t, --type <type>', `Filter by note type (${zettelkasten_1.NOTE_TYPES_LIST.join(', ')})`)
+    .option('--tag <tag>', 'Filter by tag')
+    .option('--root <path>', 'Project root (defaults to current directory)', process.cwd())
+    .action(async (options) => {
+    const type = options.type;
+    const notes = await (0, zettelkasten_1.listNotes)({ type, tag: options.tag, root: options.root });
+    if (!notes.length) {
         console.log('No notes found.');
-        break;
-      }
-      for (const note of notes) {
-        console.log(zk.summarizeNote(note));
-        console.log('');
-      }
-      break;
+        return;
     }
-    case 'show': {
-      const id = args[1];
-      if (!id) {
-        console.error('Note id is required for show.');
-        return;
-      }
-      const root = getRoot();
-      const note = await zk.readNoteById(id, root);
-      if (!note) {
+    for (const note of notes) {
+        console.log((0, zettelkasten_1.summarizeNote)(note));
+        console.log('');
+    }
+});
+program
+    .command('show')
+    .argument('<id>', 'Note ID')
+    .description('Show a note by ID')
+    .option('--root <path>', 'Project root (defaults to current directory)', process.cwd())
+    .action(async (id, options) => {
+    const note = await (0, zettelkasten_1.readNoteById)(id, options.root);
+    if (!note) {
         console.error(`Note not found for id: ${id}`);
+        process.exitCode = 1;
         return;
-      }
-      console.log(zk.summarizeNote(note));
-      if (note.content) {
+    }
+    console.log((0, zettelkasten_1.summarizeNote)(note));
+    if (note.content) {
         console.log('\n---\n');
         console.log(note.content);
-      }
-      break;
     }
-    default:
-      printHelp();
-  }
-};
-
-run();
+});
+program.parseAsync(process.argv);
