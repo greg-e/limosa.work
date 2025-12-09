@@ -11,7 +11,8 @@
     "build": "tsc",
     "start": "node dist/cli.js",
     "dev": "ts-node src/cli.ts",
-    "cardcatalog": "node cardcatalog/server.js"
+    "cardcatalog": "node cardcatalog/server.js",
+    "new-card": "node scripts/create-card.js"
   },
   "keywords": [
     "zettelkasten",
