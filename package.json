@@ -10,7 +10,9 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/cli.js",
-    "dev": "ts-node src/cli.ts"
+    "dev": "ts-node src/cli.ts",
+    "cardcatalog": "node cardcatalog/server.js",
+    "new-card": "node scripts/create-card.js"
   },
   "keywords": [
     "zettelkasten",
@@ -21,7 +23,11 @@
   "license": "MIT",
   "dependencies": {
     "commander": "^12.1.0",
-    "gray-matter": "^4.0.3"
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "gray-matter": "^4.0.3",
+    "js-yaml": "^4.1.0",
+    "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
     "@types/node": "^22.7.4",

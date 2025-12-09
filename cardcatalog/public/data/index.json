@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2025-12-08T20:27:05.166Z",
+  "notes": [
+    {
+      "id": "1",
+      "title": "Welcome to the drawer",
+      "tags": [
+        "guide"
+      ],
+      "links": [],
+      "backlinks": [],
+      "created": "2024-01-01T00:00:00.000Z",
+      "scanImage": "",
+      "path": "../notes/1.md",
+      "snippet": "This is a seed card to show the slip-box in action. Use it as the starting point to file your own scans and notes."
+    }
+  ]
+}
