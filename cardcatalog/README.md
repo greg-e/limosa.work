@@ -1,6 +1,6 @@
 # CardCatalog slip-box (static)
 
-A tactile, drawer-like slip-box UI that runs as a static GitHub Pages view at `/cardcatalog/`. Cards are Markdown files with YAML front matter inside this repository (`cardcatalog/notes/`), and scans live under `cardcatalog/scans/`. The client pulls those files directly and lets you download new or edited cards as Markdown plus optional scan files for manual placement.
+A tactile, drawer-like slip-box UI that runs as a static GitHub Pages view at `/cardcatalog/`. Cards are Markdown files with YAML front matter inside this repository (`cardcatalog/notes/`), and scans live under `cardcatalog/scans/`. The client pulls those files directly from the repo on Pages, and all creation/update flows are handled by GitHub itself (workflow dispatch or standard commits)—no local CLI or server process required.
 
 ## Storage layout
 - `cardcatalog/notes/` — one Markdown file per card (filename derived from the Zettel ID; `/` becomes `_`).
@@ -22,22 +22,22 @@ scanImage: "scans/21_3d7a7.jpg"
 Body text starts here.
 ```
 
-## Building the static drawer index
-Run this script whenever you add or edit notes locally so the static UI has an updated list:
-```bash
-node scripts/build-cardcatalog.js
-```
-This writes `cardcatalog/public/data/index.json`. Commit that file along with your note changes before pushing to Pages.
+## GitHub-only workflows
+Everything happens inside GitHub: cards live in the repo, and Actions keep the static UI refreshed.
 
-## Creating cards directly in the repo
-Use the helper to write a new Markdown card (with backlinks) and optional scan straight into `cardcatalog/notes/`:
-```bash
-npm run new-card -- --id 21/3d7a7 --title "Causality within systems theory" --body-file path/to/body.md --links 21/3d7a6,99a2 --scan path/to/scan.jpg --build-index
-```
-- `--body` lets you inline text instead of `--body-file`.
-- `--links` and `--tags` accept comma-separated lists.
-- `--scan` copies an image into `cardcatalog/scans/` with a filename derived from the ID.
-- `--build-index` reruns the static indexer so Pages stays in sync.
+### 1) Create a card via GitHub Actions
+Use the `CardCatalog` workflow (workflow_dispatch) in the Actions tab:
+
+- Inputs: `id`, `title`, optional `body`, `links` (comma-separated IDs), `tags` (comma-separated), and optional `scanUrl` (public JPEG/PNG). 
+- The workflow writes the Markdown file to `cardcatalog/notes/`, downloads the scan into `cardcatalog/scans/` (filename derived from the ID), updates backlinks, rebuilds `public/data/index.json`, and commits everything back to the repo.
+
+### 2) Automatic index refresh on pushes
+Any push touching `cardcatalog/notes/` or `cardcatalog/scans/` triggers the same workflow to rebuild `cardcatalog/public/data/index.json` and commit updates so Pages always serves a fresh drawer.
+
+### 3) Manual edits through GitHub UI
+You can also edit Markdown files directly in GitHub’s web editor; the push will fire the workflow to refresh backlinks and the index automatically.
+
+If you prefer to run the indexer locally, `node scripts/build-cardcatalog.js` still works; commit the regenerated `public/data/index.json` along with your note changes.
 
 ## Using the static UI on Pages
 - Open `/cardcatalog/` (see `pages/cardcatalog.html`) on GitHub Pages to load the drawer UI.
