@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-12-08T20:27:05.166Z",
+  "generatedAt": "2025-12-09T22:13:48.949Z",
   "notes": [
     {
       "id": "1",
@@ -13,6 +13,21 @@
       "scanImage": "",
       "path": "../notes/1.md",
       "snippet": "This is a seed card to show the slip-box in action. Use it as the starting point to file your own scans and notes."
+    },
+    {
+      "id": "20/1a",
+      "title": "Mellow Mushroom",
+      "tags": [
+        null
+      ],
+      "links": [
+        null
+      ],
+      "backlinks": [],
+      "created": "2025-12-08T20:43:38.631Z",
+      "scanImage": "../scans/20_1a.heic",
+      "path": "../notes/20_1a.md",
+      "snippet": "First in Fort Myers Florida... this burger was a '10'"
     }
   ]
 }
