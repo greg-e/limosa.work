@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actual Zettelkasten</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid white;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: white;
+            color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 30px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card-container {
+            perspective: 1000px;
+            height: 400px;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-front {
+            background: white;
+        }
+
+        .card-back {
+            background: #f8f9fa;
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card-id {
+            font-size: 0.75rem;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .card-family {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            margin-bottom: 15px;
+            align-self: flex-start;
+        }
+
+        .card-core {
+            font-size: 1rem;
+            color: #4a5568;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .flip-hint {
+            text-align: center;
+            color: #a0aec0;
+            font-size: 0.85rem;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        .section-title {
+            font-weight: 600;
+            color: #2d3748;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .section-content {
+            font-size: 0.9rem;
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .connections {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .connection-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #edf2f7;
+            color: #667eea;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin: 3px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-btn {
+                font-size: 0.85rem;
+                padding: 8px 16px;
+            }
+        }
+
+        .no-results {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            padding: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Actual Zettelkasten</h1>
+            <p class="subtitle">Philosophy, Engineering & Field Practice Knowledge Base</p>
+        </header>
+
+        <input type="text" class="search-box" id="searchBox" placeholder="Search cards...">
+
+        <div class="filters" id="filters">
+            <button class="filter-btn active" data-family="all">All</button>
+            <button class="filter-btn" data-family="Principles">Principles</button>
+            <button class="filter-btn" data-family="Field Practice">Field Practice</button>
+            <button class="filter-btn" data-family="Automation & Mechanisms">Automation</button>
+            <button class="filter-btn" data-family="Data Integrity & Provenance">Data Integrity</button>
+            <button class="filter-btn" data-family="Flow & Operations">Flow & Ops</button>
+            <button class="filter-btn" data-family="Finance & Reconciliation">Finance</button>
+            <button class="filter-btn" data-family="Vision & Alignment">Vision</button>
+        </div>
+
+        <div class="cards-grid" id="cardsGrid"></div>
+    </div>
+
+    <script>
+        const zettels = [
+            {
+                id: "PRIN-001",
+                title: "Automate the Constraint",
+                family: "Principles",
+                core: "The highest-leverage automation targets the bottleneck, not the easy thing. Find what limits throughput, then make that constraint disappear through intelligent automation.",
+                why: "Organizations waste resources automating tasks that don't matter while the real constraint remains manual. Battery life becomes the constraint when everything else is solved—so we optimize for that.",
+                practice: [
+                    "Identify what actually stops work from flowing",
+                    "Design automation that removes that specific friction",
+                    "Accept manual processes elsewhere if they don't limit flow",
+                    "Measure success by throughput increase, not tasks automated"
+                ],
+                connections: ["Flow Reveals Constraints", "Battery as Constraint", "Keep the Work Moving"]
+            },
+            {
+                id: "PRIN-002",
+                title: "Convivial Tools",
+                family: "Principles",
+                core: "Technology should enhance human capability without demanding submission to its logic. Convivial tools bend to the work, not the other way around.",
+                why: "When tools force people into unnatural workflows, adoption fails and workarounds emerge. The tool becomes the obstacle instead of the enabler.",
+                practice: [
+                    "Design for the field, not the office",
+                    "Require no training for basic function",
+                    "Make the primary action the easiest action",
+                    "Let the work shape the tool, not vice versa"
+                ],
+                connections: ["Tools for Humans", "The World as the Interface", "Context Without Effort"]
+            },
+            {
+                id: "PRIN-003",
+                title: "Flow Starts at the Edge",
+                family: "Principles",
+                core: "Truth originates where work happens. The edge—the job site, the vehicle, the moment of action—is the source. Everything downstream depends on capturing reality at that moment.",
+                why: "Systems that start with office records or manual logs begin with degraded information. By the time data reaches the center, it's interpretation, not fact.",
+                practice: [
+                    "Capture data at the point of action",
+                    "Minimize translation layers between reality and record",
+                    "Trust edge devices as authoritative sources",
+                    "Build systems that flow from field to office, not the reverse"
+                ],
+                connections: ["Edge Is the Source of Truth", "Reality Before Model", "Know the Truth On Site"]
+            },
+            {
+                id: "PRIN-004",
+                title: "Keep the Work Moving",
+                family: "Principles",
+                core: "The goal is not perfect information—it's continuous forward motion. Every process, tool, and policy should answer: does this help the work keep moving?",
+                why: "Perfection paralysis kills throughput. Waiting for complete data, full approval chains, or perfect conditions stops flow entirely.",
+                practice: [
+                    "Prioritize decisions that unblock over decisions that optimize",
+                    "Make 'good enough now' better than 'perfect later'",
+                    "Design systems that degrade gracefully, not catastrophically",
+                    "Measure cycle time as the primary metric"
+                ],
+                connections: ["Critical Flow", "Flow Demands Clarity", "Consistency Beats Completeness"]
+            },
+            {
+                id: "PRIN-005",
+                title: "Necessary but Not Sufficient",
+                family: "Principles",
+                core: "Technology alone never solves organizational problems. It's necessary for scale, but culture, process, and clarity determine whether it creates value.",
+                why: "Companies invest in tools expecting transformation, then wonder why nothing changes. The tool enables the work; it doesn't define it.",
+                practice: [
+                    "Define the desired behavior before selecting the tool",
+                    "Expect resistance; plan for cultural change",
+                    "Measure adoption and utilization, not just deployment",
+                    "Accept that some problems require human solutions"
+                ],
+                connections: ["Flow-Enabled Culture", "Clarity Is Kindness", "Tools for Humans"]
+            },
+            {
+                id: "PRIN-006",
+                title: "Tools for Humans",
+                family: "Principles",
+                core: "Systems should serve the people doing the work, not extract compliance from them. Design for crews in dirt, not analysts in spreadsheets.",
+                why: "When tools serve reporting instead of doing, field teams create shadow systems. The official record diverges from reality.",
+                practice: [
+                    "Observe real work before designing features",
+                    "Make data entry a byproduct of necessary action",
+                    "Reduce cognitive load on the person in the field",
+                    "Validate designs with the people who will live with them daily"
+                ],
+                connections: ["Convivial Tools", "Context Without Effort", "Less Admin, More Work"]
+            },
+            {
+                id: "PRIN-007",
+                title: "395… Exactly",
+                family: "Principles",
+                core: "Precision matters when money's on the line. Not 'about 400 hours'—exactly 395. Rounding is for estimates; billing requires truth.",
+                why: "Customers tolerate neither overbilling nor guesswork. Payroll requires exactitude. Finance depends on numbers that reconcile down to the minute.",
+                practice: [
+                    "Capture time at source, automatically",
+                    "Store raw data before any rounding or summarization",
+                    "Make precision effortless, not an administrative burden",
+                    "Let the system do the accounting; humans do the work"
+                ],
+                connections: ["Precision Finance", "Pay Follows Proof", "Operational Truth → Financial Truth"]
+            },
+            {
+                id: "PRIN-008",
+                title: "Truth You Can Stand On",
+                family: "Principles",
+                core: "Information must be reliable enough to bet the business on. If leadership won't make decisions from it, it's not truth—it's theater.",
+                why: "Organizations drown in reports that everyone knows are half-accurate. Decisions default to gut instinct because data can't be trusted.",
+                practice: [
+                    "Build systems where data integrity is structural, not procedural",
+                    "Make the truth observable in real time, not reconstructed later",
+                    "Test trust by asking: would you stake your reputation on this number?",
+                    "Eliminate data that exists for show rather than decisions"
+                ],
+                connections: ["Evidence Over Opinion", "Immutable Truth", "Integrity by Design"]
+            },
+            {
+                id: "FIELD-001",
+                title: "Context Without Effort",
+                family: "Field Practice",
+                core: "Field teams shouldn't have to remember or enter what the system already knows. Job, location, customer, asset—all inferred from presence and association.",
+                why: "Manual data entry in the field is where truth dies. People forget, approximate, or skip it entirely under time pressure.",
+                practice: [
+                    "Use proximity and association to infer context",
+                    "Present one-tap confirmations instead of multi-field forms",
+                    "Make the default assumption correct 95% of the time",
+                    "Provide override mechanisms for the other 5%"
+                ],
+                connections: ["Passive Association", "Presence Over Precision", "Automate Association, Not Judgment"]
+            },
+            {
+                id: "FIELD-002",
+                title: "Effortless Proof",
+                family: "Field Practice",
+                core: "Documentation happens as a side effect of doing the work, not as a separate task afterward. Presence creates the record.",
+                why: "When proof requires extra effort, it doesn't happen. Crews finish jobs but never close paperwork. Billable hours vanish.",
+                practice: [
+                    "Capture timestamps automatically from physical presence",
+                    "Turn badge scans into time records without human translation",
+                    "Make photos and notes optional enhancements, not requirements",
+                    "Ensure the minimum viable record needs zero input"
+                ],
+                connections: ["Presence Becomes Proof", "Automating Hidden Steps", "Proof Without Training"]
+            },
+            {
+                id: "FIELD-003",
+                title: "Get Paid Right",
+                family: "Field Practice",
+                core: "Field teams care most about accurate paychecks. Build trust through precision in what matters to them, and they'll trust the rest of the system.",
+                why: "One payroll error destroys months of credibility. Crews won't use systems that steal their hours or complicate their pay.",
+                practice: [
+                    "Show workers their accumulated hours in real time",
+                    "Make time capture automatic and transparent",
+                    "Let crews verify their records before payroll runs",
+                    "Resolve discrepancies quickly and visibly"
+                ],
+                connections: ["Pay Follows Proof", "395… Exactly", "Clarity Is Kindness"]
+            },
+            {
+                id: "FIELD-004",
+                title: "Know the Truth On Site",
+                family: "Field Practice",
+                core: "Supervisors in the field need instant access to operational truth. Who's here, what's done, what's next—all visible without calling the office.",
+                why: "Decisions happen on site. Waiting for office confirmation or digging through paperwork destroys responsiveness.",
+                practice: [
+                    "Provide mobile dashboards showing current job status",
+                    "Make crew presence and progress visible in real time",
+                    "Enable field supervisors to adjust assignments on the fly",
+                    "Sync truth immediately, not at end-of-day"
+                ],
+                connections: ["Distributed Situational Awareness", "Real-Time Reflection", "Edge Autonomy"]
+            },
+            {
+                id: "FIELD-005",
+                title: "Less Admin, More Work",
+                family: "Field Practice",
+                core: "Every minute spent on paperwork is a minute not spent on the work that generates revenue. Minimize administrative burden ruthlessly.",
+                why: "Field teams are hired for their craft, not their data entry skills. Administrative overhead is pure waste.",
+                practice: [
+                    "Automate every data capture point possible",
+                    "Reduce forms to single-tap confirmations",
+                    "Eliminate redundant reporting between systems",
+                    "Measure administrative time as a key metric to minimize"
+                ],
+                connections: ["Context Without Effort", "Automating Hidden Steps", "Keep the Work Moving"]
+            },
+            {
+                id: "FIELD-006",
+                title: "One Badge, Whole Day",
+                family: "Field Practice",
+                core: "A worker should use one credential throughout their day—shop, truck, job site. No separate cards, apps, or logins for each context.",
+                why: "Multiple credentials mean lost cards, forgotten passwords, and workarounds. Unified identity makes presence tracking seamless.",
+                practice: [
+                    "Issue one badge per worker, valid across all readers",
+                    "Use consistent identification across all systems",
+                    "Make badge replacement trivial and fast",
+                    "Track badge events, not badge types"
+                ],
+                connections: ["The World as the Interface", "Context Without Effort", "Convivial Tools"]
+            },
+            {
+                id: "FIELD-007",
+                title: "Presence Becomes Proof",
+                family: "Field Practice",
+                core: "Physical presence at a job site, vehicle, or shop creates the foundational record. Being there is the evidence; everything else is annotation.",
+                why: "Asking people to manually record what sensors already know creates friction, errors, and resentment.",
+                practice: [
+                    "Install readers at every point where presence matters",
+                    "Treat badge scans as the primary source of truth",
+                    "Use timestamps from physical events, not manual entry",
+                    "Let humans add context, not create the baseline record"
+                ],
+                connections: ["Effortless Proof", "Edge Is the Source of Truth", "Immutable Truth"]
+            },
+            {
+                id: "FIELD-008",
+                title: "Proof Without Training",
+                family: "Field Practice",
+                core: "Workers shouldn't need training to create valid records. The system should be so intuitive that correct behavior is obvious.",
+                why: "Training doesn't scale and erodes over time. New hires, temps, and forgetful veterans need systems that just work.",
+                practice: [
+                    "Design for zero onboarding: watch someone else once and you know it",
+                    "Make the right action the easiest action",
+                    "Provide immediate feedback when something's wrong",
+                    "Use physical affordances (badge readers) over digital interfaces (apps)"
+                ],
+                connections: ["Convivial Tools", "Effortless Proof", "Tools for Humans"]
+            },
+            {
+                id: "AUTO-001",
+                title: "Automate Association, Not Judgment",
+                family: "Automation & Mechanisms",
+                core: "Computers excel at linking data points; humans excel at meaning-making. Automate the connections, but preserve human judgment for interpretation.",
+                why: "Over-automated systems make wrong assumptions confidently. Under-automated systems waste human time on mechanical tasks.",
+                practice: [
+                    "Use proximity and timing to associate workers with jobs automatically",
+                    "Flag anomalies for human review rather than blocking or auto-correcting",
+                    "Provide defaults that are right 95% of the time",
+                    "Make overrides easy when the machine's wrong"
+                ],
+                connections: ["Passive Association", "Context Without Effort", "Edge Autonomy"]
+            },
+            {
+                id: "AUTO-002",
+                title: "Automating Hidden Steps",
+                family: "Automation & Mechanisms",
+                core: "The most valuable automation eliminates steps people didn't realize they were doing. Manual translation, mental accounting, remembering to record—all invisible waste.",
+                why: "Visible tasks get managed; invisible ones drain time silently. Automating hidden steps feels like magic because the burden simply vanishes.",
+                practice: [
+                    "Watch real workflows to spot undocumented steps",
+                    "Automate translations between systems",
+                    "Replace 'remember to do X' with automatic triggers",
+                    "Measure time saved on tasks people couldn't name"
+                ],
+                connections: ["Less Admin, More Work", "Context Without Effort", "Effortless Proof"]
+            },
+            {
+                id: "AUTO-003",
+                title: "Battery as Constraint",
+                family: "Automation & Mechanisms",
+                core: "Once you've solved connectivity, location, and processing, battery life becomes the limit. Optimize every decision for power consumption.",
+                why: "Dead devices are useless devices. If crews can't trust tools to last a full shift, they won't carry them.",
+                practice: [
+                    "Sense continuously, transmit strategically",
+                    "Use smart intervals instead of constant polling",
+                    "Design for weeks of standby, full shifts of active use",
+                    "Make power optimization a first-class design constraint"
+                ],
+                connections: ["Automate the Constraint", "Smart Intervals", "Continuous Sensing, Occasional Sending"]
+            },
+            {
+                id: "AUTO-004",
+                title: "Continuous Sensing, Occasional Sending",
+                family: "Automation & Mechanisms",
+                core: "Monitor constantly, transmit judiciously. Capture every meaningful event locally, then batch-send when connectivity and power allow.",
+                why: "Constant transmission drains batteries and overwhelms networks. Missing events destroys data integrity. The solution: local persistence, smart sync.",
+                practice: [
+                    "Log all badge scans and sensor events locally",
+                    "Transmit on schedule or when connection quality is high",
+                    "Ensure local storage outlasts connectivity gaps",
+                    "Make devices resilient to poor network conditions"
+                ],
+                connections: ["Battery as Constraint", "Edge Autonomy", "Smart Intervals"]
+            },
+            {
+                id: "AUTO-005",
+                title: "Edge Autonomy",
+                family: "Automation & Mechanisms",
+                core: "Devices at the edge must function independently. They can't wait for server permission or depend on constant connectivity.",
+                why: "Construction sites, rural locations, and vehicles experience intermittent connectivity. Systems that require real-time server access fail in the field.",
+                practice: [
+                    "Store logic and data locally on edge devices",
+                    "Make devices functional offline for extended periods",
+                    "Sync when possible, operate always",
+                    "Treat connectivity as enhancement, not requirement"
+                ],
+                connections: ["Edge Is the Source of Truth", "Continuous Sensing, Occasional Sending", "Flow Starts at the Edge"]
+            },
+            {
+                id: "AUTO-006",
+                title: "Edge Is the Source of Truth",
+                family: "Automation & Mechanisms",
+                core: "The device at the point of action—the badge reader on the truck—is authoritative. The server reconciles and distributes; it doesn't decree.",
+                why: "Centralized truth models fail when edges can't reach the center. Edge-first architecture keeps systems working regardless of connectivity.",
+                practice: [
+                    "Trust edge-generated timestamps over server-side clocks",
+                    "Resolve conflicts by deferring to the device closest to reality",
+                    "Design servers as aggregators, not arbiters",
+                    "Let edges maintain their own truth during network partitions"
+                ],
+                connections: ["Flow Starts at the Edge", "Edge Autonomy", "Reality Before Model"]
+            },
+            {
+                id: "AUTO-007",
+                title: "Passive Association",
+                family: "Automation & Mechanisms",
+                core: "Context emerges from physical proximity and timing, not from explicit user selection. Workers near a vehicle or job site are automatically associated with it.",
+                why: "Manual association is forgotten, delayed, or wrong. Passive sensing eliminates the human step entirely.",
+                practice: [
+                    "Use geofencing and badge readers to infer presence",
+                    "Associate workers with nearby assets and jobs automatically",
+                    "Provide confirmation workflows, not selection workflows",
+                    "Make exceptions visible and easy to correct"
+                ],
+                connections: ["Automate Association, Not Judgment", "Context Without Effort", "Presence Becomes Proof"]
+            },
+            {
+                id: "AUTO-008",
+                title: "Presence Over Precision",
+                family: "Automation & Mechanisms",
+                core: "Knowing someone was there matters more than knowing exactly where they stood. Optimize for reliable presence detection, not centimeter-level accuracy.",
+                why: "GPS precision drains batteries and adds complexity. For most use cases, 'at the job site' is sufficient; '3 meters northwest of the foundation' is overkill.",
+                practice: [
+                    "Use geofences sized for practicality, not perfection",
+                    "Combine GPS with proximity sensors for battery efficiency",
+                    "Accept that 'near enough' satisfies most business logic",
+                    "Reserve high precision for the rare cases that truly need it"
+                ],
+                connections: ["Battery as Constraint", "Consistency Beats Completeness", "Keep the Work Moving"]
+            },
+            {
+                id: "AUTO-009",
+                title: "Smart Intervals",
+                family: "Automation & Mechanisms",
+                core: "Adjust sensing and transmission frequency based on context. Poll aggressively when movement is likely, sleep deeply when static.",
+                why: "Fixed intervals waste power during inactivity and miss events during high activity. Dynamic intervals optimize for both responsiveness and battery life.",
+                practice: [
+                    "Use accelerometers to detect movement and wake GPS",
+                    "Increase polling frequency during work hours, decrease overnight",
+                    "Transmit immediately for critical events, batch for routine data",
+                    "Learn patterns and adapt intervals accordingly"
+                ],
+                connections: ["Battery as Constraint", "Continuous Sensing, Occasional Sending", "Automate the Constraint"]
+            },
+            {
+                id: "AUTO-010",
+                title: "The World as the Interface",
+                family: "Automation & Mechanisms",
+                core: "Physical actions—tapping a badge, entering a vehicle, walking onto a site—become the user interface. No app required.",
+                why: "Apps demand attention, training, and charged phones. Physical interfaces are intuitive, ubiquitous, and fault-tolerant.",
+                practice: [
+                    "Install badge readers at every relevant threshold",
+                    "Use vehicles and job sites as the containers for context",
+                    "Make scanning a badge the primary interaction model",
+                    "Reserve screens for exception handling and review, not primary use"
+                ],
+                connections: ["Convivial Tools", "Proof Without Training", "One Badge, Whole Day"]
+            },
+            {
+                id: "DATA-001",
+                title: "Consistency Beats Completeness",
+                family: "Data Integrity & Provenance",
+                core: "Reliable partial data trumps comprehensive but questionable data. Better to know 90% with certainty than guess at 100%.",
+                why: "Chasing completeness introduces errors, delays, and administrative overhead. Consistent data enables reliable decisions; complete-but-flawed data enables none.",
+                practice: [
+                    "Design systems that capture what's observable, not what's ideal",
+                    "Accept gaps where ground truth isn't available",
+                    "Use consistent methodology even if coverage is incomplete",
+                    "Fill gaps through inference only when confidence is high"
+                ],
+                connections: ["Evidence Over Opinion", "Reality Before Model", "Keep the Work Moving"]
+            },
+            {
+                id: "DATA-002",
+                title: "Correction Is Commentary",
+                family: "Data Integrity & Provenance",
+                core: "Never delete or overwrite original records. Corrections are added as new entries that reference and supersede the old, preserving the full history.",
+                why: "Edits that erase history destroy audit trails and make anomaly detection impossible. You can't learn from drift if you've eliminated the evidence.",
+                practice: [
+                    "Append corrections instead of updating in place",
+                    "Link corrections to original records explicitly",
+                    "Timestamp all changes and attribute them to specific users",
+                    "Maintain full lineage for compliance and forensics"
+                ],
+                connections: ["Immutable Truth", "Lineage Is the Ledger", "No Edits Without Evidence"]
+            },
+            {
+                id: "DATA-003",
+                title: "Drift Is a Signal",
+                family: "Data Integrity & Provenance",
+                core: "When observed data diverges from expected patterns, that's information. Drift reveals process changes, equipment failures, or emerging issues.",
+                why: "Treating drift as noise means missing early warnings. Investigating anomalies catches problems before they become crises.",
+                practice: [
+                    "Monitor for deviations from historical patterns",
+                    "Flag unusual timing, location, or sequence data",
+                    "Investigate clusters of anomalies, not just individual outliers",
+                    "Use drift detection as a predictive maintenance signal"
+                ],
+                connections: ["Real-Time Reflection", "Reality Before Model", "Evidence Over Opinion"]
+            },
+            {
+                id: "DATA-004",
+                title: "Evidence Over Opinion",
+                family: "Data Integrity & Provenance",
+                core: "Base decisions on observable events, not recollection or estimation. What the sensors recorded beats what someone remembers.",
+                why: "Memory is unreliable, especially under pressure. Sensor data doesn't have incentives, fatigue, or forgetfulness.",
+                practice: [
+                    "Prioritize automated captures over manual logs",
+                    "Use physical events (badge scans, GPS fixes) as primary records",
+                    "Treat human input as annotation, not foundation",
+                    "Resolve disputes by deferring to instrumentation"
+                ],
+                connections: ["Immutable Truth", "Provenance of Truth", "Reality Before Model"]
+            },
+            {
+                id: "DATA-005",
+                title: "Immutable Truth",
+                family: "Data Integrity & Provenance",
+                core: "Once an event is recorded, it cannot be changed—only supplemented or superseded. The original record persists forever.",
+                why: "Mutable records enable manipulation, whether malicious or accidental. Immutability makes systems auditable and trustworthy.",
+                practice: [
+                    "Write events to append-only logs",
+                    "Use event sourcing architecture where state is derived from history",
+                    "Make corrections by adding new events, not editing old ones",
+                    "Preserve full lineage for compliance and forensics"
+                ],
+                connections: ["Lineage Is the Ledger", "Correction Is Commentary", "Truth You Can Stand On"]
+            },
+            {
+                id: "DATA-006",
+                title: "Integrity by Design",
+                family: "Data Integrity & Provenance",
+                core: "Data quality is architectural, not procedural. Systems should make bad data difficult to create, not rely on training to prevent it.",
+                why: "Process-based integrity erodes over time. Structural integrity enforces correctness automatically.",
+                practice: [
+                    "Validate data at capture, not at use",
+                    "Use constraints, types, and schemas to reject invalid inputs",
+                    "Make the default path produce clean data",
+                    "Design for graceful degradation when data is missing"
+                ],
+                connections: ["Truth You Can Stand On", "Consistency Beats Completeness", "Edge Autonomy"]
+            },
+            {
+                id: "DATA-007",
+                title: "Lineage Is the Ledger",
+                family: "Data Integrity & Provenance",
+                core: "Every data point must have a clear origin story: when it was created, by what device or user, and through what process.",
+                why: "Data without lineage is unusable for compliance, debugging, or dispute resolution. Provenance makes data defensible.",
+                practice: [
+                    "Attach metadata (timestamp, source, method) to every record",
+                    "Maintain chain of custody for all derived data",
+                    "Make lineage queryable and human-readable",
+                    "Use lineage to trace errors back to root cause"
+                ],
+                connections: ["Provenance of Truth", "Immutable Truth", "No Edits Without Evidence"]
+            },
+            {
+                id: "DATA-008",
+                title: "No Edits Without Evidence",
+                family: "Data Integrity & Provenance",
+                core: "Manual corrections require documented justification. You can't change a record just because it 'seems wrong'—you need evidence it's wrong and what the truth is.",
+                why: "Unchecked editing enables fraud, covers mistakes, and destroys trust in the system.",
+                practice: [
+                    "Require reason codes and approvals for manual adjustments",
+                    "Log who made the change, when, and why",
+                    "Make edits visible in audit trails",
+                    "Limit editing permissions to specific roles"
+                ],
+                connections: ["Correction Is Commentary", "Evidence Over Opinion", "Lineage Is the Ledger"]
+            },
+            {
+                id: "DATA-009",
+                title: "Provenance of Truth",
+                family: "Data Integrity & Provenance",
+                core: "Every piece of information must be traceable to its source. Derived data points back to raw observations; interpretations cite their evidence.",
+                why: "Data without provenance is hearsay. In disputes, audits, or investigations, you need to prove where numbers came from.",
+                practice: [
+                    "Link summary data to underlying events",
+                    "Store raw data permanently, even after aggregation",
+                    "Make provenance visible to users reviewing records",
+                    "Use provenance to validate data pipeline integrity"
+                ],
+                connections: ["Lineage Is the Ledger", "Evidence Over Opinion", "Immutable Truth"]
+            },
+            {
+                id: "DATA-010",
+                title: "Reality Before Model",
+                family: "Data Integrity & Provenance",
+                core: "The world is the authority; the database is the reflection. When they conflict, reality wins. Trust sensors over schemas.",
+                why: "Models are approximations. Forcing reality into a preconceived structure loses critical information.",
+                practice: [
+                    "Design data models to flex around observed reality",
+                    "Flag model violations instead of rejecting valid data",
+                    "Revise schemas based on what the field reveals",
+                    "Let edge devices report what they see, not what's expected"
+                ],
+                connections: ["Flow Starts at the Edge", "Evidence Over Opinion", "Edge Is the Source of Truth"]
+            },
+            {
+                id: "DATA-011",
+                title: "Truth Survives Hand-Offs",
+                family: "Data Integrity & Provenance",
+                core: "Data must remain accurate through every system boundary—field to office, operational to financial, raw to aggregated.",
+                why: "Each translation introduces error risk. By the time data reaches decision-makers, it's often unrecognizable from source.",
+                practice: [
+                    "Minimize transformation layers between capture and use",
+                    "Validate data at each boundary",
+                    "Maintain provenance through all transformations",
+                    "Design APIs that preserve full fidelity"
+                ],
+                connections: ["Operational Truth → Financial Truth", "Provenance of Truth", "Lineage Is the Ledger"]
+            },
+            {
+                id: "FLOW-001",
+                title: "Critical Flow",
+                family: "Flow & Operations",
+                core: "Identify the handful of activities that directly generate value, then protect their throughput above all else. Everything else is support.",
+                why: "Organizations optimize the wrong things—admin processes, internal reports, compliance theater. The work that pays the bills starves.",
+                practice: [
+                    "Map which activities convert directly to revenue",
+                    "Measure their cycle time and throughput",
+                    "Eliminate or automate anything that slows critical flow",
+                    "Make supporting functions responsive to critical flow demands"
+                ],
+                connections: ["Keep the Work Moving", "Flow Reveals Constraints", "Map the Work, Not the Paper"]
+            },
+            {
+                id: "FLOW-002",
+                title: "Distributed Situational Awareness",
+                family: "Flow & Operations",
+                core: "Everyone involved in a workflow sees the same operational truth simultaneously. No information hoarding, no telephone game, no 'I'll check and get back to you.'",
+                why: "Siloed information forces coordination through messages and meetings. Shared visibility enables autonomous decision-making.",
+                practice: [
+                    "Make job status, crew location, and progress visible to all stakeholders",
+                    "Update information in real time, not end-of-day",
+                    "Give field supervisors, dispatchers, and PMs the same view",
+                    "Eliminate information asymmetry as a source of delays"
+                ],
+                connections: ["Know the Truth On Site", "Real-Time Reflection", "Aligned Around Reality"]
+            },
+            {
+                id: "FLOW-003",
+                title: "Flow Before Forecast",
+                family: "Flow & Operations",
+                core: "Getting work done today matters more than predicting work for next month. Optimize for throughput, not for planning accuracy.",
+                why: "Organizations spend weeks perfecting forecasts while current work sits blocked. Perfect plans don't matter if today's flow is broken.",
+                practice: [
+                    "Prioritize tools that unblock current work over planning tools",
+                    "Make daily execution visible before worrying about monthly projections",
+                    "Use historical flow data to inform forecasts, not vice versa",
+                    "Accept rough plans if they keep work moving"
+                ],
+                connections: ["Keep the Work Moving", "Critical Flow", "Reality Before Model"]
+            },
+            {
+                id: "FLOW-004",
+                title: "Flow Demands Clarity",
+                family: "Flow & Operations",
+                core: "Work can't flow through ambiguity. Every handoff must be crisp: who, what, where, by when. Vagueness stops movement.",
+                why: "Unclear assignments create hesitation, rework, and finger-pointing. Clarity eliminates friction at every transition.",
+                practice: [
+                    "Define explicit ownership for every task",
+                    "Make dependencies and sequences visible",
+                    "Communicate changes immediately to affected parties",
+                    "Measure handoff clarity by how rarely clarification is needed"
+                ],
+                connections: ["Clarity Is Kindness", "Map the Work, Not the Paper", "Sequence Predictability"]
+            },
+            {
+                id: "FLOW-005",
+                title: "Flow Multiplied",
+                family: "Flow & Operations",
+                core: "Small improvements in flow velocity compound. A 10% cycle time reduction across five handoffs yields 50%+ total improvement.",
+                why: "Organizations chase big wins and ignore friction at each step. The cumulative drag is what kills throughput.",
+                practice: [
+                    "Measure cycle time for each stage of the process",
+                    "Target small reductions everywhere rather than big wins in one place",
+                    "Eliminate wait time, not just work time",
+                    "Celebrate velocity improvements, not just completion"
+                ],
+                connections: ["Critical Flow", "Keep the Work Moving", "Flow Reveals Constraints"]
+            },
+            {
+                id: "FLOW-006",
+                title: "Flow Reveals Constraints",
+                family: "Flow & Operations",
+                core: "When you remove one bottleneck, the next one becomes visible. Continuous flow optimization is a process of surfacing and eliminating constraints.",
+                why: "You can't see the second bottleneck until the first is gone. Flow improvement is iterative, not one-and-done.",
+                practice: [
+                    "Monitor where work queues up after each improvement",
+                    "Expect new constraints to appear",
+                    "Treat bottleneck-hunting as ongoing, not a project",
+                    "Use flow metrics to diagnose constraints automatically"
+                ],
+                connections: ["Automate the Constraint", "Critical Flow", "Real-Time Reflection"]
+            },
+            {
+                id: "FLOW-007",
+                title: "Map the Work, Not the Paper",
+                family: "Flow & Operations",
+                core: "Process maps should reflect how work actually moves, not how forms get approved. Follow the physical flow—materials, people, tools—not the admin trail.",
+                why: "Documenting paperwork flows while ignoring operational reality creates useless process diagrams. Real bottlenecks live in the work, not the approvals.",
+                practice: [
+                    "Shadow actual work to see how it moves",
+                    "Map handoffs in the field, not in the office",
+                    "Identify where waiting happens, not where signing happens",
+                    "Redesign based on operational flow, not compliance flow"
+                ],
+                connections: ["Critical Flow", "Flow Starts at the Edge", "Keep the Work Moving"]
+            },
+            {
+                id: "FLOW-008",
+                title: "Real-Time Reflection",
+                family: "Flow & Operations",
+                core: "Information about work should be available the moment it happens, not after reconciliation, review, or report generation.",
+                why: "Delayed information forces reactive management. Real-time visibility enables proactive intervention.",
+                practice: [
+                    "Stream events from the field to dashboards immediately",
+                    "Make current status the default view, not historical summaries",
+                    "Enable alerts and notifications for deviations",
+                    "Reduce latency between action and visibility to seconds"
+                ],
+                connections: ["Distributed Situational Awareness", "Know the Truth On Site", "Flow Before Forecast"]
+            },
+            {
+                id: "FLOW-009",
+                title: "Sequence Predictability",
+                family: "Flow & Operations",
+                core: "When the order of operations is consistent, flow becomes reliable. Variability in sequence creates chaos; standardization creates throughput.",
+                why: "Unpredictable workflows make resource planning impossible and coordination brittle. Predictable sequences enable rhythm and automation.",
+                practice: [
+                    "Define standard sequences for recurring work types",
+                    "Make deviations exceptional and visible",
+                    "Use sequence data to predict downstream resource needs",
+                    "Identify where variability adds value vs. where it creates waste"
+                ],
+                connections: ["Flow Demands Clarity", "Critical Flow", "The Day Tells Its Story"]
+            },
+            {
+                id: "FLOW-010",
+                title: "The Day Tells Its Story",
+                family: "Flow & Operations",
+                core: "A day's work should be reconstructable from its own records. No memory required, no after-the-fact assembly—just replay the data.",
+                why: "When daily truth depends on recollection, it's unreliable. Self-documenting days eliminate guesswork.",
+                practice: [
+                    "Capture enough context that any day's work is understandable months later",
+                    "Make timelines, locations, and associations automatic",
+                    "Provide narrative coherence through linked events",
+                    "Enable anyone to audit a day without interviewing workers"
+                ],
+                connections: ["Real-Time Reflection", "Provenance of Truth", "Truth Survives Hand-Offs"]
+            },
+            {
+                id: "FIN-001",
+                title: "Cost Flows From Movement",
+                family: "Finance & Reconciliation",
+                core: "Labor costs are created when people and equipment move to jobs. Track the movement, and costs follow automatically.",
+                why: "Traditional cost accounting waits for timesheets and invoices. Movement-based costing produces financial truth in real time.",
+                practice: [
+                    "Use presence data to allocate labor costs",
+                    "Associate vehicle movements with job cost buckets",
+                    "Generate cost data as a byproduct of operational tracking",
+                    "Eliminate the gap between when work happens and when it's costed"
+                ],
+                connections: ["Operational Truth → Financial Truth", "Precision Finance", "Presence Becomes Proof"]
+            },
+            {
+                id: "FIN-002",
+                title: "Fast Close Requires Fast Truth",
+                family: "Finance & Reconciliation",
+                core: "Month-end close delays are caused by waiting for operational data. If field truth is current daily, finance can close in hours instead of weeks.",
+                why: "Slow closes mean late decisions. Fast closes enable responsive management.",
+                practice: [
+                    "Capture operational data continuously, not at month-end",
+                    "Reconcile daily instead of monthly",
+                    "Automate most journal entries from operational events",
+                    "Make close speed a measure of data quality"
+                ],
+                connections: ["Operational Truth → Financial Truth", "Real-Time Reflection", "The Burden of Reconciliation"]
+            },
+            {
+                id: "FIN-003",
+                title: "Margin Lives in the Middle",
+                family: "Finance & Reconciliation",
+                core: "Profitability isn't determined at bid or at completion—it's earned or lost daily in the field. Manage margin in real time, not in retrospect.",
+                why: "Waiting until job close to discover margin erosion means it's too late to fix. Daily visibility enables corrective action.",
+                practice: [
+                    "Compare actual to estimated costs as work progresses",
+                    "Alert when jobs drift from projected margin",
+                    "Make crew efficiency and cost overruns visible immediately",
+                    "Enable field supervisors to see financial impact of their decisions"
+                ],
+                connections: ["Operational Truth → Financial Truth", "Real-Time Reflection", "Precision Finance"]
+            },
+            {
+                id: "FIN-004",
+                title: "Operational Truth → Financial Truth",
+                family: "Finance & Reconciliation",
+                core: "Accounting is downstream from operations. Financial records should derive from operational events automatically, with no translation layer.",
+                why: "Every manual transfer from operations to finance introduces errors and delays. Direct derivation eliminates reconciliation.",
+                practice: [
+                    "Design operational systems to produce audit-ready financial data",
+                    "Generate journal entries from badge scans, GPS events, and job completions",
+                    "Make the operational database the source of financial truth",
+                    "Eliminate redundant entry between field logs and accounting systems"
+                ],
+                connections: ["Truth Survives Hand-Offs", "Precision Finance", "Cost Flows From Movement"]
+            },
+            {
+                id: "FIN-005",
+                title: "Pay Follows Proof",
+                family: "Finance & Reconciliation",
+                core: "Payroll should derive directly from presence records. If the badge scan happened, the pay happens. No manual timesheets, no delays, no disputes.",
+                why: "Manual payroll processes create errors that destroy trust. Automated pay based on verifiable presence is fast, accurate, and fair.",
+                practice: [
+                    "Use badge scans and GPS data as payroll source of record",
+                    "Calculate hours automatically from presence events",
+                    "Show workers their accrued pay in real time",
+                    "Reconcile exceptions, not the entire payroll"
+                ],
+                connections: ["Presence Becomes Proof", "Get Paid Right", "395… Exactly"]
+            },
+            {
+                id: "FIN-006",
+                title: "Precision Finance",
+                family: "Finance & Reconciliation",
+                core: "Financial accuracy depends on operational precision. Rounding, approximation, and guesswork in the field compound into material errors in finance.",
+                why: "Small errors across thousands of transactions create un-reconcilable discrepancies. Precision at source eliminates downstream chaos.",
+                practice: [
+                    "Capture exact timestamps, not rounded hours",
+                    "Use raw data for calculations, not summarized estimates",
+                    "Maintain precision through all transformations",
+                    "Test financial accuracy by reconciling to the minute"
+                ],
+                connections: ["395… Exactly", "Operational Truth → Financial Truth", "Consistency Beats Completeness"]
+            },
+            {
+                id: "FIN-007",
+                title: "The Burden of Reconciliation",
+                family: "Finance & Reconciliation",
+                core: "Reconciliation is waste. It exists because systems aren't integrated. The goal is to eliminate reconciliation by making operational truth financial truth.",
+                why: "Finance teams spend weeks matching records that should never have diverged. Reconciliation is symptom, not solution.",
+                practice: [
+                    "Design systems that share a single source of truth",
+                    "Automate data flow from operations to accounting",
+                    "Measure reconciliation time as a metric to minimize",
+                    "Treat persistent reconciliation needs as system failures to fix"
+                ],
+                connections: ["Operational Truth → Financial Truth", "Fast Close Requires Fast Truth", "Truth Survives Hand-Offs"]
+            },
+            {
+                id: "VIS-001",
+                title: "Aligned Around Reality",
+                family: "Vision & Alignment",
+                core: "Organizations align not through mission statements, but through shared access to the same operational truth. Everyone seeing reality eliminates most conflicts.",
+                why: "Departments fight because they're working from different facts. Shared truth makes disagreements productive instead of political.",
+                practice: [
+                    "Provide all stakeholders access to the same data",
+                    "Make operational metrics visible across functions",
+                    "Replace opinion-based arguments with data-driven discussions",
+                    "Use truth as the foundation for collaboration"
+                ],
+                connections: ["Distributed Situational Awareness", "Truth Creates Alignment", "Evidence-Based Leadership"]
+            },
+            {
+                id: "VIS-002",
+                title: "Clarity Is Kindness",
+                family: "Vision & Alignment",
+                core: "Vague expectations are cruel. Clear, measurable, observable standards respect people's time and effort.",
+                why: "Ambiguity forces people to guess what's wanted, leading to rework and frustration. Clarity enables success.",
+                practice: [
+                    "Define success criteria before work begins",
+                    "Make standards observable and testable",
+                    "Provide feedback based on measurable outcomes",
+                    "Eliminate 'you know what I mean' as a communication strategy"
+                ],
+                connections: ["Flow Demands Clarity", "Truth-Driven Decision Making", "Evidence-Based Leadership"]
+            },
+            {
+                id: "VIS-003",
+                title: "Evidence-Based Leadership",
+                family: "Vision & Alignment",
+                core: "Leaders who make decisions from data earn trust. Leaders who rely on instinct over evidence lose credibility when they're wrong.",
+                why: "Gut-based leadership works until it doesn't. Evidence-based leadership is defendable, improvable, and teachable.",
+                practice: [
+                    "Base strategic decisions on operational metrics",
+                    "Show teams the data that drove decisions",
+                    "Admit when data contradicts assumptions",
+                    "Use evidence to depersonalize disagreements"
+                ],
+                connections: ["Truth-Driven Decision Making", "Aligned Around Reality", "Evidence Over Opinion"]
+            },
+            {
+                id: "VIS-004",
+                title: "Flow-Enabled Culture",
+                family: "Vision & Alignment",
+                core: "Culture isn't created through values posters—it emerges from how work flows. Smooth flow creates confidence; friction creates cynicism.",
+                why: "People don't care about culture statements; they care whether their day is productive or frustrating. Fix the flow, fix the culture.",
+                practice: [
+                    "Measure culture health by operational flow metrics",
+                    "Remove friction points that create daily frustration",
+                    "Celebrate velocity and completion, not just effort",
+                    "Recognize that morale follows throughput"
+                ],
+                connections: ["Keep the Work Moving", "Critical Flow", "The Calm Company"]
+            },
+            {
+                id: "VIS-005",
+                title: "The Business Is the Network",
+                family: "Vision & Alignment",
+                core: "Modern operations aren't contained in buildings—they're distributed across vehicles, job sites, and mobile workers. The network is the business.",
+                why: "Managing distributed operations like centralized ones fails. Systems must embrace geographic and temporal dispersion.",
+                practice: [
+                    "Design for distribution-first, not office-first",
+                    "Make connectivity assumptions pessimistic",
+                    "Treat every node (vehicle, site, worker) as semi-autonomous",
+                    "Use the network to coordinate, not to control"
+                ],
+                connections: ["Edge Autonomy", "Distributed Situational Awareness", "Flow Starts at the Edge"]
+            },
+            {
+                id: "VIS-006",
+                title: "The Calm Company",
+                family: "Vision & Alignment",
+                core: "Organizations that run on truth instead of urgency are calm. No fire drills, no heroics, no all-hands crisis meetings—just steady, visible progress.",
+                why: "Chaos is a symptom of poor information. When everyone knows what's happening, there's no need to panic.",
+                practice: [
+                    "Replace reactive escalations with proactive monitoring",
+                    "Make problems visible before they become emergencies",
+                    "Eliminate surprise through real-time transparency",
+                    "Measure calmness by absence of last-minute scrambles"
+                ],
+                connections: ["Real-Time Reflection", "Distributed Situational Awareness", "Vision Without Friction"]
+            },
+            {
+                id: "VIS-007",
+                title: "Truth as Infrastructure",
+                family: "Vision & Alignment",
+                core: "Reliable information is foundational infrastructure, like power or connectivity. You can't build a modern operation on unreliable truth.",
+                why: "Organizations treat truth as a byproduct of work. It should be recognized as the platform that enables everything else.",
+                practice: [
+                    "Invest in data systems with the same priority as physical assets",
+                    "Make data integrity a non-negotiable requirement",
+                    "Treat information infrastructure as critical as trucks or tools",
+                    "Measure uptime and reliability of truth systems"
+                ],
+                connections: ["Truth You Can Stand On", "Integrity by Design", "Immutable Truth"]
+            },
+            {
+                id: "VIS-008",
+                title: "Truth Creates Alignment",
+                family: "Vision & Alignment",
+                core: "When everyone works from the same facts, alignment happens naturally. Conflict stems from information asymmetry, not malice.",
+                why: "Organizations spend enormous effort on alignment initiatives. Shared truth makes most of that effort unnecessary.",
+                practice: [
+                    "Eliminate private information silos",
+                    "Make operational truth accessible to all stakeholders",
+                    "Use data to mediate disagreements",
+                    "Recognize that most organizational conflict is information conflict"
+                ],
+                connections: ["Aligned Around Reality", "Distributed Situational Awareness", "Evidence-Based Leadership"]
+            },
+            {
+                id: "VIS-009",
+                title: "Truth-Driven Decision Making",
+                family: "Vision & Alignment",
+                core: "Decisions should be traceable to observable data. 'Because the data shows' beats 'because I think' every time.",
+                why: "Opinion-based decisions are hard to evaluate, improve, or defend. Data-driven decisions are testable and improvable.",
+                practice: [
+                    "Require evidence citations for major decisions",
+                    "Make decision rationale visible and auditable",
+                    "Learn from decisions by reviewing the data that informed them",
+                    "Depersonalize disagreements by focusing on evidence"
+                ],
+                connections: ["Evidence-Based Leadership", "Evidence Over Opinion", "Aligned Around Reality"]
+            },
+            {
+                id: "VIS-010",
+                title: "Vision Without Friction",
+                family: "Vision & Alignment",
+                core: "Grand visions fail when daily execution is painful. The path from strategy to action must be smooth, or the vision stays on PowerPoint.",
+                why: "Leaders focus on vision; workers experience friction. If the connection between the two is broken, the vision is irrelevant.",
+                practice: [
+                    "Translate strategy into concrete daily workflows",
+                    "Remove obstacles between intent and execution",
+                    "Make tactical improvements that enable strategic goals",
+                    "Measure vision success by how easily teams can execute it"
+                ],
+                connections: ["Keep the Work Moving", "Flow-Enabled Culture", "The Calm Company"]
+            }
+        ];
+
+        let currentFilter = 'all';
+        let searchTerm = '';
+
+        function renderCards() {
+            const grid = document.getElementById('cardsGrid');
+            const filtered = zettels.filter(z => {
+                const matchesFamily = currentFilter === 'all' || z.family === currentFilter;
+                const matchesSearch = !searchTerm || 
+                    z.title.toLowerCase().includes(searchTerm) ||
+                    z.core.toLowerCase().includes(searchTerm) ||
+                    z.id.toLowerCase().includes(searchTerm);
+                return matchesFamily && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="no-results">No cards match your filters</div>';
+                return;
+            }
+
+            grid.innerHTML = filtered.map(z => `
+                <div class="card-container">
+                    <div class="card" onclick="this.classList.toggle('flipped')">
+                        <div class="card-face card-front">
+                            <div class="card-id">${z.id}</div>
+                            <div class="card-family">${z.family}</div>
+                            <h2 class="card-title">${z.title}</h2>
+                            <p class="card-core">${z.core}</p>
+                            <div class="flip-hint">Tap to see more →</div>
+                        </div>
+                        <div class="card-face card-back">
+                            <div class="card-id">${z.id}</div>
+                            <h2 class="card-title">${z.title}</h2>
+                            
+                            <div class="section-title">Why It Matters</div>
+                            <div class="section-content">${z.why}</div>
+                            
+                            <div class="section-title">In Practice</div>
+                            <div class="section-content">
+                                ${z.practice.map(p => `• ${p}`).join('<br>')}
+                            </div>
+                            
+                            <div class="connections">
+                                <div class="section-title">Connected To</div>
+                                ${z.connections.map(c => `<span class="connection-tag">${c}</span>`).join('')}
+                            </div>
+                            
+                            <div class="flip-hint">Tap to flip back ←</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('filters').addEventListener('click', e => {
+            if (e.target.classList.contains('filter-btn')) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentFilter = e.target.dataset.family;
+                renderCards();
+            }
+        });
+
+        document.getElementById('searchBox').addEventListener('input', e => {
+            searchTerm = e.target.value.toLowerCase();
+            renderCards();
+        });
+
+        renderCards();
+    </script>
+</body>
+</html>
