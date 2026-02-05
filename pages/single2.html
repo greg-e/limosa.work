@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HiGain Design Services</title>
+  <meta name="description" content="HiGain Design Services — PCB/PWB layout and electronic design support in Norcross, Georgia." />
+  <meta name="keywords" content="Printed Circuit Board, Printed Wiring Board, PCB, PWB, RF, Microwave, Analog, Digital, Schematics, Electronic Design Support, HiGain Design Services" />
+  <style>
+    :root{
+      --bg:#ffffff;
+      --fg:#111111;
+      --muted:#5a5a5a;
+      --line:#e9e9e9;
+      --link:#111111;
+      --max: 900px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--fg);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      line-height:1.55;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    a{color:var(--link); text-decoration:underline; text-underline-offset:3px}
+    a:hover{opacity:.75}
+    .wrap{max-width:var(--max); margin:0 auto; padding:22px 18px 56px;}
+    header{
+      position:sticky;
+      top:0;
+      background:rgba(255,255,255,.92);
+      backdrop-filter:saturate(180%) blur(8px);
+      border-bottom:1px solid var(--line);
+      z-index:10;
+    }
+    .nav{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:12px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+    }
+    .brand{
+      display:flex;
+      gap:10px;
+      align-items:baseline;
+      text-decoration:none;
+    }
+    .brand strong{
+      font-weight:650;
+      letter-spacing:.2px;
+    }
+    .brand span{
+      color:var(--muted);
+      font-size:13px;
+    }
+    nav{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      font-size:13px;
+    }
+    nav a{
+      text-decoration:none;
+      padding:6px 0;
+      border-bottom:1px solid transparent;
+    }
+    nav a:hover{border-bottom-color:var(--fg)}
+    main{padding-top:18px}
+    h1{
+      font-size:34px;
+      line-height:1.15;
+      letter-spacing:-.4px;
+      margin:20px 0 10px;
+      font-weight:700;
+    }
+    @media (max-width:520px){ h1{font-size:28px} }
+    .lead{
+      color:var(--muted);
+      margin:0 0 16px;
+      max-width:70ch;
+      font-size:15px;
+    }
+    .rule{height:1px; background:var(--line); margin:22px 0;}
+    h2{
+      font-size:14px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      margin:0 0 10px;
+      color:var(--muted);
+      font-weight:650;
+    }
+    p{margin:0 0 12px; max-width:80ch}
+    ul{margin:0; padding-left:18px}
+    li{margin:6px 0}
+    .cols{
+      display:grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap:22px;
+      align-items:start;
+    }
+    @media (max-width:900px){ .cols{grid-template-columns:1fr} }
+    .aside{
+      border-left:2px solid var(--line);
+      padding-left:14px;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .aside p{margin:0 0 10px}
+    .kvs{display:grid; gap:8px; margin-top:8px}
+    .kv{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      padding:8px 0;
+      border-bottom:1px solid var(--line);
+    }
+    .kv:last-child{border-bottom:none}
+    .kv .k{color:var(--muted)}
+    .kv .v{text-align:right; color:var(--fg)}
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .chip{
+      border:1px solid var(--line);
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .cta{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      font-size:14px;
+    }
+    .cta a{ text-decoration:underline; }
+    .images{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:14px;
+      margin-top:10px;
+    }
+    figure{margin:0}
+    img{
+      width:100%;
+      height:auto;
+      display:block;
+      border:1px solid var(--line);
+    }
+    figcaption{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:12px;
+    }
+    footer{
+      margin-top:34px;
+      padding-top:16px;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      font-size:12px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: .95em;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="nav">
+      <a class="brand" href="#top">
+        <strong>HiGain Design Services</strong>
+        <span>PCB/PWB layout • Electronic design support</span>
+      </a>
+      <nav aria-label="Primary">
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#capabilities">Capabilities</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top" class="wrap">
+    <h1>Our mission is to help you be successful.</h1>
+    <p class="lead">Thanks for the opportunity.</p>
+
+    <div class="cols">
+      <section>
+        <h2 id="about">Welcome</h2>
+        <p>
+          If you are new to design or someone who has many years of experience and knowledge,
+          HiGain Design Services can help you with your circuit layouts and other computer aided design requirements.
+        </p>
+        <p>
+          Some call them PCBs (printed circuit boards), PWBs (printed wiring boards), CCA (circuit card assemblies) or maybe by some other name.
+          Whatever you call them, we know they are critical to your success. Our top priority is to provide a complete and accurate PCB layout
+          from the standpoint of engineering, to purchasing and through assembly. We have constant concerns for cost, quality and schedules.
+        </p>
+        <p>
+          We have over 30 years of experience in engineering support, design and packaging of electronic equipment with particular experience in
+          printed circuit board layout, generation and maintenance of symbol libraries, the creation and support of design processes, and documentation
+          that provide accurate and consistent designs.
+        </p>
+        <p>
+          We can help you with our many contacts throughout the industry in the fabrication and assembly of your products.
+        </p>
+        <p>
+          If you have comments or questions about our services, or simply need more information and want to contact us, use the contact options below.
+        </p>
+
+        <div class="rule"></div>
+
+        <h2 id="services">Services</h2>
+        <ul>
+          <li>Circuit layouts (PCB/PWB / CCA)</li>
+          <li>Computer aided design requirements</li>
+          <li>Symbol library generation and maintenance</li>
+          <li>Design processes and supporting documentation</li>
+          <li>Drafting and schematic support</li>
+        </ul>
+
+        <div class="chips" aria-label="Capability tags">
+          <span class="chip">DC to Ka Band</span>
+          <span class="chip">SMT</span>
+          <span class="chip">Thruhole</span>
+          <span class="chip">RF</span>
+          <span class="chip">Analog</span>
+          <span class="chip">Microwave</span>
+          <span class="chip">Digital</span>
+          <span class="chip">Power Supplies</span>
+          <span class="chip">Schematics</span>
+          <span class="chip">Drafting</span>
+        </div>
+
+        <div class="rule"></div>
+
+        <h2 id="capabilities">Examples</h2>
+        <p class="lead">
+          Image paths assume you keep the original structure in your repo:
+          <code>assets/images/...</code>
+        </p>
+        <div class="images">
+          <figure>
+            <img src="./assets/images/SCHEM1.jpg" alt="Schematic example" />
+            <figcaption>Schematic example</figcaption>
+          </figure>
+          <figure>
+            <img src="./assets/images/PWBDIG4.jpg" alt="PCB/PWB layout example" />
+            <figcaption>Layout example</figcaption>
+          </figure>
+          <figure>
+            <img src="./assets/images/PWBFLT3.jpg" alt="PCB/PWB example" />
+            <figcaption>Board example</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <aside class="aside">
+        <h2 id="contact">Contact</h2>
+        <div class="kvs">
+          <div class="kv">
+            <div class="k">Location</div>
+            <div class="v">Norcross, Georgia</div>
+          </div>
+          <div class="kv">
+            <div class="k">Phone</div>
+            <div class="v"><a href="tel:+17709213129">770-921-3129</a></div>
+          </div>
+          <div class="kv">
+            <div class="k">Email</div>
+            <div class="v"><a href="mailto:contact@higaindesign.com">contact@higaindesign.com</a></div>
+          </div>
+        </div>
+
+        <div class="cta">
+          <a href="mailto:contact@higaindesign.com">Email</a>
+          <a href="tel:+17709213129">Call</a>
+          <a href="http://www.higaindesign.com/" target="_blank" rel="noopener">Original site</a>
+          <a href="http://www.altium.com" target="_blank" rel="noopener">Altium</a>
+        </div>
+
+        <div class="rule"></div>
+
+        <p>
+          If you want this to behave like limosa.work’s multi-page nav later, keep this file as
+          a template and split sections into separate pages.
+        </p>
+      </aside>
+    </div>
+
+    <footer>
+      <div>Copyright 2015 HiGain Design Services</div>
+      <div><a href="#top">Back to top</a></div>
+    </footer>
+  </main>
+</body>
+</html>
