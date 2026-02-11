@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FSM Scheduling Wizard</title>
+  <style>
+    :root { --bg:#0b1220; --card:#121a2b; --muted:#9aa4b2; --text:#e6edf3; --accent:#4aa3ff; --danger:#ff5c5c; --ok:#38d9a9; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: linear-gradient(180deg, #070b14, var(--bg)); color: var(--text); }
+    .wrap { max-width: 860px; margin: 24px auto; padding: 16px; }
+    .card { background: rgba(18,26,43,0.92); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 18px; box-shadow: 0 10px 26px rgba(0,0,0,0.35); }
+    .row { display:flex; gap: 14px; flex-wrap: wrap; }
+    .row > * { flex: 1 1 240px; }
+    h1 { font-size: 20px; margin: 0 0 10px; letter-spacing: 0.2px; }
+    h2 { font-size: 16px; margin: 18px 0 8px; }
+    p { margin: 6px 0 10px; color: var(--text); }
+    .muted { color: var(--muted); font-size: 13px; line-height: 1.35; }
+    .pill { display:inline-flex; align-items:center; gap:8px; padding: 6px 10px; border-radius: 999px; background: rgba(74,163,255,0.10); border: 1px solid rgba(74,163,255,0.25); color: var(--text); font-size: 12px; }
+    .step { display:flex; justify-content: space-between; align-items:center; gap: 10px; margin-bottom: 10px; }
+    .progress { width: 100%; height: 8px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow:hidden; }
+    .bar { height: 100%; width: 0%; background: var(--accent); transition: width 180ms ease; }
+    .q { font-size: 16px; margin: 6px 0 12px; }
+    .actions { display:flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+    button {
+      appearance:none; border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06); color: var(--text);
+      padding: 10px 12px; border-radius: 12px; cursor:pointer;
+      font-weight: 600;
+    }
+    button:hover { background: rgba(255,255,255,0.10); }
+    button.primary { background: rgba(74,163,255,0.20); border-color: rgba(74,163,255,0.45); }
+    button.primary:hover { background: rgba(74,163,255,0.28); }
+    button.danger { background: rgba(255,92,92,0.18); border-color: rgba(255,92,92,0.38); }
+    button.danger:hover { background: rgba(255,92,92,0.26); }
+    button.ghost { background: transparent; }
+    .panel { margin-top: 14px; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.18); }
+    .panel.ok { border-color: rgba(56,217,169,0.28); }
+    .panel.warn { border-color: rgba(255,92,92,0.25); }
+    ul { margin: 8px 0 0 18px; padding:0; }
+    li { margin: 6px 0; color: var(--text); }
+    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+           font-size: 12px; padding: 2px 6px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12);
+           background: rgba(255,255,255,0.06); color: var(--text); }
+    .footer { margin-top: 14px; display:flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .small { font-size: 12px; color: var(--muted); }
+    .badge { display:inline-block; margin-left: 8px; font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.10); background: rgba(255,255,255,0.06); color: var(--muted);}
+    .grid { display:grid; grid-template-columns: 1fr; gap: 10px; }
+    @media (min-width: 820px) { .grid { grid-template-columns: 1fr 1fr; } }
+    .choiceHint { margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="step">
+        <div>
+          <h1>FSM Scheduling Wizard <span class="badge" id="phaseBadge">Phase</span></h1>
+          <div class="muted">One question at a time. Minimal steps. Escalates only after the common fixes fail.</div>
+        </div>
+        <div class="pill">
+          <span id="stepLabel">Step</span>
+        </div>
+      </div>
+
+      <div class="progress" aria-label="progress"><div class="bar" id="bar"></div></div>
+
+      <div id="screen" class="panel" style="margin-top:14px;">
+        <!-- dynamic -->
+      </div>
+
+      <div class="footer">
+        <div class="small">
+          References:
+          <a href="https://ior.ad/aEpQ" target="_blank" rel="noreferrer">Schedule navigation & Gantt jump</a> ·
+          <a href="https://ior.ad/aHQW" target="_blank" rel="noreferrer">Skills, subcontractor, contract crews</a>
+        </div>
+        <div class="small">
+          Tip: If this feels long, stop at “Escalate” and send the required screenshots.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // -----------------------------
+    // Wizard definition (node graph)
+    // -----------------------------
+    const nodes = {
+      start: {
+        phase: "Start",
+        step: 1,
+        title: "What problem are you solving?",
+        body: `
+          <div class="q">Pick the closest match.</div>
+          <div class="grid">
+            <button class="primary" data-next="q_find_list">I cannot find the appointment in the list</button>
+            <button class="primary" data-next="q_already_scheduled">I can see it in the list but scheduling is failing</button>
+          </div>
+          <div class="muted choiceHint">If you are unsure, start with the list visibility checks.</div>
+        `,
+      },
+
+      // -----------------------------
+      // Phase 1: Find it in list
+      // -----------------------------
+      q_find_list: {
+        phase: "Find in list",
+        step: 2,
+        title: "Can you find the appointment in the list?",
+        body: `
+          <div class="q">Can you find the appointment in the list?</div>
+          <div class="actions">
+            <button class="primary" data-next="q_already_scheduled">Yes</button>
+            <button class="danger" data-next="fix_horizon">No</button>
+          </div>
+        `,
+      },
+
+      fix_horizon: {
+        phase: "Find in list",
+        step: 3,
+        title: "Fix: Horizon date",
+        body: `
+          <h2>Check Horizon date</h2>
+          <p>Where to look: the calendar control above the appointment list.</p>
+          <p><strong>Fix:</strong> move the Horizon forward until it includes the appointment's dates.</p>
+          <div class="q">Did the appointment appear in the list after changing Horizon?</div>
+          <div class="actions">
+            <button class="primary" data-next="q_already_scheduled">Yes</button>
+            <button data-next="fix_date_type">No</button>
+          </div>
+        `,
+      },
+
+      fix_date_type: {
+        phase: "Find in list",
+        step: 4,
+        title: "Fix: Date type filter",
+        body: `
+          <h2>Check date type filter</h2>
+          <p>Where to look: the clock icon next to Horizon.</p>
+          <p><strong>Fix:</strong> ensure at least one relevant date type is selected:</p>
+          <ul>
+            <li>Due Date</li>
+            <li>Earliest Start Permitted</li>
+          </ul>
+          <div class="q">Did the appointment appear after adjusting the date type filter?</div>
+          <div class="actions">
+            <button class="primary" data-next="q_already_scheduled">Yes</button>
+            <button data-next="fix_window_length">No</button>
+          </div>
+        `,
+      },
+
+      fix_window_length: {
+        phase: "Find in list",
+        step: 5,
+        title: "Fix: Scheduling window length",
+        body: `
+          <h2>Check Scheduling Window Length</h2>
+          <p>Where to look: gear icon → Dispatch Console Settings → Scheduling window length.</p>
+          <p><strong>Fix:</strong> increase the window length if it's too small.</p>
+          <div class="q">Did the appointment appear after increasing the window length?</div>
+          <div class="actions">
+            <button class="primary" data-next="q_already_scheduled">Yes</button>
+            <button class="danger" data-next="escalate_missing_list">No</button>
+          </div>
+        `,
+      },
+
+      // -----------------------------
+      // Phase 2: Place it on schedule
+      // -----------------------------
+      q_already_scheduled: {
+        phase: "Place on schedule",
+        step: 6,
+        title: "Is it already on the schedule?",
+        body: `
+          <div class="q">Is the appointment already on the schedule (right side)?</div>
+          <div class="actions">
+            <button class="primary" data-next="fix_gantt_jump">Yes</button>
+            <button class="danger" data-next="q_autoplace">No</button>
+          </div>
+        `,
+      },
+
+      fix_gantt_jump: {
+        phase: "Place on schedule",
+        step: 7,
+        title: "Quick navigation: Gantt",
+        body: `
+          <h2>Jump to it using Gantt</h2>
+          <p>Use the appointment’s list actions and click <span class="kbd">Gantt</span> to jump to the scheduled day.</p>
+          <div class="q">Does it look wrong (wrong crew/day/time)?</div>
+          <div class="actions">
+            <button class="primary" data-next="done_ok">No, it looks fine</button>
+            <button class="danger" data-next="q_constraints_entry">Yes, it looks wrong</button>
+          </div>
+        `,
+      },
+
+      q_autoplace: {
+        phase: "Place on schedule",
+        step: 8,
+        title: "Does Schedule work?",
+        body: `
+          <div class="q">Does the <span class="kbd">Schedule</span> action place it automatically?</div>
+          <div class="actions">
+            <button class="primary" data-next="done_ok">Yes</button>
+            <button class="danger" data-next="q_dragdrop">No</button>
+          </div>
+        `,
+      },
+
+      q_dragdrop: {
+        phase: "Place on schedule",
+        step: 9,
+        title: "Can you drag and drop it?",
+        body: `
+          <div class="q">Can you drag-and-drop it onto the intended crew/day?</div>
+          <div class="actions">
+            <button class="primary" data-next="q_optimizer_moves">Yes, it stays</button>
+            <button class="danger" data-next="q_constraints_entry">No, it falls off or won’t stay</button>
+          </div>
+          <div class="muted">“Falls off” usually means a rule/constraint is blocking placement.</div>
+        `,
+      },
+
+      // -----------------------------
+      // Constraint checks (gated)
+      // -----------------------------
+      q_constraints_entry: {
+        phase: "Constraints",
+        step: 10,
+        title: "Constraint checks",
+        body: `
+          <div class="panel warn">
+            <strong>Stop dragging it around.</strong>
+            <div class="muted" style="margin-top:6px;">
+              If placement fails or looks wrong, it is usually due to constraints (required crew/team, subcontracting, missing skill, hours, location).
+            </div>
+          </div>
+          <div class="q" style="margin-top:12px;">Is the appointment restricted to a specific crew or group of crews?</div>
+          <div class="muted">Look for a “must be done by X” situation.</div>
+          <div class="actions">
+            <button class="primary" data-next="fix_required_vs_preferred">Yes</button>
+            <button data-next="q_subcontracted">No</button>
+          </div>
+        `,
+      },
+
+      fix_required_vs_preferred: {
+        phase: "Constraints",
+        step: 11,
+        title: "Fix: Required vs Preferred crew/team",
+        body: `
+          <h2>Check Service Contract crew assignment rules</h2>
+          <ul>
+            <li>Open the appointment → click <strong>Parent Record</strong> (Work Order).</li>
+            <li>From the Work Order, open the <strong>Service Contract</strong>.</li>
+            <li>Go to <strong>Related</strong> → <strong>Service Contract Crews</strong>.</li>
+          </ul>
+          <p><strong>Fix options:</strong></p>
+          <ul>
+            <li>If the wrong crew/team is marked <strong>Required</strong>, correct or remove it.</li>
+            <li>If it should be flexible, change from <strong>Required</strong> to <strong>Preferred</strong>.</li>
+          </ul>
+          <div class="q">After correcting that, can you place it?</div>
+          <div class="actions">
+            <button class="primary" data-next="q_optimizer_moves">Yes</button>
+            <button class="danger" data-next="q_subcontracted">No</button>
+          </div>
+        `,
+      },
+
+      q_subcontracted: {
+        phase: "Constraints",
+        step: 12,
+        title: "Subcontracted?",
+        body: `
+          <div class="q">Is the work marked as subcontracted?</div>
+          <div class="actions">
+            <button class="primary" data-next="fix_subcontracted">Yes</button>
+            <button data-next="q_skill">No</button>
+          </div>
+        `,
+      },
+
+      fix_subcontracted: {
+        phase: "Constraints",
+        step: 13,
+        title: "Fix: Subcontractor crew requirement",
+        body: `
+          <h2>Subcontracted work can only go to subcontractor crews</h2>
+          <p>Where to look: open the crew record and confirm the subcontractor setting is enabled.</p>
+          <p><strong>Fix:</strong> schedule onto the subcontractor-designated crew (or have the correct crew flagged).</p>
+          <div class="q">After using a subcontractor crew, can you place it?</div>
+          <div class="actions">
+            <button class="primary" data-next="q_optimizer_moves">Yes</button>
+            <button class="danger" data-next="q_skill">No</button>
+          </div>
+        `,
+      },
+
+      q_skill: {
+        phase: "Constraints",
+        step: 14,
+        title: "Skill/work type enabled?",
+        body: `
+          <div class="q">Does the chosen crew have the right type of work enabled?</div>
+          <div class="muted">If not, the system will not place work onto that crew.</div>
+          <div class="actions">
+            <button class="primary" data-next="q_hours">Yes</button>
+            <button class="danger" data-next="fix_skill">No</button>
+          </div>
+        `,
+      },
+
+      fix_skill: {
+        phase: "Constraints",
+        step: 15,
+        title: "Fix: Add crew skill/work type",
+        body: `
+          <h2>Update crew skills</h2>
+          <p>Where to look: Crew record → <strong>Skills</strong>.</p>
+          <p><strong>Fix:</strong> add the missing work type/skill, then retry scheduling.</p>
+          <div class="q">After adding the skill, can you place it?</div>
+          <div class="actions">
+            <button class="primary" data-next="q_optimizer_moves">Yes</button>
+            <button class="danger" data-next="q_hours">No</button>
+          </div>
+        `,
+      },
+
+      q_hours: {
+        phase: "Constraints",
+        step: 16,
+        title: "Crew available?",
+        body: `
+          <div class="q">Is the crew available at that time (working hours)?</div>
+          <div class="muted">Gray blocks usually mean unavailable; white means available; yellow indicates extended hours.</div>
+          <div class="actions">
+            <button class="primary" data-next="q_location">Yes</button>
+            <button class="danger" data-next="fix_hours">No</button>
+          </div>
+        `,
+      },
+
+      fix_hours: {
+        phase: "Constraints",
+        step: 17,
+        title: "Fix: Operating hours",
+        body: `
+          <h2>Correct operating hours</h2>
+          <p>If the crew’s hours are wrong, update operating hours (only if this crew truly has unique hours).</p>
+          <div class="q">After correcting hours, can you place it?</div>
+          <div class="actions">
+            <button class="primary" data-next="q_optimizer_moves">Yes</button>
+            <button class="danger" data-next="q_location">No</button>
+          </div>
+        `,
+      },
+
+      q_location: {
+        phase: "Constraints",
+        step: 18,
+        title: "Start location correct?",
+        body: `
+          <div class="q">Is the crew starting from the right location (dispatch address)?</div>
+          <div class="muted">If the start address is wrong, drive assumptions can block sensible placement.</div>
+          <div class="actions">
+            <button class="primary" data-next="q_multiday">Yes</button>
+            <button class="danger" data-next="fix_location">No or unsure</button>
+          </div>
+        `,
+      },
+
+      fix_location: {
+        phase: "Constraints",
+        step: 19,
+        title: "Fix: Dispatch address",
+        body: `
+          <h2>Update crew starting address</h2>
+          <p>Where to look: crew territory/member record (often defaults to branch address).</p>
+          <p><strong>Fix:</strong> update only for crews that start somewhere other than the branch.</p>
+          <div class="q">After correcting the start location, can you place it?</div>
+          <div class="actions">
+            <button class="primary" data-next="q_optimizer_moves">Yes</button>
+            <button class="danger" data-next="q_multiday">No</button>
+          </div>
+        `,
+      },
+
+      q_multiday: {
+        phase: "Constraints",
+        step: 20,
+        title: "Multi-day job?",
+        body: `
+          <div class="q">Is this a very large job that spans multiple days?</div>
+          <div class="actions">
+            <button class="primary" data-next="fix_multiday">Yes</button>
+            <button data-next="q_optimizer_moves">No</button>
+          </div>
+        `,
+      },
+
+      fix_multiday: {
+        phase: "Constraints",
+        step: 21,
+        title: "Fix: Split job",
+        body: `
+          <h2>Split into daily appointments</h2>
+          <p>Fix: split the multi-day work into multiple daily appointments, then place each day.</p>
+          <div class="q">After splitting, can you place each appointment?</div>
+          <div class="actions">
+            <button class="primary" data-next="q_optimizer_moves">Yes</button>
+            <button class="danger" data-next="escalate_not_scheduling">No</button>
+          </div>
+        `,
+      },
+
+      // -----------------------------
+      // Optimization moving it
+      // -----------------------------
+      q_optimizer_moves: {
+        phase: "Stability",
+        step: 22,
+        title: "Does optimization keep moving it?",
+        body: `
+          <div class="q">After you place it, does optimization keep moving it?</div>
+          <div class="actions">
+            <button class="primary" data-next="fix_pin">Yes</button>
+            <button data-next="done_ok">No</button>
+          </div>
+        `,
+      },
+
+      fix_pin: {
+        phase: "Stability",
+        step: 23,
+        title: "Fix: Pin it",
+        body: `
+          <h2>Pin the appointment</h2>
+          <p>Where to look: right-click the appointment → <strong>Pin</strong>.</p>
+          <p><strong>Fix:</strong> pin critical appointments that must not move (unpin if it should be movable).</p>
+          <div class="actions">
+            <button class="primary" data-next="done_ok">Done</button>
+          </div>
+        `,
+      },
+
+      // -----------------------------
+      // Done + escalation
+      // -----------------------------
+      done_ok: {
+        phase: "Complete",
+        step: 24,
+        title: "Resolved",
+        body: `
+          <div class="panel ok">
+            <strong>Done.</strong>
+            <div class="muted" style="margin-top:6px;">If the issue returns, re-run the wizard and capture screenshots before escalating.</div>
+          </div>
+          <div class="actions">
+            <button class="primary" data-next="start">Start over</button>
+          </div>
+        `,
+      },
+
+      escalate_missing_list: {
+        phase: "Escalate",
+        step: 25,
+        title: "Escalate: Appointment not visible in list",
+        body: `
+          <div class="panel warn">
+            <strong>Escalate to your support/ops owner.</strong>
+            <div class="muted" style="margin-top:6px;">You already checked Horizon, date type, and Scheduling Window Length.</div>
+          </div>
+          <h2>Send these:</h2>
+          <ul>
+            <li>Appointment ID</li>
+            <li>Screenshot showing Horizon date and clock icon selections</li>
+            <li>Screenshot of Dispatch Console Settings showing Scheduling Window Length</li>
+          </ul>
+          <div class="actions">
+            <button class="primary" data-next="start">Start over</button>
+          </div>
+        `,
+      },
+
+      escalate_not_scheduling: {
+        phase: "Escalate",
+        step: 26,
+        title: "Escalate: Scheduling blocked",
+        body: `
+          <div class="panel warn">
+            <strong>Escalate to your support/ops owner.</strong>
+            <div class="muted" style="margin-top:6px;">Scheduling is still blocked after constraint checks.</div>
+          </div>
+          <h2>Send these:</h2>
+          <ul>
+            <li>Appointment ID</li>
+            <li>Crew you attempted</li>
+            <li>Screenshot of the appointment lightbox (key dates, duration)</li>
+            <li>Screenshot of the crew Skills and Operating Hours sections</li>
+            <li>Whether the work is subcontracted</li>
+            <li>Whether the Service Contract has a Required crew/team set (Service Contract Crews)</li>
+          </ul>
+          <div class="actions">
+            <button class="primary" data-next="start">Start over</button>
+          </div>
+        `,
+      },
+    };
+
+    // Flatten list of steps for progress calculation (based on max step number used)
+    const MAX_STEP = Math.max(...Object.values(nodes).map(n => n.step || 1));
+
+    const screenEl = document.getElementById("screen");
+    const barEl = document.getElementById("bar");
+    const stepLabelEl = document.getElementById("stepLabel");
+    const phaseBadgeEl = document.getElementById("phaseBadge");
+
+    let history = [];
+    let current = "start";
+
+    function render(key) {
+      const node = nodes[key];
+      if (!node) return;
+
+      current = key;
+
+      // Update header bits
+      const step = node.step || 1;
+      phaseBadgeEl.textContent = node.phase || "Phase";
+      stepLabelEl.textContent = `Step ${step} of ${MAX_STEP}`;
+
+      const pct = Math.min(100, Math.max(0, Math.round((step / MAX_STEP) * 100)));
+      barEl.style.width = pct + "%";
+
+      // Render screen
+      screenEl.innerHTML = `
+        <div>
+          <h2 style="margin-top:0;">${escapeHtml(node.title || "")}</h2>
+          ${node.body || ""}
+        </div>
+        <div class="actions" style="margin-top:14px;">
+          ${history.length ? `<button class="ghost" id="backBtn">Back</button>` : ""}
+          <button class="ghost" id="resetBtn">Reset</button>
+        </div>
+      `;
+
+      // Wire buttons
+      screenEl.querySelectorAll("button[data-next]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const next = btn.getAttribute("data-next");
+          if (next) {
+            history.push(current);
+            render(next);
+          }
+        });
+      });
+
+      const backBtn = document.getElementById("backBtn");
+      if (backBtn) {
+        backBtn.addEventListener("click", () => {
+          const prev = history.pop();
+          if (prev) render(prev);
+        });
+      }
+
+      document.getElementById("resetBtn").addEventListener("click", () => {
+        history = [];
+        render("start");
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, s => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+      }[s]));
+    }
+
+    render("start");
+  </script>
+</body>
+</html>
