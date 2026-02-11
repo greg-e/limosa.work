@@ -1,149 +1,502 @@
-<style>
-  body {
-    margin: 0;
-    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
-    background: transparent;
-    color: #323130;
-  }
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Service Appointment Troubleshooting</title>
+  <style>
+    body { margin:0; font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Arial,sans-serif; background:#fff; color:#323130; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 16px; }
+    .card { background:#fff; border:1px solid #edebe9; border-radius: 4px; padding: 24px; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
 
-  .wrap {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0;
-  }
+    h1 { font-size: 20px; font-weight: 600; margin: 0; color:#201f1e; }
+    h2 { font-size: 14px; font-weight: 600; margin: 18px 0 8px; color:#605e5c; }
+    .muted { color:#605e5c; font-size: 13px; }
 
-  .card {
-    background: #ffffff;
-    border: 1px solid #edebe9;
-    border-radius: 4px;
-    padding: 24px;
-    box-shadow: 0 1px 2px rgba(0,0,0,.05);
-  }
+    .toprow { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom: 8px; }
+    .badge { display:inline-block; font-size: 12px; background:#f3f2f1; padding: 4px 8px; border-radius: 4px; margin-left: 8px; }
 
-  h1 {
-    font-size: 20px;
-    font-weight: 600;
-    margin: 0 0 12px;
-    color: #201f1e;
-  }
+    .progress { margin: 10px 0 16px; }
+    .bar { height: 4px; background:#edebe9; border-radius: 2px; overflow:hidden; }
+    .bar > div { height: 100%; width: 0%; background:#0078d4; }
 
-  h2 {
-    font-size: 14px;
-    font-weight: 600;
-    margin: 20px 0 8px;
-    color: #605e5c;
-  }
+    .q { font-size: 16px; font-weight: 600; margin: 12px 0 14px; }
+    .action { border-left: 3px solid #0078d4; padding: 12px; background:#f3f2f1; border-radius: 4px; margin: 0 0 12px; }
+    .label { font-size: 12px; color:#605e5c; font-weight: 600; margin-bottom: 4px; }
 
-  p {
-    margin: 8px 0;
-    font-size: 14px;
-  }
+    .btns { display:flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; align-items:center; }
+    button { border-radius: 2px; padding: 8px 16px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .primary { background:#0078d4; border:1px solid #0078d4; color:#fff; }
+    .primary:hover { background:#106ebe; }
+    .secondary { background:#fff; border:1px solid #8a8886; color:#323130; }
+    .secondary:hover { background:#f3f2f1; }
+    .linkbtn { background:transparent; border:none; color:#0078d4; padding: 8px 0; }
+    .linkbtn:hover { text-decoration: underline; }
 
-  .q {
-    font-size: 16px;
-    font-weight: 600;
-    margin: 12px 0 16px;
-  }
+    .toast { background:#faf9f8; border:1px solid #edebe9; padding: 12px; border-radius: 4px; font-size: 13px; }
+    .warn { border-left: 3px solid #f59e0b; }
+    .divider { height:1px; background:#edebe9; margin: 16px 0; }
 
-  .action {
-    border-left: 3px solid #0078d4;
-    padding: 12px;
-    background: #f3f2f1;
-    border-radius: 4px;
-    margin-bottom: 12px;
-  }
+    details { margin-top: 14px; }
+    details summary { cursor:pointer; color:#0078d4; font-weight: 600; list-style: none; }
+    details summary::-webkit-details-marker { display:none; }
+    details .panel { margin-top: 10px; }
 
-  .label {
-    font-size: 12px;
-    color: #605e5c;
-    margin-bottom: 4px;
-    font-weight: 600;
-  }
+    ul { margin: 6px 0 0 16px; padding: 0; }
+    li { margin: 4px 0; font-size: 13px; }
 
-  button {
-    border-radius: 2px;
-    padding: 8px 16px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-  }
+    .hidden { display:none !important; }
 
-  .primary {
-    background: #0078d4;
-    color: white;
-    border: 1px solid #0078d4;
-  }
+    @media print {
+      .btns, .progress, details { display:none !important; }
+      .card { box-shadow:none; }
+    }
+  </style>
+</head>
 
-  .primary:hover {
-    background: #106ebe;
-  }
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="toprow">
+        <div>
+          <h1>Service Appointment Troubleshooting <span class="badge" id="phaseBadge">Start</span></h1>
+          <div class="muted" id="stepMeta">Step 1</div>
+        </div>
+      </div>
 
-  .secondary {
-    background: #ffffff;
-    border: 1px solid #8a8886;
-    color: #323130;
-  }
+      <div class="progress">
+        <div class="bar"><div id="barFill"></div></div>
+      </div>
 
-  .secondary:hover {
-    background: #f3f2f1;
-  }
+      <div class="q" id="question">Loading…</div>
+      <div id="actions"></div>
+      <div class="btns" id="answerButtons"></div>
 
-  .ghost {
-    background: transparent;
-    border: none;
-    color: #0078d4;
-  }
+      <div class="btns">
+        <button class="secondary" id="backBtn" type="button">Back</button>
+        <button class="secondary" id="restartBtn" type="button">Restart</button>
+        <button class="linkbtn" id="printBtn" type="button">Print</button>
+        <button class="linkbtn" id="showEscBtn" type="button" style="margin-left:auto;">Need to escalate?</button>
+      </div>
 
-  .btns {
-    display: flex;
-    gap: 10px;
-    margin-top: 16px;
-    flex-wrap: wrap;
-  }
+      <div class="toast warn" id="noteBox" style="display:none;margin-top:12px;"></div>
 
-  .toast {
-    background: #faf9f8;
-    border: 1px solid #edebe9;
-    padding: 12px;
-    border-radius: 4px;
-    font-size: 13px;
-  }
+      <!-- Decision path: hidden by default. Auto-shown on escalation. -->
+      <details id="pathDetails" class="hidden">
+        <summary id="pathSummary">Decision path</summary>
+        <div class="panel toast" id="history"><div class="muted">No answers yet.</div></div>
+      </details>
 
-  .progress {
-    margin-bottom: 12px;
-  }
+      <!-- Escalation packet: hidden by default. Auto-shown on escalation OR button click. -->
+      <details id="escDetails" class="hidden">
+        <summary id="escSummary">Escalation packet</summary>
+        <div class="panel toast" id="escPanel">
+          <div class="muted" style="margin-bottom:8px;">Use this only if the wizard does not resolve the issue.</div>
+          <ul>
+            <li>Appointment ID</li>
+            <li>Crew you attempted</li>
+            <li>Screenshot: appointment lightbox (dates/duration)</li>
+            <li>Screenshot: crew Skills and Operating Hours</li>
+            <li>Whether work is subcontracted</li>
+            <li>Whether Service Contract Crews has a Required crew/team</li>
+          </ul>
 
-  .bar {
-    height: 4px;
-    background: #edebe9;
-    border-radius: 2px;
-    overflow: hidden;
-  }
+          <div class="divider"></div>
 
-  .bar > div {
-    height: 100%;
-    background: #0078d4;
-    width: 0%;
-  }
+          <div class="muted">
+            References:
+            <ul>
+              <li>https://www.iorad.com/player/2538642/Crew-Mgmt--Satellite-Locations---Operating-Hours</li>
+              <li>https://ior.ad/aEpQ</li>
+              <li>https://ior.ad/aHQW</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
 
-  .badge {
-    display: inline-block;
-    font-size: 12px;
-    background: #f3f2f1;
-    padding: 4px 8px;
-    border-radius: 4px;
-    margin-left: 8px;
-  }
+  <script>
+    // ---------------------------
+    // Steps (content)
+    // ---------------------------
+    var steps = {
+      start: {
+        phase: "Start",
+        question: "Can you find the appointment in the list?",
+        note: "If it is not in the list, fix list visibility first before troubleshooting scheduling rules.",
+        answers: [
+          { text: "No", next: "find_horizon" },
+          { text: "Yes", next: "on_schedule" }
+        ]
+      },
 
-  ul {
-    margin: 6px 0 0 16px;
-    padding: 0;
-  }
+      // Phase 1: Find it
+      find_horizon: {
+        phase: "Find it",
+        question: "Did moving the Horizon later make it appear?",
+        actions: [
+          { where: "Calendar control above the appointment list", fix: "Move Horizon forward until it includes the appointment dates." }
+        ],
+        answers: [
+          { text: "Yes, it appears now", next: "on_schedule" },
+          { text: "No", next: "find_datetype" }
+        ]
+      },
+      find_datetype: {
+        phase: "Find it",
+        question: "Did selecting the right date type make it appear?",
+        actions: [
+          { where: "Clock icon next to Horizon", fix: "Select Due Date and/or Earliest Start Permitted (whichever matches the appointment filtering)." }
+        ],
+        answers: [
+          { text: "Yes, it appears now", next: "on_schedule" },
+          { text: "No", next: "find_window" }
+        ]
+      },
+      find_window: {
+        phase: "Find it",
+        question: "Did increasing Scheduling Window Length make it appear?",
+        actions: [
+          { where: "Gear icon → Dispatch Console Settings → Scheduling window length", fix: "Increase the window length (a larger lookback prevents disappearing appointments)." }
+        ],
+        answers: [
+          { text: "Yes, it appears now", next: "on_schedule" },
+          { text: "No, still not in list", next: "escalate_find" }
+        ]
+      },
+      escalate_find: {
+        phase: "Escalate",
+        question: "Still not in the list after Horizon, date type, and window length checks.",
+        note: "Stop here and escalate. This is likely data or setup outside dispatcher controls.",
+        isEscalation: true,
+        answers: [
+          { text: "Restart", next: "start" }
+        ]
+      },
 
-  li {
-    margin: 4px 0;
-    font-size: 13px;
-  }
-</style>
+      // Phase 2: Place it
+      on_schedule: {
+        phase: "Place it",
+        question: "Is the appointment already on the schedule (right side)?",
+        answers: [
+          { text: "Yes", next: "scheduled_jump" },
+          { text: "No", next: "autoplace" }
+        ]
+      },
+      scheduled_jump: {
+        phase: "Place it",
+        question: "After using Gantt to jump to it, does it look correct?",
+        actions: [
+          { where: "Appointment list item actions", fix: "Use Gantt to jump to the scheduled day." }
+        ],
+        answers: [
+          { text: "Looks correct", next: "done" },
+          { text: "Looks wrong", next: "constraints_requiredcrew" }
+        ]
+      },
+      autoplace: {
+        phase: "Place it",
+        question: "Does the Schedule action place it automatically?",
+        answers: [
+          { text: "Yes", next: "done" },
+          { text: "No", next: "dragdrop" }
+        ]
+      },
+      dragdrop: {
+        phase: "Place it",
+        question: "Can you drag and drop it and it stays on the crew/day?",
+        answers: [
+          { text: "Yes", next: "optimizer_moves" },
+          { text: "No, it falls off", next: "constraints_requiredcrew" }
+        ]
+      },
 
+      // Constraints as a guided checklist
+      constraints_requiredcrew: {
+        phase: "Constraints",
+        question: "Check crew restriction rules. Is it restricted to a specific crew/team?",
+        actions: [
+          { where: "Appointment → Parent Record (Work Order) → Service Contract → Related → Service Contract Crews",
+            fix: "Correct the Required crew/team, or change Required to Preferred if it should be flexible." }
+        ],
+        answers: [ { text: "Next", next: "constraints_subcontract" } ]
+      },
+      constraints_subcontract: {
+        phase: "Constraints",
+        question: "Check subcontracting. Is the work marked subcontracted?",
+        actions: [
+          { where: "Crew record subcontractor flag",
+            fix: "Subcontracted work can only be scheduled onto a crew flagged as subcontractor." }
+        ],
+        answers: [ { text: "Next", next: "constraints_skill" } ]
+      },
+      constraints_skill: {
+        phase: "Constraints",
+        question: "Check crew capability. Does the crew have the required work type skill?",
+        actions: [
+          { where: "Crew record → Skills",
+            fix: "Add the missing work type, then retry scheduling." }
+        ],
+        answers: [ { text: "Next", next: "constraints_hours" } ]
+      },
+      constraints_hours: {
+        phase: "Constraints",
+        question: "Check availability. Is the crew available at that time (operating hours)?",
+        actions: [
+          { where: "Schedule day view",
+            fix: "If hours are wrong for this crew, correct operating hours and retry." }
+        ],
+        answers: [ { text: "Next", next: "constraints_dispatchaddr" } ]
+      },
+      constraints_dispatchaddr: {
+        phase: "Constraints",
+        question: "Check start location. Is the crew dispatch address correct?",
+        actions: [
+          { where: "Crew territory/member record",
+            fix: "Update dispatch address only if the crew starts somewhere other than the branch." }
+        ],
+        answers: [ { text: "Next", next: "constraints_multiday" } ]
+      },
+      constraints_multiday: {
+        phase: "Constraints",
+        question: "Check job size. Is this a large multi day job?",
+        actions: [
+          { where: "Schedule → right click appointment → Split",
+            fix: "Split into daily appointments, distribute hours, then place each day." }
+        ],
+        answers: [ { text: "Next", next: "optimizer_moves" } ]
+      },
 
+      optimizer_moves: {
+        phase: "Stability",
+        question: "After placement, does optimization keep moving it?",
+        actions: [
+          { where: "Schedule → right click appointment",
+            fix: "Pin the appointment if it must stay at that exact time." }
+        ],
+        answers: [ { text: "Done", next: "done" } ]
+      },
+
+      done: {
+        phase: "Complete",
+        question: "Done. If it still isn’t resolved, escalate using the packet.",
+        answers: [ { text: "Restart", next: "start" } ]
+      }
+    };
+
+    var stepOrderApprox = [
+      "start",
+      "find_horizon","find_datetype","find_window","escalate_find",
+      "on_schedule","scheduled_jump","autoplace","dragdrop",
+      "constraints_requiredcrew","constraints_subcontract","constraints_skill","constraints_hours","constraints_dispatchaddr","constraints_multiday",
+      "optimizer_moves","done"
+    ];
+  </script>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var STORAGE_KEY = "sched_wizard_state_v3";
+
+      function $(id) { return document.getElementById(id); }
+      function safeText(el, v) { if (el) el.textContent = v; }
+      function safeWidth(el, v) { if (el) el.style.width = v; }
+
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function loadState() {
+        try {
+          var raw = localStorage.getItem(STORAGE_KEY);
+          return raw ? JSON.parse(raw) : null;
+        } catch (e) { return null; }
+      }
+
+      function saveState(state) {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        var state = loadState() || { current: "start", stack: [], history: [] };
+
+        var elQuestion = $("question");
+        var elActions = $("actions");
+        var elBtns = $("answerButtons");
+        var elBack = $("backBtn");
+        var elRestart = $("restartBtn");
+        var elPrint = $("printBtn");
+        var elShowEscBtn = $("showEscBtn");
+
+        var elHistory = $("history");
+        var elPhase = $("phaseBadge");
+        var elMeta = $("stepMeta");
+        var elBar = $("barFill");
+        var elNote = $("noteBox");
+
+        var elPathDetails = $("pathDetails");
+        var elPathSummary = $("pathSummary");
+        var elEscDetails = $("escDetails");
+        var elEscSummary = $("escSummary");
+
+        function renderHistory() {
+          if (!elHistory) return;
+          elHistory.innerHTML = state.history.length
+            ? "<ul>" + state.history.map(function (h) { return "<li>" + escapeHtml(h) + "</li>"; }).join("") + "</ul>"
+            : '<div class="muted">No answers yet.</div>';
+        }
+
+        function setProgressiveDisclosure(step) {
+          // Decision path: hidden by default; show on escalation or user-open.
+          if (elPathDetails && elPathSummary) {
+            if (step && step.isEscalation) {
+              elPathDetails.classList.remove("hidden");
+              elPathDetails.open = true;
+              safeText(elPathSummary, "Decision path (copy/screenshot for support)");
+            } else {
+              if (!elPathDetails.open) elPathDetails.classList.add("hidden");
+              if (!step || !step.isEscalation) safeText(elPathSummary, "Decision path");
+            }
+          }
+
+          // Escalation packet: hidden by default; show on escalation or user-open.
+          if (elEscDetails && elEscSummary) {
+            if (step && step.isEscalation) {
+              elEscDetails.classList.remove("hidden");
+              elEscDetails.open = true;
+              safeText(elEscSummary, "Escalation packet (use now)");
+            } else {
+              if (!elEscDetails.open) elEscDetails.classList.add("hidden");
+              safeText(elEscSummary, "Escalation packet");
+            }
+          }
+        }
+
+        function hardRestart() {
+          state.current = "start";
+          state.stack = [];
+          state.history = [];
+          try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+
+          if (elPathDetails) { elPathDetails.open = false; elPathDetails.classList.add("hidden"); }
+          if (elEscDetails) { elEscDetails.open = false; elEscDetails.classList.add("hidden"); }
+          render();
+        }
+
+        function render() {
+          var step = steps[state.current] || steps.start;
+
+          safeText(elQuestion, step.question || "");
+          safeText(elPhase, step.phase || "Wizard");
+
+          // Note
+          if (elNote) {
+            if (step.note) {
+              elNote.style.display = "block";
+              elNote.textContent = step.note;
+            } else {
+              elNote.style.display = "none";
+              elNote.textContent = "";
+            }
+          }
+
+          // Actions
+          if (elActions) {
+            elActions.innerHTML = "";
+            (step.actions || []).forEach(function (a) {
+              var d = document.createElement("div");
+              d.className = "action";
+              d.innerHTML =
+                '<div class="label">Where to look</div>' +
+                "<div>" + escapeHtml(a.where || "") + "</div>" +
+                '<div class="label" style="margin-top:8px;">Fix</div>' +
+                "<div>" + escapeHtml(a.fix || "") + "</div>";
+              elActions.appendChild(d);
+            });
+          }
+
+          // Answer buttons
+          if (elBtns) {
+            elBtns.innerHTML = "";
+            (step.answers || []).forEach(function (ans) {
+              var b = document.createElement("button");
+              b.type = "button";
+              b.className = (String(ans.text).toLowerCase() === "restart") ? "secondary" : "primary";
+              b.textContent = ans.text;
+
+              b.addEventListener("click", function () {
+                var isRestart = (ans.next === "start" && String(ans.text).toLowerCase() === "restart");
+                if (isRestart) { hardRestart(); return; }
+
+                if (step.question) state.history.push(step.question + " \u2192 " + ans.text);
+                state.stack.push(state.current);
+                state.current = ans.next;
+                render();
+              });
+
+              elBtns.appendChild(b);
+            });
+          }
+
+          // Back enabled
+          if (elBack) {
+            var canBack = state.stack.length > 0;
+            elBack.disabled = !canBack;
+            elBack.style.opacity = canBack ? "1" : "0.5";
+          }
+
+          // Progress
+          var idx = Math.max(0, stepOrderApprox.indexOf(state.current));
+          var pct = Math.round((idx / (stepOrderApprox.length - 1)) * 100);
+          safeWidth(elBar, pct + "%");
+          safeText(elMeta, "Step " + (idx + 1) + " of " + stepOrderApprox.length);
+
+          renderHistory();
+          setProgressiveDisclosure(step);
+
+          saveState(state);
+        }
+
+        // Handlers
+        if (elBack) {
+          elBack.addEventListener("click", function () {
+            if (!state.stack.length) return;
+            state.current = state.stack.pop();
+            state.history.pop();
+            render();
+          });
+        }
+        if (elRestart) elRestart.addEventListener("click", hardRestart);
+        if (elPrint) elPrint.addEventListener("click", function () { window.print(); });
+
+        if (elShowEscBtn) {
+          elShowEscBtn.addEventListener("click", function () {
+            if (elEscDetails) { elEscDetails.classList.remove("hidden"); elEscDetails.open = true; }
+            if (elPathDetails) { elPathDetails.classList.remove("hidden"); elPathDetails.open = true; }
+          });
+        }
+
+        if (elPathDetails) {
+          elPathDetails.addEventListener("toggle", function () {
+            if (elPathDetails.open) elPathDetails.classList.remove("hidden");
+          });
+        }
+        if (elEscDetails) {
+          elEscDetails.addEventListener("toggle", function () {
+            if (elEscDetails.open) elEscDetails.classList.remove("hidden");
+          });
+        }
+
+        render();
+      });
+    })();
+  </script>
+</body>
+</html>
