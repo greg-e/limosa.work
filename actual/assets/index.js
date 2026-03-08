@@ -730,23 +730,64 @@ function ActualDeckApp() {
 
   async function saveCardsToAPI(cardsToSave) {
     try {
-      const response = await fetch('http://localhost:3001/api/cards/save', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ cards: cardsToSave })
-      });
+      const token = localStorage.getItem("github_token");
       
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Failed to save cards:', errorData);
+      if (!token) {
+        console.warn("No GitHub token found. Cards saved locally only.");
+        return;
+      }
+
+      const owner = "greg-e";
+      const repo = "limosa.work";
+      const path = "assets/actual-deck/cards.json";
+      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+
+      // Get current SHA for the file
+      const getResponse = await fetch(url, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "X-GitHub-Api-Version": "2022-11-28"
+        }
+      });
+
+      let sha = null;
+      if (getResponse.ok) {
+        const fileData = await getResponse.json();
+        sha = fileData.sha;
+      }
+
+      const content = btoa(JSON.stringify(cardsToSave, null, 2));
+      
+      const saveResponse = await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "X-GitHub-Api-Version": "2022-11-28",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: "Update cards via Actual Deck editor",
+          content: content,
+          sha: sha,
+          committer: {
+            name: "Actual Deck Editor",
+            email: "noreply@actualdeck.local"
+          }
+        })
+      });
+
+      if (saveResponse.ok) {
+        const result = await saveResponse.json();
+        console.log("Cards saved to GitHub:", result.commit.message);
       } else {
-        const result = await response.json();
-        console.log('Cards saved successfully:', result);
+        const errorData = await saveResponse.json();
+        console.error("Failed to save cards to GitHub:", errorData);
+        if (errorData.message?.includes("token")) {
+          localStorage.removeItem("github_token");
+        }
       }
     } catch (error) {
-      console.error('Error communicating with cards API:', error);
+      console.error("Error saving to GitHub:", error);
     }
   }
 
