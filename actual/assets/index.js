@@ -762,22 +762,21 @@ function ActualDeckApp() {
     setIsEditorOpen(true);
   }
 
-  function handleSaveCard(card) {
-    setCards((current) => {
-      const index = current.findIndex((entry) => entry.id === card.id);
-      let next;
-      if (index >= 0) {
-        next = [...current];
-        next[index] = card;
-      } else {
-        next = [...current, card];
-      }
-      
-      // Auto-save to API
-      saveCardsToAPI(next);
-      
+  function upsertCard(cardsList, card) {
+    const index = cardsList.findIndex((entry) => entry.id === card.id);
+    if (index >= 0) {
+      const next = [...cardsList];
+      next[index] = card;
       return next;
-    });
+    }
+    return [...cardsList, card];
+  }
+
+  function handleSaveCard(card) {
+    const nextCards = upsertCard(cards, card);
+    setCards(nextCards);
+    // Explicitly call save endpoint on every create/edit save action.
+    saveCardsToAPI(nextCards);
     setIsEditorOpen(false);
     setEditorCard(null);
     setEditingExisting(false);
