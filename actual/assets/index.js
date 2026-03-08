@@ -611,7 +611,7 @@ function ActualDeckApp() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
   const [query, setQuery] = useState("");
-  const [audience, setAudience] = useState("Field");
+  const [audience, setAudience] = useState("All");
   const [familyFilter, setFamilyFilter] = useState("All");
   const [stack, setStack] = useState([]);
   const [isStackCollapsed, setIsStackCollapsed] = useState(false);
