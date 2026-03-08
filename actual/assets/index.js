@@ -38,7 +38,13 @@ const FAMILY_META = {
   Mechanism: { color: "bg-zinc-800", accent: "text-zinc-100" },
   Outcome: { color: "bg-orange-700", accent: "text-orange-100" },
   Metric: { color: "bg-violet-800", accent: "text-violet-100" },
-  Vision: { color: "bg-white", accent: "text-neutral-700", border: "border" }
+  Vision: {
+    color: "bg-white",
+    accent: "text-neutral-700",
+    border: "border",
+    text: "text-neutral-900",
+    editAction: "text-black/70 hover:text-black"
+  }
 };
 
 const AUDIENCE_PRESETS = {
@@ -151,9 +157,11 @@ function FamilyFilters({ families, active, setActive }) {
 function Card({ card, onAdd, onEdit }) {
   const [flipped, setFlipped] = useState(false);
   const meta = FAMILY_META[card.family] || {};
+  const frontTextClass = meta.text || "text-white";
+  const editActionClass = meta.editAction || "text-white/80 hover:text-white";
   const frontClass = `absolute inset-0 rounded-2xl p-3 border ${
     meta.border || "border-black/10"
-  } ${meta.color || "bg-neutral-800"} text-white [backface-visibility:hidden] flex flex-col`;
+  } ${meta.color || "bg-neutral-800"} ${frontTextClass} [backface-visibility:hidden] flex flex-col`;
   return html`
     <div className="group [perspective:1000px]">
       <div
@@ -188,7 +196,7 @@ function Card({ card, onAdd, onEdit }) {
                 e.stopPropagation();
                 onEdit(card.id);
               }}
-              className="text-xs text-white/80 hover:text-white inline-flex items-center gap-1"
+              className=${`text-xs inline-flex items-center gap-1 ${editActionClass}`}
             >
               <${Edit3} size=${14} /> Edit
             </button>
@@ -493,9 +501,10 @@ function StackPresentation({ cards, index, onClose, onPrev, onNext }) {
   if (!card) return null;
 
   const meta = FAMILY_META[card.family] || {};
+  const frontTextClass = meta.text || "text-white";
   const frontClass = `absolute inset-0 rounded-3xl p-6 border ${
     meta.border || "border-black/10"
-  } ${meta.color || "bg-neutral-800"} text-white [backface-visibility:hidden] flex flex-col`;
+  } ${meta.color || "bg-neutral-800"} ${frontTextClass} [backface-visibility:hidden] flex flex-col`;
 
   return html`
     <div className="fixed inset-0 z-50 bg-black/80 flex flex-col">
@@ -538,8 +547,10 @@ function StackPresentation({ cards, index, onClose, onPrev, onNext }) {
                 ? html`<div className="text-sm opacity-90 leading-snug mb-3">${card.quote}</div>`
                 : null}
               <div className="text-xl font-semibold leading-tight">${card.tagline || card.title}</div>
-              <div className="mt-4 text-sm text-white/80">${card.why}</div>
-              <div className="mt-auto text-xs text-white/60">Use the flip button to view implementation points.</div>
+              <div className=${`mt-4 text-sm ${meta.accent || "text-white/80"}`}>${card.why}</div>
+              <div className=${`mt-auto text-xs ${meta.accent || "text-white/60"}`}>
+                Use the flip button to view implementation points.
+              </div>
             </div>
             <div className="absolute inset-0 rounded-3xl p-6 bg-white text-black border border-black/10 [backface-visibility:hidden] [transform:rotateY(180deg)] flex flex-col">
               <div className="text-xs uppercase tracking-wider text-black/60 mb-3">How</div>
