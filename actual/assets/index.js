@@ -280,6 +280,7 @@ function CardEditor({ initialCard, isEditing, onSave, onCancel, existingIds, onD
     related: (initialCard?.related || []).join(", ")
   }));
   const [error, setError] = useState("");
+  const [saveStatus, setSaveStatus] = useState("");
 
   useEffect(() => {
     setForm({
@@ -295,6 +296,7 @@ function CardEditor({ initialCard, isEditing, onSave, onCancel, existingIds, onD
       related: (initialCard?.related || []).join(", ")
     });
     setError("");
+    setSaveStatus("");
   }, [initialCard, isEditing]);
 
   function handleChange(field, value) {
@@ -337,6 +339,7 @@ function CardEditor({ initialCard, isEditing, onSave, onCancel, existingIds, onD
       .map((entry) => entry.trim())
       .filter(Boolean);
 
+    setSaveStatus("Saving...");
     onSave({
       ...initialCard,
       id,
@@ -358,14 +361,9 @@ function CardEditor({ initialCard, isEditing, onSave, onCancel, existingIds, onD
         <div className="flex items-center justify-between px-4 py-3 border-b border-black/10">
           <div className="text-sm font-semibold">${isEditing ? "Edit card" : "Create card"}</div>
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick=${onDownload}
-              className="text-xs inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-black/10 text-black/70 hover:text-black hover:border-black/30 disabled:opacity-50"
-              disabled=${typeof onDownload !== "function"}
-            >
-              <${Download} size=${14} /> Download JSON
-            </button>
+            ${saveStatus
+              ? html`<span className="text-xs text-green-600 font-medium">${saveStatus}</span>`
+              : null}
             <button
               type="button"
               onClick=${onCancel}
@@ -711,16 +709,44 @@ function ActualDeckApp() {
   function handleSaveCard(card) {
     setCards((current) => {
       const index = current.findIndex((entry) => entry.id === card.id);
+      let next;
       if (index >= 0) {
-        const next = [...current];
+        next = [...current];
         next[index] = card;
-        return next;
+      } else {
+        next = [...current, card];
       }
-      return [...current, card];
+      
+      // Auto-save to API
+      saveCardsToAPI(next);
+      
+      return next;
     });
     setIsEditorOpen(false);
     setEditorCard(null);
     setEditingExisting(false);
+  }
+
+  async function saveCardsToAPI(cardsToSave) {
+    try {
+      const response = await fetch('http://localhost:3001/api/cards/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ cards: cardsToSave })
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Failed to save cards:', errorData);
+      } else {
+        const result = await response.json();
+        console.log('Cards saved successfully:', result);
+      }
+    } catch (error) {
+      console.error('Error communicating with cards API:', error);
+    }
   }
 
   function closeEditor() {
