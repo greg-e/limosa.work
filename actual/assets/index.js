@@ -24,9 +24,31 @@ const html = htm.bind(React.createElement);
 
 const rootElement = document.getElementById("root");
 const cardsDataUrl = rootElement?.dataset?.cardsUrl;
+const rootLogicAppUrl = rootElement?.dataset?.logicAppUrl;
 const CARDS_URL = cardsDataUrl
   ? new URL(cardsDataUrl, window.location.href)
   : new URL("../../assets/actual-deck/cards.json", import.meta.url);
+
+function getConfiguredLogicAppUrl() {
+  const queryParams = new URLSearchParams(window.location.search);
+  const queryLogicAppUrl = queryParams.get("logic_app_url");
+
+  if (queryLogicAppUrl && queryLogicAppUrl.trim()) {
+    localStorage.setItem("logic_app_url", queryLogicAppUrl.trim());
+
+    // Remove the one-time bootstrap parameter from the address bar.
+    const cleanUrl = new URL(window.location.href);
+    cleanUrl.searchParams.delete("logic_app_url");
+    window.history.replaceState({}, "", cleanUrl.toString());
+  }
+
+  return (
+    localStorage.getItem("logic_app_url") ||
+    window.ACTUAL_DECK_LOGIC_APP_URL ||
+    rootLogicAppUrl ||
+    ""
+  );
+}
 
 const FAMILY_META = {
   Language: { color: "bg-slate-800", accent: "text-slate-300" },
@@ -94,7 +116,7 @@ function Chip({ children, onClick, active }) {
   return html`<button onClick=${onClick} className=${classes}>${children}</button>`;
 }
 
-function Header({ query, setQuery, audience, setAudience, onClearStack, onNewCard }) {
+function Header({ query, setQuery, audience, setAudience, onClearStack, onNewCard, onConfigureSave, saveConnected }) {
   return html`
     <div className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-black/10">
       <div className="px-3 py-2 flex items-center gap-2">
@@ -129,6 +151,15 @@ function Header({ query, setQuery, audience, setAudience, onClearStack, onNewCar
           className="ml-1 inline-flex items-center gap-1 bg-red-600 text-white text-xs px-3 py-2 rounded-xl"
         >
           <${Trash2} size=${14} /> Clear
+        </button>
+        <button
+          onClick=${onConfigureSave}
+          className=${`ml-1 inline-flex items-center gap-1 text-xs px-3 py-2 rounded-xl ${
+            saveConnected ? "bg-blue-600 text-white" : "bg-amber-500 text-black"
+          }`}
+          title="Configure Logic App save endpoint"
+        >
+          <${Save} size=${14} /> ${saveConnected ? "Save Connected" : "Connect Save"}
         </button>
       </div>
     </div>
@@ -589,6 +620,10 @@ function ActualDeckApp() {
   const [editingExisting, setEditingExisting] = useState(false);
   const [isPresenting, setIsPresenting] = useState(false);
   const [presentationIndex, setPresentationIndex] = useState(0);
+  const [saveConnected, setSaveConnected] = useState(() => {
+    const logicAppUrl = getConfiguredLogicAppUrl();
+    return Boolean(logicAppUrl || localStorage.getItem("github_token"));
+  });
 
   const cardMap = useMemo(() => {
     const map = {};
@@ -740,7 +775,7 @@ function ActualDeckApp() {
   }
 
   async function saveCardsToAPI(cardsToSave) {
-    const logicAppUrl = localStorage.getItem("logic_app_url") || window.ACTUAL_DECK_LOGIC_APP_URL;
+    const logicAppUrl = getConfiguredLogicAppUrl();
 
     if (logicAppUrl) {
       try {
@@ -756,6 +791,7 @@ function ActualDeckApp() {
         });
 
         if (logicAppResponse.ok) {
+          setSaveConnected(true);
           console.log("Cards saved via Logic App.");
           return;
         }
@@ -815,6 +851,7 @@ function ActualDeckApp() {
       });
 
       if (saveResponse.ok) {
+        setSaveConnected(true);
         const result = await saveResponse.json();
         console.log("Cards saved to GitHub:", result.commit.message);
       } else {
@@ -822,11 +859,33 @@ function ActualDeckApp() {
         console.error("Failed to save cards to GitHub:", errorData);
         if (errorData.message?.includes("token")) {
           localStorage.removeItem("github_token");
+          setSaveConnected(Boolean(getConfiguredLogicAppUrl()));
         }
       }
     } catch (error) {
       console.error("Error saving to GitHub:", error);
     }
+  }
+
+  function configureSaveTarget() {
+    const current = getConfiguredLogicAppUrl();
+    const entered = window.prompt(
+      "Paste Logic App trigger URL (leave blank to clear):",
+      current || ""
+    );
+
+    if (entered === null) {
+      return;
+    }
+
+    const trimmed = entered.trim();
+    if (trimmed) {
+      localStorage.setItem("logic_app_url", trimmed);
+    } else {
+      localStorage.removeItem("logic_app_url");
+    }
+
+    setSaveConnected(Boolean(getConfiguredLogicAppUrl() || localStorage.getItem("github_token")));
   }
 
   function closeEditor() {
@@ -860,6 +919,8 @@ function ActualDeckApp() {
         setAudience=${setAudience}
         onClearStack=${clearStack}
         onNewCard=${openNewCard}
+        onConfigureSave=${configureSaveTarget}
+        saveConnected=${saveConnected}
       />
       <div className="px-3 pt-2 flex items-center gap-2 text-xs text-black/70">
         <${Users2} size=${14} /> Audience preset is <span className="font-semibold">${audience}</span>
