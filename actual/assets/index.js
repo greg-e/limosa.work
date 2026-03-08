@@ -729,11 +729,39 @@ function ActualDeckApp() {
   }
 
   async function saveCardsToAPI(cardsToSave) {
+    const logicAppUrl = localStorage.getItem("logic_app_url") || window.ACTUAL_DECK_LOGIC_APP_URL;
+
+    if (logicAppUrl) {
+      try {
+        const logicAppResponse = await fetch(logicAppUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            cards: cardsToSave,
+            commitMessage: "Update cards via Actual Deck Logic App"
+          })
+        });
+
+        if (logicAppResponse.ok) {
+          console.log("Cards saved via Logic App.");
+          return;
+        }
+
+        const logicAppError = await logicAppResponse.text();
+        console.error("Logic App save failed:", logicAppError);
+      } catch (logicAppException) {
+        console.error("Logic App request failed:", logicAppException);
+      }
+    }
+
+    // Legacy fallback for local testing while Logic App is being configured.
     try {
       const token = localStorage.getItem("github_token");
       
       if (!token) {
-        console.warn("No GitHub token found. Cards saved locally only.");
+        console.warn("No Logic App URL or GitHub token found. Cards saved locally only.");
         return;
       }
 
@@ -742,7 +770,6 @@ function ActualDeckApp() {
       const path = "assets/actual-deck/cards.json";
       const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 
-      // Get current SHA for the file
       const getResponse = await fetch(url, {
         headers: {
           "Authorization": `Bearer ${token}`,
