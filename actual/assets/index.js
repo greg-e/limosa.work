@@ -306,7 +306,7 @@ function Stack({ ids, cardMap, onRemove, onEdit, onPresent, collapsed, onToggleC
   `;
 }
 
-function CardEditor({ initialCard, isEditing, onSave, onCancel, existingIds, onDownload }) {
+function CardEditor({ initialCard, isEditing, onSave, onCancel, existingIds, onDownload, defaultAudiences = [] }) {
   const [form, setForm] = useState(() => ({
     id: initialCard?.id || "",
     title: initialCard?.title || "",
@@ -316,7 +316,7 @@ function CardEditor({ initialCard, isEditing, onSave, onCancel, existingIds, onD
     why: initialCard?.why || "",
     how: (initialCard?.how || []).join("\n"),
     reflection: initialCard?.reflection || "",
-    audiences: (initialCard?.audiences || []).join(", "),
+    audiences: (initialCard?.audiences || (!isEditing ? defaultAudiences : [])).join(", "),
     related: (initialCard?.related || []).join(", ")
   }));
   const [error, setError] = useState("");
@@ -332,12 +332,12 @@ function CardEditor({ initialCard, isEditing, onSave, onCancel, existingIds, onD
       why: initialCard?.why || "",
       how: (initialCard?.how || []).join("\n"),
       reflection: initialCard?.reflection || "",
-      audiences: (initialCard?.audiences || []).join(", "),
+      audiences: (initialCard?.audiences || (!isEditing ? defaultAudiences : [])).join(", "),
       related: (initialCard?.related || []).join(", ")
     });
     setError("");
     setSaveStatus("");
-  }, [initialCard, isEditing]);
+  }, [initialCard, isEditing, defaultAudiences]);
 
   function handleChange(field, value) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -641,7 +641,16 @@ function ActualDeckApp() {
     return cards.filter((card) => {
       const matchQ =
         !q ||
-        [card.title, card.quote, card.tagline, card.why, ...(card.how || [])]
+        [
+          card.id,
+          card.family,
+          card.title,
+          card.quote,
+          card.tagline,
+          card.why,
+          ...(card.audiences || []),
+          ...(card.how || [])
+        ]
           .join("\n")
           .toLowerCase()
           .includes(q);
@@ -778,6 +787,10 @@ function ActualDeckApp() {
     const logicAppUrl = getConfiguredLogicAppUrl();
 
     if (logicAppUrl) {
+      console.info("[SaveDebug] Logic App save start", {
+        target: logicAppUrl,
+        cardCount: Array.isArray(cardsToSave) ? cardsToSave.length : 0
+      });
       try {
         const logicAppResponse = await fetch(logicAppUrl, {
           method: "POST",
@@ -788,6 +801,21 @@ function ActualDeckApp() {
             cards: cardsToSave,
             commitMessage: "Update cards via Actual Deck Logic App"
           })
+        });
+
+        let logicAppBodyPreview = "";
+        try {
+          logicAppBodyPreview = (await logicAppResponse.clone().text()).slice(0, 600);
+        } catch (previewError) {
+          logicAppBodyPreview = `[preview unavailable: ${String(previewError)}]`;
+        }
+
+        console.info("[SaveDebug] Logic App response", {
+          ok: logicAppResponse.ok,
+          status: logicAppResponse.status,
+          statusText: logicAppResponse.statusText,
+          contentType: logicAppResponse.headers.get("content-type") || "",
+          bodyPreview: logicAppBodyPreview
         });
 
         if (logicAppResponse.ok) {
@@ -806,6 +834,10 @@ function ActualDeckApp() {
     // Legacy fallback for local testing while Logic App is being configured.
     try {
       const token = localStorage.getItem("github_token");
+      console.warn("[SaveDebug] Falling back from Logic App path", {
+        hasLogicAppUrl: Boolean(logicAppUrl),
+        hasGithubToken: Boolean(token)
+      });
       
       if (!token) {
         console.warn("No Logic App URL or GitHub token found. Cards saved locally only.");
@@ -964,6 +996,7 @@ function ActualDeckApp() {
             onCancel=${closeEditor}
             existingIds=${existingIds}
             onDownload=${downloadCardsJson}
+            defaultAudiences=${audience === "All" ? [] : [audience]}
           />`
         : null}
       ${isPresenting && stackCards.length
