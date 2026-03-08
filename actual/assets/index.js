@@ -29,6 +29,28 @@ const CARDS_URL = cardsDataUrl
   ? new URL(cardsDataUrl, window.location.href)
   : new URL("../../assets/actual-deck/cards.json", import.meta.url);
 
+const STALE_AFTER_MS = 2 * 60 * 1000;
+
+function formatTimeLabel(timestampMs) {
+  if (!timestampMs) return "not loaded";
+  return new Date(timestampMs).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit"
+  });
+}
+
+function formatAgeLabel(ageMs) {
+  if (ageMs == null) return "";
+  const totalSeconds = Math.floor(ageMs / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  if (minutes > 0) {
+    return `${minutes}m ${seconds}s`;
+  }
+  return `${seconds}s`;
+}
+
 function getConfiguredLogicAppUrl() {
   const queryParams = new URLSearchParams(window.location.search);
   const queryLogicAppUrl = queryParams.get("logic_app_url");
@@ -625,6 +647,9 @@ function ActualDeckApp() {
     const logicAppUrl = getConfiguredLogicAppUrl();
     return Boolean(logicAppUrl || localStorage.getItem("github_token"));
   });
+  const [cardsLoadedAt, setCardsLoadedAt] = useState(0);
+  const [cardsLastModified, setCardsLastModified] = useState("");
+  const [clockTick, setClockTick] = useState(Date.now());
 
   useEffect(() => {
     // Enforce the intended initial preset even if the browser restores a prior form value.
@@ -632,6 +657,13 @@ function ActualDeckApp() {
       setAudience("All");
     }, 250);
     return () => window.clearTimeout(timerId);
+  }, []);
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setClockTick(Date.now());
+    }, 30000);
+    return () => window.clearInterval(intervalId);
   }, []);
 
   const cardMap = useMemo(() => {
@@ -684,7 +716,11 @@ function ActualDeckApp() {
       try {
         setIsLoading(true);
         setLoadError("");
-        const response = await fetch(CARDS_URL);
+        const requestUrl = new URL(CARDS_URL.toString());
+        requestUrl.searchParams.set("_ts", String(Date.now()));
+        const response = await fetch(requestUrl.toString(), {
+          cache: "no-store"
+        });
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);
         }
@@ -694,6 +730,8 @@ function ActualDeckApp() {
         }
         if (!cancelled) {
           setCards(data);
+          setCardsLoadedAt(Date.now());
+          setCardsLastModified(response.headers.get("last-modified") || "");
         }
       } catch (error) {
         if (!cancelled) {
@@ -950,6 +988,11 @@ function ActualDeckApp() {
     setPresentationIndex((current) => (current + 1) % stackCards.length);
   }
 
+  const cardsAgeMs = cardsLoadedAt ? Math.max(0, clockTick - cardsLoadedAt) : null;
+  const cardsAreStale = cardsAgeMs != null && cardsAgeMs > STALE_AFTER_MS;
+  const loadedAtLabel = formatTimeLabel(cardsLoadedAt);
+  const ageLabel = formatAgeLabel(cardsAgeMs);
+
   return html`
     <div className="min-h-screen bg-neutral-50 text-neutral-900">
       <${Header}
@@ -965,6 +1008,18 @@ function ActualDeckApp() {
       <div className="px-3 pt-2 flex items-center gap-2 text-xs text-black/70">
         <${Users2} size=${14} /> Audience preset is <span className="font-semibold">${audience}</span>
       </div>
+      <div className="px-3 pt-1 pb-1 text-xs text-black/70">
+        Cards loaded at <span className="font-semibold">${loadedAtLabel}</span>${ageLabel
+          ? html` <span>(${ageLabel} ago)</span>`
+          : null}${cardsLastModified
+          ? html` <span className="text-black/50">| source last-modified: ${cardsLastModified}</span>`
+          : null}
+      </div>
+      ${cardsAreStale
+        ? html`<div className="mx-3 mb-2 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+            Data may be stale. Reload the page before editing to avoid overwriting newer changes.
+          </div>`
+        : null}
       <${FamilyFilters} families=${families} active=${familyFilter} setActive=${setFamilyFilter} />
       <div className="px-3 pb-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
         ${isLoading
