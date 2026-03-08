@@ -30,6 +30,8 @@ const CARDS_URL = cardsDataUrl
   : new URL("../../assets/actual-deck/cards.json", import.meta.url);
 
 const STALE_AFTER_MS = 2 * 60 * 1000;
+const SAVE_VERIFY_TIMEOUT_MS = 20000;
+const SAVE_VERIFY_INTERVAL_MS = 1500;
 
 function formatTimeLabel(timestampMs) {
   if (!timestampMs) return "not loaded";
@@ -49,6 +51,72 @@ function formatAgeLabel(ageMs) {
     return `${minutes}m ${seconds}s`;
   }
   return `${seconds}s`;
+}
+
+function normalizeString(value) {
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function normalizeStringList(values) {
+  if (!Array.isArray(values)) return [];
+  return values.map((value) => normalizeString(value)).filter(Boolean);
+}
+
+function cardsMatchForVerification(expectedCard, candidateCard) {
+  if (!expectedCard || !candidateCard) return false;
+  if (expectedCard.id !== candidateCard.id) return false;
+
+  const expectedHow = normalizeStringList(expectedCard.how);
+  const candidateHow = normalizeStringList(candidateCard.how);
+  const expectedAudiences = normalizeStringList(expectedCard.audiences);
+  const candidateAudiences = normalizeStringList(candidateCard.audiences);
+  const expectedRelated = normalizeStringList(expectedCard.related);
+  const candidateRelated = normalizeStringList(candidateCard.related);
+
+  return (
+    normalizeString(expectedCard.family) === normalizeString(candidateCard.family) &&
+    normalizeString(expectedCard.title) === normalizeString(candidateCard.title) &&
+    normalizeString(expectedCard.quote) === normalizeString(candidateCard.quote) &&
+    normalizeString(expectedCard.tagline) === normalizeString(candidateCard.tagline) &&
+    normalizeString(expectedCard.why) === normalizeString(candidateCard.why) &&
+    normalizeString(expectedCard.reflection) === normalizeString(candidateCard.reflection) &&
+    JSON.stringify(expectedHow) === JSON.stringify(candidateHow) &&
+    JSON.stringify(expectedAudiences) === JSON.stringify(candidateAudiences) &&
+    JSON.stringify(expectedRelated) === JSON.stringify(candidateRelated)
+  );
+}
+
+async function verifyCardPersistence(targetCard) {
+  if (!targetCard?.id) {
+    return false;
+  }
+
+  const deadline = Date.now() + SAVE_VERIFY_TIMEOUT_MS;
+
+  while (Date.now() < deadline) {
+    try {
+      const requestUrl = new URL(CARDS_URL.toString());
+      requestUrl.searchParams.set("_ts", String(Date.now()));
+      const response = await fetch(requestUrl.toString(), {
+        cache: "no-store"
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (Array.isArray(data)) {
+          const candidate = data.find((entry) => entry?.id === targetCard.id);
+          if (cardsMatchForVerification(targetCard, candidate)) {
+            return true;
+          }
+        }
+      }
+    } catch (error) {
+      // Ignore transient fetch failures while polling propagation.
+    }
+
+    await new Promise((resolve) => window.setTimeout(resolve, SAVE_VERIFY_INTERVAL_MS));
+  }
+
+  return false;
 }
 
 function getConfiguredLogicAppUrl() {
@@ -789,6 +857,7 @@ function ActualDeckApp() {
   const [clockTick, setClockTick] = useState(Date.now());
   const [pendingSaveCard, setPendingSaveCard] = useState(null);
   const [showStaleSaveModal, setShowStaleSaveModal] = useState(false);
+  const [saveNotice, setSaveNotice] = useState(null);
 
   useEffect(() => {
     // Enforce the intended initial preset even if the browser restores a prior form value.
@@ -961,11 +1030,31 @@ function ActualDeckApp() {
   function applyCardSave(card) {
     const nextCards = upsertCard(cards, card);
     setCards(nextCards);
-    // Explicitly call save endpoint on every create/edit save action.
-    saveCardsToAPI(nextCards);
     setIsEditorOpen(false);
     setEditorCard(null);
     setEditingExisting(false);
+
+    // Explicitly call save endpoint on every create/edit save action.
+    return saveCardsToAPI(nextCards, card).then((result) => {
+      if (result?.accepted && result?.verified) {
+        setSaveNotice({
+          tone: "success",
+          message: "Saved and verified."
+        });
+      } else if (result?.accepted) {
+        setSaveNotice({
+          tone: "warn",
+          message: "Save accepted, still propagating."
+        });
+      } else {
+        setSaveNotice({
+          tone: "error",
+          message: "Save failed. Changes are local only."
+        });
+      }
+
+      return result;
+    });
   }
 
   function handleSaveCard(card) {
@@ -996,7 +1085,7 @@ function ActualDeckApp() {
     applyCardSave(cardToSave);
   }
 
-  async function saveCardsToAPI(cardsToSave) {
+  async function saveCardsToAPI(cardsToSave, verificationCard) {
     const logicAppUrl = getConfiguredLogicAppUrl();
 
     if (logicAppUrl) {
@@ -1034,7 +1123,11 @@ function ActualDeckApp() {
         if (logicAppResponse.ok) {
           setSaveConnected(true);
           console.log("Cards saved via Logic App.");
-          return;
+          const verified = await verifyCardPersistence(verificationCard);
+          return {
+            accepted: true,
+            verified
+          };
         }
 
         const logicAppError = await logicAppResponse.text();
@@ -1054,7 +1147,10 @@ function ActualDeckApp() {
       
       if (!token) {
         console.warn("No Logic App URL or GitHub token found. Cards saved locally only.");
-        return;
+        return {
+          accepted: false,
+          verified: false
+        };
       }
 
       const owner = "greg-e";
@@ -1099,6 +1195,11 @@ function ActualDeckApp() {
         setSaveConnected(true);
         const result = await saveResponse.json();
         console.log("Cards saved to GitHub:", result.commit.message);
+        const verified = await verifyCardPersistence(verificationCard);
+        return {
+          accepted: true,
+          verified
+        };
       } else {
         const errorData = await saveResponse.json();
         console.error("Failed to save cards to GitHub:", errorData);
@@ -1110,6 +1211,11 @@ function ActualDeckApp() {
     } catch (error) {
       console.error("Error saving to GitHub:", error);
     }
+
+    return {
+      accepted: false,
+      verified: false
+    };
   }
 
   function configureSaveTarget() {
@@ -1160,6 +1266,18 @@ function ActualDeckApp() {
   const loadedAtLabel = formatTimeLabel(cardsLoadedAt);
   const ageLabel = formatAgeLabel(cardsAgeMs);
 
+  useEffect(() => {
+    if (!saveNotice) {
+      return undefined;
+    }
+
+    const timerId = window.setTimeout(() => {
+      setSaveNotice(null);
+    }, 12000);
+
+    return () => window.clearTimeout(timerId);
+  }, [saveNotice]);
+
   return html`
     <div className="min-h-screen bg-neutral-50 text-neutral-900">
       <${Header}
@@ -1185,6 +1303,19 @@ function ActualDeckApp() {
       ${cardsAreStale
         ? html`<div className="mx-3 mb-2 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-xs text-amber-900">
             Data may be stale. Saves are blocked unless you explicitly confirm a force overwrite.
+          </div>`
+        : null}
+      ${saveNotice
+        ? html`<div
+            className=${`mx-3 mb-2 rounded-lg px-3 py-2 text-xs border ${
+              saveNotice.tone === "success"
+                ? "border-emerald-300 bg-emerald-50 text-emerald-900"
+                : saveNotice.tone === "warn"
+                ? "border-amber-300 bg-amber-50 text-amber-900"
+                : "border-red-300 bg-red-50 text-red-900"
+            }`}
+          >
+            ${saveNotice.message}
           </div>`
         : null}
       <${FamilyFilters} families=${families} active=${familyFilter} setActive=${setFamilyFilter} />
