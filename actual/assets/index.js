@@ -132,6 +132,7 @@ function Header({ query, setQuery, audience, setAudience, onClearStack, onNewCar
         <div className="relative">
           <select
             className="appearance-none text-sm bg-black text-white px-3 py-2 rounded-xl"
+            autoComplete="off"
             value=${audience}
             onChange=${(e) => setAudience(e.target.value)}
           >
@@ -624,6 +625,14 @@ function ActualDeckApp() {
     const logicAppUrl = getConfiguredLogicAppUrl();
     return Boolean(logicAppUrl || localStorage.getItem("github_token"));
   });
+
+  useEffect(() => {
+    // Enforce the intended initial preset even if the browser restores a prior form value.
+    const timerId = window.setTimeout(() => {
+      setAudience("All");
+    }, 250);
+    return () => window.clearTimeout(timerId);
+  }, []);
 
   const cardMap = useMemo(() => {
     const map = {};
