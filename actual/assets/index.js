@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "https://esm.sh/react@18.2.0";
+import React, { useEffect, useMemo, useRef, useState } from "https://esm.sh/react@18.2.0";
 import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";
 import htm from "https://esm.sh/htm@3.1.1";
 import {
@@ -403,7 +403,7 @@ function CardEditor({ initialCard, isEditing, onSave, onCancel, existingIds, onD
       .filter(Boolean);
 
     setSaveStatus("Saving...");
-    onSave({
+    const saveAccepted = onSave({
       ...initialCard,
       id,
       family,
@@ -416,6 +416,11 @@ function CardEditor({ initialCard, isEditing, onSave, onCancel, existingIds, onD
       audiences,
       related
     });
+
+    // Save can be deferred when stale data requires explicit overwrite confirmation.
+    if (saveAccepted === false) {
+      setSaveStatus("");
+    }
   }
 
   return html`
@@ -629,6 +634,138 @@ function StackPresentation({ cards, index, onClose, onPrev, onNext }) {
   `;
 }
 
+function StaleSaveModal({ isOpen, ageLabel, loadedAtLabel, onCancel, onConfirm }) {
+  const modalRef = useRef(null);
+  const cancelButtonRef = useRef(null);
+  const lastActiveElementRef = useRef(null);
+
+  useEffect(() => {
+    if (!isOpen) {
+      return undefined;
+    }
+
+    lastActiveElementRef.current = document.activeElement;
+    const previousBodyOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const focusTimer = window.setTimeout(() => {
+      if (cancelButtonRef.current) {
+        cancelButtonRef.current.focus();
+      }
+    }, 0);
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onCancel();
+        return;
+      }
+
+      if (event.key !== "Tab") {
+        return;
+      }
+
+      const modalElement = modalRef.current;
+      if (!modalElement) {
+        return;
+      }
+
+      const focusables = modalElement.querySelectorAll(
+        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusables.length) {
+        event.preventDefault();
+        return;
+      }
+
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement;
+
+      if (event.shiftKey && active === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.clearTimeout(focusTimer);
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousBodyOverflow;
+      if (lastActiveElementRef.current && typeof lastActiveElementRef.current.focus === "function") {
+        lastActiveElementRef.current.focus();
+      }
+    };
+  }, [isOpen, onCancel]);
+
+  if (!isOpen) return null;
+
+  return html`
+    <div
+      className="fixed inset-0 z-[60] bg-black/60 flex items-center justify-center px-4 py-8"
+      onClick=${(event) => {
+        if (event.target === event.currentTarget) {
+          onCancel();
+        }
+      }}
+    >
+      <div
+        ref=${modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="stale-save-modal-title"
+        aria-describedby="stale-save-modal-description"
+        tabIndex="-1"
+        className="bg-white rounded-2xl shadow-xl max-w-lg w-full border border-amber-300 overflow-hidden"
+      >
+        <div className="px-4 py-3 border-b border-amber-200 bg-amber-50">
+          <div id="stale-save-modal-title" className="text-sm font-semibold text-amber-900">Stale data detected</div>
+        </div>
+        <div id="stale-save-modal-description" className="px-4 py-4 text-sm text-black/80 space-y-3">
+          <p>
+            This page is using older data${ageLabel ? ` (${ageLabel} old)` : ""}${loadedAtLabel
+              ? ` loaded at ${loadedAtLabel}`
+              : ""}.
+          </p>
+          <p>
+            Saving now can overwrite newer edits from another session. Reload first for the safest path, or force
+            overwrite if this version is intentional.
+          </p>
+        </div>
+        <div className="px-4 py-3 border-t border-black/10 flex items-center justify-end gap-2">
+          <button
+            ref=${cancelButtonRef}
+            type="button"
+            onClick=${onCancel}
+            className="text-sm px-3 py-2 rounded-lg border border-black/10"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick=${() => window.location.reload()}
+            className="text-sm px-3 py-2 rounded-lg border border-black/10"
+          >
+            Reload now
+          </button>
+          <button
+            type="button"
+            onClick=${onConfirm}
+            className="text-sm px-4 py-2 rounded-lg bg-amber-700 text-white"
+          >
+            Force overwrite
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function ActualDeckApp() {
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -650,6 +787,8 @@ function ActualDeckApp() {
   const [cardsLoadedAt, setCardsLoadedAt] = useState(0);
   const [cardsLastModified, setCardsLastModified] = useState("");
   const [clockTick, setClockTick] = useState(Date.now());
+  const [pendingSaveCard, setPendingSaveCard] = useState(null);
+  const [showStaleSaveModal, setShowStaleSaveModal] = useState(false);
 
   useEffect(() => {
     // Enforce the intended initial preset even if the browser restores a prior form value.
@@ -819,7 +958,7 @@ function ActualDeckApp() {
     return [...cardsList, card];
   }
 
-  function handleSaveCard(card) {
+  function applyCardSave(card) {
     const nextCards = upsertCard(cards, card);
     setCards(nextCards);
     // Explicitly call save endpoint on every create/edit save action.
@@ -827,6 +966,34 @@ function ActualDeckApp() {
     setIsEditorOpen(false);
     setEditorCard(null);
     setEditingExisting(false);
+  }
+
+  function handleSaveCard(card) {
+    if (cardsAreStale) {
+      setPendingSaveCard(card);
+      setShowStaleSaveModal(true);
+      return false;
+    }
+
+    applyCardSave(card);
+    return true;
+  }
+
+  function cancelStaleSaveModal() {
+    setShowStaleSaveModal(false);
+    setPendingSaveCard(null);
+  }
+
+  function confirmForceOverwriteSave() {
+    if (!pendingSaveCard) {
+      setShowStaleSaveModal(false);
+      return;
+    }
+
+    const cardToSave = pendingSaveCard;
+    setShowStaleSaveModal(false);
+    setPendingSaveCard(null);
+    applyCardSave(cardToSave);
   }
 
   async function saveCardsToAPI(cardsToSave) {
@@ -1017,7 +1184,7 @@ function ActualDeckApp() {
       </div>
       ${cardsAreStale
         ? html`<div className="mx-3 mb-2 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-xs text-amber-900">
-            Data may be stale. Reload the page before editing to avoid overwriting newer changes.
+            Data may be stale. Saves are blocked unless you explicitly confirm a force overwrite.
           </div>`
         : null}
       <${FamilyFilters} families=${families} active=${familyFilter} setActive=${setFamilyFilter} />
@@ -1071,6 +1238,13 @@ function ActualDeckApp() {
             onNext=${goNext}
           />`
         : null}
+      <${StaleSaveModal}
+        isOpen=${showStaleSaveModal}
+        ageLabel=${ageLabel}
+        loadedAtLabel=${loadedAtLabel}
+        onCancel=${cancelStaleSaveModal}
+        onConfirm=${confirmForceOverwriteSave}
+      />
       <div className="sr-only">
         Draft new content with the in-app editor, download the latest cards JSON, and replace assets/actual-deck/cards.json in source
         control when you want to publish updates.
