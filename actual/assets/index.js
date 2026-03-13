@@ -141,16 +141,16 @@ function getConfiguredLogicAppUrl() {
 }
 
 const FAMILY_META = {
-  Language: { color: "bg-slate-800", accent: "text-slate-300" },
+  Language: { color: "bg-sky-700", accent: "text-sky-100" },
   Automation: { color: "bg-amber-700", accent: "text-amber-100" },
   Truth: { color: "bg-blue-800", accent: "text-blue-100" },
   Flow: { color: "bg-cyan-800", accent: "text-cyan-100" },
   Conviviality: { color: "bg-emerald-800", accent: "text-emerald-100" },
   "Data Integrity": { color: "bg-rose-800", accent: "text-rose-100" },
-  Design: { color: "bg-neutral-900", accent: "text-neutral-200" },
+  Design: { color: "bg-teal-900", accent: "text-teal-100" },
   "Field Practice": { color: "bg-lime-800", accent: "text-lime-100" },
   Finance: { color: "bg-indigo-800", accent: "text-indigo-100" },
-  Mechanism: { color: "bg-zinc-800", accent: "text-zinc-100" },
+  Mechanism: { color: "bg-stone-700", accent: "text-stone-100" },
   Outcome: { color: "bg-orange-700", accent: "text-orange-100" },
   Metric: { color: "bg-violet-800", accent: "text-violet-100" },
   Principles: { color: "bg-fuchsia-800", accent: "text-fuchsia-100" },
