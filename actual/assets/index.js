@@ -163,6 +163,21 @@ const FAMILY_META = {
   }
 };
 
+function canonicalFamilyKey(value) {
+  return String(value || "")
+    .normalize("NFKC")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+const FAMILY_META_BY_CANON = Object.fromEntries(
+  Object.entries(FAMILY_META).map(([family, meta]) => [canonicalFamilyKey(family), meta])
+);
+
+function getFamilyMeta(family) {
+  return FAMILY_META_BY_CANON[canonicalFamilyKey(family)] || {};
+}
+
 const AUDIENCE_PRESETS = {
   All: [],
   Field: [
@@ -282,7 +297,7 @@ function FamilyFilters({ families, active, setActive }) {
 
 function Card({ card, onAdd, onEdit }) {
   const [flipped, setFlipped] = useState(false);
-  const meta = FAMILY_META[card.family] || {};
+  const meta = getFamilyMeta(card.family);
   const frontTextClass = meta.text || "text-white";
   const editActionClass = meta.editAction || "text-white/80 hover:text-white";
   const frontClass = `absolute inset-0 rounded-2xl p-3 border ${
@@ -379,7 +394,7 @@ function Stack({ ids, cardMap, onRemove, onEdit, onPresent, collapsed, onToggleC
             ${ids.map((id) => {
               const card = cardMap[id];
               if (!card) return null;
-              const meta = FAMILY_META[card.family] || {};
+              const meta = getFamilyMeta(card.family);
               const cardClass = `rounded-xl border ${meta.border || "border-black/10"} p-2`;
               return html`
                 <div key=${id} className=${cardClass}>
@@ -631,7 +646,7 @@ function StackPresentation({ cards, index, onClose, onPrev, onNext }) {
 
   if (!card) return null;
 
-  const meta = FAMILY_META[card.family] || {};
+  const meta = getFamilyMeta(card.family);
   const frontTextClass = meta.text || "text-white";
   const frontClass = `absolute inset-0 rounded-3xl p-6 border ${
     meta.border || "border-black/10"
