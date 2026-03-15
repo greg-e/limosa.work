@@ -51,15 +51,17 @@ The opening depends on how you connected.
 
 Deliver this once, clearly, without rushing. Do not expand on it yet.
 
-> "Here's what I built: a small badge that each crew member wears — same size as
-> a work ID. Each property has a small tag — it sticks to a fence post or a meter
-> box. When a crew arrives, the badge sees the tag and logs it. When the crew
-> leaves, it logs that too. At the end of the week, you have a record of which
-> crews were on which properties, for how long, and whether they arrived and
-> departed on time — without anyone filling out a timesheet.
+> "Here's what I built: a small badge each crew member wears — same size as a
+> work ID. It has GPS in it. Each piece of equipment — the truck, the trailer,
+> the mower — has a small BLE tag on it. The badge records when the crew arrives
+> at a property and when they leave. It also detects the equipment tags nearby,
+> which confirms the crew was actually working with their gear, not just standing
+> in the area.
 >
-> The data goes to a dashboard you can see on your phone or computer. It can also
-> feed into whatever you're using for payroll."
+> At the end of the week, you have a GPS-verified record of which crew members
+> were at which properties, for how long, and which equipment they were running —
+> without anyone filling out a timesheet. That data goes to a dashboard on your
+> phone or computer, and it can feed into whatever you use for payroll."
 
 Then stop. Do not keep talking.
 

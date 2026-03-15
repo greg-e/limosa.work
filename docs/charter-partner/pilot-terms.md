@@ -14,11 +14,12 @@ what the pilot includes, costs, and guarantees.
   - Blues Wireless Notecard (cellular + GPS), BLE beacon, IP54-rated enclosure
   - Lanyard or clip mount included
   - Pre-provisioned: cloud identity assigned before shipping
-- **BLE Property Tags:** One tag per actively managed property, plus 20% spares
-  - Standard deployment: 30 properties = 30 tags + 6 spares
-  - Self-adhesive or screw-mount, weatherproof enclosure
+- **BLE Equipment Tags:** One tag per piece of equipment (truck, trailer, mower,
+  or other crew-operated equipment), plus 20% spares
+  - Standard deployment: 4 pieces of equipment = 4 tags + 1 spare
+  - Self-adhesive or zip-tie mount, weatherproof enclosure
   - Battery life: 12–18 months
-- **Deployment kit:** Tag placement map template, installation guide
+- **Deployment kit:** Equipment tag inventory sheet, badge lanyard kit
 
 ### Software Access
 - Power BI dashboard (web and mobile) scoped to their company data
@@ -79,8 +80,8 @@ metrics are not met by day 90:
 - Failure due to the charter partner not deploying the badges (warehouse sit)
 - Failure due to the charter partner directing crews not to wear badges after
   the initial introduction
-- Tags that were not installed at properties (founder documents tag placement
-  during deployment session)
+- Tags that were not attached to equipment (founder documents tag installation
+  on equipment during deployment session)
 
 ---
 
@@ -89,7 +90,7 @@ metrics are not met by day 90:
 The charter partner agrees to:
 
 1. Deploy the badges to field crew members within 5 business days of hardware arrival
-2. Leave tags installed in place for the full 90-day pilot period
+2. Keep tags attached to equipment for the full 90-day pilot period
 3. Allow the on-site badge introduction session (founder or coordinator present)
 4. Participate in a day 45 mid-pilot check-in and a day 90 final debrief
 5. Provide honest feedback — the pilot is designed to find flaws, not to present a

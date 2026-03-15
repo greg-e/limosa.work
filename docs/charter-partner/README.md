@@ -22,7 +22,7 @@ the first three charter partners.
 ## Charter Partner Offer Summary
 
 **What the partner gets:**
-- Actual hardware kit (badges for their field crews, BLE tags for their properties)
+- Actual hardware kit (badges for their field crews, BLE tags for their equipment)
 - 90-day pilot at a flat fee — not a monthly subscription
 - Direct founder access throughout the pilot
 - Full refund if the defined success metrics are not met

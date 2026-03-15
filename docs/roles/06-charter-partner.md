@@ -96,16 +96,18 @@ sentences maximum, must name the specific pain, and must not sound like a vendor
 
 1. Signed charter partner agreement (drafted by business attorney, reviewed by both parties)
 2. Pilot success metrics agreed in writing (see below)
-3. Site survey completed (founder visits each pilot property in person)
+3. Equipment survey completed (founder inventories the crew's trucks, trailers,
+   and mowers and documents which tag will go on which piece of equipment)
 4. Worker introduction completed (founder or supervisor explains badge to the crew —
    what it records, what it does not record, how to read the display)
-5. Tag placement documented (photo of each tag location with GPS coordinates)
+5. Equipment tag installation documented (photo of each tag on its equipment,
+   serial number recorded)
 
 ### During the Pilot
 
 - Duration: 60 days
 - Scope: 1 crew, 10–20 commercial properties
-- Hardware: 3–5 badges + 10–20 BLE site tags (supplied by Actual)
+- Hardware: 3–5 badges + 3–6 BLE equipment tags (supplied by Actual)
 - Weekly review call: 30 minutes, founder + charter partner (owner or ops manager)
 - Founder monitors dashboard daily for the first two weeks
 
@@ -116,7 +118,7 @@ sentences maximum, must name the specific pain, and must not sound like a vendor
 | Badge uptime | >=90% of scheduled shifts | Device logs vs. schedule |
 | Parcel detection accuracy | >=90% | Spot-check by supervisor against known route |
 | Crew interaction time | <2 minutes/day per worker | Supervisor observation |
-| BLE tag detection rate | >85% of parcel visits where equipment present | Tag log vs. equipment records |
+| BLE equipment tag detection rate | >85% of active crew shifts where badge detects assigned equipment tag | Tag log vs. deployment records |
 | Payroll reconciliation | Customer runs payroll from Actual data for >=2 weeks | Process confirmation |
 | Customer willingness to continue | "I would pay for this" stated in writing or recording | Weekly review call |
 

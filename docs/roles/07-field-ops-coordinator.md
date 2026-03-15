@@ -15,7 +15,7 @@ The next problem is not technical — it is operational. Running three or four s
 pilot deployments requires:
 
 - Shipping and tracking badge hardware to multiple customer sites
-- Coordinating site surveys and tag placement at 30–80 properties
+- Coordinating equipment surveys and tag installation across customer fleet vehicles and equipment
 - Onboarding customer crews (the worker introduction, not just a documentation email)
 - Tracking badge uptime and alerting customers when a badge goes offline
 - Managing battery replacement, lost badge replacement, and tag relocation
@@ -34,10 +34,10 @@ This role is not glamorous. It is the most important operational hire in the bus
 ### Hardware Deployment Operations
 - Receive, inventory, test, and ship badge hardware and BLE tags to customer sites
 - Track every badge (by serial number) and every tag (by MAC address) to its assigned
-  customer and location
+  customer and equipment unit
 - Coordinate with customers to schedule deployment day
 - Conduct or coordinate the on-site hardware installation and worker introduction
-- Document tag placement (photo, GPS coordinates, mounting method)
+- Document equipment tag installation (photo of tag on equipment, serial number, mounting method)
 
 ### Customer Onboarding
 - Guide new customers from signed agreement through first good week of data

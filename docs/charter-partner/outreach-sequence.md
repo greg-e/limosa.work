@@ -129,10 +129,11 @@ introduction.
 > landscape contractors, and I think it's actually as valuable to the property
 > manager side as it is to the contractor.
 >
-> The short version: hardware badges and BLE property tags that confirm which
-> crews were on which properties and for how long — without any manual entry.
-> For property managers, it means you have an independent record against which
-> to verify your contractor's invoices and service completion.
+> The short version: GPS-enabled crew badges and BLE equipment tags that give
+> you a verified record of which crews were at which properties, for how long,
+> and whether they were actively working with their equipment — without any
+> manual entry. For property managers, it means you have an independent record
+> against which to verify your contractor's invoices and service completion.
 >
 > I'm piloting with a small number of landscape companies this season. If you work
 > with contractors who might benefit from better time and presence verification,
@@ -199,9 +200,11 @@ Subject: GPS-backed crew verification for [Company Name]
 > record of which crews were on which properties and for how long — without
 > requiring any action from the crew.
 >
-> Each crew member wears a badge. Each property has a small tag. When the crew
-> arrives, the system logs it. When they leave, the system logs that too. At the
-> end of the week, you have a GPS-confirmed, badge-verified record of every
+> Each crew member wears a badge with GPS built in. Each piece of equipment —
+> truck, trailer, mower — has a small BLE tag on it. The badge records when the
+> crew arrives at a property and when they leave. It also detects nearby equipment
+> tags, confirming the crew was actively working — not just in the area. At the
+> end of the week, you have a GPS-confirmed, equipment-verified record of every
 > service completion — no timesheet required.
 >
 > I'm piloting with a small number of companies this spring. The pilot is 90 days,
