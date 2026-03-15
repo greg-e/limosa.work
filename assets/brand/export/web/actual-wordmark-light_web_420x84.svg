@@ -1,5 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="420" height="84" viewBox="0 0 420 84" role="img" aria-label="Actual wordmark light">
   <title>Actual Wordmark Light</title>
-  <image href="../../../img/logo.png" x="8" y="12" width="60" height="60" style="filter: invert(1); mix-blend-mode: screen"/>
+  <image href="../../../img/logo.svg" x="8" y="12" width="60" height="60" style="filter: invert(1); mix-blend-mode: screen"/>
   <text x="82" y="56" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="42" font-weight="600" fill="#F4EFE4">Actual</text>
 </svg>
+

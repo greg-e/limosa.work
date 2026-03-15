@@ -3,5 +3,6 @@
   <!-- 400×400: Twitter/X, LinkedIn, Instagram profile image -->
   <rect width="400" height="400" fill="#1E4A42"/>
   <!-- Mark centered -->
-  <image href="../../../img/logo.png" x="100" y="100" width="200" height="200" style="filter: invert(1); mix-blend-mode: screen"/>
+  <image href="../../../img/logo.svg" x="100" y="100" width="200" height="200" style="filter: invert(1); mix-blend-mode: screen"/>
 </svg>
+

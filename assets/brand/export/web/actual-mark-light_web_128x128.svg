@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Actual brand mark light">
   <title>Actual Brand Mark Light</title>
-  <image href="../../../img/logo.png" x="0" y="0" width="128" height="128" style="filter: invert(1); mix-blend-mode: screen"/>
+  <image href="../../../img/logo.svg" x="0" y="0" width="128" height="128" style="filter: invert(1); mix-blend-mode: screen"/>
 </svg>
+
