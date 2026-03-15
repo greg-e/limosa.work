@@ -1,502 +1,144 @@
-# Actual Development Plan  
-## Proof of Concept → Prototype → Pilot  
-**Version:** 1.1  
-**Author:** Gregory (“bruh”)  
+# Actual
 
-**Purpose:**  
-Build Actual into a parcel-aware, equipment-aware, truth-based field telemetry system that supports the two core use cases:
+**Proof of Work**  
+A hardware + cloud platform that automatically captures verifiable operational truth
+for field crews � without phones, apps, or manual data entry.
 
-1. **Job Activity Data (Truth of Work)**  
-2. **Reverse Engineering Schedule & Estimate (Flow of Value)**
-
----
-
-# SKILLS TO DEVELOP  
-## 1. Hardware Skills  
-- **PCB Design (KiCad or Altium)**
-  - Board layout  
-  - RF considerations for BLE antennas  
-  - Power regulation and battery management  
-
-- **Embedded Firmware Development**
-  - STM32 / ESP32-C3 / Nordic SDK basics  
-  - BLE scanning & advertisement parsing  
-  - Power optimization in low-power MCUs  
-  - Sleep/wake cycles  
-  - OTA firmware update patterns  
-
-- **Cellular IoT (LTE-M / NB-IoT)**
-  - AT command sets  
-  - Modem sleep behavior  
-  - Optimizing cellular wake intervals  
-  - Handling patchy rural coverage  
+**Company:** Actual (operating under Limosa � limosa.work � greg@limosa.work)  
+**Author:** Gregory Ehrenberg ("bruh")  
+**Stage:** Early founder � self-funded � pre-prototype  
+**Last updated:** March 2026
 
 ---
 
-## 2. Cloud & Software Skills  
-- **Azure IoT Hub / Functions**
-  - Event ingestion  
-  - Data normalization  
-  - Secure device provisioning  
-  - Durable data pipelines  
+## What Actual Is
 
-- **PostGIS Spatial Queries**
-  - Point-in-polygon  
-  - Spatial indexing (GiST, BRIN)  
-  - Polygon simplification  
-  - Parcel adjacency graphs  
+Actual produces a continuous, verifiable record of who worked, for how long, where, and
+with what equipment � automatically. No timesheets. No job coding. No memory required.
 
-- **Power BI Advanced Modeling**
-  - Star schema design  
-  - Time intelligence  
-  - Geo-visualization  
-  - Custom DAX measures for flow & variance  
+The system runs on three components:
 
-- **API Design**
-  - REST fundamentals  
-  - JSON schema definition  
-  - Device → cloud → application data models  
+| Component | What it does |
+|-----------|-------------|
+| **Badge** | Worn by crew members. Captures GPS, accelerometer, and BLE proximity 4x/minute. Uploads in batches over cellular. Offline-first. No phone, no Wi-Fi, no manual entry. |
+| **BLE Tags** | Attached to tools and equipment. Broadcast a unique ID. Badge detects tag presence and logs equipment usage automatically. |
+| **Cloud Truth Layer** | Ingests badge uploads. Normalizes and deduplicates events. Binds events to job sites via tax-parcel geofencing. Writes canonical truth intervals to an immutable store. Feeds payroll, job costing, scheduling, and billing systems. |
 
-- **DevOps & Versioning**
-  - Git/GitHub  
-  - Semver for firmware  
-  - CI/CD for cloud functions  
+**Architecture:** Edge Capture ? Cloud Truth ? Downstream Systems
+
+**Target market:** Commercial landscaping, grounds management, and field services companies
+with 5�50 crew members.
+
+**Core pricing principle:** If you don't use it, you don't pay for it. Consumption-based
+model � per badge-day, per active tag, per integration. No per-seat fees. Scales with
+actual seasonal work volume.
 
 ---
 
-## 3. Product & Operational Skills  
-- **Digital Twin Design**
-  - Ontologies  
-  - Relationships (badge ↔ tag ↔ parcel ↔ job)  
-  - Data provenance models  
+## Repository Contents
 
-- **Estimating & Cost Modeling**
-  - Linking parcel characteristics → actual time  
-  - Understanding equipment cost curves  
-  - Interpreting labor flow across parcels  
+### `docs/roles/`
+Complete documentation for every role required to build and operate Actual through the
+four-phase roadmap. Each file covers: why the role matters, scope of engagement, hiring
+criteria, deliverables expected, where to find candidates, and known risks.
 
-- **Flow-Based Thinking (Reinertsen, Goldratt)**
-  - Constraint identification  
-  - Flow distribution analysis  
-  - Throughput accounting  
+| File | Role | Phase |
+|------|------|-------|
+| [01-business-attorney.md](docs/roles/01-business-attorney.md) | Business Attorney | 1 |
+| [02-patent-attorney.md](docs/roles/02-patent-attorney.md) | Patent Attorney | 1-2 |
+| [03-firmware-engineer.md](docs/roles/03-firmware-engineer.md) | Embedded Firmware Engineer | 2 |
+| [04-backend-developer.md](docs/roles/04-backend-developer.md) | Backend / Cloud Developer | 3 |
+| [05-industrial-designer.md](docs/roles/05-industrial-designer.md) | Industrial Designer (Enclosure) | 2 |
+| [06-charter-partner.md](docs/roles/06-charter-partner.md) | Charter Partner (first customer) | 4 |
+| [07-field-ops-coordinator.md](docs/roles/07-field-ops-coordinator.md) | Field Ops Coordinator | Post-pilot |
+| [08-cloud-backend-engineer.md](docs/roles/08-cloud-backend-engineer.md) | Full-Stack Cloud Engineer | Post-pilot |
+| [09-enterprise-sales-director.md](docs/roles/09-enterprise-sales-director.md) | Enterprise Sales Director | Post-pilot |
+| [10-hardware-ops-supply-chain.md](docs/roles/10-hardware-ops-supply-chain.md) | Hardware Ops / Supply Chain | Post-pilot |
 
-- **Project Network Diagrams**
-  - Work breakdown  
-  - Critical path / critical chain  
-  - Buffering and uncertainty management  
+### `pages/`
+Public-facing site content served at limosa.work.
 
----
+| File | Description |
+|------|-------------|
+| [manifesto.md](pages/manifesto.md) | The Actual Manifesto - product philosophy and core commitments |
+| [product.md](pages/product.md) | Product description: badge, tag, cloud platform |
+| [partners.md](pages/partners.md) | Charter partner program and pilot offer |
+| [principles.md](pages/principles.md) | Guiding design and operational principles |
+| [outcomes.md](pages/outcomes.md) | What Actual delivers: payroll, job costing, scheduling |
+| [architecture.md](pages/architecture.md) | Technical architecture overview |
+| [deck.md](pages/deck.md) | Link to the Actual Deck (principles card reference) |
 
-# PEOPLE TO INVOLVE  
-## 1. Hardware & Embedded Engineering  
-- **PCB Designer**  
-  Helps ensure v1.0 and v1.2 boards are manufacturable, low-noise, and power-efficient.
+### `zettels/`
+Knowledge base: product philosophy, engineering principles, field practice, automation
+patterns, data integrity rules, flow mechanics, finance alignment, and strategic vision.
+Organized as a plain-Markdown Zettelkasten.
 
-- **Embedded Firmware Engineer**  
-  BLE scanning windows, IMU thresholds, OTA bootloader, power states.
+Key files:
+- `Actual_Founders_Notebook_Revised_v2.md` - plain-language product spec, JTBD framework,
+  roadmap, budget, and honest assessment of founder position
+- `2025/202511/251115_actualZettelkasten.md` - master Zettelkasten (all 54 cards, indexed)
+- `2025/202511/` - individual thematic decks: Principles, Field Practice, Automation,
+  Data Integrity, Flow, Finance, Vision
 
-- **RF Engineer**  
-  BLE antenna tuning, enclosure interference checks.
+### `assets/actual-deck/`
+Interactive card deck application (React/TypeScript + Vite). Displays the Actual
+principles deck at limosa.work/actual/. Each card covers: why a principle matters, how
+it applies in practice, and where it connects in the system.
 
-- **Cellular IoT Specialist**  
-  Carrier certification, NB-IoT/LTE-M debugging.
-
----
-
-## 2. Cloud & Data Engineering  
-- **Azure Architect**  
-  Build scalable ingestion, provisioning, routing, logging.
-
-- **GIS Specialist**  
-  Parcel polygons, spatial indexing, accuracy analysis.
-
-- **Data Engineer**  
-  Truth pipeline, WorkSessions, EquipmentSessions, and travel-time logic.
-
-- **Power BI Expert**  
-  Building parcel-level dashboards for partners.
-
----
-
-## 3. Field & Ops  
-- **Pilot Branch Operations Manager**  
-  Real-world testing, daily feedback loop.
-
-- **Crew Leaders**  
-  Provide the reality checks: ergonomics, usage friction, comfort.
-
-- **Equipment Manager**  
-  Tag placement, battery replacement strategy, asset inventory.
+### `_layouts/`, `_includes/`, `_config.yml`
+Jekyll site configuration for GitHub Pages deployment at limosa.work.
 
 ---
 
-## 4. Business & Product  
-- **CFO or Controller**  
-  Validate payroll accuracy improvements and cost-model updates.
+## Roadmap (4 Phases, Self-Funded)
 
-- **Estimating Lead**  
-  Help compare estimated vs. actual parcel-time truth.
+| Phase | Scope | Budget | Exit Gate |
+|-------|-------|--------|-----------|
+| **1 - Business Foundation** | Georgia LLC, EIN, provisional patent, bank account | $3,000-$5,000 | LLC registered, bank open, patent filed |
+| **2 - Hardware Prototype** | Working badge: GPS + BLE + cellular + store-and-forward on Blues Notecard | $6,000-$17,000 | 5 badges pass 72hr continuous test at spec |
+| **3 - Cloud MVP** | Ingestion API, geofencing, Power BI dashboard showing live field data | $2,000-$5,000 | Badge data in Power BI within 30 min of capture |
+| **4 - Charter Partner Pilot** | 1 real company, 1 crew, 10-20 sites, 60 days | included above | Partner says "I would pay for this" + payroll reconciliation from Actual data |
 
-- **Scheduling/Dispatch Manager**  
-  Validate route flow insights, parcel sequences, wait time, travel time.
-
-- **Legal/Compliance Advisor**  
-  Data retention + privacy for telemetry devices.
+**Total budget range:** $13,300 (low) - $31,500 (high)
 
 ---
 
-## 5. Manufacturing & Scale  
-- **Prototype Manufacturing Partner**  
-  Help assemble v1.0 and v1.2 badge and tag runs.
+## Jobs-to-Be-Done (Prototype-Critical)
 
-- **Injection Molding Vendor (Future)**  
-  When moving from 3D-printed housings to mass-production shells.
+If these four cannot be proven, the product concept fails:
 
-- **Supply Chain Consultant**  
-  Battery sourcing, BOM cost reduction, packaging.
+| JTBD | Description |
+|------|-------------|
+| **02** | Passively capture time and location without crew input |
+| **03** | Capture data at the edge where errors originate |
+| **04** | Store-and-forward without data loss (offline-first) |
+| **06** | Detect BLE tool proximity and log usage automatically |
 
----
-
-# 1. PHASE 1 — PROOF OF CONCEPT  
-## Objective  
-Prove Actual’s **truth layer** is technically viable:
-
-- Badge → Tag → Parcel Geofence → Cloud → Work Sessions → Equipment Sessions → Flow Analytics  
-- Reliable, automatic, battery-efficient, parcel-anchored truth  
+Everything else - identity assignment, geofencing, payroll integration, anomaly detection,
+analytics - is downstream of these four.
 
 ---
 
-## 1.1 Core Outcomes  
+## Current Status (March 2026)
 
-### Worker Activity (Badge)
-- Movement detection  
-- Parcel entry/exit  
-- Time-in-parcel sessions  
-- Batch cellular upload every 30 minutes  
-- Battery life ≥ 7 days  
-
-### Equipment Activity (Tag)
-- BLE broadcast every 500–750 ms  
-- Reliable Badge detection  
-- Equipment session derived from proximity + parcel  
-
-### Parcel Geofencing
-- Parcel polygon import  
-- Point-in-polygon lookup  
-- Assign `parcel_id` to each Badge event  
-
-### Cloud Truth Pipeline
-- Ingest raw JSON  
-- Add parcel_id  
-- Hash for provenance  
-- Store immutably  
-- Create WorkSessions + EquipmentSessions  
-
-### Use Case Validation
-- **Job Activity Data** per worker, per parcel  
-- **Reverse-Engineered Schedule & Estimate** from real field truth  
+| Item | Status |
+|------|--------|
+| Product concept and architecture | Defined |
+| JTBD framework (12 cards) | Complete |
+| Prototype roadmap | Complete |
+| Founders Notebook | Complete |
+| Role documentation (docs/roles/) | Complete |
+| Hardware selection (Blues Notecard) | Decided |
+| Pricing model | Defined, not yet validated |
+| Georgia LLC | Not yet registered |
+| Provisional patent | Not yet filed |
+| Firmware engineer | Not yet hired |
+| Charter partner | Not yet committed |
+| Revenue | $0 |
 
 ---
 
-## 1.2 Detailed Tasks & To-Dos  
+## Key Principle
 
-### A. Badge (PoC Hardware + Firmware)
-- [ ] Order dev board (BG95-M3 or Blues Notecard)  
-- [ ] Add IMU + BLE module  
-- [ ] Program firmware:  
-  - [ ] Sample IMU movement  
-  - [ ] BLE scan 1–2 sec  
-  - [ ] Capture GPS/cell location  
-  - [ ] Store locally  
-  - [ ] Wake modem every 30 min → upload batch  
-- [ ] Measure current draw  
-- [ ] Log 7-day battery drain  
-- [ ] Document baseline behavior  
-
----
-
-### B. Tag (BLE Beacon PoC)
-- [ ] Nordic dev board (nRF52832/52811)  
-- [ ] Program advertiser:  
-  - [ ] Unique ID  
-  - [ ] Rolling counter  
-  - [ ] 500–750 ms interval  
-- [ ] Test detection at 1m, 3m, 5m  
-- [ ] Benchmark battery consumption  
-- [ ] Run 7-day drain test  
-
----
-
-### C. Parcel Geofencing Engine  
-- [ ] Acquire parcel shapefile  
-- [ ] Normalize polygons  
-- [ ] Import into PostGIS  
-- [ ] Build point-in-polygon (PIP) with `ST_Contains`  
-- [ ] Create Azure Function:  
-  - Input: lat/lon  
-  - Output: parcel_id  
-- [ ] Build debounce rule (“stay in parcel ≥ X seconds”)  
-- [ ] Walk test across boundaries  
-
----
-
-### D. Cloud Pipeline  
-- [ ] Setup Azure IoT Hub  
-- [ ] Write ingestion Function:  
-  - [ ] Validate packet  
-  - [ ] Assign parcel_id via PIP  
-  - [ ] Hash record  
-  - [ ] Write to Data Lake  
-- [ ] Create WorkSession derivation logic  
-- [ ] Create EquipmentSession logic  
-- [ ] Build Power BI model v0.1  
-
----
-
-### E. Use Case Validation  
-- [ ] Field test on real parcels  
-- [ ] Compare WorkSessions to stopwatch  
-- [ ] Validate:  
-  - [ ] parcel entry/exit  
-  - [ ] equipment detection  
-  - [ ] duration accuracy  
-- [ ] Create variance report  
-
----
-
-## 1.3 Definition of Done (PoC)  
-- End-to-end truth pipeline works  
-- Parcel geofence accuracy ≥ 90%  
-- Tag detection accuracy ≥ 95%  
-- Badge battery ≥ 7 days  
-- Reliable WorkSessions + EquipmentSessions  
-- Reverse-engineered flow is possible  
-
----
-
-## 1.4 Zettelkasten Entries (Phase 1)  
-- **ZK-001 — Truth Layer Definition**  
-- **ZK-002 — Parcel as Job Unit**  
-- **ZK-003 — Motion → Work Session**  
-- **ZK-004 — BLE Proximity = Equipment Usage**  
-- **ZK-005 — Constructal Flow (Parcel Movement)**  
-- **ZK-006 — Estimating From Truth**
-
----
-
-# 2. PHASE 2 — PROTOTYPE  
-## Objective  
-Build **real hardware** + **middleware** usable in field trials.
-
-Printed PCB + 3D-printed housings + parcel-aware cloud engine v1.
-
----
-
-## 2.1 Core Outcomes  
-
-### Badge v1.0
-- Custom PCB  
-- BLE + IMU + LTE-M  
-- Replaceable 1500 mAh battery  
-- 3D printed housing  
-- OTA firmware  
-
-### Tag v1.0
-- Custom PCB  
-- BLE beacon  
-- IP54 enclosure  
-- 6+ month battery life  
-
-### Middleware v1
-- WorkSession v2  
-- EquipmentSession v2  
-- Travel + setup + wait detection  
-- Parcel engine v1.1  
-- Power BI digital twin v1  
-- Basic FSM integration  
-
-### Field Trials
-- 10 badges + 10 tags  
-- 2–3 routes  
-- Weekly firmware cycles  
-
----
-
-## 2.2 Detailed Tasks & To-Dos  
-
-### A. Badge Hardware v1.0
-- [ ] Create PCB  
-- [ ] Select LTE-M + BLE + IMU + PMIC  
-- [ ] Layout & order 20–30 PCBs  
-- [ ] Assemble units  
-- [ ] Design & print 3D housings  
-- [ ] Add waterproofing  
-- [ ] Add OTA firmware support  
-
-### Badge Firmware
-- [ ] BLE session logic  
-- [ ] Motion thresholds  
-- [ ] GPS smoothing  
-- [ ] Parcel confidence scoring  
-- [ ] OTA updater  
-
----
-
-### B. Tag Hardware v1.0
-- [ ] Design PCB  
-- [ ] Tune antenna  
-- [ ] CR2032 mount  
-- [ ] Seal housing  
-- [ ] Rolling-counter advertiser firmware  
-- [ ] Build 20–30 units  
-
----
-
-### C. Parcel Engine v1.1
-- [ ] Move PIP logic to Azure with caching  
-- [ ] Add GPS drift correction  
-- [ ] Add parcel adjacency graph  
-- [ ] Optimize polygon indexing  
-- [ ] Benchmark latency  
-
----
-
-### D. Middleware v1
-- [ ] WorkSession v2 derivation  
-- [ ] EquipmentSession v2  
-- [ ] TravelSession + setup/wait logic  
-- [ ] FSM integration for Service Appointments  
-- [ ] Power BI Digital Twin v1  
-
----
-
-### E. Field Trials (2–3 Branches)
-- [ ] Deploy hardware  
-- [ ] Weekly firmware updates  
-- [ ] Validate across 5–10 parcels  
-- [ ] Weekly flow review  
-- [ ] Record variance, drift, missed detections  
-
----
-
-## 2.3 Definition of Done (Prototype)  
-- Badge battery life ≥ 7–10 days  
-- Tag battery life ≥ 4–6 months  
-- Equipment detection reliable outdoors  
-- Parcel geofence stable across 20+ parcels  
-- Crew acceptance (“does not get in the way”)  
-- Supervisors trust parcel-level truth  
-
----
-
-## 2.4 Zettelkasten Entries (Phase 2)  
-- **ZK-007 — OTA Firmware Strategy**  
-- **ZK-008 — Badge Power Budgeting**  
-- **ZK-009 — Parcel Drift Correction**  
-- **ZK-010 — Equipment At Parcel**  
-- **ZK-011 — Trustworthiness Metrics**
-
----
-
-# 3. PHASE 3 — PILOT  
-## Objective  
-Deploy 100 badges + 200 tags + full parcel maps with a real partner.
-
-Pilot = reliable, partner-ready, but not mass-production.
-
----
-
-## 3.1 Core Outcomes  
-
-### Hardware v1.2
-- Improved PCB  
-- Stronger 3D housings  
-- Better waterproofing  
-- Tag v1.2 sealed enclosure  
-
-### Parcel Engine v2
-- All county parcels imported  
-- Polygon normalization  
-- Pre-indexing  
-- Geofence caching  
-- High-performance PIP  
-
-### Middleware v2
-- Full automation rules  
-- FSM integration at scale  
-- Payroll export  
-- Estimation improvement model  
-- Route optimization feedback  
-
-### Field Deployment
-- Crews trained  
-- Equipment tagged  
-- Daily monitoring  
-- Weekly reviews  
-- Monthly ROI reports  
-
----
-
-## 3.2 Detailed Tasks & To-Dos  
-
-### A. Hardware Production (Pilot Scale)
-- [ ] PCB v1.2  
-- [ ] Housings (ABS)  
-- [ ] Waterproof seals  
-- [ ] 100 badges built  
-- [ ] 200 tags built  
-- [ ] Provisioning workflow (QR/NFC)  
-
----
-
-### B. Parcel Engine v2
-- [ ] Import all parcels  
-- [ ] Fix geometry errors  
-- [ ] Build index  
-- [ ] Add caching  
-- [ ] Benchmark < 50ms lookups  
-
----
-
-### C. Middleware v2
-- [ ] Automate:  
-  - Start/stop work  
-  - Equipment presence  
-  - Parcel transitions  
-- [ ] FSM sync  
-- [ ] Payroll export  
-- [ ] Estimating model  
-- [ ] Power BI dashboards  
-
----
-
-### D. Pilot Deployment
-- [ ] Train partner crews  
-- [ ] Install tags on equipment  
-- [ ] Deploy badges  
-- [ ] Monitor daily  
-- [ ] Weekly partner reviews  
-- [ ] Monthly ROI scoring  
-
----
-
-## 3.3 Definition of Done (Pilot)
-- ROI demonstrated  
-- Supervisors rely on parcel data  
-- Payroll accuracy delta ≤ 0.1%  
-- Route optimization validated  
-- Estimating model updated  
-- Partner requests expansion  
-
----
-
-## 3.4 Zettelkasten Entries (Phase 3)
-- **ZK-012 — ROI Friction Points**  
-- **ZK-013 — Flow-Based Routing**  
-- **ZK-014 — Pilot Lessons Learned**  
-- **ZK-015 — Proof of Work Cycle**
-
----
-
-# END OF DOCUMENT
-
+Every session must produce a specification, a decision, a document, or an action item.
+Not a framework.
