@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Actual brand mark print">
+  <title>Actual Brand Mark — Print</title>
+  <!-- Print-ready standalone mark -->
+  <!-- #111111 = C:0 M:0 Y:0 K:93 -->
+  <circle cx="144" cy="256" r="80" fill="#111111"/>
+  <path d="M248 256h176" stroke="#111111" stroke-width="32" stroke-linecap="round"/>
+</svg>

@@ -3,3 +3,7 @@ node_modules
 npm-debug.log*
 pnpm-lock.yaml
 yarn.lock
+vendor/
+.bundle/
+.jekyll-cache/
+_site/
