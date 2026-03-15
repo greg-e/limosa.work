@@ -5,8 +5,9 @@
   <!-- Subtle accent line bottom -->
   <rect x="0" y="1040" width="1080" height="4" fill="#CB6735" opacity="0.5"/>
   <!-- Mark and wordmark centered -->
-  <image href="../../../img/logo.png" x="430" y="430" width="120" height="120" style="filter: invert(1); mix-blend-mode: screen"/>
+  <image href="../../../img/logo.svg" x="430" y="430" width="120" height="120" style="filter: invert(1); mix-blend-mode: screen"/>
   <text x="540" y="632" text-anchor="middle" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="80" font-weight="600" fill="#F4EFE4">Actual</text>
   <!-- Tagline -->
   <text x="540" y="700" text-anchor="middle" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="24" font-weight="400" fill="#F4EFE4" opacity="0.65" letter-spacing="2">Verified field truth</text>
 </svg>
+

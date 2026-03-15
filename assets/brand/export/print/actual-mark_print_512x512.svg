@@ -2,5 +2,6 @@
   <title>Actual Brand Mark — Print</title>
   <!-- Print-ready standalone mark -->
   <!-- #111111 = C:0 M:0 Y:0 K:93 -->
-  <image href="../../../img/logo.png" x="0" y="0" width="512" height="512"/>
+  <image href="../../../img/logo.svg" x="0" y="0" width="512" height="512"/>
 </svg>
+

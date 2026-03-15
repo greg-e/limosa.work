@@ -3,6 +3,7 @@
   <!-- Reversed (light on dark): use on dark slide covers or printed dark backgrounds -->
   <!-- #F4EFE4 = C:4 M:3 Y:9 K:0 -->
   <rect width="1680" height="336" fill="#111111"/>
-  <image href="../../../img/logo.png" x="96" y="48" width="240" height="240" style="filter: invert(1); mix-blend-mode: screen"/>
+  <image href="../../../img/logo.svg" x="96" y="48" width="240" height="240" style="filter: invert(1); mix-blend-mode: screen"/>
   <text x="368" y="224" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="152" font-weight="600" fill="#F4EFE4">Actual</text>
 </svg>
+
