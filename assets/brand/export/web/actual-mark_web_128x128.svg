@@ -1,5 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Actual brand mark">
   <title>Actual Brand Mark</title>
-  <circle cx="36" cy="64" r="20" fill="#111111"/>
-  <path d="M62 64h44" stroke="#111111" stroke-width="8" stroke-linecap="round"/>
+  <image href="../../../img/logo.png" x="0" y="0" width="128" height="128"/>
 </svg>

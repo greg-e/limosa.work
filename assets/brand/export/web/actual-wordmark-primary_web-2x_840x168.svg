@@ -1,8 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="840" height="168" viewBox="0 0 840 168" role="img" aria-label="Actual wordmark 2x">
   <title>Actual Wordmark Primary 2x</title>
-  <g transform="translate(48 40)">
-    <circle cx="36" cy="44" r="28" fill="#111111"/>
-    <path d="M80 44h116" stroke="#111111" stroke-width="10" stroke-linecap="round"/>
-    <text x="236" y="60" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="76" font-weight="600" fill="#111111">Actual</text>
-  </g>
+  <image href="../../../img/logo.png" x="16" y="24" width="120" height="120"/>
+  <text x="164" y="112" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="84" font-weight="600" fill="#111111">Actual</text>
 </svg>

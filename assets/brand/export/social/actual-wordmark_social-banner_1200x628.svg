@@ -1,15 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="628" viewBox="0 0 1200 628" role="img" aria-label="Actual social banner">
-  <title>Actual Social Banner â€” Open Graph / LinkedIn / Twitter</title>
-  <!-- 1200Ã—628: Open Graph, LinkedIn link preview, Twitter/X summary_large_image -->
+  <title>Actual Social Banner — Open Graph / LinkedIn / Twitter</title>
+  <!-- 1200×628: Open Graph, LinkedIn link preview, Twitter/X summary_large_image -->
   <rect width="1200" height="628" fill="#1E4A42"/>
   <!-- Horizontal rule accent -->
   <rect x="0" y="588" width="1200" height="3" fill="#CB6735" opacity="0.6"/>
   <!-- Wordmark centered -->
-  <g transform="translate(600 314) translate(-220 -30)">
-    <circle cx="24" cy="34" r="28" fill="#F4EFE4"/>
-    <path d="M60 34h88" stroke="#F4EFE4" stroke-width="11" stroke-linecap="round"/>
-    <text x="168" y="52" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="76" font-weight="600" fill="#F4EFE4">Actual</text>
-  </g>
+  <image href="../../../img/logo.png" x="423" y="280" width="68" height="68" style="filter: invert(1); mix-blend-mode: screen"/>
+  <text x="503" y="336" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="76" font-weight="600" fill="#F4EFE4">Actual</text>
   <!-- Tagline -->
   <text x="600" y="390" text-anchor="middle" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="22" font-weight="400" fill="#F4EFE4" opacity="0.7" letter-spacing="2">Verified field truth for property operations</text>
 </svg>
