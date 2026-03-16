@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="840" height="168" viewBox="0 0 840 168" role="img" aria-label="Actual wordmark 2x">
   <title>Actual Wordmark Primary 2x</title>
-  <image href="../../../img/logo.svg" x="16" y="24" width="120" height="120"/>
-  <text x="164" y="112" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="84" font-weight="600" fill="#111111">Actual</text>
+  <image href="../../../img/logo.svg" x="-4" y="4" width="160" height="160"/>
+  <text x="188" y="112" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="84" font-weight="600" fill="#111111">Actual</text>
 </svg>
 
