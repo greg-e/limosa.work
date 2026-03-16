@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1680" height="336" viewBox="0 0 1680 336" role="img" aria-label="Actual wordmark print">
-  <title>Actual Wordmark Primary — Print</title>
+  <title>Actual Wordmark Primary - Print</title>
   <!-- Print-ready: #111111 = C:0 M:0 Y:0 K:93 -->
-  <image href="../../../img/logo.svg" x="96" y="48" width="240" height="240"/>
-  <text x="368" y="224" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="152" font-weight="600" fill="#111111">Actual</text>
+  <image href="../../../img/logo.svg" x="72" y="28" width="280" height="280"/>
+  <text x="400" y="224" font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="152" font-weight="600" fill="#111111">Actual</text>
 </svg>
 
