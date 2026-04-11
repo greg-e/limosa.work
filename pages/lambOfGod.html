@@ -1,4 +1,4 @@
----
+﻿---
 layout: null
 ---
 <!DOCTYPE html>
@@ -6,7 +6,7 @@ layout: null
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Wednesday Crucifixion — Nisan Calendar</title>
+  <title>The Wednesday Crucifixion â€" Nisan Calendar</title>
 </head>
 <body style="margin:0;padding:0;">
   <div id="root"></div>
@@ -24,97 +24,97 @@ layout: null
 const days = [
 {
 nisan: 8,
-evening: { american: “WED EVENING”, events: [], tomb: null },
-daytime: { american: “THURSDAY”,    events: [“Jericho. Zacchaeus encounter.”], tomb: null, ref: “LUKE 19:1”, inferred: true },
-type: “transit”,
+evening: { american: "WED EVENING", events: [], tomb: null },
+daytime: { american: "THURSDAY",    events: ["Jericho. Zacchaeus encounter."], tomb: null, ref: "LUKE 19:1", inferred: true },
+type: "transit",
 },
 {
 nisan: 9,
-evening: { american: “THU EVENING”, events: [“Overnight in Jericho”], tomb: null, inferred: true },
-daytime: { american: “FRIDAY”,      events: [“Departs Jericho. Arrives Bethany.”], tomb: null, ref: “JOHN 12:1”, anchor: true,
-note: “SIX DAYS BEFORE PASSOVER — primary anchor” },
-type: “anchor”,
+evening: { american: "THU EVENING", events: ["Overnight in Jericho"], tomb: null, inferred: true },
+daytime: { american: "FRIDAY",      events: ["Departs Jericho. Arrives Bethany."], tomb: null, ref: "JOHN 12:1", anchor: true,
+note: "SIX DAYS BEFORE PASSOVER â€" primary anchor" },
+type: "anchor",
 },
 {
 nisan: 10,
-evening: { american: “FRI EVENING”, events: [“Sabbath begins. Dinner at Bethany. Mary anoints Jesus.”], tomb: null, ref: “JOHN 12:2” },
-daytime: { american: “SATURDAY”,    events: [“Triumphal Entry — Palm Saturday not Palm Sunday”, “Lamb of God presented to Jerusalem”],
-tomb: null, ref: “JOHN 12:12  //  EXODUS 12:3”,
-note: “PASSOVER LAMB PRESENTED — Exodus 12:3 fulfilled” },
-type: “lamb”,
+evening: { american: "FRI EVENING", events: ["Sabbath begins. Dinner at Bethany. Mary anoints Jesus."], tomb: null, ref: "JOHN 12:2" },
+daytime: { american: "SATURDAY",    events: ["Triumphal Entry â€" Palm Saturday not Palm Sunday", "Lamb of God presented to Jerusalem"],
+tomb: null, ref: "JOHN 12:12  //  EXODUS 12:3",
+note: "PASSOVER LAMB PRESENTED â€" Exodus 12:3 fulfilled" },
+type: "lamb",
 },
 {
 nisan: 11,
-evening: { american: “SAT EVENING”, events: [], tomb: null },
-daytime: { american: “SUNDAY”,      events: [“Rest at Bethany”], tomb: null, inferred: true },
-type: “transit”,
+evening: { american: "SAT EVENING", events: [], tomb: null },
+daytime: { american: "SUNDAY",      events: ["Rest at Bethany"], tomb: null, inferred: true },
+type: "transit",
 },
 {
 nisan: 12,
-evening: { american: “SUN EVENING”, events: [], tomb: null },
-daytime: { american: “MONDAY”,      events: [“Fig tree cursed. Temple cleansed.”], tomb: null, ref: “MARK 11:15”, inferred: true },
-type: “transit”,
+evening: { american: "SUN EVENING", events: [], tomb: null },
+daytime: { american: "MONDAY",      events: ["Fig tree cursed. Temple cleansed."], tomb: null, ref: "MARK 11:15", inferred: true },
+type: "transit",
 },
 {
 nisan: 13,
-evening: { american: “MON EVENING”, events: [], tomb: null },
-daytime: { american: “TUESDAY”,     events: [“Bethany. Olivet Discourse.”], tomb: null, ref: “MARK 13”, inferred: true },
-type: “transit”,
+evening: { american: "MON EVENING", events: [], tomb: null },
+daytime: { american: "TUESDAY",     events: ["Bethany. Olivet Discourse."], tomb: null, ref: "MARK 13", inferred: true },
+type: "transit",
 },
 {
 nisan: 14,
-evening: { american: “TUE EVENING”, events: [“Upper Room meal”, “Arrest in Gethsemane”, “Trial before Sanhedrin”], tomb: null, ref: “JOHN 19:14” },
-daytime: { american: “WEDNESDAY”,   events: [“Trial before Pilate”, “Crucifixion”, “Death at 3pm”, “Burial before sunset”],
-tomb: null, ref: “JOHN 19:14  //  EXODUS 12:6”,
-note: “PREPARATION DAY  //  PASSOVER LAMB SLAUGHTERED AT TWILIGHT” },
-type: “crucifixion”,
+evening: { american: "TUE EVENING", events: ["Upper Room meal", "Arrest in Gethsemane", "Trial before Sanhedrin"], tomb: null, ref: "JOHN 19:14" },
+daytime: { american: "WEDNESDAY",   events: ["Trial before Pilate", "Crucifixion", "Death at 3pm", "Burial before sunset"],
+tomb: null, ref: "JOHN 19:14  //  EXODUS 12:6",
+note: "PREPARATION DAY  //  PASSOVER LAMB SLAUGHTERED AT TWILIGHT" },
+type: "crucifixion",
 },
 {
 nisan: 15,
-evening: { american: “WED EVENING”, events: [“High Sabbath begins at sunset”, “Tomb sealed”], tomb: { label: “NIGHT 1” }, ref: “JOHN 19:31” },
-daytime: { american: “THURSDAY”,    events: [“Passover. Feast of Unleavened Bread.”, “Megas sabbaton — holy convocation”],
-tomb: { label: “DAY 1” }, ref: “LEV 23:7”,
-note: “HIGH SABBATH  //  NOT THE WEEKLY SABBATH” },
-type: “high-sabbath”,
+evening: { american: "WED EVENING", events: ["High Sabbath begins at sunset", "Tomb sealed"], tomb: { label: "NIGHT 1" }, ref: "JOHN 19:31" },
+daytime: { american: "THURSDAY",    events: ["Passover. Feast of Unleavened Bread.", "Megas sabbaton â€" holy convocation"],
+tomb: { label: "DAY 1" }, ref: "LEV 23:7",
+note: "HIGH SABBATH  //  NOT THE WEEKLY SABBATH" },
+type: "high-sabbath",
 },
 {
 nisan: 16,
-evening: { american: “THU EVENING”, events: [“High Sabbath ends at sunset”, “Women may now move”], tomb: { label: “NIGHT 2” } },
-daytime: { american: “FRIDAY”,      events: [“Women BUY spices — Mark 16:1”, “Women PREPARE spices — Luke 23:56”],
-tomb: { label: “DAY 2” }, ref: “MARK 16:1  //  LUKE 23:56”,
-note: “GAP DAY — resolves the two-verse contradiction” },
-type: “gap”,
+evening: { american: "THU EVENING", events: ["High Sabbath ends at sunset", "Women may now move"], tomb: { label: "NIGHT 2" } },
+daytime: { american: "FRIDAY",      events: ["Women BUY spices â€" Mark 16:1", "Women PREPARE spices â€" Luke 23:56"],
+tomb: { label: "DAY 2" }, ref: "MARK 16:1  //  LUKE 23:56",
+note: "GAP DAY â€" resolves the two-verse contradiction" },
+type: "gap",
 },
 {
 nisan: 17,
-evening: { american: “FRI EVENING”, events: [“Weekly Sabbath begins at sunset”], tomb: { label: “NIGHT 3” }, ref: “LUKE 23:56” },
-daytime: { american: “SATURDAY”,    events: [“Women rest — fourth commandment”],
-tomb: { label: “DAY 3” }, ref: “LUKE 23:56” },
-type: “sabbath”,
+evening: { american: "FRI EVENING", events: ["Weekly Sabbath begins at sunset"], tomb: { label: "NIGHT 3" }, ref: "LUKE 23:56" },
+daytime: { american: "SATURDAY",    events: ["Women rest â€" fourth commandment"],
+tomb: { label: "DAY 3" }, ref: "LUKE 23:56" },
+type: "sabbath",
 },
 {
 nisan: 18,
-evening: { american: “SAT EVENING”, events: [“Weekly Sabbath ends at sunset”, “Resurrection”], tomb: null },
-daytime: { american: “SUNDAY”,      events: [“Women arrive at tomb at sunrise”, “The tomb is empty”, “Jesus is alive”],
-tomb: null, ref: “MARK 16:2”,
-note: “MATTHEW 12:40 — THREE DAYS AND THREE NIGHTS FULFILLED” },
-type: “resurrection”,
+evening: { american: "SAT EVENING", events: ["Weekly Sabbath ends at sunset", "Resurrection"], tomb: null },
+daytime: { american: "SUNDAY",      events: ["Women arrive at tomb at sunrise", "The tomb is empty", "Jesus is alive"],
+tomb: null, ref: "MARK 16:2",
+note: "MATTHEW 12:40 â€" THREE DAYS AND THREE NIGHTS FULFILLED" },
+type: "resurrection",
 },
 ];
 
 const theme = {
-transit:        { accent: “#cccccc”, title: “#aaaaaa”, nightBg: “#fafafa”, dayBg: “#ffffff” },
-anchor:         { accent: “#228844”, title: “#1a6633”, nightBg: “#f5faf7”, dayBg: “#edf7f1” },
-lamb:           { accent: “#aa7700”, title: “#885500”, nightBg: “#fdf8f0”, dayBg: “#faf3e3” },
-crucifixion:    { accent: “#cc1100”, title: “#aa0000”, nightBg: “#fff5f5”, dayBg: “#ffecec” },
-“high-sabbath”: { accent: “#cc5500”, title: “#aa3300”, nightBg: “#fff8f3”, dayBg: “#fff0e6” },
-gap:            { accent: “#888800”, title: “#666600”, nightBg: “#fafaf0”, dayBg: “#f5f5e0” },
-sabbath:        { accent: “#2255cc”, title: “#1133aa”, nightBg: “#f5f7ff”, dayBg: “#edf0ff” },
-resurrection:   { accent: “#116633”, title: “#0d5529”, nightBg: “#f0faf5”, dayBg: “#e3f5ec” },
+transit:        { accent: "#cccccc", title: "#aaaaaa", nightBg: "#fafafa", dayBg: "#ffffff" },
+anchor:         { accent: "#228844", title: "#1a6633", nightBg: "#f5faf7", dayBg: "#edf7f1" },
+lamb:           { accent: "#aa7700", title: "#885500", nightBg: "#fdf8f0", dayBg: "#faf3e3" },
+crucifixion:    { accent: "#cc1100", title: "#aa0000", nightBg: "#fff5f5", dayBg: "#ffecec" },
+"high-sabbath": { accent: "#cc5500", title: "#aa3300", nightBg: "#fff8f3", dayBg: "#fff0e6" },
+gap:            { accent: "#888800", title: "#666600", nightBg: "#fafaf0", dayBg: "#f5f5e0" },
+sabbath:        { accent: "#2255cc", title: "#1133aa", nightBg: "#f5f7ff", dayBg: "#edf0ff" },
+resurrection:   { accent: "#116633", title: "#0d5529", nightBg: "#f0faf5", dayBg: "#e3f5ec" },
 };
 
-const NIGHT_BG = “#f0f0f0”;   // universal night tint
-const DAY_BG   = “#ffffff”;   // universal day white
+const NIGHT_BG = "#f0f0f0";   // universal night tint
+const DAY_BG   = "#ffffff";   // universal day white
 
 const FONTS = "@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,800;1,300&display=swap'); * { box-sizing: border-box; } .seg { cursor: pointer; transition: filter 0.1s; } .seg:hover { filter: brightness(0.97); }";
 
@@ -163,7 +163,7 @@ function Timeline() {
               </div>
             </div>
             <div style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontSize: 11, color: "#777777", lineHeight: 1.7 }}>
-              Day begins at sunset.<br />Evening comes first, then morning.<br />Genesis 1:5 — "there was evening,<br />and there was morning."
+              Day begins at sunset.<br />Evening comes first, then morning.<br />Genesis 1:5 â€" "there was evening,<br />and there was morning."
             </div>
           </div>
           <div style=${{ border: "1px solid #e0e0e0", padding: "14px 16px" }}>
@@ -293,3 +293,4 @@ function Timeline() {
   </script>
 </body>
 </html>
+
