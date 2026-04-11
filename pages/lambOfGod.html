@@ -1,7 +1,4 @@
-﻿---
-layout: null
----
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -11,7 +8,6 @@ layout: null
 <body style="margin:0;padding:0;">
   <div id="root"></div>
   <script type="module">
-    {% raw %}
     import { h, render } from 'https://esm.sh/preact@10';
     import { useState } from 'https://esm.sh/preact@10/hooks';
     import htm from 'https://esm.sh/htm@3';
@@ -289,7 +285,6 @@ function Timeline() {
 }
 
     render(html`<${Timeline} />`, document.getElementById('root'));
-    {% endraw %}
   </script>
 </body>
 </html>
