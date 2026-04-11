@@ -1,291 +1,501 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Wednesday Crucifixion â€" Nisan Calendar</title>
+  <title>The Wednesday Crucifixion - Nisan Calendar</title>
+  <style>
+    :root {
+      --bg: #fcfcfb;
+      --panel: #ffffff;
+      --text: #161616;
+      --muted: #646464;
+      --line: #dfdfdf;
+      --night: #f1f3f7;
+      --day: #ffffff;
+      --accent-anchor: #1f7a46;
+      --accent-lamb: #9b6700;
+      --accent-crucifixion: #b51900;
+      --accent-high-sabbath: #c55600;
+      --accent-gap: #7a7700;
+      --accent-sabbath: #2453b8;
+      --accent-resurrection: #0f6b3a;
+      --accent-transit: #9f9f9f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #f7f7f4 0%, var(--bg) 320px);
+      color: var(--text);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.5;
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 20px 14px 56px;
+    }
+
+    .hero {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-top: 4px solid #1d1d1d;
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    .kicker {
+      margin: 0;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    h1 {
+      margin: 10px 0 8px;
+      font-size: clamp(28px, 4.2vw, 42px);
+      line-height: 1.1;
+      letter-spacing: 0.01em;
+    }
+
+    .subtitle {
+      margin: 0 auto;
+      max-width: 760px;
+      color: #3d3d3d;
+      font-size: 16px;
+    }
+
+    .quote {
+      margin: 18px auto 0;
+      max-width: 680px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      font-style: italic;
+      color: #4a4a4a;
+    }
+
+    .quote-ref {
+      margin-top: 8px;
+      font-family: "Courier New", Courier, monospace;
+      color: #888;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .section {
+      margin-top: 18px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 16px;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .legend-card {
+      border: 1px solid var(--line);
+      padding: 12px;
+      background: #fafafa;
+    }
+
+    .legend-title {
+      margin: 0 0 6px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #555;
+    }
+
+    .mini-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--line);
+      margin-bottom: 8px;
+      min-height: 34px;
+      font-size: 12px;
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    .mini-row > div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4px;
+    }
+
+    .mini-night {
+      background: var(--night);
+      border-right: 1px solid var(--line);
+    }
+
+    .mini-day {
+      background: var(--day);
+    }
+
+    .timeline {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      border: 1px solid var(--line);
+    }
+
+    .timeline th,
+    .timeline td {
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      padding: 10px 9px;
+    }
+
+    .timeline th {
+      text-align: left;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #555;
+      background: #f8f8f8;
+    }
+
+    .timeline td:nth-child(3),
+    .timeline th:nth-child(3) {
+      background: var(--night);
+    }
+
+    .timeline td:nth-child(4),
+    .timeline th:nth-child(4) {
+      background: var(--day);
+    }
+
+    .nisan {
+      text-align: right;
+      white-space: nowrap;
+      font-family: "Courier New", Courier, monospace;
+      color: #444;
+      width: 90px;
+    }
+
+    .kind {
+      width: 120px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #555;
+    }
+
+    .accent-anchor { border-left: 4px solid var(--accent-anchor); }
+    .accent-lamb { border-left: 4px solid var(--accent-lamb); }
+    .accent-crucifixion { border-left: 4px solid var(--accent-crucifixion); }
+    .accent-high-sabbath { border-left: 4px solid var(--accent-high-sabbath); }
+    .accent-gap { border-left: 4px solid var(--accent-gap); }
+    .accent-sabbath { border-left: 4px solid var(--accent-sabbath); }
+    .accent-resurrection { border-left: 4px solid var(--accent-resurrection); }
+    .accent-transit { border-left: 4px solid var(--accent-transit); }
+
+    .events {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .events li {
+      margin-bottom: 4px;
+    }
+
+    .ref {
+      margin-top: 6px;
+      font-family: "Courier New", Courier, monospace;
+      color: #6b6b6b;
+      font-size: 12px;
+    }
+
+    .note {
+      margin-top: 7px;
+      padding-top: 7px;
+      border-top: 1px dashed #c8c8c8;
+      font-size: 13px;
+      color: #474747;
+    }
+
+    .footnotes p {
+      margin: 0 0 10px;
+    }
+
+    .footnotes strong {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 860px) {
+      .legend {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline {
+        font-size: 14px;
+      }
+
+      .timeline th,
+      .timeline td {
+        padding: 9px 8px;
+      }
+
+      .kind,
+      .nisan {
+        width: auto;
+      }
+    }
+
+    @media (max-width: 660px) {
+      .timeline,
+      .timeline thead,
+      .timeline tbody,
+      .timeline tr,
+      .timeline th,
+      .timeline td {
+        display: block;
+      }
+
+      .timeline thead {
+        position: absolute;
+        left: -10000px;
+      }
+
+      .timeline tr {
+        border-bottom: 1px solid var(--line);
+        padding: 8px 0;
+      }
+
+      .timeline td {
+        border: 0;
+        padding: 8px;
+      }
+
+      .timeline td::before {
+        display: block;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 11px;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 4px;
+      }
+
+      .timeline td:nth-child(1)::before { content: "Nisan Day"; }
+      .timeline td:nth-child(2)::before { content: "Type"; }
+      .timeline td:nth-child(3)::before { content: "Evening / Night"; }
+      .timeline td:nth-child(4)::before { content: "Morning / Day"; }
+
+      .nisan {
+        text-align: left;
+      }
+    }
+  </style>
 </head>
-<body style="margin:0;padding:0;">
-  <div id="root"></div>
-  <script type="module">
-    import { h, render } from 'https://esm.sh/preact@10';
-    import { useState } from 'https://esm.sh/preact@10/hooks';
-    import htm from 'https://esm.sh/htm@3';
-    const html = htm.bind(h);
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <p class="kicker">Nisan Calendar // Passion Week</p>
+      <h1>The Wednesday Crucifixion</h1>
+      <p class="subtitle">A static, GitHub Pages-safe timeline using Hebrew sunset-to-sunset day reckoning and the Wednesday crucifixion chronology.</p>
+      <p class="quote">"For just as Jonah was in the belly of the huge fish for three days and three nights, so the Son of Man will be in the heart of the earth for three days and three nights."</p>
+      <p class="quote-ref">Matthew 12:40 NET</p>
+    </header>
 
-    // Each Nisan day has two segments: EVENING (night) then DAYTIME
-// Hebrew day runs sunset-to-sunset: night comes FIRST, then day
-// American label shows what we would call those same hours
-
-const days = [
-{
-nisan: 8,
-evening: { american: "WED EVENING", events: [], tomb: null },
-daytime: { american: "THURSDAY",    events: ["Jericho. Zacchaeus encounter."], tomb: null, ref: "LUKE 19:1", inferred: true },
-type: "transit",
-},
-{
-nisan: 9,
-evening: { american: "THU EVENING", events: ["Overnight in Jericho"], tomb: null, inferred: true },
-daytime: { american: "FRIDAY",      events: ["Departs Jericho. Arrives Bethany."], tomb: null, ref: "JOHN 12:1", anchor: true,
-note: "SIX DAYS BEFORE PASSOVER â€" primary anchor" },
-type: "anchor",
-},
-{
-nisan: 10,
-evening: { american: "FRI EVENING", events: ["Sabbath begins. Dinner at Bethany. Mary anoints Jesus."], tomb: null, ref: "JOHN 12:2" },
-daytime: { american: "SATURDAY",    events: ["Triumphal Entry â€" Palm Saturday not Palm Sunday", "Lamb of God presented to Jerusalem"],
-tomb: null, ref: "JOHN 12:12  //  EXODUS 12:3",
-note: "PASSOVER LAMB PRESENTED â€" Exodus 12:3 fulfilled" },
-type: "lamb",
-},
-{
-nisan: 11,
-evening: { american: "SAT EVENING", events: [], tomb: null },
-daytime: { american: "SUNDAY",      events: ["Rest at Bethany"], tomb: null, inferred: true },
-type: "transit",
-},
-{
-nisan: 12,
-evening: { american: "SUN EVENING", events: [], tomb: null },
-daytime: { american: "MONDAY",      events: ["Fig tree cursed. Temple cleansed."], tomb: null, ref: "MARK 11:15", inferred: true },
-type: "transit",
-},
-{
-nisan: 13,
-evening: { american: "MON EVENING", events: [], tomb: null },
-daytime: { american: "TUESDAY",     events: ["Bethany. Olivet Discourse."], tomb: null, ref: "MARK 13", inferred: true },
-type: "transit",
-},
-{
-nisan: 14,
-evening: { american: "TUE EVENING", events: ["Upper Room meal", "Arrest in Gethsemane", "Trial before Sanhedrin"], tomb: null, ref: "JOHN 19:14" },
-daytime: { american: "WEDNESDAY",   events: ["Trial before Pilate", "Crucifixion", "Death at 3pm", "Burial before sunset"],
-tomb: null, ref: "JOHN 19:14  //  EXODUS 12:6",
-note: "PREPARATION DAY  //  PASSOVER LAMB SLAUGHTERED AT TWILIGHT" },
-type: "crucifixion",
-},
-{
-nisan: 15,
-evening: { american: "WED EVENING", events: ["High Sabbath begins at sunset", "Tomb sealed"], tomb: { label: "NIGHT 1" }, ref: "JOHN 19:31" },
-daytime: { american: "THURSDAY",    events: ["Passover. Feast of Unleavened Bread.", "Megas sabbaton â€" holy convocation"],
-tomb: { label: "DAY 1" }, ref: "LEV 23:7",
-note: "HIGH SABBATH  //  NOT THE WEEKLY SABBATH" },
-type: "high-sabbath",
-},
-{
-nisan: 16,
-evening: { american: "THU EVENING", events: ["High Sabbath ends at sunset", "Women may now move"], tomb: { label: "NIGHT 2" } },
-daytime: { american: "FRIDAY",      events: ["Women BUY spices â€" Mark 16:1", "Women PREPARE spices â€" Luke 23:56"],
-tomb: { label: "DAY 2" }, ref: "MARK 16:1  //  LUKE 23:56",
-note: "GAP DAY â€" resolves the two-verse contradiction" },
-type: "gap",
-},
-{
-nisan: 17,
-evening: { american: "FRI EVENING", events: ["Weekly Sabbath begins at sunset"], tomb: { label: "NIGHT 3" }, ref: "LUKE 23:56" },
-daytime: { american: "SATURDAY",    events: ["Women rest â€" fourth commandment"],
-tomb: { label: "DAY 3" }, ref: "LUKE 23:56" },
-type: "sabbath",
-},
-{
-nisan: 18,
-evening: { american: "SAT EVENING", events: ["Weekly Sabbath ends at sunset", "Resurrection"], tomb: null },
-daytime: { american: "SUNDAY",      events: ["Women arrive at tomb at sunrise", "The tomb is empty", "Jesus is alive"],
-tomb: null, ref: "MARK 16:2",
-note: "MATTHEW 12:40 â€" THREE DAYS AND THREE NIGHTS FULFILLED" },
-type: "resurrection",
-},
-];
-
-const theme = {
-transit:        { accent: "#cccccc", title: "#aaaaaa", nightBg: "#fafafa", dayBg: "#ffffff" },
-anchor:         { accent: "#228844", title: "#1a6633", nightBg: "#f5faf7", dayBg: "#edf7f1" },
-lamb:           { accent: "#aa7700", title: "#885500", nightBg: "#fdf8f0", dayBg: "#faf3e3" },
-crucifixion:    { accent: "#cc1100", title: "#aa0000", nightBg: "#fff5f5", dayBg: "#ffecec" },
-"high-sabbath": { accent: "#cc5500", title: "#aa3300", nightBg: "#fff8f3", dayBg: "#fff0e6" },
-gap:            { accent: "#888800", title: "#666600", nightBg: "#fafaf0", dayBg: "#f5f5e0" },
-sabbath:        { accent: "#2255cc", title: "#1133aa", nightBg: "#f5f7ff", dayBg: "#edf0ff" },
-resurrection:   { accent: "#116633", title: "#0d5529", nightBg: "#f0faf5", dayBg: "#e3f5ec" },
-};
-
-const NIGHT_BG = "#f0f0f0";   // universal night tint
-const DAY_BG   = "#ffffff";   // universal day white
-
-const FONTS = "@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,800;1,300&display=swap'); * { box-sizing: border-box; } .seg { cursor: pointer; transition: filter 0.1s; } .seg:hover { filter: brightness(0.97); }";
-
-function TombBadge({ label, night }) {
-  return html`<span style=${{
-    fontFamily: "'Share Tech Mono', monospace",
-    fontSize: 7, letterSpacing: "0.12em",
-    color: night ? "#3333aa" : "#886600",
-    border: "1px solid " + (night ? "#aaaadd" : "#ccaa44"),
-    padding: "2px 8px",
-    display: "inline-block",
-    marginTop: 4,
-  }}>${label}</span>`;
-}
-
-function Timeline() {
-  const [open, setOpen] = useState(null);
-  return html`
-    <div style=${{ minHeight: "100vh", background: "#ffffff", fontFamily: "'Share Tech Mono', monospace", color: "#111111", padding: "0 0 80px" }}>
-      <style>${FONTS}</style>
-
-      <div style=${{ display: "flex", flexDirection: "column", alignItems: "center", padding: "52px 24px 40px", borderBottom: "1px solid #e0e0e0" }}>
-        <div style=${{ width: 20, height: 80, background: "#111111", marginBottom: 32 }} />
-        <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 9, letterSpacing: "0.45em", color: "#999999", marginBottom: 12, textAlign: "center" }}>NISAN  CALENDAR  //  PASSION  WEEK</div>
-        <div style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 800, fontSize: 30, letterSpacing: "0.1em", color: "#111111", textAlign: "center", lineHeight: 1.15, marginBottom: 10 }}>THE WEDNESDAY<br />CRUCIFIXION</div>
-        <div style=${{ width: 40, height: 1, background: "#cccccc", marginBottom: 24 }} />
-        <div style=${{ maxWidth: 400, textAlign: "center", fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontStyle: "italic", fontSize: 13, color: "#555555", lineHeight: 1.9, marginBottom: 10 }}>
-          "For just as Jonah was in the belly of the huge fish for three days
-          and three nights, so the Son of Man will be in the heart of the earth
-          for three days and three nights."
-        </div>
-        <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, color: "#aaaaaa", letterSpacing: "0.3em" }}>MATTHEW  12:40  NET</div>
+    <section class="section">
+      <h2>How a Day Is Counted</h2>
+      <div class="legend">
+        <article class="legend-card">
+          <p class="legend-title">Hebrew Reckoning</p>
+          <div class="mini-row">
+            <div class="mini-night">Evening / Night</div>
+            <div class="mini-day">Morning / Day</div>
+          </div>
+          <p>Day begins at sunset. Evening comes first, then morning (Genesis 1:5).</p>
+        </article>
+        <article class="legend-card">
+          <p class="legend-title">American Reckoning</p>
+          <div class="mini-row">
+            <div class="mini-day">12:00 AM / Morning</div>
+            <div class="mini-night">Evening / Night</div>
+          </div>
+          <p>Day begins at midnight. Morning comes first and evening ends the same date.</p>
+        </article>
       </div>
+    </section>
 
-      <div style=${{ maxWidth: 680, margin: "32px auto 0", padding: "0 20px 24px", borderBottom: "1px solid #eeeeee" }}>
-        <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, letterSpacing: "0.35em", color: "#999999", marginBottom: 16 }}>HOW A DAY IS COUNTED</div>
-        <div style=${{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-          <div style=${{ border: "1px solid #e0e0e0", padding: "14px 16px" }}>
-            <div style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: "0.18em", color: "#333333", marginBottom: 8 }}>HEBREW RECKONING</div>
-            <div style=${{ display: "flex", height: 28, marginBottom: 8 }}>
-              <div style=${{ flex: 1, background: NIGHT_BG, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <span style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: "#666666", letterSpacing: "0.1em" }}>EVENING  NIGHT</span>
-              </div>
-              <div style=${{ flex: 1, background: "#ffffff", border: "1px solid #eeeeee", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <span style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: "#666666", letterSpacing: "0.1em" }}>MORNING  DAY</span>
-              </div>
-            </div>
-            <div style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontSize: 11, color: "#777777", lineHeight: 1.7 }}>
-              Day begins at sunset.<br />Evening comes first, then morning.<br />Genesis 1:5 â€" "there was evening,<br />and there was morning."
-            </div>
-          </div>
-          <div style=${{ border: "1px solid #e0e0e0", padding: "14px 16px" }}>
-            <div style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: "0.18em", color: "#333333", marginBottom: 8 }}>AMERICAN RECKONING</div>
-            <div style=${{ display: "flex", height: 28, marginBottom: 8 }}>
-              <div style=${{ flex: 1, background: "#ffffff", border: "1px solid #eeeeee", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <span style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: "#666666", letterSpacing: "0.1em" }}>12:00 AM  MIDNIGHT</span>
-              </div>
-              <div style=${{ flex: 1, background: NIGHT_BG, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <span style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: "#666666", letterSpacing: "0.1em" }}>EVENING  NIGHT</span>
-              </div>
-            </div>
-            <div style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontSize: 11, color: "#777777", lineHeight: 1.7 }}>
-              Day begins at midnight.<br />Morning comes first, night ends the day.<br />Evening belongs to the same calendar date<br />it started on at midnight.
-            </div>
-          </div>
-        </div>
-      </div>
+    <section class="section">
+      <h2>Nisan Timeline</h2>
+      <table class="timeline" aria-label="Nisan timeline for passion week">
+        <thead>
+          <tr>
+            <th>Nisan Day</th>
+            <th>Type</th>
+            <th>Evening / Night</th>
+            <th>Morning / Day</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="accent-transit">
+            <td class="nisan">Nisan 8</td>
+            <td class="kind">Transit</td>
+            <td><ul class="events"></ul></td>
+            <td>
+              <ul class="events"><li>Jericho; Zacchaeus encounter.</li></ul>
+              <div class="ref">Luke 19:1</div>
+            </td>
+          </tr>
+          <tr class="accent-anchor">
+            <td class="nisan">Nisan 9</td>
+            <td class="kind">Anchor</td>
+            <td><ul class="events"><li>Overnight in Jericho.</li></ul></td>
+            <td>
+              <ul class="events"><li>Departs Jericho; arrives Bethany.</li></ul>
+              <div class="ref">John 12:1</div>
+              <div class="note">Six days before Passover: primary anchor.</div>
+            </td>
+          </tr>
+          <tr class="accent-lamb">
+            <td class="nisan">Nisan 10</td>
+            <td class="kind">Lamb</td>
+            <td>
+              <ul class="events"><li>Sabbath begins; dinner at Bethany; Mary anoints Jesus.</li></ul>
+              <div class="ref">John 12:2</div>
+            </td>
+            <td>
+              <ul class="events">
+                <li>Triumphal Entry (Palm Saturday).</li>
+                <li>Lamb of God presented to Jerusalem.</li>
+              </ul>
+              <div class="ref">John 12:12 // Exodus 12:3</div>
+              <div class="note">Passover lamb presented: Exodus 12:3 fulfilled.</div>
+            </td>
+          </tr>
+          <tr class="accent-transit">
+            <td class="nisan">Nisan 11</td>
+            <td class="kind">Transit</td>
+            <td><ul class="events"></ul></td>
+            <td><ul class="events"><li>Rest at Bethany.</li></ul></td>
+          </tr>
+          <tr class="accent-transit">
+            <td class="nisan">Nisan 12</td>
+            <td class="kind">Transit</td>
+            <td><ul class="events"></ul></td>
+            <td>
+              <ul class="events"><li>Fig tree cursed; temple cleansed.</li></ul>
+              <div class="ref">Mark 11:15</div>
+            </td>
+          </tr>
+          <tr class="accent-transit">
+            <td class="nisan">Nisan 13</td>
+            <td class="kind">Transit</td>
+            <td><ul class="events"></ul></td>
+            <td>
+              <ul class="events"><li>Bethany; Olivet Discourse.</li></ul>
+              <div class="ref">Mark 13</div>
+            </td>
+          </tr>
+          <tr class="accent-crucifixion">
+            <td class="nisan">Nisan 14</td>
+            <td class="kind">Crucifixion</td>
+            <td>
+              <ul class="events">
+                <li>Upper Room meal.</li>
+                <li>Arrest in Gethsemane.</li>
+                <li>Trial before Sanhedrin.</li>
+              </ul>
+              <div class="ref">John 19:14</div>
+            </td>
+            <td>
+              <ul class="events">
+                <li>Trial before Pilate.</li>
+                <li>Crucifixion and death at 3 PM.</li>
+                <li>Burial before sunset.</li>
+              </ul>
+              <div class="ref">John 19:14 // Exodus 12:6</div>
+              <div class="note">Preparation day; Passover lamb slaughtered at twilight.</div>
+            </td>
+          </tr>
+          <tr class="accent-high-sabbath">
+            <td class="nisan">Nisan 15</td>
+            <td class="kind">High Sabbath</td>
+            <td>
+              <ul class="events"><li>High Sabbath begins at sunset; tomb sealed (Night 1).</li></ul>
+              <div class="ref">John 19:31</div>
+            </td>
+            <td>
+              <ul class="events">
+                <li>Passover and Feast of Unleavened Bread (Day 1).</li>
+                <li>Megas sabbaton holy convocation.</li>
+              </ul>
+              <div class="ref">Leviticus 23:7</div>
+            </td>
+          </tr>
+          <tr class="accent-gap">
+            <td class="nisan">Nisan 16</td>
+            <td class="kind">Gap Day</td>
+            <td><ul class="events"><li>High Sabbath ends; women may move (Night 2).</li></ul></td>
+            <td>
+              <ul class="events">
+                <li>Women buy spices.</li>
+                <li>Women prepare spices (Day 2).</li>
+              </ul>
+              <div class="ref">Mark 16:1 // Luke 23:56</div>
+              <div class="note">Gap day resolves the two-verse sequence.</div>
+            </td>
+          </tr>
+          <tr class="accent-sabbath">
+            <td class="nisan">Nisan 17</td>
+            <td class="kind">Sabbath</td>
+            <td><ul class="events"><li>Weekly Sabbath begins at sunset (Night 3).</li></ul></td>
+            <td>
+              <ul class="events"><li>Women rest on Sabbath (Day 3).</li></ul>
+              <div class="ref">Luke 23:56</div>
+            </td>
+          </tr>
+          <tr class="accent-resurrection">
+            <td class="nisan">Nisan 18</td>
+            <td class="kind">Resurrection</td>
+            <td><ul class="events"><li>Weekly Sabbath ends at sunset; resurrection.</li></ul></td>
+            <td>
+              <ul class="events">
+                <li>Women arrive at sunrise and find the tomb empty.</li>
+                <li>Jesus is alive.</li>
+              </ul>
+              <div class="ref">Mark 16:2</div>
+              <div class="note">Matthew 12:40 fulfilled: three days and three nights.</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
 
-      <div style=${{ maxWidth: 680, margin: "0 auto", padding: "0 20px" }}>
-        <div style=${{ display: "grid", gridTemplateColumns: "48px 8px 1fr 1fr", columnGap: 0, borderBottom: "1px solid #e0e0e0", padding: "12px 0 8px" }}>
-          <div /><div />
-          <div style=${{ background: NIGHT_BG, padding: "6px 12px", borderLeft: "1px solid #e0e0e0" }}>
-            <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, letterSpacing: "0.25em", color: "#888888" }}>EVENING  /  NIGHT</div>
-            <div style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontSize: 10, color: "#aaaaaa", marginTop: 2 }}>Hebrew day begins here</div>
-          </div>
-          <div style=${{ background: DAY_BG, padding: "6px 12px", borderLeft: "1px solid #e0e0e0", borderRight: "1px solid #e0e0e0" }}>
-            <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, letterSpacing: "0.25em", color: "#888888" }}>MORNING  /  DAY</div>
-            <div style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontSize: 10, color: "#aaaaaa", marginTop: 2 }}>American date changes here</div>
-          </div>
-        </div>
-        ${days.map((d, i) => {
-          const p = theme[d.type];
-          const isOpen = open === i;
-          const isKey = d.type !== "transit";
-          return html`
-            <div key=${i} className="seg" onClick=${() => setOpen(isOpen ? null : i)} style=${{
-              display: "grid", gridTemplateColumns: "48px 8px 1fr 1fr", columnGap: 0,
-              borderBottom: "1px solid " + (isKey ? "#dddddd" : "#f0f0f0"),
-              borderLeft: "3px solid " + (isKey ? p.accent : "#eeeeee"),
-            }}>
-              <div style=${{ display: "flex", flexDirection: "column", alignItems: "flex-end", justifyContent: "center", paddingRight: 8, paddingTop: 12, paddingBottom: 12 }}>
-                <div style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: isKey ? 800 : 300, fontSize: isKey ? 18 : 12, color: isKey ? p.title : "#cccccc", lineHeight: 1 }}>${d.nisan}</div>
-                <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 6, letterSpacing: "0.12em", color: isKey ? p.accent : "#dddddd", marginTop: 2 }}>NISAN</div>
-              </div>
-              <div style=${{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <div style=${{ width: isKey ? 7 : 4, height: isKey ? 7 : 4, borderRadius: "50%", background: p.accent }} />
-              </div>
-              <div style=${{ background: NIGHT_BG, borderLeft: "1px solid #e0e0e0", padding: "10px 12px" }}>
-                <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, letterSpacing: "0.18em", color: "#888888", marginBottom: 5 }}>${d.evening.american}</div>
-                ${d.evening.events.map((e, j) => html`<div key=${j} style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontSize: 11, color: "#444444", lineHeight: 1.6, marginBottom: 2 }}>${e}</div>`)}
-                ${d.evening.tomb && html`<${TombBadge} label=${d.evening.tomb.label} night=${true} />`}
-                ${d.evening.ref && !d.daytime.ref && html`<div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: "#aaaaaa", letterSpacing: "0.08em", marginTop: 4 }}>${d.evening.ref}</div>`}
-              </div>
-              <div style=${{ background: DAY_BG, borderLeft: "1px solid #e0e0e0", borderRight: "1px solid #e0e0e0", padding: "10px 12px" }}>
-                <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, letterSpacing: "0.18em", color: "#888888", marginBottom: 5 }}>${d.daytime.american}</div>
-                ${d.daytime.events.map((e, j) => html`<div key=${j} style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: isKey ? 400 : 300, fontSize: 11, color: isKey ? "#222222" : "#666666", lineHeight: 1.6, marginBottom: 2 }}>${e}</div>`)}
-                ${d.daytime.tomb && html`<${TombBadge} label=${d.daytime.tomb.label} night=${false} />`}
-                ${d.daytime.ref && html`<div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: "#aaaaaa", letterSpacing: "0.08em", marginTop: 4 }}>${d.daytime.ref}</div>`}
-                ${d.daytime.note && isOpen && html`<div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: p.title, letterSpacing: "0.12em", marginTop: 8, lineHeight: 1.7, borderTop: "1px solid " + p.accent + "33", paddingTop: 6 }}>${d.daytime.note}</div>`}
-                ${d.daytime.inferred && html`<div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 6, color: "#aaaacc", border: "1px solid #ccccee", display: "inline-block", padding: "1px 5px", letterSpacing: "0.1em", marginTop: 4 }}>INFERRED</div>`}
-              </div>
-            </div>
-          `;
-        })}
-      </div>
-
-      <div style=${{ maxWidth: 680, margin: "48px auto 0", padding: "0 20px" }}>
-        <div style=${{ borderTop: "1px solid #e0e0e0", paddingTop: 28, marginBottom: 36 }}>
-          <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, letterSpacing: "0.35em", color: "#999999", marginBottom: 14 }}>MATTHEW 12:40  //  SIGN OF JONAH  //  FULFILLED</div>
-          <div style=${{ display: "flex", gap: 4, flexWrap: "wrap" }}>
-            ${[
-              { label: "WED NIGHT", night: true },
-              { label: "THU NIGHT", night: true },
-              { label: "FRI NIGHT", night: true },
-              { label: "THU DAY",   night: false },
-              { label: "FRI DAY",   night: false },
-              { label: "SAT DAY",   night: false },
-            ].map((item, i) => html`<div key=${i} style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 9, letterSpacing: "0.1em", padding: "6px 14px", color: item.night ? "#3333aa" : "#886600", border: "1px solid " + (item.night ? "#aaaadd" : "#ccaa44"), background: item.night ? "#f5f5ff" : "#fffbf0" }}>${item.label}</div>`)}
-          </div>
-        </div>
-        <div style=${{ borderTop: "1px solid #e0e0e0", paddingTop: 28, marginBottom: 36 }}>
-          <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, letterSpacing: "0.35em", color: "#999999", marginBottom: 18 }}>PASSOVER LAMB TYPOLOGY</div>
-          ${[
-            { ref: "EXODUS 12:3", nisan: "NISAN 10", type: "LAMB SELECTED",               fulfill: "Jesus presents himself to Jerusalem on lamb selection day", col: theme.lamb.title,         bdr: theme.lamb.accent },
-            { ref: "EXODUS 12:6", nisan: "NISAN 14", type: "LAMB SLAUGHTERED AT TWILIGHT", fulfill: "Jesus crucified on Preparation Day before sunset",           col: theme.crucifixion.title,  bdr: theme.crucifixion.accent },
-            { ref: "JOHN 1:29",   nisan: null,        type: "LAMB OF GOD",                 fulfill: "Takes away the sin of the world",                            col: theme.resurrection.title, bdr: theme.resurrection.accent },
-          ].map((row, i) => html`
-            <div key=${i} style=${{ display: "grid", gridTemplateColumns: "90px 160px 1fr", gap: 16, marginBottom: 14, paddingLeft: 12, borderLeft: "2px solid " + row.bdr }}>
-              <div>
-                <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, color: row.col, letterSpacing: "0.1em" }}>${row.ref}</div>
-                ${row.nisan && html`<div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: "#aaaaaa", letterSpacing: "0.08em", marginTop: 2 }}>${row.nisan}</div>`}
-              </div>
-              <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, color: "#777777", letterSpacing: "0.06em", lineHeight: 1.6 }}>${row.type}</div>
-              <div style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontSize: 12, color: "#333333", lineHeight: 1.6 }}>${row.fulfill}</div>
-            </div>
-          `)}
-        </div>
-        <div style=${{ borderTop: "1px solid #e0e0e0", paddingTop: 28, marginBottom: 36 }}>
-          <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, letterSpacing: "0.35em", color: "#999999", marginBottom: 18 }}>TWO SABBATH RESOLUTION</div>
-          ${[
-            { ref: "MARK 16:1",  text: "Women buy spices after the sabbath.",             col: theme["high-sabbath"].title },
-            { ref: "LUKE 23:56", text: "Women prepare spices then rest on the sabbath.",  col: theme.sabbath.title },
-          ].map((row, i) => html`
-            <div key=${i} style=${{ display: "flex", gap: 20, marginBottom: 10, alignItems: "baseline" }}>
-              <span style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, color: row.col, letterSpacing: "0.1em", flexShrink: 0, width: 88 }}>${row.ref}</span>
-              <span style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontSize: 13, color: "#333333", lineHeight: 1.7 }}>${row.text}</span>
-            </div>
-          `)}
-          <div style=${{ marginTop: 12, paddingLeft: 108, fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontStyle: "italic", fontSize: 12, color: "#777777", lineHeight: 1.9 }}>
-            Nisan 16 Friday is the only day that satisfies both statements
-            without contradiction. The Friday crucifixion view produces an
-            irreconcilable conflict between these two verses.
-          </div>
-        </div>
-        <div style=${{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 24, borderTop: "1px solid #eeeeee" }}>
-          <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, letterSpacing: "0.3em", color: "#cccccc", marginBottom: 16 }}>TAP ANY ROW TO EXPAND  //  NET BIBLE TRANSLATION</div>
-          <div style=${{ width: 12, height: 48, background: "#111111" }} />
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-    render(html`<${Timeline} />`, document.getElementById('root'));
-  </script>
+    <section class="section footnotes">
+      <h2>Notes</h2>
+      <p><strong>Passover Typology:</strong> Exodus 12:3 (selection on Nisan 10) and Exodus 12:6 (slaughter on Nisan 14) are mapped to entry and crucifixion events.</p>
+      <p><strong>Two Sabbaths:</strong> Mark 16:1 and Luke 23:56 are reconciled by distinguishing a high Sabbath (Nisan 15) and the weekly Sabbath (Nisan 17).</p>
+      <p><strong>Hosting Stability:</strong> This page is plain static HTML and CSS only. No build step, no module imports, no JSX, and no runtime JavaScript are required.</p>
+    </section>
+  </main>
 </body>
 </html>
-
