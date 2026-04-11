@@ -7,15 +7,15 @@ layout: null
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Wednesday Crucifixion — Nisan Calendar</title>
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body style="margin:0;padding:0;">
   <div id="root"></div>
-  <script type="text/babel">
+  <script type="module">
     {% raw %}
-    const { useState } = React;
+    import { h, render } from 'https://esm.sh/preact@10';
+    import { useState } from 'https://esm.sh/preact@10/hooks';
+    import htm from 'https://esm.sh/htm@3';
+    const html = htm.bind(h);
 
     // Each Nisan day has two segments: EVENING (night) then DAYTIME
 // Hebrew day runs sunset-to-sunset: night comes FIRST, then day
@@ -116,510 +116,179 @@ resurrection:   { accent: “#116633”, title: “#0d5529”, nightBg: “#f0fa
 const NIGHT_BG = “#f0f0f0”;   // universal night tint
 const DAY_BG   = “#ffffff”;   // universal day white
 
+const FONTS = "@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,800;1,300&display=swap'); * { box-sizing: border-box; } .seg { cursor: pointer; transition: filter 0.1s; } .seg:hover { filter: brightness(0.97); }";
+
 function TombBadge({ label, night }) {
-return (
-<span style={{
-fontFamily: “‘Share Tech Mono’, monospace”,
-fontSize: 7, letterSpacing: “0.12em”,
-color: night ? “#3333aa” : “#886600”,
-border: `1px solid ${night ? "#aaaadd" : "#ccaa44"}`,
-padding: “2px 8px”,
-display: “inline-block”,
-marginTop: 4,
-}}>
-{label}
-</span>
-);
+  return html`<span style=${{
+    fontFamily: "'Share Tech Mono', monospace",
+    fontSize: 7, letterSpacing: "0.12em",
+    color: night ? "#3333aa" : "#886600",
+    border: "1px solid " + (night ? "#aaaadd" : "#ccaa44"),
+    padding: "2px 8px",
+    display: "inline-block",
+    marginTop: 4,
+  }}>${label}</span>`;
 }
 
 function Timeline() {
-const [open, setOpen] = useState(null);
+  const [open, setOpen] = useState(null);
+  return html`
+    <div style=${{ minHeight: "100vh", background: "#ffffff", fontFamily: "'Share Tech Mono', monospace", color: "#111111", padding: "0 0 80px" }}>
+      <style>${FONTS}</style>
 
-return (
-<div style={{
-minHeight: “100vh”,
-background: “#ffffff”,
-fontFamily: “‘Share Tech Mono’, monospace”,
-color: “#111111”,
-padding: “0 0 80px”,
-}}>
-<style>{`@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,800;1,300&display=swap'); * { box-sizing: border-box; } .seg { cursor: pointer; transition: filter 0.1s; } .seg:hover { filter: brightness(0.97); }`}</style>
-
-  {/* HEADER */}
-  <div style={{
-    display: "flex", flexDirection: "column", alignItems: "center",
-    padding: "52px 24px 40px",
-    borderBottom: "1px solid #e0e0e0",
-  }}>
-    <div style={{ width: 20, height: 80, background: "#111111", marginBottom: 32 }} />
-
-    <div style={{
-      fontFamily: "'Share Tech Mono', monospace",
-      fontSize: 9, letterSpacing: "0.45em",
-      color: "#999999", marginBottom: 12, textAlign: "center",
-    }}>
-      NISAN  CALENDAR  //  PASSION  WEEK
-    </div>
-
-    <div style={{
-      fontFamily: "'Exo 2', sans-serif",
-      fontWeight: 800, fontSize: 30,
-      letterSpacing: "0.1em", color: "#111111",
-      textAlign: "center", lineHeight: 1.15, marginBottom: 10,
-    }}>
-      THE WEDNESDAY<br />CRUCIFIXION
-    </div>
-
-    <div style={{ width: 40, height: 1, background: "#cccccc", marginBottom: 24 }} />
-
-    <div style={{
-      maxWidth: 400, textAlign: "center",
-      fontFamily: "'Exo 2', sans-serif",
-      fontWeight: 300, fontStyle: "italic",
-      fontSize: 13, color: "#555555", lineHeight: 1.9,
-      marginBottom: 10,
-    }}>
-      "For just as Jonah was in the belly of the huge fish for three days
-      and three nights, so the Son of Man will be in the heart of the earth
-      for three days and three nights."
-    </div>
-    <div style={{
-      fontFamily: "'Share Tech Mono', monospace",
-      fontSize: 8, color: "#aaaaaa", letterSpacing: "0.3em",
-    }}>
-      MATTHEW  12:40  NET
-    </div>
-  </div>
-
-  {/* DAY RECKONING KEY */}
-  <div style={{
-    maxWidth: 680, margin: "32px auto 0", padding: "0 20px 24px",
-    borderBottom: "1px solid #eeeeee",
-  }}>
-    <div style={{
-      fontFamily: "'Share Tech Mono', monospace",
-      fontSize: 8, letterSpacing: "0.35em",
-      color: "#999999", marginBottom: 16,
-    }}>
-      HOW A DAY IS COUNTED
-    </div>
-
-    <div style={{
-      display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12,
-    }}>
-      {/* Hebrew */}
-      <div style={{ border: "1px solid #e0e0e0", padding: "14px 16px" }}>
-        <div style={{
-          fontFamily: "'Exo 2', sans-serif", fontWeight: 700,
-          fontSize: 11, letterSpacing: "0.18em", color: "#333333", marginBottom: 8,
-        }}>
-          HEBREW RECKONING
+      <div style=${{ display: "flex", flexDirection: "column", alignItems: "center", padding: "52px 24px 40px", borderBottom: "1px solid #e0e0e0" }}>
+        <div style=${{ width: 20, height: 80, background: "#111111", marginBottom: 32 }} />
+        <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 9, letterSpacing: "0.45em", color: "#999999", marginBottom: 12, textAlign: "center" }}>NISAN  CALENDAR  //  PASSION  WEEK</div>
+        <div style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 800, fontSize: 30, letterSpacing: "0.1em", color: "#111111", textAlign: "center", lineHeight: 1.15, marginBottom: 10 }}>THE WEDNESDAY<br />CRUCIFIXION</div>
+        <div style=${{ width: 40, height: 1, background: "#cccccc", marginBottom: 24 }} />
+        <div style=${{ maxWidth: 400, textAlign: "center", fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontStyle: "italic", fontSize: 13, color: "#555555", lineHeight: 1.9, marginBottom: 10 }}>
+          "For just as Jonah was in the belly of the huge fish for three days
+          and three nights, so the Son of Man will be in the heart of the earth
+          for three days and three nights."
         </div>
-        <div style={{ display: "flex", height: 28, marginBottom: 8 }}>
-          <div style={{
-            flex: 1, background: NIGHT_BG,
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}>
-            <span style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: "#666666", letterSpacing: "0.1em" }}>
-              EVENING  NIGHT
-            </span>
+        <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, color: "#aaaaaa", letterSpacing: "0.3em" }}>MATTHEW  12:40  NET</div>
+      </div>
+
+      <div style=${{ maxWidth: 680, margin: "32px auto 0", padding: "0 20px 24px", borderBottom: "1px solid #eeeeee" }}>
+        <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, letterSpacing: "0.35em", color: "#999999", marginBottom: 16 }}>HOW A DAY IS COUNTED</div>
+        <div style=${{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div style=${{ border: "1px solid #e0e0e0", padding: "14px 16px" }}>
+            <div style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: "0.18em", color: "#333333", marginBottom: 8 }}>HEBREW RECKONING</div>
+            <div style=${{ display: "flex", height: 28, marginBottom: 8 }}>
+              <div style=${{ flex: 1, background: NIGHT_BG, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: "#666666", letterSpacing: "0.1em" }}>EVENING  NIGHT</span>
+              </div>
+              <div style=${{ flex: 1, background: "#ffffff", border: "1px solid #eeeeee", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: "#666666", letterSpacing: "0.1em" }}>MORNING  DAY</span>
+              </div>
+            </div>
+            <div style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontSize: 11, color: "#777777", lineHeight: 1.7 }}>
+              Day begins at sunset.<br />Evening comes first, then morning.<br />Genesis 1:5 — "there was evening,<br />and there was morning."
+            </div>
           </div>
-          <div style={{
-            flex: 1, background: "#ffffff", border: "1px solid #eeeeee",
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}>
-            <span style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: "#666666", letterSpacing: "0.1em" }}>
-              MORNING  DAY
-            </span>
+          <div style=${{ border: "1px solid #e0e0e0", padding: "14px 16px" }}>
+            <div style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: "0.18em", color: "#333333", marginBottom: 8 }}>AMERICAN RECKONING</div>
+            <div style=${{ display: "flex", height: 28, marginBottom: 8 }}>
+              <div style=${{ flex: 1, background: "#ffffff", border: "1px solid #eeeeee", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: "#666666", letterSpacing: "0.1em" }}>12:00 AM  MIDNIGHT</span>
+              </div>
+              <div style=${{ flex: 1, background: NIGHT_BG, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: "#666666", letterSpacing: "0.1em" }}>EVENING  NIGHT</span>
+              </div>
+            </div>
+            <div style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontSize: 11, color: "#777777", lineHeight: 1.7 }}>
+              Day begins at midnight.<br />Morning comes first, night ends the day.<br />Evening belongs to the same calendar date<br />it started on at midnight.
+            </div>
           </div>
-        </div>
-        <div style={{
-          fontFamily: "'Exo 2', sans-serif", fontWeight: 300,
-          fontSize: 11, color: "#777777", lineHeight: 1.7,
-        }}>
-          Day begins at sunset.<br />
-          Evening comes first, then morning.<br />
-          Genesis 1:5 — "there was evening,<br />and there was morning."
         </div>
       </div>
 
-      {/* American */}
-      <div style={{ border: "1px solid #e0e0e0", padding: "14px 16px" }}>
-        <div style={{
-          fontFamily: "'Exo 2', sans-serif", fontWeight: 700,
-          fontSize: 11, letterSpacing: "0.18em", color: "#333333", marginBottom: 8,
-        }}>
-          AMERICAN RECKONING
-        </div>
-        <div style={{ display: "flex", height: 28, marginBottom: 8 }}>
-          <div style={{
-            flex: 1, background: "#ffffff", border: "1px solid #eeeeee",
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}>
-            <span style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: "#666666", letterSpacing: "0.1em" }}>
-              12:00 AM  MIDNIGHT
-            </span>
+      <div style=${{ maxWidth: 680, margin: "0 auto", padding: "0 20px" }}>
+        <div style=${{ display: "grid", gridTemplateColumns: "48px 8px 1fr 1fr", columnGap: 0, borderBottom: "1px solid #e0e0e0", padding: "12px 0 8px" }}>
+          <div /><div />
+          <div style=${{ background: NIGHT_BG, padding: "6px 12px", borderLeft: "1px solid #e0e0e0" }}>
+            <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, letterSpacing: "0.25em", color: "#888888" }}>EVENING  /  NIGHT</div>
+            <div style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontSize: 10, color: "#aaaaaa", marginTop: 2 }}>Hebrew day begins here</div>
           </div>
-          <div style={{
-            flex: 1, background: NIGHT_BG,
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}>
-            <span style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: "#666666", letterSpacing: "0.1em" }}>
-              EVENING  NIGHT
-            </span>
+          <div style=${{ background: DAY_BG, padding: "6px 12px", borderLeft: "1px solid #e0e0e0", borderRight: "1px solid #e0e0e0" }}>
+            <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, letterSpacing: "0.25em", color: "#888888" }}>MORNING  /  DAY</div>
+            <div style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontSize: 10, color: "#aaaaaa", marginTop: 2 }}>American date changes here</div>
           </div>
         </div>
-        <div style={{
-          fontFamily: "'Exo 2', sans-serif", fontWeight: 300,
-          fontSize: 11, color: "#777777", lineHeight: 1.7,
-        }}>
-          Day begins at midnight.<br />
-          Morning comes first, night ends the day.<br />
-          Evening belongs to the same calendar date<br />
-          it started on at midnight.
-        </div>
-      </div>
-    </div>
-  </div>
-
-  {/* COLUMN HEADERS */}
-  <div style={{ maxWidth: 680, margin: "0 auto", padding: "0 20px" }}>
-    <div style={{
-      display: "grid",
-      gridTemplateColumns: "48px 8px 1fr 1fr",
-      columnGap: 0,
-      borderBottom: "1px solid #e0e0e0",
-      padding: "12px 0 8px",
-    }}>
-      <div />
-      <div />
-      <div style={{
-        background: NIGHT_BG,
-        padding: "6px 12px",
-        borderLeft: "1px solid #e0e0e0",
-      }}>
-        <div style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, letterSpacing: "0.25em", color: "#888888" }}>
-          EVENING  /  NIGHT
-        </div>
-        <div style={{ fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontSize: 10, color: "#aaaaaa", marginTop: 2 }}>
-          Hebrew day begins here
-        </div>
-      </div>
-      <div style={{
-        background: DAY_BG,
-        padding: "6px 12px",
-        borderLeft: "1px solid #e0e0e0",
-        borderRight: "1px solid #e0e0e0",
-      }}>
-        <div style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, letterSpacing: "0.25em", color: "#888888" }}>
-          MORNING  /  DAY
-        </div>
-        <div style={{ fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontSize: 10, color: "#aaaaaa", marginTop: 2 }}>
-          American date changes here
-        </div>
-      </div>
-    </div>
-
-    {/* ROWS */}
-    {days.map((d, i) => {
-      const p = theme[d.type];
-      const isOpen = open === i;
-      const isKey = d.type !== "transit";
-
-      return (
-        <div
-          key={i}
-          className="seg"
-          onClick={() => setOpen(isOpen ? null : i)}
-          style={{
-            display: "grid",
-            gridTemplateColumns: "48px 8px 1fr 1fr",
-            columnGap: 0,
-            borderBottom: `1px solid ${isKey ? "#dddddd" : "#f0f0f0"}`,
-            borderLeft: `3px solid ${isKey ? p.accent : "#eeeeee"}`,
-          }}
-        >
-          {/* Nisan number */}
-          <div style={{
-            display: "flex", flexDirection: "column",
-            alignItems: "flex-end", justifyContent: "center",
-            paddingRight: 8, paddingTop: 12, paddingBottom: 12,
-          }}>
-            <div style={{
-              fontFamily: "'Exo 2', sans-serif",
-              fontWeight: isKey ? 800 : 300,
-              fontSize: isKey ? 18 : 12,
-              color: isKey ? p.title : "#cccccc",
-              lineHeight: 1,
+        ${days.map((d, i) => {
+          const p = theme[d.type];
+          const isOpen = open === i;
+          const isKey = d.type !== "transit";
+          return html`
+            <div key=${i} className="seg" onClick=${() => setOpen(isOpen ? null : i)} style=${{
+              display: "grid", gridTemplateColumns: "48px 8px 1fr 1fr", columnGap: 0,
+              borderBottom: "1px solid " + (isKey ? "#dddddd" : "#f0f0f0"),
+              borderLeft: "3px solid " + (isKey ? p.accent : "#eeeeee"),
             }}>
-              {d.nisan}
+              <div style=${{ display: "flex", flexDirection: "column", alignItems: "flex-end", justifyContent: "center", paddingRight: 8, paddingTop: 12, paddingBottom: 12 }}>
+                <div style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: isKey ? 800 : 300, fontSize: isKey ? 18 : 12, color: isKey ? p.title : "#cccccc", lineHeight: 1 }}>${d.nisan}</div>
+                <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 6, letterSpacing: "0.12em", color: isKey ? p.accent : "#dddddd", marginTop: 2 }}>NISAN</div>
+              </div>
+              <div style=${{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div style=${{ width: isKey ? 7 : 4, height: isKey ? 7 : 4, borderRadius: "50%", background: p.accent }} />
+              </div>
+              <div style=${{ background: NIGHT_BG, borderLeft: "1px solid #e0e0e0", padding: "10px 12px" }}>
+                <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, letterSpacing: "0.18em", color: "#888888", marginBottom: 5 }}>${d.evening.american}</div>
+                ${d.evening.events.map((e, j) => html`<div key=${j} style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontSize: 11, color: "#444444", lineHeight: 1.6, marginBottom: 2 }}>${e}</div>`)}
+                ${d.evening.tomb && html`<${TombBadge} label=${d.evening.tomb.label} night=${true} />`}
+                ${d.evening.ref && !d.daytime.ref && html`<div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: "#aaaaaa", letterSpacing: "0.08em", marginTop: 4 }}>${d.evening.ref}</div>`}
+              </div>
+              <div style=${{ background: DAY_BG, borderLeft: "1px solid #e0e0e0", borderRight: "1px solid #e0e0e0", padding: "10px 12px" }}>
+                <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, letterSpacing: "0.18em", color: "#888888", marginBottom: 5 }}>${d.daytime.american}</div>
+                ${d.daytime.events.map((e, j) => html`<div key=${j} style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: isKey ? 400 : 300, fontSize: 11, color: isKey ? "#222222" : "#666666", lineHeight: 1.6, marginBottom: 2 }}>${e}</div>`)}
+                ${d.daytime.tomb && html`<${TombBadge} label=${d.daytime.tomb.label} night=${false} />`}
+                ${d.daytime.ref && html`<div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: "#aaaaaa", letterSpacing: "0.08em", marginTop: 4 }}>${d.daytime.ref}</div>`}
+                ${d.daytime.note && isOpen && html`<div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: p.title, letterSpacing: "0.12em", marginTop: 8, lineHeight: 1.7, borderTop: "1px solid " + p.accent + "33", paddingTop: 6 }}>${d.daytime.note}</div>`}
+                ${d.daytime.inferred && html`<div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 6, color: "#aaaacc", border: "1px solid #ccccee", display: "inline-block", padding: "1px 5px", letterSpacing: "0.1em", marginTop: 4 }}>INFERRED</div>`}
+              </div>
             </div>
-            <div style={{
-              fontFamily: "'Share Tech Mono', monospace",
-              fontSize: 6, letterSpacing: "0.12em",
-              color: isKey ? p.accent : "#dddddd",
-              marginTop: 2,
-            }}>
-              NISAN
-            </div>
-          </div>
+          `;
+        })}
+      </div>
 
-          {/* Dot */}
-          <div style={{
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}>
-            <div style={{
-              width: isKey ? 7 : 4,
-              height: isKey ? 7 : 4,
-              borderRadius: "50%",
-              background: p.accent,
-            }} />
-          </div>
-
-          {/* EVENING / NIGHT segment */}
-          <div style={{
-            background: NIGHT_BG,
-            borderLeft: "1px solid #e0e0e0",
-            padding: "10px 12px",
-          }}>
-            <div style={{
-              fontFamily: "'Share Tech Mono', monospace",
-              fontSize: 7, letterSpacing: "0.18em",
-              color: "#888888", marginBottom: 5,
-            }}>
-              {d.evening.american}
-            </div>
-            {d.evening.events.map((e, j) => (
-              <div key={j} style={{
-                fontFamily: "'Exo 2', sans-serif",
-                fontWeight: 300, fontSize: 11,
-                color: "#444444", lineHeight: 1.6,
-                marginBottom: 2,
-              }}>
-                {e}
-              </div>
-            ))}
-            {d.evening.tomb && (
-              <TombBadge label={d.evening.tomb.label} night={true} />
-            )}
-            {d.evening.ref && !d.daytime.ref && (
-              <div style={{
-                fontFamily: "'Share Tech Mono', monospace",
-                fontSize: 7, color: "#aaaaaa",
-                letterSpacing: "0.08em", marginTop: 4,
-              }}>
-                {d.evening.ref}
-              </div>
-            )}
-          </div>
-
-          {/* DAYTIME segment */}
-          <div style={{
-            background: DAY_BG,
-            borderLeft: "1px solid #e0e0e0",
-            borderRight: "1px solid #e0e0e0",
-            padding: "10px 12px",
-          }}>
-            <div style={{
-              fontFamily: "'Share Tech Mono', monospace",
-              fontSize: 7, letterSpacing: "0.18em",
-              color: "#888888", marginBottom: 5,
-            }}>
-              {d.daytime.american}
-            </div>
-            {d.daytime.events.map((e, j) => (
-              <div key={j} style={{
-                fontFamily: "'Exo 2', sans-serif",
-                fontWeight: isKey ? 400 : 300,
-                fontSize: 11,
-                color: isKey ? "#222222" : "#666666",
-                lineHeight: 1.6, marginBottom: 2,
-              }}>
-                {e}
-              </div>
-            ))}
-            {d.daytime.tomb && (
-              <TombBadge label={d.daytime.tomb.label} night={false} />
-            )}
-            {d.daytime.ref && (
-              <div style={{
-                fontFamily: "'Share Tech Mono', monospace",
-                fontSize: 7, color: "#aaaaaa",
-                letterSpacing: "0.08em", marginTop: 4,
-              }}>
-                {d.daytime.ref}
-              </div>
-            )}
-            {d.daytime.note && isOpen && (
-              <div style={{
-                fontFamily: "'Share Tech Mono', monospace",
-                fontSize: 7, color: p.title,
-                letterSpacing: "0.12em",
-                marginTop: 8, lineHeight: 1.7,
-                borderTop: `1px solid ${p.accent}33`,
-                paddingTop: 6,
-              }}>
-                {d.daytime.note}
-              </div>
-            )}
-            {d.daytime.inferred && (
-              <div style={{
-                fontFamily: "'Share Tech Mono', monospace",
-                fontSize: 6, color: "#aaaacc",
-                border: "1px solid #ccccee",
-                display: "inline-block",
-                padding: "1px 5px", letterSpacing: "0.1em", marginTop: 4,
-              }}>
-                INFERRED
-              </div>
-            )}
+      <div style=${{ maxWidth: 680, margin: "48px auto 0", padding: "0 20px" }}>
+        <div style=${{ borderTop: "1px solid #e0e0e0", paddingTop: 28, marginBottom: 36 }}>
+          <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, letterSpacing: "0.35em", color: "#999999", marginBottom: 14 }}>MATTHEW 12:40  //  SIGN OF JONAH  //  FULFILLED</div>
+          <div style=${{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+            ${[
+              { label: "WED NIGHT", night: true },
+              { label: "THU NIGHT", night: true },
+              { label: "FRI NIGHT", night: true },
+              { label: "THU DAY",   night: false },
+              { label: "FRI DAY",   night: false },
+              { label: "SAT DAY",   night: false },
+            ].map((item, i) => html`<div key=${i} style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 9, letterSpacing: "0.1em", padding: "6px 14px", color: item.night ? "#3333aa" : "#886600", border: "1px solid " + (item.night ? "#aaaadd" : "#ccaa44"), background: item.night ? "#f5f5ff" : "#fffbf0" }}>${item.label}</div>`)}
           </div>
         </div>
-      );
-    })}
-  </div>
-
-  {/* FOOTER */}
-  <div style={{ maxWidth: 680, margin: "48px auto 0", padding: "0 20px" }}>
-
-    {/* Matt 12:40 */}
-    <div style={{ borderTop: "1px solid #e0e0e0", paddingTop: 28, marginBottom: 36 }}>
-      <div style={{
-        fontFamily: "'Share Tech Mono', monospace",
-        fontSize: 8, letterSpacing: "0.35em",
-        color: "#999999", marginBottom: 14,
-      }}>
-        MATTHEW 12:40  //  SIGN OF JONAH  //  FULFILLED
-      </div>
-      <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
-        {[
-          { label: "WED NIGHT", night: true },
-          { label: "THU NIGHT", night: true },
-          { label: "FRI NIGHT", night: true },
-          { label: "THU DAY",   night: false },
-          { label: "FRI DAY",   night: false },
-          { label: "SAT DAY",   night: false },
-        ].map((item, i) => (
-          <div key={i} style={{
-            fontFamily: "'Share Tech Mono', monospace",
-            fontSize: 9, letterSpacing: "0.1em",
-            padding: "6px 14px",
-            color: item.night ? "#3333aa" : "#886600",
-            border: `1px solid ${item.night ? "#aaaadd" : "#ccaa44"}`,
-            background: item.night ? "#f5f5ff" : "#fffbf0",
-          }}>
-            {item.label}
-          </div>
-        ))}
-      </div>
-    </div>
-
-    {/* Typology */}
-    <div style={{ borderTop: "1px solid #e0e0e0", paddingTop: 28, marginBottom: 36 }}>
-      <div style={{
-        fontFamily: "'Share Tech Mono', monospace",
-        fontSize: 8, letterSpacing: "0.35em",
-        color: "#999999", marginBottom: 18,
-      }}>
-        PASSOVER LAMB TYPOLOGY
-      </div>
-      {[
-        {
-          ref: "EXODUS 12:3", nisan: "NISAN 10",
-          type: "LAMB SELECTED",
-          fulfill: "Jesus presents himself to Jerusalem on lamb selection day",
-          col: theme.lamb.title, bdr: theme.lamb.accent,
-        },
-        {
-          ref: "EXODUS 12:6", nisan: "NISAN 14",
-          type: "LAMB SLAUGHTERED AT TWILIGHT",
-          fulfill: "Jesus crucified on Preparation Day before sunset",
-          col: theme.crucifixion.title, bdr: theme.crucifixion.accent,
-        },
-        {
-          ref: "JOHN 1:29", nisan: null,
-          type: "LAMB OF GOD",
-          fulfill: "Takes away the sin of the world",
-          col: theme.resurrection.title, bdr: theme.resurrection.accent,
-        },
-      ].map((row, i) => (
-        <div key={i} style={{
-          display: "grid",
-          gridTemplateColumns: "90px 160px 1fr",
-          gap: 16, marginBottom: 14,
-          paddingLeft: 12,
-          borderLeft: `2px solid ${row.bdr}`,
-        }}>
-          <div>
-            <div style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, color: row.col, letterSpacing: "0.1em" }}>
-              {row.ref}
-            </div>
-            {row.nisan && (
-              <div style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: "#aaaaaa", letterSpacing: "0.08em", marginTop: 2 }}>
-                {row.nisan}
+        <div style=${{ borderTop: "1px solid #e0e0e0", paddingTop: 28, marginBottom: 36 }}>
+          <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, letterSpacing: "0.35em", color: "#999999", marginBottom: 18 }}>PASSOVER LAMB TYPOLOGY</div>
+          ${[
+            { ref: "EXODUS 12:3", nisan: "NISAN 10", type: "LAMB SELECTED",               fulfill: "Jesus presents himself to Jerusalem on lamb selection day", col: theme.lamb.title,         bdr: theme.lamb.accent },
+            { ref: "EXODUS 12:6", nisan: "NISAN 14", type: "LAMB SLAUGHTERED AT TWILIGHT", fulfill: "Jesus crucified on Preparation Day before sunset",           col: theme.crucifixion.title,  bdr: theme.crucifixion.accent },
+            { ref: "JOHN 1:29",   nisan: null,        type: "LAMB OF GOD",                 fulfill: "Takes away the sin of the world",                            col: theme.resurrection.title, bdr: theme.resurrection.accent },
+          ].map((row, i) => html`
+            <div key=${i} style=${{ display: "grid", gridTemplateColumns: "90px 160px 1fr", gap: 16, marginBottom: 14, paddingLeft: 12, borderLeft: "2px solid " + row.bdr }}>
+              <div>
+                <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, color: row.col, letterSpacing: "0.1em" }}>${row.ref}</div>
+                ${row.nisan && html`<div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, color: "#aaaaaa", letterSpacing: "0.08em", marginTop: 2 }}>${row.nisan}</div>`}
               </div>
-            )}
-          </div>
-          <div style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, color: "#777777", letterSpacing: "0.06em", lineHeight: 1.6 }}>
-            {row.type}
-          </div>
-          <div style={{ fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontSize: 12, color: "#333333", lineHeight: 1.6 }}>
-            {row.fulfill}
+              <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, color: "#777777", letterSpacing: "0.06em", lineHeight: 1.6 }}>${row.type}</div>
+              <div style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontSize: 12, color: "#333333", lineHeight: 1.6 }}>${row.fulfill}</div>
+            </div>
+          `)}
+        </div>
+        <div style=${{ borderTop: "1px solid #e0e0e0", paddingTop: 28, marginBottom: 36 }}>
+          <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, letterSpacing: "0.35em", color: "#999999", marginBottom: 18 }}>TWO SABBATH RESOLUTION</div>
+          ${[
+            { ref: "MARK 16:1",  text: "Women buy spices after the sabbath.",             col: theme["high-sabbath"].title },
+            { ref: "LUKE 23:56", text: "Women prepare spices then rest on the sabbath.",  col: theme.sabbath.title },
+          ].map((row, i) => html`
+            <div key=${i} style=${{ display: "flex", gap: 20, marginBottom: 10, alignItems: "baseline" }}>
+              <span style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, color: row.col, letterSpacing: "0.1em", flexShrink: 0, width: 88 }}>${row.ref}</span>
+              <span style=${{ fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontSize: 13, color: "#333333", lineHeight: 1.7 }}>${row.text}</span>
+            </div>
+          `)}
+          <div style=${{ marginTop: 12, paddingLeft: 108, fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontStyle: "italic", fontSize: 12, color: "#777777", lineHeight: 1.9 }}>
+            Nisan 16 Friday is the only day that satisfies both statements
+            without contradiction. The Friday crucifixion view produces an
+            irreconcilable conflict between these two verses.
           </div>
         </div>
-      ))}
-    </div>
-
-    {/* Two sabbath */}
-    <div style={{ borderTop: "1px solid #e0e0e0", paddingTop: 28, marginBottom: 36 }}>
-      <div style={{
-        fontFamily: "'Share Tech Mono', monospace",
-        fontSize: 8, letterSpacing: "0.35em",
-        color: "#999999", marginBottom: 18,
-      }}>
-        TWO SABBATH RESOLUTION
-      </div>
-      {[
-        { ref: "MARK 16:1",  text: "Women buy spices after the sabbath.", col: theme["high-sabbath"].title },
-        { ref: "LUKE 23:56", text: "Women prepare spices then rest on the sabbath.", col: theme.sabbath.title },
-      ].map((row, i) => (
-        <div key={i} style={{ display: "flex", gap: 20, marginBottom: 10, alignItems: "baseline" }}>
-          <span style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 8, color: row.col, letterSpacing: "0.1em", flexShrink: 0, width: 88 }}>
-            {row.ref}
-          </span>
-          <span style={{ fontFamily: "'Exo 2', sans-serif", fontWeight: 300, fontSize: 13, color: "#333333", lineHeight: 1.7 }}>
-            {row.text}
-          </span>
+        <div style=${{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 24, borderTop: "1px solid #eeeeee" }}>
+          <div style=${{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, letterSpacing: "0.3em", color: "#cccccc", marginBottom: 16 }}>TAP ANY ROW TO EXPAND  //  NET BIBLE TRANSLATION</div>
+          <div style=${{ width: 12, height: 48, background: "#111111" }} />
         </div>
-      ))}
-      <div style={{
-        marginTop: 12, paddingLeft: 108,
-        fontFamily: "'Exo 2', sans-serif",
-        fontWeight: 300, fontStyle: "italic",
-        fontSize: 12, color: "#777777", lineHeight: 1.9,
-      }}>
-        Nisan 16 Friday is the only day that satisfies both statements
-        without contradiction. The Friday crucifixion view produces an
-        irreconcilable conflict between these two verses.
       </div>
     </div>
-
-    {/* Closing */}
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 24, borderTop: "1px solid #eeeeee" }}>
-      <div style={{ fontFamily: "'Share Tech Mono', monospace", fontSize: 7, letterSpacing: "0.3em", color: "#cccccc", marginBottom: 16 }}>
-        TAP ANY ROW TO EXPAND  //  NET BIBLE TRANSLATION
-      </div>
-      <div style={{ width: 12, height: 48, background: "#111111" }} />
-    </div>
-
-  </div>
-</div>
-
-);
+  `;
 }
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<Timeline />);
+    render(html`<${Timeline} />`, document.getElementById('root'));
     {% endraw %}
   </script>
 </body>
