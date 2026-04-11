@@ -1,3 +1,6 @@
+---
+layout: null
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +14,7 @@
 <body style="margin:0;padding:0;">
   <div id="root"></div>
   <script type="text/babel">
+    {% raw %}
     const { useState } = React;
 
     // Each Nisan day has two segments: EVENING (night) then DAYTIME
@@ -616,6 +620,7 @@ padding: “0 0 80px”,
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<Timeline />);
+    {% endraw %}
   </script>
 </body>
 </html>
