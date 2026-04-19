@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kings of Israel and Judah</title>
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Exo+2:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════════════════════════ */
+:root {
+  --bg:          #ffffff;
+  --bg-alt:      #f6f6f6;
+  --bg-israel:   #e8f0f9;
+  --bg-judah:    #e6f4ed;
+  --ink:         #111111;
+  --ink-2:       #2e2e2e;
+  --ink-3:       #555555;   /* was #787878 — bumped to ~7:1 on white */
+  --rule:        #bbbbbb;
+  --rule-light:  #e2e2e2;
+
+  --hal:         #b81410;   /* HAL-9000 red — 5.3:1 on white */
+  --blue:        #0e4a8e;   /* good kings — 7.2:1 on white */
+  --amber:       #7a4800;   /* mixed kings — was #a86808 (3.2:1), now 7.1:1 */
+  --purple:      #5a2080;   /* queen — was #6e329a (4.1:1), now 6.8:1 */
+  --israel-col:  #0e4a8e;
+  --judah-col:   #0a6e42;
+
+  --f-d: 'Syncopate', sans-serif;   /* display — titles only */
+  --f-b: 'Exo 2', sans-serif;       /* body — all readable text */
+
+  /* Fluid type scale */
+  --text-xs:   clamp(10px, 1.8vw, 12px);
+  --text-sm:   clamp(12px, 2vw, 13px);
+  --text-base: clamp(13px, 2.2vw, 15px);
+  --text-md:   clamp(14px, 2.4vw, 16px);
+  --text-lg:   clamp(16px, 3vw, 20px);
+  --text-xl:   clamp(20px, 4vw, 30px);
+  --text-2xl:  clamp(26px, 5.5vw, 42px);
+
+  /* Spacing */
+  --px: clamp(16px, 4vw, 40px);
+  --gap-row: 1px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-b);
+  font-weight: 400;
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PAGE HEADER
+═══════════════════════════════════════════════════════════════ */
+.page-header {
+  padding: clamp(24px, 5vw, 52px) var(--px) clamp(20px, 4vw, 36px);
+  border-bottom: 2px solid var(--ink);
+  position: relative;
+  background: var(--bg);
+}
+
+.eyebrow {
+  font-family: var(--f-d);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 12px;
+}
+
+h1 {
+  font-family: var(--f-d);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+h1 em { font-style: normal; color: var(--hal); }
+
+.sub {
+  font-family: var(--f-b);
+  font-size: var(--text-sm);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--ink-3);
+  margin-top: 8px;
+  letter-spacing: 0.04em;
+}
+
+.hal-rule {
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 60px; height: 4px;
+  background: var(--hal);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LEGEND
+═══════════════════════════════════════════════════════════════ */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  padding: clamp(10px, 2vw, 14px) var(--px);
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--rule);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--f-b);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.pip {
+  width: 10px; height: 10px;
+  border-radius: 50%; flex-shrink: 0;
+}
+.pip-good  { background: var(--blue); }
+.pip-evil  { background: var(--hal); }
+.pip-mixed { background: var(--amber); }
+.pip-queen { background: var(--purple); }
+
+/* ═══════════════════════════════════════════════════════════════
+   UNITED MONARCHY
+═══════════════════════════════════════════════════════════════ */
+.united {
+  padding: clamp(20px, 4vw, 36px) var(--px);
+  border-bottom: 1px solid var(--rule);
+  background: var(--bg);
+}
+
+.sec-label {
+  font-family: var(--f-d);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 16px;
+}
+
+.u-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  max-width: 700px;
+}
+
+@media (max-width: 500px) {
+  .u-grid { grid-template-columns: 1fr; gap: 3px; }
+}
+
+.u-card {
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--ink);
+  padding: clamp(12px, 2.5vw, 18px);
+  background: var(--bg);
+  transition: background 0.15s, box-shadow 0.15s;
+}
+.u-card:hover { background: var(--bg-alt); box-shadow: 0 3px 14px rgba(0,0,0,0.07); }
+.u-card.good  { border-top-color: var(--blue); }
+.u-card.evil  { border-top-color: var(--hal); }
+.u-card.mixed { border-top-color: var(--amber); }
+
+.u-name {
+  font-family: var(--f-d);
+  font-size: var(--text-md);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: block;
+}
+.u-card.good  .u-name { color: var(--blue); }
+.u-card.evil  .u-name { color: var(--hal); }
+.u-card.mixed .u-name { color: var(--amber); }
+
+.u-dates {
+  font-family: var(--f-b);
+  font-size: var(--text-sm);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--ink-3);
+  display: block;
+  margin-top: 3px;
+}
+.u-note {
+  font-family: var(--f-b);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--ink-2);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SPLIT BAND
+═══════════════════════════════════════════════════════════════ */
+.split-band {
+  padding: clamp(12px, 2.5vw, 18px) var(--px);
+  background: var(--ink);
+  display: flex; align-items: center; gap: 16px;
+}
+.split-band::before, .split-band::after {
+  content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.15);
+}
+.split-txt {
+  font-family: var(--f-d);
+  font-size: var(--text-xs);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  white-space: nowrap; text-align: center;
+  line-height: 1.8;
+}
+.split-txt strong { color: var(--hal); font-weight: 700; }
+
+/* On mobile, allow wrap */
+@media (max-width: 480px) {
+  .split-txt { white-space: normal; font-size: 10px; letter-spacing: 0.15em; }
+  .split-band::before, .split-band::after { display: none; }
+  .split-band { justify-content: center; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   KINGDOMS — DESKTOP (side by side, each column scrolls)
+   MOBILE (stacked, full page scroll)
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Mobile default: natural stacked page scroll ── */
+.kingdoms-wrap {
+  display: block;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.kingdom-pane {
+  display: block;
+  background: var(--bg);
+}
+
+.col-header {
+  padding: clamp(14px, 3vw, 20px) var(--px) clamp(10px, 2vw, 16px);
+  border-bottom: 3px solid;
+  color: var(--ink);
+}
+.israel .col-header { border-color: var(--israel-col); background: var(--bg-israel); }
+.judah  .col-header { border-color: var(--judah-col);  background: var(--bg-judah); }
+
+.col-title {
+  font-family: var(--f-d);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.israel .col-title { color: var(--israel-col); }
+.judah  .col-title { color: var(--judah-col); }
+
+.col-sub {
+  font-family: var(--f-b);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--ink-3);
+  margin-top: 4px;
+  line-height: 1.7;
+}
+
+.col-body {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+/* ── Dynasty + King rows ── */
+.dynasty {
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule-light);
+}
+
+.d-label {
+  font-family: var(--f-d);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding: 8px var(--px) 6px;
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--rule-light);
+}
+
+.king-row {
+  display: grid;
+  grid-template-columns: 36px 1fr auto;
+  align-items: start;
+  gap: 10px;
+  padding: clamp(10px, 2.5vw, 14px) clamp(12px, 2.5vw, var(--px)) clamp(10px, 2.5vw, 14px) 0;
+  border-bottom: 1px solid var(--rule-light);
+  border-left: 4px solid transparent;
+  background: var(--bg);
+  color: var(--ink);
+  transition: background 0.12s;
+  cursor: default;
+}
+.king-row:last-child { border-bottom: none; }
+.king-row:hover,
+.king-row:focus-within { background: rgba(0,0,0,0.025); }
+
+.king-row.good  { border-left-color: var(--blue); }
+.king-row.evil  { border-left-color: var(--hal); }
+.king-row.mixed { border-left-color: var(--amber); }
+.king-row.queen { border-left-color: var(--purple); }
+
+.k-num {
+  font-family: var(--f-d);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  color: var(--ink-3);
+  text-align: right;
+  padding-top: 4px;
+  padding-left: 4px;
+  letter-spacing: 0;
+}
+
+.k-info { min-width: 0; }
+
+.k-name {
+  font-family: var(--f-d);
+  font-size: var(--text-md);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: block;
+  line-height: 1.25;
+}
+.king-row.good  .k-name { color: var(--blue); }
+.king-row.evil  .k-name { color: var(--hal); }
+.king-row.mixed .k-name { color: var(--amber); }
+.king-row.queen .k-name { color: var(--purple); }
+
+.k-dates {
+  font-family: var(--f-b);
+  font-size: var(--text-sm);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--ink-3);
+  display: block;
+  margin-top: 2px;
+}
+
+.k-note {
+  font-family: var(--f-b);
+  font-size: var(--text-base);
+  font-weight: 400;
+  color: var(--ink-2);
+  margin-top: 5px;
+  line-height: 1.55;
+}
+
+.k-pip {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+.king-row.good  .k-pip { background: var(--blue);   box-shadow: 0 0 6px rgba(14,74,142,0.4); }
+.king-row.evil  .k-pip { background: var(--hal);    box-shadow: 0 0 6px rgba(184,20,16,0.4); }
+.king-row.mixed .k-pip { background: var(--amber);  box-shadow: 0 0 6px rgba(122,72,0,0.35); }
+.king-row.queen .k-pip { background: var(--purple); box-shadow: 0 0 6px rgba(90,32,128,0.4); }
+
+/* ── FALL BANNERS ── */
+.fall-banner {
+  padding: clamp(14px, 3vw, 20px) var(--px);
+  font-family: var(--f-d);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 2;
+  border-top: 2px solid;
+}
+.fall-assyria { border-color: var(--israel-col); color: var(--israel-col); background: rgba(18,84,160,0.05); }
+.fall-babylon { border-color: var(--hal);        color: var(--hal);        background: rgba(212,26,20,0.05); }
+
+/* ── Mobile separator between kingdoms ── */
+.kingdom-divider {
+  display: block;
+  height: 6px;
+  background: var(--ink);
+}
+@media (min-width: 768px) {
+  .kingdom-divider { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DESKTOP OVERRIDE: side-by-side with independent scroll
+   Kicks in at 768px+
+═══════════════════════════════════════════════════════════════ */
+@media (min-width: 768px) {
+
+  .kingdoms-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* height set by JS */
+    overflow: hidden;
+  }
+
+  .kingdom-pane {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+  }
+  .kingdom-pane.israel { border-right: 1px solid var(--rule); }
+
+  .col-header {
+    flex-shrink: 0;
+    padding: 18px 24px 14px;
+  }
+
+  .col-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--rule) transparent;
+  }
+  .col-body::-webkit-scrollbar { width: 5px; }
+  .col-body::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px; }
+
+  .d-label  { padding-left: 20px; padding-right: 20px; }
+  .king-row { padding-left: 0; padding-right: 20px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════════════════ */
+.page-footer {
+  padding: clamp(20px, 4vw, 32px) var(--px) clamp(28px, 5vw, 48px);
+  background: var(--bg-alt);
+  border-top: 1px solid var(--rule);
+}
+
+.f-label {
+  font-family: var(--f-d);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 10px;
+}
+
+.page-footer p {
+  font-family: var(--f-b);
+  font-size: var(--text-base);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-2);
+  line-height: 1.85;
+  max-width: 780px;
+}
+
+.refs {
+  display: flex; flex-wrap: wrap;
+  gap: 6px 20px;
+  margin-top: 12px;
+}
+.ref-item {
+  font-family: var(--f-b);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PRINT BASICS
+═══════════════════════════════════════════════════════════════ */
+@media print {
+  .kingdoms-wrap { display: block !important; height: auto !important; }
+  .col-body { overflow: visible !important; height: auto !important; }
+  .fall-banner { break-inside: avoid; }
+  .king-row { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════ HEADER ════ -->
+<header class="page-header">
+  <div class="eyebrow">Biblical Chronology  ·  NET Bible  ·  ~1051 – 586 BC</div>
+  <h1>The Kings of <em>Israel</em><br>and Judah</h1>
+  <div class="sub">From the United Monarchy through the Babylonian Exile</div>
+  <div class="hal-rule"></div>
+</header>
+
+<!-- ════ LEGEND ════ -->
+<div class="legend">
+  <div class="legend-item"><div class="pip pip-good"></div>Did right in the eyes of the LORD</div>
+  <div class="legend-item"><div class="pip pip-evil"></div>Did evil in the eyes of the LORD</div>
+  <div class="legend-item"><div class="pip pip-mixed"></div>Partial / mixed obedience</div>
+  <div class="legend-item"><div class="pip pip-queen"></div>Queen / non-Davidic usurper</div>
+</div>
+
+<!-- ════ UNITED MONARCHY ════ -->
+<section class="united">
+  <div class="sec-label">United Monarchy  ·  ~1051 – 931 BC  ·  1 Samuel – 1 Kings 11</div>
+  <div class="u-grid">
+    <div class="u-card evil">
+      <span class="u-name">Saul</span>
+      <span class="u-dates">~1051 – 1011 BC</span>
+      <p class="u-note">Rejected for disobedience at Gilgal and against Amalek (1 Sam 13, 15)</p>
+    </div>
+    <div class="u-card good">
+      <span class="u-name">David</span>
+      <span class="u-dates">~1011 – 971 BC</span>
+      <p class="u-note">Man after God's own heart (Acts 13:22). Eternal throne covenant (2 Sam 7)</p>
+    </div>
+    <div class="u-card mixed">
+      <span class="u-name">Solomon</span>
+      <span class="u-dates">~971 – 931 BC</span>
+      <p class="u-note">Built the Temple. Heart turned to foreign gods in old age (1 Kgs 11:4)</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════ SPLIT ════ -->
+<div class="split-band">
+  <div class="split-txt">Kingdom Divided  ·  <strong>~931 BC</strong>  ·  1 Kings 12<br>Rehoboam refuses the counsel of the elders</div>
+</div>
+
+<!-- ════ TWO KINGDOMS ════ -->
+<div class="kingdoms-wrap" id="kw">
+
+  <!-- ▶ ISRAEL ◀ -->
+  <div class="kingdom-pane israel">
+    <div class="col-header">
+      <div class="col-title">Northern Kingdom — Israel</div>
+      <div class="col-sub">Capital: Samaria &nbsp;·&nbsp; 19 Kings &nbsp;·&nbsp; All evil &nbsp;·&nbsp; Fell to Assyria 722 BC &nbsp;·&nbsp; 2 Kings 17</div>
+    </div>
+    <div class="col-body">
+
+      <div class="dynasty">
+        <div class="d-label">Dynasty of Jeroboam</div>
+        <div class="king-row evil">
+          <div class="k-num">01</div>
+          <div class="k-info"><span class="k-name">Jeroboam I</span><span class="k-dates">931 – 910 BC</span><p class="k-note">Made Israel sin — golden calves at Bethel and Dan (1 Kgs 12:28)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">02</div>
+          <div class="k-info"><span class="k-name">Nadab</span><span class="k-dates">910 – 909 BC</span><p class="k-note">Assassinated by Baasha during the siege of Gibbethon</p></div>
+          <div class="k-pip"></div>
+        </div>
+      </div>
+
+      <div class="dynasty">
+        <div class="d-label">Dynasty of Baasha</div>
+        <div class="king-row evil">
+          <div class="k-num">03</div>
+          <div class="k-info"><span class="k-name">Baasha</span><span class="k-dates">909 – 886 BC</span><p class="k-note">Wiped out house of Jeroboam; condemned by Jehu the prophet</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">04</div>
+          <div class="k-info"><span class="k-name">Elah</span><span class="k-dates">886 – 885 BC</span><p class="k-note">Assassinated by Zimri while drunk at his steward's house</p></div>
+          <div class="k-pip"></div>
+        </div>
+      </div>
+
+      <div class="dynasty">
+        <div class="d-label">Zimri — 7 Days</div>
+        <div class="king-row evil">
+          <div class="k-num">05</div>
+          <div class="k-info"><span class="k-name">Zimri</span><span class="k-dates">885 BC — 7 days</span><p class="k-note">Burned the palace over himself when Omri besieged Tirzah (1 Kgs 16:18)</p></div>
+          <div class="k-pip"></div>
+        </div>
+      </div>
+
+      <div class="dynasty">
+        <div class="d-label">Dynasty of Omri</div>
+        <div class="king-row evil">
+          <div class="k-num">06</div>
+          <div class="k-info"><span class="k-name">Omri</span><span class="k-dates">885 – 874 BC</span><p class="k-note">Founded Samaria; more evil than all before him (1 Kgs 16:25)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">07</div>
+          <div class="k-info"><span class="k-name">Ahab</span><span class="k-dates">874 – 853 BC</span><p class="k-note">Married Jezebel; Baal temple in Samaria; Elijah's primary opponent (1 Kgs 16–21)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">08</div>
+          <div class="k-info"><span class="k-name">Ahaziah</span><span class="k-dates">853 – 852 BC</span><p class="k-note">Fell through a lattice; consulted Baal-zebub of Ekron (2 Kgs 1)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">09</div>
+          <div class="k-info"><span class="k-name">Joram (Jehoram)</span><span class="k-dates">852 – 841 BC</span><p class="k-note">Removed the Baal pillar; still walked in the sin of Jeroboam</p></div>
+          <div class="k-pip"></div>
+        </div>
+      </div>
+
+      <div class="dynasty">
+        <div class="d-label">Dynasty of Jehu</div>
+        <div class="king-row mixed">
+          <div class="k-num">10</div>
+          <div class="k-info"><span class="k-name">Jehu</span><span class="k-dates">841 – 814 BC</span><p class="k-note">Anointed by God; destroyed Ahab's house; did not depart from Jeroboam's sin</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">11</div>
+          <div class="k-info"><span class="k-name">Jehoahaz</span><span class="k-dates">814 – 798 BC</span><p class="k-note">Army reduced to 50 horsemen under Aramean oppression (2 Kgs 13:7)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">12</div>
+          <div class="k-info"><span class="k-name">Jehoash (Joash)</span><span class="k-dates">798 – 782 BC</span><p class="k-note">Defeated Amaziah of Judah; tore down 180 meters of Jerusalem's wall</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">13</div>
+          <div class="k-info"><span class="k-name">Jeroboam II</span><span class="k-dates">782 – 753 BC</span><p class="k-note">Longest reign in Israel; restored borders per Jonah's prophecy (2 Kgs 14:25)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">14</div>
+          <div class="k-info"><span class="k-name">Zechariah</span><span class="k-dates">753 – 752 BC</span><p class="k-note">Assassinated publicly by Shallum; ended the Jehu dynasty (2 Kgs 15:10)</p></div>
+          <div class="k-pip"></div>
+        </div>
+      </div>
+
+      <div class="dynasty">
+        <div class="d-label">Shallum — 1 Month</div>
+        <div class="king-row evil">
+          <div class="k-num">15</div>
+          <div class="k-info"><span class="k-name">Shallum</span><span class="k-dates">752 BC — 1 month</span><p class="k-note">4th consecutive king to die by violence; killed by Menahem</p></div>
+          <div class="k-pip"></div>
+        </div>
+      </div>
+
+      <div class="dynasty">
+        <div class="d-label">Dynasty of Menahem</div>
+        <div class="king-row evil">
+          <div class="k-num">16</div>
+          <div class="k-info"><span class="k-name">Menahem</span><span class="k-dates">752 – 742 BC</span><p class="k-note">Paid 1,000 talents of silver tribute to Tiglath-pileser III of Assyria</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">17</div>
+          <div class="k-info"><span class="k-name">Pekahiah</span><span class="k-dates">742 – 740 BC</span><p class="k-note">Assassinated by Pekah and fifty Gileadites in the citadel</p></div>
+          <div class="k-pip"></div>
+        </div>
+      </div>
+
+      <div class="dynasty">
+        <div class="d-label">Final Kings</div>
+        <div class="king-row evil">
+          <div class="k-num">18</div>
+          <div class="k-info"><span class="k-name">Pekah</span><span class="k-dates">740 – 732 BC</span><p class="k-note">Allied with Syria against Judah (Syro-Ephraimite War); lost territory to Assyria</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">19</div>
+          <div class="k-info"><span class="k-name">Hoshea</span><span class="k-dates">732 – 722 BC</span><p class="k-note">Withheld tribute; imprisoned by Shalmaneser V; Samaria besieged for 3 years</p></div>
+          <div class="k-pip"></div>
+        </div>
+      </div>
+
+      <div class="fall-banner fall-assyria">
+        722 BC — Samaria Falls to Assyria<br>
+        Israel Deported — 2 Kings 17:6
+      </div>
+
+    </div><!-- /col-body -->
+  </div><!-- /israel -->
+
+  <!-- Mobile visual divider between kingdoms -->
+  <div class="kingdom-divider"></div>
+
+  <!-- ▶ JUDAH ◀ -->
+  <div class="kingdom-pane judah">
+    <div class="col-header">
+      <div class="col-title">Southern Kingdom — Judah</div>
+      <div class="col-sub">Capital: Jerusalem &nbsp;·&nbsp; 19 Kings + 1 Queen &nbsp;·&nbsp; Fell to Babylon 586 BC &nbsp;·&nbsp; 2 Kings 25</div>
+    </div>
+    <div class="col-body">
+
+      <div class="dynasty">
+        <div class="d-label">Davidic Line — all 19 kings</div>
+        <div class="king-row evil">
+          <div class="k-num">01</div>
+          <div class="k-info"><span class="k-name">Rehoboam</span><span class="k-dates">931 – 913 BC</span><p class="k-note">Refused elder counsel; caused the split; erected Asherah poles (1 Kgs 12, 14)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">02</div>
+          <div class="k-info"><span class="k-name">Abijah (Abijam)</span><span class="k-dates">913 – 911 BC</span><p class="k-note">Walked in all his father's sins; heart not fully devoted to God (1 Kgs 15:3)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row good">
+          <div class="k-num">03</div>
+          <div class="k-info"><span class="k-name">Asa</span><span class="k-dates">911 – 870 BC</span><p class="k-note">Removed idols and male cult prostitutes; heart fully devoted to God (1 Kgs 15:11–14)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row good">
+          <div class="k-num">04</div>
+          <div class="k-info"><span class="k-name">Jehoshaphat</span><span class="k-dates">870 – 848 BC</span><p class="k-note">Walked in ways of David; sent Levites throughout Judah to teach the Law (2 Chr 17)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">05</div>
+          <div class="k-info"><span class="k-name">Jehoram</span><span class="k-dates">848 – 841 BC</span><p class="k-note">Married Ahab's daughter Athaliah; walked in the ways of the kings of Israel</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">06</div>
+          <div class="k-info"><span class="k-name">Ahaziah</span><span class="k-dates">841 BC — 1 year</span><p class="k-note">Son of Athaliah; killed by Jehu during the purge of Ahab's house (2 Kgs 9:27)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row queen">
+          <div class="k-num">—</div>
+          <div class="k-info"><span class="k-name">Athaliah — Queen</span><span class="k-dates">841 – 835 BC</span><p class="k-note">Seized throne; executed all royal heirs except infant Joash hidden in the temple; built Baal temple in Jerusalem</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row mixed">
+          <div class="k-num">07</div>
+          <div class="k-info"><span class="k-name">Joash (Jehoash)</span><span class="k-dates">835 – 796 BC</span><p class="k-note">Good while Jehoiada the priest lived; later had Jehoiada's son Zechariah stoned (2 Chr 24:22)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row mixed">
+          <div class="k-num">08</div>
+          <div class="k-info"><span class="k-name">Amaziah</span><span class="k-dates">796 – 767 BC</span><p class="k-note">Did right but not wholeheartedly; later worshipped captured Edomite gods (2 Chr 25:14)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row good">
+          <div class="k-num">09</div>
+          <div class="k-info"><span class="k-name">Uzziah (Azariah)</span><span class="k-dates">767 – 740 BC</span><p class="k-note">Did right; struck with leprosy for presuming to burn incense in the temple (2 Chr 26:16–21)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row good">
+          <div class="k-num">10</div>
+          <div class="k-info"><span class="k-name">Jotham</span><span class="k-dates">740 – 732 BC</span><p class="k-note">Did right; did not enter the temple presumptuously; people still acted corruptly (2 Kgs 15:34)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">11</div>
+          <div class="k-info"><span class="k-name">Ahaz</span><span class="k-dates">732 – 716 BC</span><p class="k-note">Sacrificed his son in fire; replaced the altar with an Assyrian design; closed the temple doors (2 Kgs 16)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row good">
+          <div class="k-num">12</div>
+          <div class="k-info"><span class="k-name">Hezekiah</span><span class="k-dates">716 – 687 BC</span><p class="k-note">Greatest reformer; cleansed the temple; 185,000 Assyrians struck dead overnight by the angel of the LORD (2 Kgs 18–20)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">13</div>
+          <div class="k-info"><span class="k-name">Manasseh</span><span class="k-dates">687 – 642 BC</span><p class="k-note">Most evil king; 55-year reign; altars to Baal in the temple courts; repented during Babylonian captivity (2 Chr 33:12–13)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">14</div>
+          <div class="k-info"><span class="k-name">Amon</span><span class="k-dates">642 – 640 BC</span><p class="k-note">Walked in all of Manasseh's sins; did not humble himself; assassinated by his own servants</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row good">
+          <div class="k-num">15</div>
+          <div class="k-info"><span class="k-name">Josiah</span><span class="k-dates">640 – 609 BC</span><p class="k-note">Greatest king since David; discovered the Book of the Law; led mass national reform; turned to God with all his heart (2 Kgs 22–23)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">16</div>
+          <div class="k-info"><span class="k-name">Jehoahaz</span><span class="k-dates">609 BC — 3 months</span><p class="k-note">Deposed and bound by Pharaoh Necho at Riblah; taken to Egypt; died there (2 Kgs 23:33)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">17</div>
+          <div class="k-info"><span class="k-name">Jehoiakim</span><span class="k-dates">609 – 598 BC</span><p class="k-note">Burned Jeremiah's scroll; Daniel's 1st deportation to Babylon occurred in his 3rd year (Dan 1:1–4)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">18</div>
+          <div class="k-info"><span class="k-name">Jehoiachin</span><span class="k-dates">598 – 597 BC — 3 months</span><p class="k-note">2nd deportation; taken to Babylon; released by Evil-merodach after 37 years (2 Kgs 25:27)</p></div>
+          <div class="k-pip"></div>
+        </div>
+        <div class="king-row evil">
+          <div class="k-num">19</div>
+          <div class="k-info"><span class="k-name">Zedekiah</span><span class="k-dates">597 – 586 BC</span><p class="k-note">Last king of Judah; sons executed before his eyes; eyes put out; taken in bronze shackles to Babylon (2 Kgs 25:7)</p></div>
+          <div class="k-pip"></div>
+        </div>
+      </div>
+
+      <div class="fall-banner fall-babylon">
+        586 BC — Jerusalem Falls to Babylon<br>
+        Temple Destroyed by Nebuchadnezzar — 2 Kings 25:8–11
+      </div>
+
+    </div><!-- /col-body -->
+  </div><!-- /judah -->
+
+</div><!-- /kingdoms-wrap -->
+
+<!-- ════ FOOTER ════ -->
+<footer class="page-footer">
+  <div class="f-label">Notes &amp; Sources</div>
+  <p>
+    Dates are approximate; scholars vary by 1–10 years depending on co-regency interpretations and cross-referencing with Assyrian annals. The conventional Thiele/McFall chronology is used. Athaliah was not of the Davidic line — she was the daughter of Ahab and Jezebel. Co-regencies exist between Uzziah/Jotham, Jotham/Ahaz, and Ahaz/Hezekiah. Judah outlasted Israel by 136 years; the Davidic covenant (2 Sam 7) is the explicit reason given in 1 Kgs 11:12–13 and 2 Kgs 8:19. All spiritual assessments drawn directly from 1–2 Kings and 1–2 Chronicles (NET).
+  </p>
+  <div class="refs">
+    <span class="ref-item">1 &amp; 2 Kings (NET)</span>
+    <span class="ref-item">1 &amp; 2 Chronicles (NET)</span>
+    <span class="ref-item">net.bible.org</span>
+    <span class="ref-item">Thiele / McFall Chronology</span>
+  </div>
+</footer>
+
+<script>
+/*
+  Desktop only: set kingdoms-wrap height to fill remaining
+  viewport so each column body independently scrolls.
+  Mobile uses natural page scroll — no height needed.
+*/
+function fitKingdoms() {
+  var kw = document.getElementById('kw');
+  if (!kw) return;
+
+  if (window.innerWidth < 768) {
+    kw.style.height = '';
+    return;
+  }
+
+  // Give the columns at least 75% of the viewport height.
+  // If the remaining space below the wrap is larger, use that instead.
+  var vh   = window.innerHeight;
+  var top  = kw.getBoundingClientRect().top + window.scrollY;
+  var remaining = vh - top;           // space from wrap top to bottom of viewport
+  var h = Math.max(remaining, Math.round(vh * 0.75), 480);
+  kw.style.height = h + 'px';
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  fitKingdoms();
+  setTimeout(fitKingdoms, 300);   // catch font-load reflow
+});
+window.addEventListener('resize', fitKingdoms);
+</script>
+</body>
+</html>
