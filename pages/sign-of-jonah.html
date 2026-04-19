@@ -307,6 +307,14 @@
       letter-spacing: 0.08em;
     }
 
+    .event-scripture {
+      margin-top: 8px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: #4b5563;
+      font-style: italic;
+    }
+
 
     .tag-inferred {
       font-size: 10px;
@@ -433,6 +441,14 @@
       font-size: 18px;
       color: #374151;
       line-height: 1.6;
+    }
+
+    .table-scripture {
+      margin-top: 6px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: #4b5563;
+      font-style: italic;
     }
 
     .resolve-row {
@@ -633,6 +649,7 @@
         type: "transit", anchor: false,
         typology: null,
         ref: "LUKE 19:1",
+        scripture: "Jesus entered Jericho and was passing through.",
         notes: "Zacchaeus encounter. Overnight stay. Departure imminent.",
         tomb: null,
       },
@@ -647,6 +664,7 @@
         type: "anchor", anchor: true,
         typology: "SIX DAYS BEFORE PASSOVER",
         ref: "JOHN 12:1",
+        scripture: "Six days before Passover, Jesus came to Bethany, where Lazarus lived.",
         notes: "Primary chronological anchor. All downstream dates calculated from this fixed point. At sunset אביב (Aviv) 10 begins.",
         tomb: null,
         sunset: "PASSOVER SELECTION WINDOW  //  EXODUS 12:3",
@@ -662,6 +680,7 @@
         type: "lamb", anchor: true,
         typology: "PASSOVER LAMB PRESENTED TO ISRAEL",
         ref: "JOHN 12:12  //  EXODUS 12:3",
+        scripture: "The next day the crowd welcomed Jesus into Jerusalem; on the tenth day each house was to take a lamb.",
         notes: "Next day after Bethany arrival. The Lamb of God presents himself to Jerusalem on the precise day Israel was commanded to select the Passover lamb. Tradition calls this Palm Sunday. The text and typology demand Palm Saturday.",
         tomb: null,
       },
@@ -687,6 +706,7 @@
         ],
         type: "transit", anchor: false,
         typology: null, ref: "MARK 13",
+        scripture: "On the Mount of Olives, Jesus taught about coming trials and urged watchfulness.",
         notes: "Mount of Olives discourse on the end of the age.",
         tomb: null,
       },
@@ -700,6 +720,7 @@
         ],
         type: "transit", anchor: false,
         typology: null, ref: "MARK 11:15",
+        scripture: "Jesus entered the temple courts and drove out buyers and sellers.",
         notes: "Fig tree cursed. Temple cleansed.",
         tomb: null,
       },
@@ -717,6 +738,7 @@
         type: "crucifixion", anchor: true,
         typology: "PASSOVER LAMB SLAUGHTERED AT TWILIGHT",
         ref: "JOHN 19:14  //  EXODUS 12:6",
+        scripture: "It was the day of Preparation about noon; Pilate said, 'Behold your king.' The Passover lamb was slain at twilight.",
         notes: "Upper Room meal. Preparation Day. Arrested, tried, crucified, buried before sunset. The lamb is slaughtered. The veil tears.",
         tomb: null,
         sunset: "NIGHT 1 BEGINS",
@@ -732,6 +754,7 @@
         type: "high-sabbath", anchor: true,
         typology: "PASSOVER  //  FEAST OF UNLEAVENED BREAD",
         ref: "JOHN 19:31  //  LEV 23:7",
+        scripture: "Because it was Preparation, and that Sabbath was a high day, the bodies were removed; the first feast day is a holy convocation.",
         notes: "Megas sabbaton. A great sabbath. Holy convocation. Distinct from the weekly sabbath. The tomb is sealed.",
         tomb: { n: 1, d: 1 },
         sunset: "NIGHT 2 BEGINS",
@@ -747,6 +770,7 @@
         type: "gap", anchor: true,
         typology: "THE DAY BETWEEN TWO SABBATHS",
         ref: "MARK 16:1  //  LUKE 23:56",
+        scripture: "After the Sabbath, the women bought spices; they prepared spices and then rested on the Sabbath according to the commandment.",
         notes: "Mark 16:1 — women buy spices after the sabbath. Luke 23:56 — women prepare spices then rest on the sabbath. This single day resolves what is otherwise a direct contradiction. The Friday crucifixion view has no answer.",
         tomb: { n: 2, d: 2 },
         sunset: "NIGHT 3 BEGINS",
@@ -762,6 +786,7 @@
         type: "sabbath", anchor: true,
         typology: null,
         ref: "LUKE 23:56",
+        scripture: "They rested on the Sabbath according to the commandment.",
         notes: "Women rest according to the commandment. The fourth commandment.",
         tomb: { n: 3, d: 3 },
       },
@@ -777,6 +802,7 @@
         type: "resurrection", anchor: true,
         typology: "THREE DAYS AND THREE NIGHTS  //  FULFILLED",
         ref: "MARK 16:2  //  MATTHEW 12:40",
+        scripture: "Very early on the first day they came to the tomb at sunrise; as Jonah was three days and nights, so the Son of Man would be.",
         notes: "Women arrive at sunrise. The stone is rolled away. The tomb is empty. Jesus is alive. Every count is satisfied. The sign of Jonah is complete.",
         tomb: null,
       },
@@ -955,6 +981,13 @@
           card.appendChild(typology);
         }
 
+        if (d.scripture) {
+          const scripture = document.createElement("div");
+          scripture.className = "event-scripture";
+          scripture.textContent = `\"${d.scripture}\"`;
+          card.appendChild(scripture);
+        }
+
         if (d.tomb) {
           const tomb = document.createElement("div");
           tomb.className = "tomb";
@@ -1065,6 +1098,7 @@
           nisan: "AVIV 10",
           type: "LAMB SELECTED",
           fulfill: "Jesus presents himself to Jerusalem on lamb selection day",
+          scripture: "On the tenth day of this month each household is to take a lamb.",
           col: theme.lamb.text,
           bdr: theme.lamb.dot,
         },
@@ -1073,6 +1107,7 @@
           nisan: "AVIV 14",
           type: "LAMB SLAUGHTERED AT TWILIGHT",
           fulfill: "Jesus crucified on Preparation Day before sunset",
+          scripture: "You shall keep it until the fourteenth day and kill it at twilight.",
           col: theme.crucifixion.text,
           bdr: theme.crucifixion.dot,
         },
@@ -1081,6 +1116,7 @@
           nisan: null,
           type: "LAMB OF GOD",
           fulfill: "Takes away the sin of the world",
+          scripture: "Behold, the Lamb of God, who takes away the sin of the world.",
           col: theme.resurrection.text,
           bdr: theme.resurrection.dot,
         },
@@ -1110,6 +1146,13 @@
         const c3 = document.createElement("div");
         c3.className = "table-right";
         c3.textContent = rowData.fulfill;
+
+        if (rowData.scripture) {
+          const scripture = document.createElement("div");
+          scripture.className = "table-scripture";
+          scripture.textContent = `\"${rowData.scripture}\"`;
+          c3.appendChild(scripture);
+        }
 
         row.appendChild(c1);
         row.appendChild(c2);
