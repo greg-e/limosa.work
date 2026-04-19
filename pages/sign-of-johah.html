@@ -52,12 +52,33 @@
     }
 
     .monolith {
-      width: 22px;
-      height: 88px;
+      width: 56px;
+      height: 68px;
+      position: relative;
+      margin-bottom: 36px;
+      filter: drop-shadow(0 8px 16px #8f7f5a1f);
+    }
+
+    .monolith::before,
+    .monolith::after {
+      content: "";
+      position: absolute;
       background: #f0ece2;
       border: 1px solid #d3cab6;
-      box-shadow: 0 10px 24px #8f7f5a1f;
-      margin-bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+      white-space: normal;
+      line-height: 1.25;
+      width: 14px;
+      height: 44px;
+      overflow-wrap: anywhere;
+
+    .monolith::after {
+      width: 44px;
+      height: 12px;
+      top: 0;
     }
 
     .kicker {
@@ -114,8 +135,8 @@
 
     .row {
       display: grid;
-      grid-template-columns: 56px 14px 1fr;
-      column-gap: 16px;
+      grid-template-columns: 56px 220px 1fr;
+      column-gap: 12px;
       margin-bottom: 2px;
       cursor: pointer;
       opacity: 0;
@@ -146,8 +167,10 @@
     .spine {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      padding-top: 16px;
+      align-items: flex-start;
+      padding-top: 0;
+      min-width: 220px;
+      padding-left: 2px;
     }
 
     .dot {
@@ -179,38 +202,80 @@
     }
 
     .spine-line {
-      width: 1px;
+      width: 10px;
       height: 100%;
+      border-radius: 999px;
+      border: 1px solid #c4b89d;
+      background: linear-gradient(
+        to bottom,
+        #1e3a8a 0%,
+        #1e3a8a 22%,
+        #fbbf24 22%,
+        #fbbf24 78%,
+        #1e3a8a 78%,
+        #1e3a8a 100%
+      );
+      box-shadow: inset 0 0 0 1px #ffffff80;
     }
 
     .spine-track {
       position: relative;
-      width: 1px;
+      width: 20px;
       flex: 1;
-      min-height: 24px;
-      margin-top: 4px;
+      min-height: 42px;
+      margin-top: 0;
+    }
+
+    .rail-moment {
+      position: absolute;
+      left: 30px;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      width: 182px;
+    }
+
+    .rail-tick {
+      width: 10px;
+      height: 2px;
+      background: #374151;
+      border-radius: 999px;
+      flex-shrink: 0;
+    }
+
+    .rail-text {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.09em;
+      color: #4b5563;
+      white-space: normal;
+      line-height: 1.25;
+      text-transform: uppercase;
+      width: 166px;
+      overflow-wrap: break-word;
+      word-break: normal;
     }
 
     .phase-dot {
       position: absolute;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      border: 1px solid #f8f6f1;
-      box-shadow: 0 0 0 1px #cbd5e1;
+      width: 18px;
+      height: 2px;
+      border-radius: 999px;
+      box-shadow: 0 0 0 1px #f8f6f1;
       z-index: 2;
     }
 
     .phase-dot.sunrise {
-      top: 18%;
-      background: #f59e0b;
+      top: 22%;
+      background: #facc15;
     }
 
     .phase-dot.sundown {
-      top: 82%;
-      background: #c2410c;
+      top: 78%;
+      background: #ea580c;
     }
 
     .card {
@@ -420,10 +485,31 @@
     }
 
     .closing-monolith {
-      width: 12px;
-      height: 48px;
+      width: 34px;
+      height: 44px;
+      position: relative;
+    }
+
+    .closing-monolith::before,
+    .closing-monolith::after {
+      content: "";
+      position: absolute;
       background: #f0ece2;
       border: 1px solid #d3cab6;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .closing-monolith::before {
+      width: 10px;
+      height: 30px;
+      top: 14px;
+    }
+
+    .closing-monolith::after {
+      width: 28px;
+      height: 10px;
+      top: 0;
     }
 
     @keyframes fadeIn {
@@ -469,8 +555,21 @@
       }
 
       .row {
-        grid-template-columns: 46px 14px 1fr;
+        grid-template-columns: 46px 156px 1fr;
         column-gap: 10px;
+      }
+
+      .spine {
+        min-width: 156px;
+      }
+
+      .rail-moment {
+        width: 122px;
+      }
+
+      .rail-text {
+        width: 108px;
+        font-size: 9px;
       }
 
       .table-row {
@@ -499,7 +598,7 @@
     <main class="content">
       <header class="header">
         <div class="monolith" aria-hidden="true"></div>
-        <div class="kicker">NISAN CALENDAR // PASSION WEEK</div>
+        <div class="kicker">אביב (Aviv) CALENDAR // PASSION WEEK</div>
         <h1 class="title">THE WEDNESDAY<br />CRUCIFIXION</h1>
         <div class="divider" aria-hidden="true"></div>
         <div class="quote">
@@ -515,7 +614,7 @@
         <section class="section" id="typology"></section>
         <section class="section" id="resolution"></section>
         <div class="closing">
-          <div class="closing-text">ALL DATA DISPLAYED // NET BIBLE TRANSLATION</div>
+          <div class="closing-text">NET BIBLE TRANSLATION</div>
           <div class="closing-monolith" aria-hidden="true"></div>
         </div>
       </footer>
@@ -526,6 +625,11 @@
     const days = [
       {
         nisan: 8, dow: "THU", title: "JERICHO",
+        rail: "ZACCHAEUS ENCOUNTER",
+        railMoments: [
+          { at: 0.42, label: "ZACCHAEUS ENCOUNTER" },
+          { at: 0.86, label: "OVERNIGHT IN JERICHO" },
+        ],
         type: "transit", anchor: false,
         typology: null,
         ref: "LUKE 19:1",
@@ -534,15 +638,27 @@
       },
       {
         nisan: 9, dow: "FRI", title: "BETHANY ARRIVAL",
+        rail: "SUPPER AT BETHANY",
+        railMoments: [
+          { at: 0.38, label: "TRAVEL TO BETHANY" },
+          { at: 0.84, label: "SUPPER AT BETHANY (NIGHT)" },
+          { at: 0.92, label: "MARY ANOINTS JESUS (NIGHT)" },
+        ],
         type: "anchor", anchor: true,
         typology: "SIX DAYS BEFORE PASSOVER",
         ref: "JOHN 12:1",
-        notes: "Primary chronological anchor. All downstream dates calculated from this fixed point. At sunset Nisan 10 begins.",
+        notes: "Primary chronological anchor. All downstream dates calculated from this fixed point. At sunset אביב (Aviv) 10 begins.",
         tomb: null,
-        sunset: "NISAN 10 INITIATES  //  EXODUS 12:3",
+        sunset: "PASSOVER SELECTION WINDOW  //  EXODUS 12:3",
       },
       {
         nisan: 10, dow: "SAT", title: "TRIUMPHAL ENTRY",
+        rail: "ENTRY INTO JERUSALEM",
+        railMoments: [
+          { at: 0.36, label: "ENTRY INTO JERUSALEM" },
+          { at: 0.58, label: "TEMPLE VISIT" },
+          { at: 0.86, label: "RETURN TO BETHANY (NIGHT)" },
+        ],
         type: "lamb", anchor: true,
         typology: "PASSOVER LAMB PRESENTED TO ISRAEL",
         ref: "JOHN 12:12  //  EXODUS 12:3",
@@ -551,36 +667,68 @@
       },
       {
         nisan: 11, dow: "SUN", title: "BETHANY",
+        rail: "BETHANY OVERNIGHT",
+        railMoments: [
+          { at: 0.48, label: "BETHANY STAY" },
+          { at: 0.86, label: "NIGHT IN BETHANY" },
+        ],
         type: "transit", anchor: false,
         typology: null, ref: null,
         notes: "Rest at Bethany.",
         tomb: null,
       },
       {
-        nisan: 12, dow: "MON", title: "TEMPLE",
+        nisan: 12, dow: "MON", title: "OLIVET DISCOURSE",
+        rail: "MOUNT OF OLIVES TEACHING",
+        railMoments: [
+          { at: 0.34, label: "MOUNT OF OLIVES TEACHING" },
+          { at: 0.52, label: "PARABLES AND WARNINGS" },
+          { at: 0.86, label: "RETURN TO BETHANY (NIGHT)" },
+        ],
+        type: "transit", anchor: false,
+        typology: null, ref: "MARK 13",
+        notes: "Mount of Olives discourse on the end of the age.",
+        tomb: null,
+      },
+      {
+        nisan: 13, dow: "TUE", title: "TEMPLE",
+        rail: "TEMPLE CONFRONTATIONS",
+        railMoments: [
+          { at: 0.34, label: "FIG TREE LESSON" },
+          { at: 0.52, label: "TEMPLE CONFRONTATIONS" },
+          { at: 0.86, label: "WITHDRAW TO BETHANY (NIGHT)" },
+        ],
         type: "transit", anchor: false,
         typology: null, ref: "MARK 11:15",
         notes: "Fig tree cursed. Temple cleansed.",
         tomb: null,
       },
       {
-        nisan: 13, dow: "TUE", title: "OLIVET DISCOURSE",
-        type: "transit", anchor: false,
-        typology: null, ref: "MARK 13",
-        notes: "Bethany. The discourse on the end of the age.",
-        tomb: null,
-      },
-      {
         nisan: 14, dow: "WED", title: "CRUCIFIXION",
+        rail: "UPPER ROOM -> GETHSEMANE -> HEROD",
+        railMoments: [
+          { at: 0.1, label: "UPPER ROOM MEAL" },
+          { at: 0.16, label: "GETHSEMANE PRAYER (NIGHT)" },
+          { at: 0.2, label: "ARREST AND SANHEDRIN (NIGHT)" },
+          { at: 0.4, label: "HEROD / PILATE" },
+          { at: 0.63, label: "JESUS DIES (~3PM, DAY)" },
+          { at: 0.76, label: "BURIAL BEFORE SUNSET" },
+        ],
         type: "crucifixion", anchor: true,
         typology: "PASSOVER LAMB SLAUGHTERED AT TWILIGHT",
         ref: "JOHN 19:14  //  EXODUS 12:6",
         notes: "Upper Room meal. Preparation Day. Arrested, tried, crucified, buried before sunset. The lamb is slaughtered. The veil tears.",
         tomb: null,
-        sunset: "NISAN 15 INITIATES  //  NIGHT 1 BEGINS",
+        sunset: "NIGHT 1 BEGINS",
       },
       {
         nisan: 15, dow: "THU", title: "HIGH SABBATH",
+        rail: "TOMB SEALED",
+        railMoments: [
+          { at: 0.1, label: "HIGH SABBATH BEGINS (NIGHT 1)" },
+          { at: 0.48, label: "TOMB SEALED AND GUARDED (DAY)" },
+          { at: 0.84, label: "NIGHT 2 BEGINS" },
+        ],
         type: "high-sabbath", anchor: true,
         typology: "PASSOVER  //  FEAST OF UNLEAVENED BREAD",
         ref: "JOHN 19:31  //  LEV 23:7",
@@ -590,6 +738,12 @@
       },
       {
         nisan: 16, dow: "FRI", title: "SPICE GAP",
+        rail: "SPICES BOUGHT AND PREPARED",
+        railMoments: [
+          { at: 0.12, label: "SPICES BOUGHT (NIGHT)" },
+          { at: 0.58, label: "SPICES PREPARED" },
+          { at: 0.84, label: "NIGHT 3 BEGINS" },
+        ],
         type: "gap", anchor: true,
         typology: "THE DAY BETWEEN TWO SABBATHS",
         ref: "MARK 16:1  //  LUKE 23:56",
@@ -599,6 +753,12 @@
       },
       {
         nisan: 17, dow: "SAT", title: "WEEKLY SABBATH",
+        rail: "SABBATH REST",
+        railMoments: [
+          { at: 0.12, label: "WEEKLY SABBATH CONTINUES" },
+          { at: 0.5, label: "SABBATH REST" },
+          { at: 0.84, label: "NIGHT WATCH" },
+        ],
         type: "sabbath", anchor: true,
         typology: null,
         ref: "LUKE 23:56",
@@ -607,6 +767,13 @@
       },
       {
         nisan: 18, dow: "SUN", title: "RESURRECTION",
+        rail: "STONE ROLLED AWAY",
+        railMoments: [
+          { at: 0.18, label: "STONE ROLLED AWAY" },
+          { at: 0.26, label: "WOMEN ARRIVE AT DAWN" },
+          { at: 0.4, label: "EMPTY TOMB" },
+          { at: 0.58, label: "ANGELIC ANNOUNCEMENT" },
+        ],
         type: "resurrection", anchor: true,
         typology: "THREE DAYS AND THREE NIGHTS  //  FULFILLED",
         ref: "MARK 16:2  //  MATTHEW 12:40",
@@ -671,6 +838,7 @@
       const root = document.getElementById("timeline");
       root.innerHTML = "";
 
+
       days.forEach((d, i) => {
         const palette = theme[d.type];
         const isKey = d.type !== "transit";
@@ -699,27 +867,46 @@
 
         const spine = document.createElement("div");
         spine.className = "spine";
-        spine.appendChild(makeDot(d.type, palette));
 
-        if (i < days.length - 1) {
-          const track = document.createElement("div");
-          track.className = "spine-track";
+        const track = document.createElement("div");
+        track.className = "spine-track";
 
-          const line = document.createElement("div");
-          line.className = "spine-line";
-          line.style.background = "linear-gradient(to bottom, #1e3a8a 0%, #1e3a8a 18%, #fde68a 18%, #fde68a 82%, #9a3412 82%, #9a3412 100%)";
+        const moments = Array.isArray(d.railMoments) && d.railMoments.length
+          ? d.railMoments
+          : [{ at: 0.5, label: d.rail || d.title }];
+        track.style.minHeight = `${Math.max(42, moments.length * 20)}px`;
 
-          const sunriseDot = document.createElement("div");
-          sunriseDot.className = "phase-dot sunrise";
+        const line = document.createElement("div");
+        line.className = "spine-line";
 
-          const sundownDot = document.createElement("div");
-          sundownDot.className = "phase-dot sundown";
+        const sunriseDot = document.createElement("div");
+        sunriseDot.className = "phase-dot sunrise";
 
-          track.appendChild(line);
-          track.appendChild(sunriseDot);
-          track.appendChild(sundownDot);
-          spine.appendChild(track);
-        }
+        const sundownDot = document.createElement("div");
+        sundownDot.className = "phase-dot sundown";
+
+        track.appendChild(line);
+        track.appendChild(sunriseDot);
+        track.appendChild(sundownDot);
+
+        moments.forEach((moment) => {
+          const m = document.createElement("div");
+          m.className = "rail-moment";
+          m.style.top = `${Math.round(moment.at * 100)}%`;
+
+          const tick = document.createElement("span");
+          tick.className = "rail-tick";
+
+          const text = document.createElement("span");
+          text.className = "rail-text";
+          text.textContent = moment.label;
+
+          m.appendChild(tick);
+          m.appendChild(text);
+          track.appendChild(m);
+        });
+
+        spine.appendChild(track);
 
         const card = document.createElement("div");
         card.className = "card";
@@ -806,7 +993,7 @@
 
           const text = document.createElement("span");
           text.className = "sunset-text";
-          text.textContent = `SUNDOWN DETAIL  //  ${d.sunset}`;
+          text.textContent = `SUNSET MARKER  //  ${d.sunset}`;
 
           const rightLine = document.createElement("div");
           rightLine.className = "sunset-line";
@@ -875,7 +1062,7 @@
       [
         {
           ref: "EXODUS 12:3",
-          nisan: "NISAN 10",
+          nisan: "AVIV 10",
           type: "LAMB SELECTED",
           fulfill: "Jesus presents himself to Jerusalem on lamb selection day",
           col: theme.lamb.text,
@@ -883,7 +1070,7 @@
         },
         {
           ref: "EXODUS 12:6",
-          nisan: "NISAN 14",
+          nisan: "AVIV 14",
           type: "LAMB SLAUGHTERED AT TWILIGHT",
           fulfill: "Jesus crucified on Preparation Day before sunset",
           col: theme.crucifixion.text,
@@ -961,7 +1148,7 @@
 
       const note = document.createElement("div");
       note.className = "resolve-note";
-      note.textContent = "Nisan 16 Friday is the only day that satisfies both statements without contradiction. The Friday crucifixion view produces an irreconcilable conflict between these two verses.";
+      note.textContent = "Aviv 16 Friday is the only day that satisfies both statements without contradiction. The Friday crucifixion view produces an irreconcilable conflict between these two verses.";
       resolution.appendChild(note);
     }
 
