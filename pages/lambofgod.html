@@ -515,7 +515,7 @@
         <section class="section" id="typology"></section>
         <section class="section" id="resolution"></section>
         <div class="closing">
-          <div class="closing-text">TAP ANY ROW TO EXPAND // NET BIBLE TRANSLATION</div>
+          <div class="closing-text">ALL DATA DISPLAYED // NET BIBLE TRANSLATION</div>
           <div class="closing-monolith" aria-hidden="true"></div>
         </div>
       </footer>
@@ -676,9 +676,8 @@
         const isKey = d.type !== "transit";
         const row = document.createElement("article");
         row.className = "row";
-        if (state.open === i) {
-          row.classList.add("open");
-        }
+        // Always show all items expanded
+        row.classList.add("open");
 
         const left = document.createElement("div");
         left.className = "nisan";
@@ -725,7 +724,8 @@
         const card = document.createElement("div");
         card.className = "card";
 
-        const isOpen = state.open === i;
+        // Always show all details
+        const isOpen = true;
         card.style.background = isOpen ? palette.bg : "transparent";
         card.style.borderLeftColor = isOpen ? palette.dot : (isKey ? palette.border : "#e5e7eb");
         card.style.borderLeftWidth = isOpen ? "3px" : "2px";
@@ -821,10 +821,11 @@
         row.appendChild(spine);
         row.appendChild(card);
 
-        row.addEventListener("click", () => {
-          state.open = state.open === i ? null : i;
-          renderTimeline();
-        });
+        // Remove click handler - all items always expanded
+        // row.addEventListener("click", () => {
+        //   state.open = state.open === i ? null : i;
+        //   renderTimeline();
+        // });
 
         root.appendChild(row);
 
