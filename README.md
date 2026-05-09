@@ -142,3 +142,27 @@ analytics - is downstream of these four.
 
 Every session must produce a specification, a decision, a document, or an action item.
 Not a framework.
+
+---
+
+## GitHub Copilot in the Terminal (vs VS Code)
+
+Use Copilot in terminal with GitHub CLI:
+
+1. Install and authenticate GitHub CLI (`gh auth login`)
+2. Install Copilot extension: `gh extension install github/gh-copilot`
+3. Use:
+   - `gh copilot suggest "your task"` for command suggestions
+   - `gh copilot explain "your command"` for command explanations
+
+### Why use terminal Copilot?
+
+- Faster for shell-heavy work (git, build, deploy, debugging commands)
+- Keeps you in the same terminal workflow without switching to an editor UI
+- Great for generating one-off commands and command pipelines
+
+### Why still use VS Code Copilot?
+
+- Better for multi-file edits, refactors, and inline code authoring
+- Richer context from open files, symbols, diagnostics, and tests
+- Stronger review/edit loop for larger implementation tasks
