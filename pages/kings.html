@@ -1638,9 +1638,40 @@ body.timeline-single-mode .fall-banner {
     return overlay.getBoundingClientRect().height;
   }
 
+  function resetTimelineToFlow(kw) {
+    document.body.classList.remove('timeline-single-mode');
+
+    if (!kw) return;
+
+    kw.style.height = '';
+
+    var transientNodes = kw.querySelectorAll('.united-overlay, .split-marker');
+    transientNodes.forEach(function (node) { node.remove(); });
+
+    var bodies = kw.querySelectorAll('.col-body');
+    bodies.forEach(function (body) {
+      body.style.height = '';
+    });
+
+    var positioned = kw.querySelectorAll('.king-row, .fall-banner');
+    positioned.forEach(function (el) {
+      el.style.top = '';
+      el.style.height = '';
+      el.style.minHeight = '';
+    });
+
+    var injected = document.querySelectorAll('.k-status, .k-age, .u-age');
+    injected.forEach(function (el) { el.remove(); });
+  }
+
   function applyTimeline() {
     var kw = document.getElementById('kw');
     if (!kw) return;
+
+    if (window.matchMedia('(max-width: 767px)').matches) {
+      resetTimelineToFlow(kw);
+      return;
+    }
 
     document.body.classList.add('timeline-single-mode');
     injectKingAges();
