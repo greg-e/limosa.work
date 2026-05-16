@@ -110,37 +110,6 @@ h1 em { font-style: normal; color: var(--hal); }
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   LEGEND
-═══════════════════════════════════════════════════════════════ */
-.legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 20px;
-  padding: clamp(10px, 2vw, 14px) var(--px);
-  background: var(--bg-alt);
-  border-bottom: 1px solid var(--rule);
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--f-b);
-  font-size: var(--text-sm);
-  font-weight: 500;
-  color: var(--ink-2);
-}
-
-.pip {
-  width: 10px; height: 10px;
-  border-radius: 50%; flex-shrink: 0;
-}
-.pip-good  { background: var(--blue); }
-.pip-evil  { background: var(--hal); }
-.pip-mixed { background: var(--amber); }
-.pip-queen { background: var(--purple); }
-
-/* ═══════════════════════════════════════════════════════════════
    UNITED MONARCHY
 ═══════════════════════════════════════════════════════════════ */
 .united {
@@ -503,6 +472,295 @@ h1 em { font-style: normal; color: var(--hal); }
   .fall-banner { break-inside: avoid; }
   .king-row { break-inside: avoid; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   UNIFIED TIMELINE MODE (single shared scale)
+═══════════════════════════════════════════════════════════════ */
+body.timeline-single-mode {
+  --bg: #fcfbf8;
+  --bg-alt: #f3efe6;
+  --rule: #c7bca7;
+  --rule-light: #ddd4c3;
+  --ink: #1a1814;
+  --ink-2: #322d24;
+  --ink-3: #6f6554;
+  --lane-israel: #f5e7d6;
+  --lane-judah: #e5efe1;
+}
+
+body.timeline-single-mode .united,
+body.timeline-single-mode .split-band,
+body.timeline-single-mode .kingdom-divider,
+body.timeline-single-mode .d-label {
+  display: none;
+}
+
+body.timeline-single-mode .united {
+  display: block;
+  border-bottom: 1px solid var(--rule);
+}
+
+body.timeline-single-mode .united .u-grid {
+  display: none;
+}
+
+body.timeline-single-mode .kingdoms-wrap {
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(320px, 1fr);
+  gap: 0;
+  overflow-x: auto;
+  overflow-y: visible;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  background: linear-gradient(180deg, #f8f4eb 0%, #fdfcf9 15%, #fdfcf9 100%);
+}
+
+body.timeline-single-mode .kingdom-pane {
+  display: block;
+  min-width: 320px;
+  grid-row: 2;
+  position: relative;
+  z-index: 1;
+}
+
+body.timeline-single-mode .kingdom-pane.israel {
+  grid-column: 1;
+}
+
+body.timeline-single-mode .kingdom-pane.judah {
+  grid-column: 2;
+}
+
+body.timeline-single-mode .kingdom-pane.israel {
+  border-right: 1px solid var(--rule);
+}
+
+body.timeline-single-mode .israel .col-header {
+  background: var(--lane-israel);
+}
+
+body.timeline-single-mode .judah .col-header {
+  background: var(--lane-judah);
+}
+
+body.timeline-single-mode .col-body {
+  position: relative;
+  overflow: visible;
+  background: transparent;
+}
+
+body.timeline-single-mode .dynasty {
+  border-bottom: none;
+}
+
+body.timeline-single-mode .king-row {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  padding: 8px 10px 8px 0;
+  margin: 0;
+  border: 1px solid var(--rule-light);
+  border-left: 7px solid transparent;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(1px);
+}
+
+body.timeline-single-mode .king-row.good,
+body.timeline-single-mode .king-row.evil,
+body.timeline-single-mode .king-row.mixed,
+body.timeline-single-mode .king-row.queen {
+  border-left-color: var(--ink-3);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+body.timeline-single-mode .king-row.good .k-name,
+body.timeline-single-mode .king-row.evil .k-name,
+body.timeline-single-mode .king-row.mixed .k-name,
+body.timeline-single-mode .king-row.queen .k-name {
+  color: var(--ink);
+}
+
+body.timeline-single-mode .king-row .k-name {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+body.timeline-single-mode .k-status {
+  display: inline-block;
+  vertical-align: middle;
+  font-family: var(--f-b);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  margin-left: 2px;
+  opacity: 0.9;
+  color: var(--ink-3);
+}
+
+body.timeline-single-mode .k-status.good,
+body.timeline-single-mode .k-status.evil,
+body.timeline-single-mode .k-status.mixed,
+body.timeline-single-mode .k-status.queen {
+  color: var(--ink-3);
+}
+
+body.timeline-single-mode .king-row .k-note {
+  font-size: clamp(12px, 2vw, 14px);
+  line-height: 1.45;
+}
+
+body.timeline-single-mode .k-age,
+body.timeline-single-mode .u-age {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--ink-3);
+  font-style: italic;
+}
+
+body.timeline-single-mode .k-pip {
+  display: none;
+}
+
+body.timeline-single-mode .united-overlay {
+  grid-column: 1 / 3;
+  grid-row: 1;
+  display: block;
+  padding: 12px;
+  border-bottom: 1px solid var(--rule);
+  background: #f4ede0;
+  position: relative;
+  z-index: 2;
+  min-height: 220px;
+}
+
+body.timeline-single-mode .united-overlay::before {
+  content: 'United Monarchy';
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  font-family: var(--f-d);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--ink-3);
+  background: #f4ede0;
+  padding: 0 6px;
+}
+
+body.timeline-single-mode .united-card {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  border: 1px solid var(--rule-light);
+  border-left: 5px solid var(--ink);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: rgba(250, 246, 238, 0.95);
+  pointer-events: auto;
+  overflow: visible;
+}
+
+body.timeline-single-mode .united-card .u-note {
+  font-size: clamp(12px, 1.9vw, 14px);
+  line-height: 1.4;
+}
+
+body.timeline-single-mode .split-marker {
+  position: absolute;
+  grid-column: 1 / 3;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+body.timeline-single-mode .united-card .u-name {
+  font-family: var(--f-d);
+  font-size: var(--text-sm);
+  letter-spacing: 0.08em;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+body.timeline-single-mode .u-status {
+  display: inline-block;
+  vertical-align: middle;
+  font-family: var(--f-b);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  margin-left: 2px;
+  opacity: 0.9;
+}
+
+body.timeline-single-mode .u-status.good,
+body.timeline-single-mode .u-status.evil,
+body.timeline-single-mode .u-status.mixed,
+body.timeline-single-mode .u-status.queen {
+  color: var(--ink-3);
+}
+
+body.timeline-single-mode .united-card.good,
+body.timeline-single-mode .united-card.evil,
+body.timeline-single-mode .united-card.mixed,
+body.timeline-single-mode .united-card.queen {
+  border-left-color: var(--ink-3);
+  background: rgba(250, 246, 238, 0.95);
+}
+
+body.timeline-single-mode .united-card.good .u-name,
+body.timeline-single-mode .united-card.evil .u-name,
+body.timeline-single-mode .united-card.mixed .u-name,
+body.timeline-single-mode .united-card.queen .u-name {
+  color: var(--ink);
+}
+
+body.timeline-single-mode .split-marker {
+  position: absolute;
+  grid-column: 1 / 3;
+  left: 0;
+  right: 0;
+  border-top: 2px dashed #6a5c44;
+}
+
+body.timeline-single-mode .split-label {
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--f-d);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: #4b3f2d;
+  background: #f8f3e8;
+  padding: 0 8px;
+  white-space: nowrap;
+}
+
+body.timeline-single-mode .fall-banner {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  border-width: 1px;
+  font-size: 11px;
+  letter-spacing: 0.13em;
+  line-height: 1.7;
+  padding: 8px 10px;
+}
+
+@media (max-width: 980px) {
+  body.timeline-single-mode .kingdoms-wrap {
+    grid-template-columns: minmax(290px, 1fr) minmax(290px, 1fr);
+  }
+
+  body.timeline-single-mode .united-card {
+    min-height: 82px;
+  }
+}
 </style>
 </head>
 <body>
@@ -514,14 +772,6 @@ h1 em { font-style: normal; color: var(--hal); }
   <div class="sub">From the United Monarchy through the Babylonian Exile</div>
   <div class="hal-rule"></div>
 </header>
-
-<!-- ════ LEGEND ════ -->
-<div class="legend">
-  <div class="legend-item"><div class="pip pip-good"></div>Did right in the eyes of the LORD</div>
-  <div class="legend-item"><div class="pip pip-evil"></div>Did evil in the eyes of the LORD</div>
-  <div class="legend-item"><div class="pip pip-mixed"></div>Partial / mixed obedience</div>
-  <div class="legend-item"><div class="pip pip-queen"></div>Queen / non-Davidic usurper</div>
-</div>
 
 <!-- ════ UNITED MONARCHY ════ -->
 <section class="united">
@@ -837,33 +1087,622 @@ h1 em { font-style: normal; color: var(--hal); }
 
 <script>
 /*
-  Desktop only: set kingdoms-wrap height to fill remaining
-  viewport so each column body independently scrolls.
-  Mobile uses natural page scroll — no height needed.
+  Unified, visibility-first timeline layout.
+  Cards stay chronologically aligned across both kingdoms, but vertical
+  spacing is intentionally not strict year-to-pixel scale.
 */
-function fitKingdoms() {
-  var kw = document.getElementById('kw');
-  if (!kw) return;
+(function () {
+  var START_YEAR = 1051;
+  var END_YEAR = 586;
+  var SPLIT_YEAR = 931;
+  var SLOT_PX = 64;
+  var TOP_PAD = 24;
+  var MIN_CARD_PX = 54;
+  var LANE_GAP_PX = 16;
 
-  if (window.innerWidth < 768) {
-    kw.style.height = '';
-    return;
+  function numberOrNull(value) {
+    var n = Number(value);
+    return Number.isFinite(n) ? n : null;
   }
 
-  // Give the columns at least 75% of the viewport height.
-  // If the remaining space below the wrap is larger, use that instead.
-  var vh   = window.innerHeight;
-  var top  = kw.getBoundingClientRect().top + window.scrollY;
-  var remaining = vh - top;           // space from wrap top to bottom of viewport
-  var h = Math.max(remaining, Math.round(vh * 0.75), 480);
-  kw.style.height = h + 'px';
-}
+  function parseDateSpan(raw) {
+    var text = (raw || '').replace(/~/g, '').trim();
+    var startMatch = text.match(/(\d{3,4})\s*(?:-|\u2013|\u2014)?\s*(\d{3,4})?\s*BC/i);
+    var allYears = text.match(/\d{3,4}/g) || [];
 
-document.addEventListener('DOMContentLoaded', function () {
-  fitKingdoms();
-  setTimeout(fitKingdoms, 300);   // catch font-load reflow
-});
-window.addEventListener('resize', fitKingdoms);
+    var start = null;
+    var end = null;
+
+    if (startMatch) {
+      start = numberOrNull(startMatch[1]);
+      end = numberOrNull(startMatch[2]);
+    } else if (allYears.length) {
+      start = numberOrNull(allYears[0]);
+      end = allYears.length > 1 ? numberOrNull(allYears[1]) : null;
+    }
+
+    var monthsMatch = text.match(/(\d+)\s*months?/i);
+    var daysMatch = text.match(/(\d+)\s*days?/i);
+    var yearsWordMatch = text.match(/(\d+)\s*years?/i);
+
+    var durationOverride = null;
+    if (monthsMatch) durationOverride = Number(monthsMatch[1]) / 12;
+    if (daysMatch) durationOverride = Number(daysMatch[1]) / 365;
+    if (yearsWordMatch && !(startMatch && startMatch[2])) durationOverride = Number(yearsWordMatch[1]);
+
+    if (start === null) {
+      return null;
+    }
+
+    if (durationOverride !== null) {
+      end = start - durationOverride;
+    } else if (end === null) {
+      end = start - 1;
+    }
+
+    if (end > start) {
+      var tmp = end;
+      end = start;
+      start = tmp;
+    }
+
+    return { start: start, end: end };
+  }
+
+  function durationToHeight(start, end) {
+    var duration = Math.max(start - end, 0.1);
+    var h = 48 + duration * 1.6;
+    return Math.max(MIN_CARD_PX, Math.round(h));
+  }
+
+  function uniqDesc(values) {
+    var seen = {};
+    var out = [];
+    values.forEach(function (v) {
+      var key = String(v);
+      if (!seen[key]) {
+        seen[key] = true;
+        out.push(v);
+      }
+    });
+    out.sort(function (a, b) { return b - a; });
+    return out;
+  }
+
+  function collectChronologyYears() {
+    var years = [START_YEAR, SPLIT_YEAR, 722, 586, END_YEAR];
+    var dateEls = document.querySelectorAll('.king-row .k-dates, .united .u-dates');
+    dateEls.forEach(function (el) {
+      var span = parseDateSpan(el.textContent || '');
+      if (!span) return;
+      years.push(Math.round(span.start));
+      years.push(Math.round(span.end));
+    });
+    return uniqDesc(years);
+  }
+
+  function nearestYear(target, sortedYears) {
+    var nearest = sortedYears[0];
+    var bestDelta = Math.abs(target - nearest);
+    for (var i = 1; i < sortedYears.length; i += 1) {
+      var y = sortedYears[i];
+      var d = Math.abs(target - y);
+      if (d < bestDelta) {
+        bestDelta = d;
+        nearest = y;
+      }
+    }
+    return nearest;
+  }
+
+  function parseBannerYear(text) {
+    var match = (text || '').match(/(\d{3,4})\s*BC/i);
+    return match ? Number(match[1]) : null;
+  }
+
+  function collectLaneItems(paneSelector, sortedYears) {
+    var pane = document.querySelector(paneSelector);
+    if (!pane) return null;
+
+    var body = pane.querySelector('.col-body');
+    if (!body) return null;
+
+    var rowItems = Array.from(body.querySelectorAll('.king-row')).map(function (row) {
+      var datesEl = row.querySelector('.k-dates');
+      if (!datesEl) return null;
+      var span = parseDateSpan(datesEl.textContent || '');
+      if (!span) return null;
+      return { el: row, span: span, kindOrder: 1, minHeight: durationToHeight(span.start, span.end) };
+    }).filter(Boolean);
+
+    var bannerItems = Array.from(body.querySelectorAll('.fall-banner')).map(function (banner) {
+      var year = parseBannerYear(banner.textContent || '');
+      if (!Number.isFinite(year)) return null;
+      return {
+        el: banner,
+        span: { start: year, end: year - 0.1 },
+        kindOrder: 2,
+        minHeight: MIN_CARD_PX
+      };
+    }).filter(Boolean);
+
+    var rows = rowItems.concat(bannerItems);
+
+    rows.forEach(function (item) {
+      item.el.style.height = 'auto';
+      item.el.style.minHeight = item.minHeight + 'px';
+      item.naturalHeight = Math.max(item.minHeight, Math.ceil(item.el.scrollHeight));
+      item.rawStart = item.span.start;
+      item.rawEnd = item.span.end;
+      item.startYear = nearestYear(item.span.start, sortedYears);
+      item.endYear = nearestYear(item.span.end, sortedYears);
+    });
+
+    rows.sort(function (a, b) {
+      if (b.startYear !== a.startYear) {
+        return b.startYear - a.startYear;
+      }
+      return a.kindOrder - b.kindOrder;
+    });
+
+    return { pane: pane, body: body, items: rows };
+  }
+
+  function buildYearIndexMap(sortedYears) {
+    var map = new Map();
+    sortedYears.forEach(function (year, i) {
+      map.set(year, i);
+    });
+    return map;
+  }
+
+  function sumSteps(steps, fromIdx, toIdx) {
+    var total = 0;
+    for (var i = fromIdx; i < toIdx; i += 1) {
+      total += steps[i] || 0;
+    }
+    return total;
+  }
+
+  function getYearTop(year, sortedYears, yearTopMap) {
+    if (!Number.isFinite(year)) return TOP_PAD;
+    if (yearTopMap.has(year)) return yearTopMap.get(year);
+    if (!sortedYears.length) return TOP_PAD;
+
+    var first = sortedYears[0];
+    var last = sortedYears[sortedYears.length - 1];
+
+    if (year >= first) {
+      return (yearTopMap.get(first) || TOP_PAD) - (year - first) * 2.4;
+    }
+
+    if (year <= last) {
+      return (yearTopMap.get(last) || TOP_PAD) + (last - year) * 2.4;
+    }
+
+    for (var i = 0; i < sortedYears.length - 1; i += 1) {
+      var upper = sortedYears[i];
+      var lower = sortedYears[i + 1];
+      if (year <= upper && year >= lower) {
+        var upperTop = yearTopMap.get(upper) || TOP_PAD;
+        var lowerTop = yearTopMap.get(lower) || upperTop;
+        var span = Math.max(upper - lower, 1);
+        var t = (upper - year) / span;
+        return upperTop + t * (lowerTop - upperTop);
+      }
+    }
+
+    return TOP_PAD;
+  }
+
+  function getStatusType(el) {
+    if (!el) return '';
+    if (el.classList.contains('good')) return 'good';
+    if (el.classList.contains('evil')) return 'evil';
+    if (el.classList.contains('mixed')) return 'mixed';
+    if (el.classList.contains('queen')) return 'queen';
+    return '';
+  }
+
+  function statusLabel(type) {
+    if (type === 'good') return 'did what was right in the eyes of the LORD';
+    if (type === 'evil') return 'did what was evil in the eyes of the LORD';
+    if (type === 'mixed') return 'did right, but not with a whole heart';
+    if (type === 'queen') return 'queen and usurper, not in Davidic line';
+    return 'assessment not specified';
+  }
+
+  var AGE_DATA = {
+    david: 'Became king at 30; reign ended at 70.',
+    rehoboam: 'Became king at 41; reign ended at 58.',
+    abijah: 'Became king at 18; reign ended at 21.',
+    jehoshaphat: 'Became king at 35; reign ended at 60.',
+    jehoram: 'Became king at 32; reign ended at 40.',
+    ahaziah: 'Became king at 22; reign ended at 23.',
+    joash: 'Became king at 7; reign ended at 47.',
+    amaziah: 'Became king at 25; reign ended at 54.',
+    uzziah: 'Became king at 16; reign ended at 68.',
+    jotham: 'Became king at 25; reign ended at 41.',
+    ahaz: 'Became king at 20; reign ended at 36.',
+    hezekiah: 'Became king at 25; reign ended at 54.',
+    manasseh: 'Became king at 12; reign ended at 67.',
+    amon: 'Became king at 22; reign ended at 24.',
+    josiah: 'Became king at 8; reign ended at 39.',
+    jehoahaz: 'Became king at 23; reign ended at about 23.',
+    jehoiakim: 'Became king at 25; reign ended at 36.',
+    jehoiachin: 'Became king at 18; reign ended at about 18.',
+    zedekiah: 'Became king at 21; reign ended at 32.'
+  };
+
+  function canonicalKingName(rawName) {
+    var n = (rawName || '').toLowerCase();
+    n = n.replace(/\(.*?\)/g, '');
+    n = n.replace(/\s*\u2014.*$/g, '');
+    n = n.replace(/[^a-z]/g, '');
+    if (n === 'abijam') return 'abijah';
+    if (n === 'azariah') return 'uzziah';
+    if (n === 'jehoash') return 'joash';
+    return n;
+  }
+
+  function injectKingAges() {
+    var rows = document.querySelectorAll('.king-row');
+    rows.forEach(function (row) {
+      var nameEl = row.querySelector('.k-name');
+      var noteEl = row.querySelector('.k-note');
+      if (!nameEl || !noteEl) return;
+
+      var existing = noteEl.querySelector('.k-age');
+      if (existing) existing.remove();
+
+      var key = canonicalKingName(nameEl.textContent || '');
+      var ageText = AGE_DATA[key];
+      if (!ageText) return;
+
+      var ageEl = document.createElement('span');
+      ageEl.className = 'k-age';
+      ageEl.textContent = ageText;
+      noteEl.appendChild(ageEl);
+    });
+
+    var unitedCards = document.querySelectorAll('.united .u-card');
+    unitedCards.forEach(function (card) {
+      var nameEl = card.querySelector('.u-name');
+      var noteEl = card.querySelector('.u-note');
+      if (!nameEl || !noteEl) return;
+
+      var existing = noteEl.querySelector('.u-age');
+      if (existing) existing.remove();
+
+      var key = canonicalKingName(nameEl.textContent || '');
+      var ageText = AGE_DATA[key];
+      if (!ageText) return;
+
+      var ageEl = document.createElement('span');
+      ageEl.className = 'u-age';
+      ageEl.textContent = ageText;
+      noteEl.appendChild(ageEl);
+    });
+  }
+
+  function injectKingStatusBadges() {
+    var rows = document.querySelectorAll('.king-row');
+    rows.forEach(function (row) {
+      var type = getStatusType(row);
+      if (!type) return;
+      var info = row.querySelector('.k-info');
+      var nameEl = row.querySelector('.k-name');
+      if (!info || !nameEl) return;
+      var existing = info.querySelector('.k-status');
+      if (existing) existing.remove();
+
+      var badge = document.createElement('span');
+      badge.className = 'k-status ' + type;
+      badge.textContent = statusLabel(type);
+      nameEl.insertAdjacentElement('afterend', badge);
+    });
+  }
+
+  function normalizeSpanIndices(item, yearIdx, maxStepIdx) {
+    var s = yearIdx.get(item.startYear);
+    var e = yearIdx.get(item.endYear);
+    if (!Number.isInteger(s)) s = 0;
+    if (!Number.isInteger(e)) e = Math.min(s + 1, maxStepIdx + 1);
+    if (e <= s) {
+      e = Math.min(s + 1, maxStepIdx + 1);
+    }
+    return { startIdx: s, endIdx: e };
+  }
+
+  function laneSequentialItems(items, yearIdx) {
+    return items.slice().sort(function (a, b) {
+      var ai = yearIdx.get(a.startYear) || 0;
+      var bi = yearIdx.get(b.startYear) || 0;
+      if (ai !== bi) return ai - bi;
+      return a.kindOrder - b.kindOrder;
+    });
+  }
+
+  function buildAdaptiveYearMap(sortedYears, leftItems, rightItems) {
+    var yearIdx = buildYearIndexMap(sortedYears);
+    var stepCount = Math.max(sortedYears.length - 1, 1);
+    var BASE_PX_PER_YEAR = 2.4;
+    var steps = new Array(stepCount).fill(SLOT_PX);
+
+    for (var i = 0; i < stepCount; i += 1) {
+      var yA = sortedYears[i];
+      var yB = sortedYears[i + 1];
+      var yearDelta = Math.max(yA - yB, 1);
+      steps[i] = Math.max(12, Math.round(yearDelta * BASE_PX_PER_YEAR));
+    }
+
+    function ensureDistance(startIdx, endIdx, requiredPx) {
+      if (endIdx <= startIdx) return;
+      var current = sumSteps(steps, startIdx, endIdx);
+      if (current >= requiredPx) return;
+      var deficit = requiredPx - current;
+      var span = endIdx - startIdx;
+      var bump = deficit / span;
+      for (var s = startIdx; s < endIdx; s += 1) {
+        steps[s] += bump;
+      }
+    }
+
+    var allItems = leftItems.concat(rightItems);
+    for (var pass = 0; pass < 6; pass += 1) {
+      allItems.forEach(function (item) {
+        var idx = normalizeSpanIndices(item, yearIdx, stepCount - 1);
+        item.startIdx = idx.startIdx;
+        item.endIdx = idx.endIdx;
+        ensureDistance(idx.startIdx, idx.endIdx, item.naturalHeight + 4);
+      });
+
+      [leftItems, rightItems].forEach(function (laneItems) {
+        var ordered = laneSequentialItems(laneItems, yearIdx);
+        for (var j = 0; j < ordered.length - 1; j += 1) {
+          var cur = ordered[j];
+          var next = ordered[j + 1];
+          ensureDistance(cur.startIdx, next.startIdx, cur.naturalHeight + LANE_GAP_PX);
+        }
+      });
+    }
+
+    var yearTopMap = new Map();
+    var cursor = TOP_PAD;
+    sortedYears.forEach(function (year, idx) {
+      yearTopMap.set(year, Math.round(cursor));
+      cursor += idx < steps.length ? steps[idx] : 0;
+    });
+
+    return {
+      yearTopMap: yearTopMap,
+      totalHeight: Math.round(cursor + 140),
+      yearIdx: yearIdx,
+      steps: steps
+    };
+  }
+
+  function placeLaneItems(items, sortedYears, yearTopMap) {
+    var laneBottom = 0;
+    var splitTop = getYearTop(SPLIT_YEAR, sortedYears, yearTopMap);
+    items.forEach(function (item) {
+      var absoluteTop = getYearTop(item.rawStart, sortedYears, yearTopMap);
+      var endTop = getYearTop(item.rawEnd, sortedYears, yearTopMap);
+      var absoluteBottom = Number.isFinite(endTop) ? endTop : (absoluteTop + item.naturalHeight);
+      var dateTop = Math.max(0, absoluteTop - splitTop);
+      var top = Math.max(dateTop, laneBottom + LANE_GAP_PX);
+      var bottom = Math.max(top, absoluteBottom - splitTop);
+      var spanHeight = Math.max(0, bottom - top);
+      var h = Math.max(item.naturalHeight, spanHeight);
+      item.el.style.top = Math.round(top) + 'px';
+      item.el.style.height = Math.round(h) + 'px';
+      laneBottom = Math.max(laneBottom, top + h);
+    });
+    return laneBottom;
+  }
+
+  function renderedLaneBottom(body) {
+    if (!body) return 0;
+    var nodes = body.querySelectorAll('.king-row, .fall-banner');
+    var maxBottom = 0;
+    nodes.forEach(function (node) {
+      maxBottom = Math.max(maxBottom, node.offsetTop + node.offsetHeight);
+    });
+    return maxBottom;
+  }
+
+  function renderedPaneBottom(pane) {
+    if (!pane) return 0;
+    var header = pane.querySelector('.col-header');
+    var body = pane.querySelector('.col-body');
+    var headerH = header ? header.offsetHeight : 0;
+    var bodyBottom = renderedLaneBottom(body);
+    return headerH + bodyBottom;
+  }
+
+  function renderedWrapBottom(kw) {
+    if (!kw) return 0;
+    var rootRect = kw.getBoundingClientRect();
+    var nodes = kw.querySelectorAll('.united-overlay, .split-marker, .col-header, .king-row, .fall-banner');
+    var maxBottom = 0;
+    nodes.forEach(function (node) {
+      var rect = node.getBoundingClientRect();
+      maxBottom = Math.max(maxBottom, rect.bottom - rootRect.top);
+    });
+    return Math.ceil(maxBottom);
+  }
+
+  function setLaneBodyHeights(kwHeight) {
+    var panes = document.querySelectorAll('.kingdom-pane');
+    panes.forEach(function (pane) {
+      var header = pane.querySelector('.col-header');
+      var body = pane.querySelector('.col-body');
+      if (!body) return;
+      var headerH = header ? header.offsetHeight : 0;
+      var bodyH = Math.max(kwHeight - headerH, 300);
+      body.style.height = bodyH + 'px';
+    });
+  }
+
+  function buildUnifiedOverlay(container, sortedYears, yearTopMap) {
+    var oldOverlay = container.querySelector('.united-overlay');
+    if (oldOverlay) oldOverlay.remove();
+
+    var oldSplit = container.querySelector('.split-marker');
+    if (oldSplit) oldSplit.remove();
+
+    var overlay = document.createElement('div');
+    overlay.className = 'united-overlay';
+
+    var unitedStart = getYearTop(START_YEAR, sortedYears, yearTopMap);
+    var unitedEnd = getYearTop(SPLIT_YEAR, sortedYears, yearTopMap);
+    var overlayHeight = Math.max(220, Math.round(unitedEnd - unitedStart + 28));
+    overlay.style.height = overlayHeight + 'px';
+
+    var unitedBottom = 0;
+    var unitedCards = Array.from(document.querySelectorAll('.united .u-card')).map(function (src) {
+      var nameEl = src.querySelector('.u-name');
+      var datesEl = src.querySelector('.u-dates');
+      var noteEl = src.querySelector('.u-note');
+      var name = nameEl ? nameEl.textContent : '';
+      var dates = datesEl ? datesEl.textContent : '';
+      var note = noteEl ? noteEl.textContent : '';
+      var span = parseDateSpan(dates);
+      if (!span) return null;
+
+      return {
+        src: src,
+        name: name,
+        dates: dates,
+        note: note,
+        span: span
+      };
+    }).filter(Boolean);
+
+    unitedCards.sort(function (a, b) {
+      return b.span.start - a.span.start;
+    });
+
+    var runningBottom = 0;
+    unitedCards.forEach(function (item) {
+      var span = item.span;
+      var type = getStatusType(item.src);
+      var badgeHtml = '<span class="u-status ' + type + '">' + statusLabel(type) + '</span>';
+
+      var h = durationToHeight(span.start, span.end);
+      var startY = getYearTop(span.start, sortedYears, yearTopMap);
+      var endY = getYearTop(span.end, sortedYears, yearTopMap);
+      var idealTop = Math.max(0, Math.round((startY || unitedStart) - unitedStart));
+      var localTop = Math.max(idealTop, runningBottom + 12);
+      var spanH = Math.max(0, Math.round((endY || (startY || unitedStart)) - (startY || unitedStart)));
+
+      var card = document.createElement('div');
+      card.className = 'united-card';
+      if (item.src.classList.contains('good')) card.classList.add('good');
+      if (item.src.classList.contains('evil')) card.classList.add('evil');
+      if (item.src.classList.contains('mixed')) card.classList.add('mixed');
+      card.style.top = localTop + 'px';
+      card.style.height = Math.max(h, spanH) + 'px';
+      card.innerHTML =
+        '<span class="u-name">' + item.name + '</span>' +
+        badgeHtml +
+        '<span class="u-dates">' + item.dates + '</span>' +
+        '<p class="u-note">' + item.note + '</p>';
+      overlay.appendChild(card);
+
+      var renderedMin = Math.max(h, Math.ceil(card.scrollHeight));
+      if (renderedMin > Number.parseInt(card.style.height, 10)) {
+        card.style.height = renderedMin + 'px';
+      }
+      var finalH = Math.max(renderedMin, Number.parseInt(card.style.height, 10));
+      runningBottom = localTop + finalH;
+      unitedBottom = Math.max(unitedBottom, runningBottom);
+    });
+
+    overlay.style.height = Math.max(overlayHeight, unitedBottom + 16) + 'px';
+
+    var firstPane = container.querySelector('.kingdom-pane');
+    if (firstPane) {
+      container.insertBefore(overlay, firstPane);
+    } else {
+      container.appendChild(overlay);
+    }
+
+    var split = document.createElement('div');
+    split.className = 'split-marker';
+    var overlayBottom = overlay.offsetTop + overlay.offsetHeight;
+    split.style.top = Math.max(overlayBottom, 0) + 'px';
+    split.innerHTML = '<span class="split-label">KINGDOM DIVIDED - 931 BC</span>';
+
+    container.appendChild(split);
+    return overlay.getBoundingClientRect().height;
+  }
+
+  function applyTimeline() {
+    var kw = document.getElementById('kw');
+    if (!kw) return;
+
+    document.body.classList.add('timeline-single-mode');
+    injectKingAges();
+    injectKingStatusBadges();
+
+    var years = collectChronologyYears();
+    var leftLane = collectLaneItems('.kingdom-pane.israel', years);
+    var rightLane = collectLaneItems('.kingdom-pane.judah', years);
+    if (!leftLane || !rightLane) return;
+
+    var layout = buildAdaptiveYearMap(years, leftLane.items, rightLane.items);
+    var totalHeight = Math.max(layout.totalHeight, 1200);
+
+    kw.style.height = totalHeight + 'px';
+    setLaneBodyHeights(totalHeight);
+
+    var overlayBottom = buildUnifiedOverlay(kw, years, layout.yearTopMap);
+
+    var israelBottom = placeLaneItems(leftLane.items, years, layout.yearTopMap);
+    var judahBottom = placeLaneItems(rightLane.items, years, layout.yearTopMap);
+    var israelPaneBottom = renderedPaneBottom(leftLane.pane);
+    var judahPaneBottom = renderedPaneBottom(rightLane.pane);
+
+    var neededHeight = Math.max(
+      totalHeight,
+      israelBottom + 180,
+      judahBottom + 180,
+      israelPaneBottom + 140,
+      judahPaneBottom + 140,
+      overlayBottom + 120
+    );
+    if (neededHeight !== totalHeight) {
+      kw.style.height = neededHeight + 'px';
+      setLaneBodyHeights(neededHeight);
+      buildUnifiedOverlay(kw, years, layout.yearTopMap);
+      placeLaneItems(leftLane.items, years, layout.yearTopMap);
+      placeLaneItems(rightLane.items, years, layout.yearTopMap);
+
+      // Final safeguard after reflow: expand to true rendered bottom if needed.
+      var finalBottom = Math.max(renderedPaneBottom(leftLane.pane), renderedPaneBottom(rightLane.pane)) + 120;
+      if (finalBottom > neededHeight) {
+        kw.style.height = finalBottom + 'px';
+        setLaneBodyHeights(finalBottom);
+      }
+    }
+
+    // Absolute-positioned elements can exceed estimated lane bottoms; use measured wrap bottom as final truth.
+    var measuredBottom = renderedWrapBottom(kw) + 80;
+    var currentHeight = kw.offsetHeight;
+    if (measuredBottom > currentHeight) {
+      kw.style.height = measuredBottom + 'px';
+      setLaneBodyHeights(measuredBottom);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    applyTimeline();
+    setTimeout(applyTimeline, 250);
+  });
+  window.addEventListener('load', applyTimeline);
+  window.addEventListener('resize', applyTimeline);
+})();
 </script>
 </body>
 </html>
