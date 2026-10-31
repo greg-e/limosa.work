@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>This Is the Day</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f8f6f1;
+      --text: #1f2937;
+      --panel: #ffffff;
+      --line: #d9d3c3;
+      --muted: #6b7280;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Source Sans 3", "Segoe UI", sans-serif;
+      font-size: 18px;
+    }
+
+    .header {
+      text-align: center;
+      padding: 52px 24px 40px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h1 {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 700;
+      font-size: 2.4rem;
+      margin: 0 0 8px;
+    }
+
+    .byline { color: var(--muted); margin: 0; }
+
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 40px 16px 80px;
+    }
+
+    .scripture {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 24px 28px;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .scripture cite {
+      display: block;
+      margin-top: 10px;
+      font-family: "Source Sans 3", sans-serif;
+      font-style: normal;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .lyrics {
+      margin-top: 40px;
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    .stanza { margin: 0 0 28px; }
+
+    .label {
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .placeholder {
+      color: var(--muted);
+      font-style: italic;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>This Is the Day</h1>
+    <p class="byline">As sung by Keith Green</p>
+  </header>
+
+  <main>
+    <blockquote class="scripture">
+      This is the day which the LORD hath made; we will rejoice and be glad in it.
+      <cite>Psalm 118:24 (KJV)</cite>
+    </blockquote>
+
+    <section class="lyrics">
+      <!-- Paste lyrics here from a licensed source, one <div class="stanza"> per verse/chorus -->
+      <div class="stanza placeholder">
+        Lyrics are under copyright. Paste them here from a licensed copy.
+      </div>
+    </section>
+  </main>
+</body>
+</html>

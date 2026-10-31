@@ -1,0 +1,1022 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Wednesday Crucifixion Calendar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f8f6f1;
+      --text: #1f2937;
+      --panel: #ffffff;
+      --line: #d9d3c3;
+      --muted: #6b7280;
+      --night-bg: #e9ecf5;
+      --night-text: #1e3a8a;
+      --day-bg: #fdfaf2;
+      --day-text: #92400e;
+      --stone: #57534e;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Source Sans 3", "Segoe UI", sans-serif;
+      font-size: 18px;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding-bottom: 80px;
+    }
+
+    .header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 52px 24px 40px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .kicker {
+      font-size: 12px;
+      letter-spacing: 0.24em;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .title {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 700;
+      font-size: 40px;
+      letter-spacing: 0.04em;
+      color: #111827;
+      line-height: 1.15;
+      margin: 0 0 10px;
+    }
+
+    .divider {
+      width: 48px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, #b6ab95, transparent);
+      margin-bottom: 24px;
+    }
+
+    .quote {
+      max-width: 400px;
+      font-style: italic;
+      font-size: 20px;
+      color: #374151;
+      line-height: 1.75;
+    }
+
+    .quote-ref {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.18em;
+      margin-top: 10px;
+    }
+
+    .switch {
+      margin-top: 22px;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+
+    .switch a {
+      color: #115e59;
+      text-decoration: none;
+      border-bottom: 1px solid #7dd3c7;
+    }
+
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .narrow {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 22px;
+      justify-content: center;
+      padding: 28px 0 22px;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: #4b5563;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .swatch {
+      width: 18px;
+      height: 12px;
+      border: 1px solid #c4b89d;
+    }
+
+    .swatch.night {
+      background: var(--night-bg);
+    }
+
+    .swatch.day {
+      background: var(--day-bg);
+    }
+
+    .swatch.tomb {
+      background: repeating-linear-gradient(135deg, #d6d3d1 0 3px, #f5f5f4 3px 6px);
+      border-color: var(--stone);
+    }
+
+    .swatch.band-lamb {
+      height: 4px;
+      border: 0;
+      background: #f59e0b;
+    }
+
+    .swatch.band-bread {
+      height: 4px;
+      border: 0;
+      background: #fb923c;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .weekday {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      text-align: center;
+      padding-bottom: 4px;
+    }
+
+    .cell {
+      display: flex;
+      flex-direction: column;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-top-width: 3px;
+      min-height: 250px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      opacity: 0;
+      animation: fadeIn 0.35s ease forwards;
+    }
+
+    .cell:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px #8f7f5a1f;
+    }
+
+    .cell.selected {
+      box-shadow: 0 0 0 2px var(--accent, #1f2937);
+    }
+
+    .cell.filler {
+      background: transparent;
+      border-style: dashed;
+      border-top-width: 1px;
+      min-height: 0;
+      cursor: default;
+    }
+
+    .cell.filler:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .cell-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      padding: 8px 10px 6px;
+    }
+
+    .num {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .cell.filler .num {
+      font-size: 16px;
+      font-weight: 300;
+      color: #b8b2a4;
+    }
+
+    .cell-title {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      line-height: 1.25;
+    }
+
+    .filler-note {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: #9ca3af;
+      padding: 0 10px 10px;
+      line-height: 1.4;
+    }
+
+    .band {
+      height: 4px;
+      margin: 0 0 6px;
+      position: relative;
+    }
+
+    .band-label {
+      position: absolute;
+      top: 6px;
+      left: 10px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      white-space: nowrap;
+    }
+
+    .band.labeled {
+      margin-bottom: 20px;
+    }
+
+    .half {
+      flex: 1;
+      position: relative;
+      padding: 18px 10px 10px;
+    }
+
+    .half.night {
+      background: var(--night-bg);
+    }
+
+    .half.day {
+      background: var(--day-bg);
+      border-top: 2px solid #facc15;
+    }
+
+    .half.tomb {
+      background-image: repeating-linear-gradient(135deg, #0000000d 0 3px, transparent 3px 7px);
+      box-shadow: inset 3px 0 0 var(--stone);
+    }
+
+    .half-label {
+      position: absolute;
+      top: 5px;
+      left: 10px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+    }
+
+    .half.night .half-label {
+      color: #4f5f9a;
+    }
+
+    .half.day .half-label {
+      color: #a16207;
+    }
+
+    .pill {
+      position: absolute;
+      top: 3px;
+      right: 6px;
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      padding: 1px 6px;
+      border: 1px solid;
+    }
+
+    .pill.n {
+      color: #4338ca;
+      background: #eef2ff;
+      border-color: #c7d2fe;
+    }
+
+    .pill.d {
+      color: #9a3412;
+      background: #fff7ed;
+      border-color: #fdba74;
+    }
+
+    .events {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .events li {
+      font-size: 10.5px;
+      letter-spacing: 0.06em;
+      line-height: 1.3;
+      color: #374151;
+      text-transform: uppercase;
+      padding-left: 9px;
+      position: relative;
+      margin-bottom: 4px;
+    }
+
+    .events li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.5;
+    }
+
+    .events li.key {
+      font-weight: 700;
+    }
+
+    .detail {
+      margin-top: 28px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-left-width: 3px;
+      padding: 18px 22px 20px;
+    }
+
+    .detail-top {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 6px 14px;
+    }
+
+    .detail-date {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    .detail-title {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+    }
+
+    .detail-ref {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+    }
+
+    .tag-inferred {
+      font-size: 10px;
+      color: #4c1d95;
+      border: 1px solid #c4b5fd;
+      background: #f5f3ff;
+      padding: 1px 6px;
+      letter-spacing: 0.08em;
+    }
+
+    .detail-typology {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      margin-top: 6px;
+    }
+
+    .detail-scripture {
+      margin-top: 10px;
+      font-size: 14px;
+      line-height: 1.55;
+      color: #4b5563;
+      font-style: italic;
+    }
+
+    .detail-notes {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      font-size: 18px;
+      line-height: 1.7;
+      color: #374151;
+    }
+
+    .section {
+      border-top: 1px solid var(--line);
+      padding-top: 32px;
+      margin-top: 48px;
+    }
+
+    .section-head {
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .count-row {
+      margin-bottom: 26px;
+    }
+
+    .count-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .count-total {
+      font-weight: 400;
+      color: var(--muted);
+    }
+
+    .slots {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      gap: 4px;
+    }
+
+    .slot {
+      border: 1px solid;
+      padding: 8px 4px;
+      text-align: center;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      line-height: 1.3;
+      min-height: 52px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 3px;
+    }
+
+    .slot strong {
+      font-size: 11px;
+    }
+
+    .slot.n {
+      color: #4338ca;
+      background: #eef2ff;
+      border-color: #c7d2fe;
+    }
+
+    .slot.d {
+      color: #9a3412;
+      background: #fff7ed;
+      border-color: #fdba74;
+    }
+
+    .slot.edge {
+      color: #6b7280;
+      background: transparent;
+      border-color: #d1d5db;
+      border-style: dashed;
+    }
+
+    .slot.edge.cross {
+      color: #991b1b;
+      border-color: #f87171;
+    }
+
+    .slot.edge.risen {
+      color: #166534;
+      border-color: #4ade80;
+    }
+
+    .slot.empty {
+      border-color: transparent;
+    }
+
+    .count-note {
+      margin-top: 18px;
+      font-style: italic;
+      font-size: 17px;
+      color: #4b5563;
+      line-height: 1.7;
+    }
+
+    .count-note + .count-note {
+      margin-top: 10px;
+    }
+
+    .closing {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid #e5dfd2;
+    }
+
+    .closing-text {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .title {
+        font-size: 30px;
+      }
+
+      .wrap,
+      .narrow {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .weekday,
+      .cell.filler {
+        display: none;
+      }
+
+      .cell {
+        min-height: 0;
+      }
+
+      .cell-head .dow-inline {
+        display: inline;
+      }
+
+      .halves {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .half.day {
+        border-top: 0;
+        border-left: 2px solid #facc15;
+      }
+
+      .slots {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .slot.empty {
+        display: none;
+      }
+    }
+
+    @media (min-width: 901px) {
+      .cell-head .dow-inline {
+        display: none;
+      }
+
+      .halves {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+      }
+    }
+
+    .dow-inline {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="kicker">אביב (Aviv) CALENDAR // PASSION WEEK</div>
+      <h1 class="title">THE WEDNESDAY<br />CRUCIFIXION</h1>
+      <div class="divider" aria-hidden="true"></div>
+      <div class="quote">
+        "For just as Jonah was in the belly of the huge fish for three days and three nights, so the Son of Man will be in the heart of the earth for three days and three nights."
+      </div>
+      <div class="quote-ref">MATTHEW 12:40 NET</div>
+      <div class="switch">CALENDAR VIEW  //  <a href="sign-of-jonah.html">SEE THE TIMELINE</a></div>
+    </header>
+
+    <div class="wrap">
+      <div class="legend">
+        <div class="legend-item">EACH SQUARE RUNS SUNSET TO SUNSET</div>
+        <div class="legend-item"><span class="swatch night"></span>NIGHT (FIRST HALF)</div>
+        <div class="legend-item"><span class="swatch day"></span>DAY (SECOND HALF)</div>
+        <div class="legend-item"><span class="swatch tomb"></span>IN THE TOMB</div>
+        <div class="legend-item"><span class="swatch band-lamb"></span>LAMB KEPT</div>
+        <div class="legend-item"><span class="swatch band-bread"></span>UNLEAVENED BREAD</div>
+      </div>
+
+      <div class="grid" id="calendar"></div>
+      <div class="detail" id="detail"></div>
+    </div>
+
+    <div class="narrow">
+      <section class="section" id="count"></section>
+      <div class="closing">
+        <div class="closing-text">NET BIBLE TRANSLATION</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+
+    // Hebrew days begin at sunset, so the night half of each square
+    // falls on the evening of the previous Roman weekday.
+    const days = [
+      {
+        nisan: 8, dow: "THU", title: "JERICHO",
+        type: "transit", anchor: false,
+        night: [],
+        day: ["ZACCHAEUS ENCOUNTER"],
+        ref: "LUKE 19:1",
+        scripture: "Jesus entered Jericho and was passing through.",
+        notes: "Zacchaeus encounter. Overnight stay. Departure imminent.",
+      },
+      {
+        nisan: 9, dow: "FRI", title: "BETHANY ARRIVAL",
+        type: "anchor", anchor: true,
+        night: ["OVERNIGHT IN JERICHO"],
+        day: ["TRAVEL TO BETHANY"],
+        typology: "SIX DAYS BEFORE PASSOVER",
+        ref: "JOHN 12:1",
+        scripture: "Six days before Passover, Jesus came to Bethany, where Lazarus lived.",
+        notes: "Primary chronological anchor. All downstream dates calculated from this fixed point. At sunset אביב (Aviv) 10 begins.",
+      },
+      {
+        nisan: 10, dow: "SAT", title: "TRIUMPHAL ENTRY",
+        type: "lamb", anchor: true,
+        night: ["SUPPER AT BETHANY", "MARY ANOINTS JESUS"],
+        day: [{ t: "ENTRY INTO JERUSALEM", key: true }, "TEMPLE VISIT"],
+        typology: "PASSOVER LAMB PRESENTED TO ISRAEL",
+        ref: "JOHN 12:12  //  EXODUS 12:3",
+        scripture: "The next day the crowd welcomed Jesus into Jerusalem; on the tenth day each house was to take a lamb.",
+        notes: "Next day after Bethany arrival. The Lamb of God presents himself to Jerusalem on the precise day Israel was commanded to select the Passover lamb. Tradition calls this Palm Sunday. The text and typology demand Palm Saturday.",
+      },
+      {
+        nisan: 11, dow: "SUN", title: "BETHANY",
+        type: "transit", anchor: false,
+        night: ["RETURN TO BETHANY"],
+        day: ["BETHANY STAY"],
+        ref: null,
+        notes: "Rest at Bethany.",
+      },
+      {
+        nisan: 12, dow: "MON", title: "OLIVET DISCOURSE",
+        type: "transit", anchor: false,
+        night: ["NIGHT IN BETHANY"],
+        day: ["MOUNT OF OLIVES TEACHING", "PARABLES AND WARNINGS"],
+        ref: "MARK 13",
+        scripture: "On the Mount of Olives, Jesus taught about coming trials and urged watchfulness.",
+        notes: "Mount of Olives discourse on the end of the age.",
+      },
+      {
+        nisan: 13, dow: "TUE", title: "TEMPLE",
+        type: "transit", anchor: false,
+        night: ["RETURN TO BETHANY"],
+        day: ["FIG TREE LESSON", "TEMPLE CONFRONTATIONS", "WITHDRAW TO BETHANY"],
+        ref: "MARK 11:15",
+        scripture: "Jesus entered the temple courts and drove out buyers and sellers.",
+        notes: "Fig tree cursed. Temple cleansed.",
+      },
+      {
+        nisan: 14, dow: "WED", title: "CRUCIFIXION",
+        type: "crucifixion", anchor: true,
+        night: [{ t: "UPPER ROOM MEAL", key: true }, "GETHSEMANE PRAYER", "ARREST AND SANHEDRIN"],
+        day: ["HEROD / PILATE", { t: "JESUS DIES (~3PM)", key: true }, "BURIAL BEFORE SUNSET"],
+        typology: "PASSOVER LAMB SLAUGHTERED AT TWILIGHT",
+        ref: "JOHN 19:14  //  EXODUS 12:6",
+        scripture: "It was the day of Preparation about noon; Pilate said, 'Behold your king.' The Passover lamb was slain at twilight.",
+        notes: "Upper Room meal, eaten before the Passover, not as it (John 13:1, 18:28). Preparation Day. Arrested, tried, crucified, buried before sunset. The lamb is slaughtered. The veil tears.",
+      },
+      {
+        nisan: 15, dow: "THU", title: "HIGH SABBATH",
+        type: "high-sabbath", anchor: true,
+        night: [{ t: "PASSOVER MEAL", key: true }],
+        day: ["TOMB SEALED AND GUARDED"],
+        typology: "PASSOVER  //  FEAST OF UNLEAVENED BREAD",
+        ref: "JOHN 19:31  //  LEV 23:7",
+        scripture: "Because it was Preparation, and that Sabbath was a high day, the bodies were removed; the first feast day is a holy convocation.",
+        notes: "Passover meal eaten this night, after the lamb was slain at twilight on the 14th (Exod 12:8, Lev 23:5-6). Megas sabbaton. A great sabbath. Holy convocation. Distinct from the weekly sabbath. The tomb is sealed.",
+        tomb: 1,
+      },
+      {
+        nisan: 16, dow: "FRI", title: "SPICE GAP",
+        type: "gap", anchor: true,
+        night: ["SPICES BOUGHT"],
+        day: ["SPICES PREPARED"],
+        typology: "THE DAY BETWEEN TWO SABBATHS",
+        ref: "MARK 16:1  //  LUKE 23:56",
+        scripture: "After the Sabbath, the women bought spices; they prepared spices and then rested on the Sabbath according to the commandment.",
+        notes: "Mark 16:1 — women buy spices after the sabbath. Luke 23:56 — women prepare spices then rest on the sabbath. This single day resolves what is otherwise a direct contradiction. The Friday crucifixion view has no answer.",
+        tomb: 2,
+      },
+      {
+        nisan: 17, dow: "SAT", title: "WEEKLY SABBATH",
+        type: "sabbath", anchor: true,
+        night: ["WEEKLY SABBATH BEGINS"],
+        day: ["SABBATH REST"],
+        ref: "LUKE 23:56",
+        scripture: "They rested on the Sabbath according to the commandment.",
+        notes: "Women rest according to the commandment. The fourth commandment.",
+        tomb: 3,
+      },
+      {
+        nisan: 18, dow: "SUN", title: "RESURRECTION",
+        type: "resurrection", anchor: true,
+        night: [{ t: "STONE ROLLED AWAY", key: true }],
+        day: ["WOMEN ARRIVE AT DAWN", "EMPTY TOMB", "ANGELIC ANNOUNCEMENT"],
+        typology: "THREE DAYS AND THREE NIGHTS  //  FULFILLED",
+        ref: "MARK 16:2  //  MATTHEW 12:40",
+        scripture: "Very early on the first day they came to the tomb at sunrise; as Jonah was three days and nights, so the Son of Man would be.",
+        notes: "Women arrive at sunrise. The stone is rolled away. The tomb is empty. Jesus is alive. Every count is satisfied. The sign of Jonah is complete.",
+      },
+    ];
+
+    const fillerNotes = {
+      21: "LAST DAY OF UNLEAVENED BREAD  //  HOLY CONVOCATION  //  LEV 23:8",
+    };
+
+    const bands = [
+      { from: 10, to: 14, label: "LAMB KEPT  //  EXOD 12:3-6", color: "#f59e0b", text: "#92400e" },
+      { from: 15, to: 21, label: "UNLEAVENED BREAD  //  LEV 23:6", color: "#fb923c", text: "#9a3412" },
+    ];
+
+    const theme = {
+      transit: {
+        dot: "#9ca3af", text: "#4b5563", sub: "#6b7280", border: "#d1d5db", bg: "#f3f4f6",
+      },
+      anchor: {
+        dot: "#0f766e", text: "#115e59", sub: "#0f766e", border: "#7dd3c7", bg: "#ecfdf8",
+      },
+      lamb: {
+        dot: "#d97706", text: "#92400e", sub: "#b45309", border: "#f59e0b", bg: "#fffbeb",
+      },
+      crucifixion: {
+        dot: "#dc2626", text: "#991b1b", sub: "#b91c1c", border: "#f87171", bg: "#fef2f2",
+      },
+      "high-sabbath": {
+        dot: "#ea580c", text: "#9a3412", sub: "#c2410c", border: "#fb923c", bg: "#fff7ed",
+      },
+      gap: {
+        dot: "#a16207", text: "#713f12", sub: "#854d0e", border: "#d4a34f", bg: "#fffbeb",
+      },
+      sabbath: {
+        dot: "#2563eb", text: "#1e3a8a", sub: "#1d4ed8", border: "#60a5fa", bg: "#eff6ff",
+      },
+      resurrection: {
+        dot: "#16a34a", text: "#166534", sub: "#15803d", border: "#4ade80", bg: "#f0fdf4",
+      },
+    };
+
+    // Aviv 8 falls on a Thursday, so the grid opens on Sunday Aviv 4.
+    const firstNisan = 4;
+    const lastNisan = 24;
+
+    const state = {
+      selected: 14,
+    };
+
+    function el(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text != null) node.textContent = text;
+      return node;
+    }
+
+    function prevWeekday(dow) {
+      const i = weekdays.indexOf(dow);
+      return weekdays[(i + 6) % 7];
+    }
+
+    function makeBand(n, col) {
+      const band = bands.find((b) => n >= b.from && n <= b.to);
+      const node = el("div", "band");
+      if (!band) {
+        node.style.visibility = "hidden";
+        return node;
+      }
+      node.style.background = band.color;
+      if (n === band.from || col === 0) {
+        node.classList.add("labeled");
+        const label = el("span", "band-label", band.label);
+        label.style.color = band.text;
+        node.appendChild(label);
+      }
+      return node;
+    }
+
+    function makeHalf(kind, label, items, tombIndex) {
+      const half = el("div", `half ${kind}`);
+      half.appendChild(el("span", "half-label", label));
+
+      if (tombIndex) {
+        half.classList.add("tomb");
+        half.appendChild(el("span", `pill ${kind === "night" ? "n" : "d"}`, `${kind === "night" ? "NIGHT" : "DAY"} ${tombIndex}`));
+      }
+
+      const list = el("ul", "events");
+      items.forEach((item) => {
+        const text = typeof item === "string" ? item : item.t;
+        const li = el("li", item.key ? "key" : null, text);
+        list.appendChild(li);
+      });
+      half.appendChild(list);
+      return half;
+    }
+
+    function renderCalendar() {
+      const root = document.getElementById("calendar");
+      root.innerHTML = "";
+
+      weekdays.forEach((w) => root.appendChild(el("div", "weekday", w)));
+
+      for (let n = firstNisan; n <= lastNisan; n++) {
+        const col = (n - firstNisan) % 7;
+        const d = days.find((x) => x.nisan === n);
+        const delay = `${(n - firstNisan) * 40 + 200}ms`;
+
+        if (!d) {
+          const cell = el("div", "cell filler");
+          cell.style.animationDelay = delay;
+          const head = el("div", "cell-head");
+          head.appendChild(el("span", "num", String(n)));
+          cell.appendChild(makeBand(n, col));
+          cell.appendChild(head);
+          if (fillerNotes[n]) cell.appendChild(el("div", "filler-note", fillerNotes[n]));
+          root.appendChild(cell);
+          continue;
+        }
+
+        const palette = theme[d.type];
+        const isKey = d.type !== "transit";
+        const cell = el("article", "cell");
+        cell.style.animationDelay = delay;
+        cell.style.borderTopColor = isKey ? palette.dot : "#d1d5db";
+        cell.style.setProperty("--accent", palette.dot);
+        if (state.selected === n) cell.classList.add("selected");
+
+        cell.appendChild(makeBand(n, col));
+
+        const head = el("div", "cell-head");
+        const num = el("span", "num", String(n));
+        num.style.fontWeight = isKey ? "800" : "300";
+        num.style.color = isKey ? palette.text : "#9ca3af";
+        head.appendChild(num);
+        head.appendChild(el("span", "dow-inline", d.dow));
+        const title = el("span", "cell-title", d.title);
+        title.style.fontWeight = isKey ? "700" : "400";
+        title.style.color = isKey ? palette.text : "#6b7280";
+        head.appendChild(title);
+        cell.appendChild(head);
+
+        const halves = el("div", "halves");
+        halves.appendChild(makeHalf("night", `${prevWeekday(d.dow)} EVENING`, d.night, d.tomb));
+        halves.appendChild(makeHalf("day", `${d.dow} DAYLIGHT`, d.day, d.tomb));
+        cell.appendChild(halves);
+
+        cell.addEventListener("click", () => {
+          state.selected = n;
+          renderCalendar();
+          renderDetail();
+        });
+
+        root.appendChild(cell);
+      }
+    }
+
+    function renderDetail() {
+      const root = document.getElementById("detail");
+      root.innerHTML = "";
+      const d = days.find((x) => x.nisan === state.selected);
+      const palette = theme[d.type];
+      root.style.borderLeftColor = palette.dot;
+      root.style.background = palette.bg;
+
+      const top = el("div", "detail-top");
+      const date = el("span", "detail-date", `AVIV ${d.nisan}  //  ${d.dow}`);
+      date.style.color = palette.text;
+      top.appendChild(date);
+      const title = el("span", "detail-title", d.title);
+      title.style.color = palette.text;
+      top.appendChild(title);
+      if (d.ref) {
+        const ref = el("span", "detail-ref", d.ref);
+        ref.style.color = palette.sub;
+        top.appendChild(ref);
+      }
+      if (!d.anchor) top.appendChild(el("span", "tag-inferred", "INFERRED"));
+      root.appendChild(top);
+
+      if (d.typology) {
+        const typology = el("div", "detail-typology", d.typology);
+        typology.style.color = palette.sub;
+        root.appendChild(typology);
+      }
+
+      if (d.scripture) root.appendChild(el("div", "detail-scripture", `"${d.scripture}"`));
+
+      const notes = el("div", "detail-notes", d.notes);
+      notes.style.borderTopColor = palette.border;
+      root.appendChild(notes);
+    }
+
+    function renderCount() {
+      const root = document.getElementById("count");
+      root.innerHTML = "";
+      root.appendChild(el("div", "section-head", "COUNTING THE SIGN  //  TWO CALENDARS SIDE BY SIDE"));
+
+      const rows = [
+        {
+          label: "WEDNESDAY CRUCIFIXION",
+          col: theme.crucifixion.text,
+          total: "3 NIGHTS  //  3 DAYS",
+          slots: [
+            { kind: "edge cross", top: "WED", sub: "BURIED BEFORE SUNSET" },
+            { kind: "n", top: "N1", sub: "WED NIGHT" },
+            { kind: "d", top: "D1", sub: "THU DAY" },
+            { kind: "n", top: "N2", sub: "THU NIGHT" },
+            { kind: "d", top: "D2", sub: "FRI DAY" },
+            { kind: "n", top: "N3", sub: "FRI NIGHT" },
+            { kind: "d", top: "D3", sub: "SAT DAY" },
+            { kind: "edge risen", top: "SUN", sub: "TOMB EMPTY AT DAWN" },
+          ],
+        },
+        {
+          label: "FRIDAY CRUCIFIXION",
+          col: theme.transit.text,
+          total: "2 NIGHTS  //  1 DAY",
+          slots: [
+            { kind: "empty" },
+            { kind: "empty" },
+            { kind: "empty" },
+            { kind: "edge cross", top: "FRI", sub: "BURIED BEFORE SUNSET" },
+            { kind: "n", top: "N1", sub: "FRI NIGHT" },
+            { kind: "d", top: "D1", sub: "SAT DAY" },
+            { kind: "n", top: "N2", sub: "SAT NIGHT" },
+            { kind: "edge risen", top: "SUN", sub: "TOMB EMPTY AT DAWN" },
+          ],
+        },
+      ];
+
+      rows.forEach((row) => {
+        const wrap = el("div", "count-row");
+        const label = el("div", "count-label");
+        const name = el("span", null, row.label);
+        name.style.color = row.col;
+        label.appendChild(name);
+        label.appendChild(el("span", "count-total", row.total));
+        wrap.appendChild(label);
+
+        const slots = el("div", "slots");
+        row.slots.forEach((s) => {
+          const slot = el("div", `slot ${s.kind}`);
+          if (s.top) {
+            slot.appendChild(el("strong", null, s.top));
+            slot.appendChild(el("span", null, s.sub));
+          }
+          slots.appendChild(slot);
+        });
+        wrap.appendChild(slots);
+        root.appendChild(wrap);
+      });
+
+      root.appendChild(el("div", "count-note", "Laid on a calendar, the Wednesday view fills every night and every day Matthew 12:40 names. The Friday view reaches the same Sunday morning with two nights and one full day."));
+      root.appendChild(el("div", "count-note", "Friday proponents answer with inclusive reckoning: in Jewish idiom any part of a day counts as the whole, so Friday afternoon, Saturday and early Sunday make three days. The Wednesday view needs no such idiom, because each night and each day on the calendar is a whole one."));
+    }
+
+    renderCalendar();
+    renderDetail();
+    renderCount();
+  </script>
+</body>
+</html>
