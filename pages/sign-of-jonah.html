@@ -484,6 +484,17 @@
       line-height: 1.7;
     }
 
+    .sub-head {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      font-weight: 600;
+      margin: 28px 0 12px;
+    }
+
+    .section-head + .sub-head {
+      margin-top: 0;
+    }
+
     .closing {
       display: flex;
       flex-direction: column;
@@ -627,6 +638,8 @@
 
       <footer class="footer-wrap">
         <section class="section" id="matthew"></section>
+        <section class="section" id="supper"></section>
+        <section class="section" id="synoptics"></section>
         <section class="section" id="typology"></section>
         <section class="section" id="resolution"></section>
         <div class="closing">
@@ -739,7 +752,7 @@
         typology: "PASSOVER LAMB SLAUGHTERED AT TWILIGHT",
         ref: "JOHN 19:14  //  EXODUS 12:6",
         scripture: "It was the day of Preparation about noon; Pilate said, 'Behold your king.' The Passover lamb was slain at twilight.",
-        notes: "Upper Room meal. Preparation Day. Arrested, tried, crucified, buried before sunset. The lamb is slaughtered. The veil tears.",
+        notes: "Upper Room meal, eaten before the Passover, not as it (John 13:1, 18:28). Preparation Day. Arrested, tried, crucified, buried before sunset. The lamb is slaughtered. The veil tears.",
         tomb: null,
         sunset: "NIGHT 1 BEGINS",
       },
@@ -747,7 +760,7 @@
         nisan: 15, dow: "THU", title: "HIGH SABBATH",
         rail: "TOMB SEALED",
         railMoments: [
-          { at: 0.1, label: "HIGH SABBATH BEGINS (NIGHT 1)" },
+          { at: 0.1, label: "PASSOVER MEAL // HIGH SABBATH (NIGHT 1)" },
           { at: 0.48, label: "TOMB SEALED AND GUARDED (DAY)" },
           { at: 0.84, label: "NIGHT 2 BEGINS" },
         ],
@@ -755,7 +768,7 @@
         typology: "PASSOVER  //  FEAST OF UNLEAVENED BREAD",
         ref: "JOHN 19:31  //  LEV 23:7",
         scripture: "Because it was Preparation, and that Sabbath was a high day, the bodies were removed; the first feast day is a holy convocation.",
-        notes: "Megas sabbaton. A great sabbath. Holy convocation. Distinct from the weekly sabbath. The tomb is sealed.",
+        notes: "Passover meal eaten this night, after the lamb was slain at twilight on the 14th (Exod 12:8, Lev 23:5-6). Megas sabbaton. A great sabbath. Holy convocation. Distinct from the weekly sabbath. The tomb is sealed.",
         tomb: { n: 1, d: 1 },
         sunset: "NIGHT 2 BEGINS",
       },
@@ -1055,6 +1068,37 @@
       });
     }
 
+    function renderGroup(section, group) {
+      const sub = document.createElement("div");
+      sub.className = "sub-head";
+      sub.style.color = group.col;
+      sub.textContent = group.head;
+      section.appendChild(sub);
+
+      group.rows.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "resolve-row";
+
+        const ref = document.createElement("span");
+        ref.className = "resolve-ref";
+        ref.style.color = group.col;
+        ref.textContent = item.ref;
+
+        const text = document.createElement("span");
+        text.className = "resolve-text";
+        text.textContent = `\"${item.text}\"`;
+
+        row.appendChild(ref);
+        row.appendChild(text);
+        section.appendChild(row);
+      });
+
+      const note = document.createElement("div");
+      note.className = "resolve-note";
+      note.textContent = group.note;
+      section.appendChild(note);
+    }
+
     function renderFooter() {
       const matthew = document.getElementById("matthew");
       matthew.innerHTML = "";
@@ -1083,6 +1127,113 @@
         chipsWrap.appendChild(chip);
       });
       matthew.appendChild(chipsWrap);
+
+      const supper = document.getElementById("supper");
+      supper.innerHTML = "";
+
+      const headS = document.createElement("div");
+      headS.className = "section-head";
+      headS.textContent = "LAST SUPPER  //  NOT THE PASSOVER MEAL";
+      supper.appendChild(headS);
+
+      [
+        {
+          head: "THE LEAD-UP TO AVIV 14",
+          col: theme.anchor.text,
+          rows: [
+            { ref: "JOHN 11:55", text: "Now the Jewish feast of Passover was near, and many people went up to Jerusalem from the rural areas before the Passover to cleanse themselves ritually." },
+            { ref: "JOHN 12:1", text: "Then, six days before the Passover, Jesus came to Bethany, where Lazarus lived, whom he had raised from the dead." },
+            { ref: "MATTHEW 26:2", text: "You know that after two days the Passover is coming, and the Son of Man will be handed over to be crucified." },
+            { ref: "MARK 14:1", text: "Two days before the Passover and the Feast of Unleavened Bread, the chief priests and the experts in the law were trying to find a way to arrest Jesus by stealth and kill him." },
+          ],
+          note: "John counts down to the Passover: near, then six days before, then two days before. The countdown ends at the Passover itself, which the next group shows had not yet come when the Upper Room meal was eaten.",
+        },
+        {
+          head: "UPPER ROOM MEAL  //  BEFORE THE PASSOVER (AVIV 14, NIGHT)",
+          col: theme.crucifixion.text,
+          rows: [
+            { ref: "JOHN 13:1", text: "Just before the Passover feast, Jesus knew that his time had come to depart from this world to the Father." },
+            { ref: "JOHN 13:29", text: "Because Judas had the money box, some thought Jesus was telling him to buy whatever they needed for the feast, or to give something to the poor." },
+            { ref: "JOHN 18:28", text: "They did not go into the governor's residence so they would not be ceremonially defiled, but could eat the Passover meal." },
+            { ref: "JOHN 19:14", text: "Now it was the day of preparation for the Passover, about noon." },
+            { ref: "JOHN 19:31", text: "Then, because it was the day of preparation, so that the bodies should not stay on the crosses on the Sabbath (for that Sabbath was an especially important one)..." },
+          ],
+          note: "The meal in the Upper Room took place at the start of Aviv 14, \"before the Passover feast.\" The disciples assumed Judas left to buy for a feast still ahead. The next morning the priests had not yet eaten the Passover, and Pilate's verdict fell on the day of preparation for it. Jesus died as the lambs were being slain.",
+        },
+        {
+          head: "PASSOVER MEAL  //  NIGHT 1 (AVIV 15)",
+          col: theme["high-sabbath"].text,
+          rows: [
+            { ref: "EXODUS 12:6", text: "You must care for it until the fourteenth day of this month, and then the whole community of Israel will kill it around sundown." },
+            { ref: "EXODUS 12:8", text: "They will eat the meat the same night; they will eat it roasted over the fire with bread made without yeast and with bitter herbs." },
+            { ref: "LEV 23:5-6", text: "In the first month, on the fourteenth day of the month, at twilight, is the Passover to the LORD. On the fifteenth day of the same month is the Festival of Unleavened Bread to the LORD." },
+            { ref: "DEUT 16:6", text: "You must sacrifice the Passover animal in the evening at sunset, the time of day you came out of Egypt." },
+            { ref: "NUMBERS 33:3", text: "They traveled from Rameses in the first month, on the fifteenth day of the first month; on the day after the Passover the Israelites went out defiantly in plain sight of all the Egyptians." },
+          ],
+          note: "The lamb is killed at twilight at the close of Aviv 14 and eaten that same night, after sunset, when Aviv 15 has begun. Jesus was buried before that sunset. The Passover meal Israel ate that night was Night 1 of his three nights in the tomb.",
+        },
+      ].forEach((group) => renderGroup(supper, group));
+
+      const synoptics = document.getElementById("synoptics");
+      synoptics.innerHTML = "";
+
+      const headY = document.createElement("div");
+      headY.className = "section-head";
+      headY.textContent = "WHY MATTHEW, MARK AND LUKE SAY \"PASSOVER\"";
+      synoptics.appendChild(headY);
+
+      [
+        {
+          head: "THE SYNOPTIC WORDING",
+          col: theme.transit.text,
+          rows: [
+            { ref: "MATTHEW 26:17", text: "Now on the first day of the feast of Unleavened Bread the disciples came to Jesus and said, 'Where do you want us to prepare for you to eat the Passover?'" },
+            { ref: "MARK 14:12", text: "Now on the first day of the feast of Unleavened Bread, when the Passover lamb is sacrificed, Jesus' disciples said to him, 'Where do you want us to prepare for you to eat the Passover?'" },
+            { ref: "LUKE 22:7", text: "Then the day for the feast of Unleavened Bread came, on which the Passover lamb had to be sacrificed." },
+          ],
+          note: "Matthew, Mark and Luke plainly call the Upper Room meal \"the Passover.\" Three explanations reconcile this with John, and the events of the crucifixion day itself point to the 14th.",
+        },
+        {
+          head: "1  //  \"PASSOVER\" NAMES THE WHOLE FESTIVAL",
+          col: theme.anchor.text,
+          rows: [
+            { ref: "LUKE 22:1", text: "Now the Feast of Unleavened Bread, which is called the Passover, was approaching." },
+            { ref: "EXODUS 12:18", text: "In the first month, from the fourteenth day of the month, in the evening, you will eat bread made without yeast, until the twenty-first day of the month in the evening." },
+          ],
+          note: "In the first century, \"Passover\" and \"Unleavened Bread\" were used loosely for the whole festival season, including the 14th, when leaven was removed from the house. Josephus likewise describes an eight-day feast. On this reading, \"the first day of Unleavened Bread\" is Aviv 14, and preparing \"the Passover\" means preparing for the festival, not that the Upper Room meal was the lamb eaten on the night of the 15th.",
+        },
+        {
+          head: "2  //  A PASSOVER MEAL BEFORE HIS SUFFERING",
+          col: theme.lamb.text,
+          rows: [
+            { ref: "LUKE 22:15-16", text: "I have earnestly desired to eat this Passover with you before I suffer. For I tell you, I will not eat it again until it is fulfilled in the kingdom of God." },
+          ],
+          note: "Jesus knew he would die before the lambs were eaten, so he gave his disciples the meal ahead of time. No account of the supper mentions a lamb. The next afternoon Jesus himself became the lamb, slain at the hour the Passover lambs were slain.",
+        },
+        {
+          head: "3  //  TWO RECKONINGS OF THE DAY",
+          col: theme.sabbath.text,
+          rows: [],
+          note: "Some scholars propose that different groups counted the festival differently: Annie Jaubert pointed to an Essene solar calendar, and Harold Hoehner to Galileans reckoning days from sunrise while Judeans reckoned from sunset. Either way, Jesus and the disciples could eat Passover by one reckoning while the temple slaughtered the lambs by the other. The Synoptic wording stays literal and John's chronology still holds.",
+        },
+        {
+          head: "THE CRUCIFIXION DAY WAS NOT A FEAST DAY",
+          col: theme.crucifixion.text,
+          rows: [
+            { ref: "LEV 23:7", text: "On the first day there is to be a holy assembly for you; you must not do any regular work." },
+            { ref: "MATTHEW 26:5", text: "But they said, 'Not during the feast, so that there won't be a riot among the people.'" },
+            { ref: "MARK 15:21", text: "The soldiers forced a passerby to carry his cross, Simon of Cyrene, who was coming in from the country." },
+            { ref: "MARK 15:46", text: "After Joseph bought a linen cloth and took down the body, he wrapped it in the linen and placed it in a tomb cut out of the rock." },
+          ],
+          note: "The Synoptics' own details fit Aviv 14, not the holy assembly of Aviv 15: the leaders planned to act before the feast, the Sanhedrin held a night trial, Simon came in from the country, and Joseph bought linen. None of this belongs on a day when no regular work was permitted.",
+        },
+        {
+          head: "THE OTHER SIDE",
+          col: theme.transit.sub,
+          rows: [],
+          note: "The Friday-crucifixion view reverses the harmonization: it takes the Synoptics literally and reads John 18:28 as the later festival offerings (the chagigah) and \"preparation\" as Friday, the day before the weekly Sabbath. Many critical scholars instead conclude that one tradition adjusted the date for theological reasons. The Wednesday view answers both by keeping John's dates and the Synoptics' events on the same day: Aviv 14.",
+        },
+      ].forEach((group) => renderGroup(synoptics, group));
 
       const typology = document.getElementById("typology");
       typology.innerHTML = "";
