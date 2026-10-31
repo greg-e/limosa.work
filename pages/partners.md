@@ -5,7 +5,7 @@ layout: default
 
 Actual is a single badge each worker wears. It records who worked, where they went, and what work they did, with no tags, GPS, cellular, phones, or paperwork. It's in development.
 
-We have the problem, the architecture, and the design. What we need now are people to help build the first working prototype.
+We have the problem, the architecture, and the design. Now we need people to build the first working prototype.
 
 **Get started:** greg@limosa.work
 
@@ -19,15 +19,15 @@ We have the problem, the architecture, and the design. What we need now are peop
 This is the main ask: engineers who want to own a piece of what they build.
 
 ### Who we're looking for
-- **Embedded hardware / PCB** — low-power badge design: inertial and barometric sensors, acoustic and vibration sensing, rugged enclosures.
-- **Firmware** — on-device capture, edge AI for labor classification, local storage, offload at the shop, power management.
-- **Cloud / data backend** — inertial route reconstruction, road-plus-elevation map matching, site discovery, the immutable truth store.
-- **Integrations** — connectors to payroll, job costing, scheduling, and billing systems.
+- **Embedded hardware / PCB:** low-power badge design with inertial, barometric, acoustic, and vibration sensing, in a rugged enclosure.
+- **Firmware:** on-device capture, labor classification, local storage, offload at the shop, power management.
+- **Cloud / data backend:** inertial route reconstruction, road and elevation map matching, site discovery, the immutable truth store.
+- **Integrations:** connectors to payroll, job costing, scheduling, and billing systems.
 
 ### What co-builders get
 - A meaningful stake in what we build, with terms worked out together.
 - A real say in the architecture, starting with the first prototype.
-- Recognition as a founding builder. Your work becomes part of the story of how Actual was built.
+- Recognition as a founding builder.
 
 ### What we ask
 - Real engineering time on a defined piece of the system.

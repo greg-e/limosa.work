@@ -23,10 +23,10 @@ title: Actual - Proof of Work
       <div class="actual-card">
         <h2 class="actual-card-title">The Problem</h2>
         <p class="actual-card-body">
-          The way time and tool use are tracked in the field today takes more effort than it should and still leaves gaps. Paper timesheets depend on workers remembering to fill them out. Phone apps assume coverage, battery, and willingness. Vehicle GPS can show where a truck went but not what the worker actually did.
+          Tracking time and tool use in the field takes too much effort and still leaves gaps. Paper timesheets depend on workers remembering to fill them out. Phone apps assume coverage, battery, and willingness. Vehicle GPS can show where a truck went but not what the worker did.
         </p>
         <p class="actual-card-body">
-          The result: payroll cleans up mistakes, supervisors chase down missing hours, and managers don't get a clear view until the week is over. Every downstream decision — billing, job costing, scheduling, estimating — starts on shaky ground.
+          So payroll cleans up mistakes, supervisors chase down missing hours, and managers don't get a clear view until the week is over. Billing, job costing, scheduling, and estimating all start on shaky ground.
         </p>
       </div>
     </div>
@@ -37,19 +37,19 @@ title: Actual - Proof of Work
       <div class="actual-card">
         <h2 class="actual-card-title">What We Want to Change</h2>
         <p class="actual-card-body">
-          <strong>Crews</strong> — Wear the badge. Skip the timesheet. Hours get recorded without anyone filling anything out.
+          <strong>Crews:</strong> Wear the badge. Skip the timesheet. Hours get recorded without anyone filling anything out.
         </p>
         <p class="actual-card-body">
-          <strong>Supervisors</strong> — Review exceptions instead of reconciling every timecard.
+          <strong>Supervisors:</strong> Review exceptions instead of reconciling every timecard.
         </p>
         <p class="actual-card-body">
-          <strong>Managers</strong> — See where crews are and how jobs flow — this week, not last month.
+          <strong>Managers:</strong> See where crews went and how jobs flowed this week, while it still matters.
         </p>
         <p class="actual-card-body">
-          <strong>Owners</strong> — Bid from real production data. Pay from verified hours. Trust the numbers.
+          <strong>Owners:</strong> Bid from real production data. Pay from verified hours. Trust the numbers.
         </p>
         <p class="actual-card-body">
-          <strong>Ops</strong> — See how the day splits between driving, power equipment, hand labor, and idle time.
+          <strong>Ops:</strong> See how the day splits between driving, power equipment, hand labor, and idle time.
         </p>
       </div>
     </div>
@@ -63,10 +63,9 @@ title: Actual - Proof of Work
           Every record tells a story. The goal is to make it the right one.
         </p>
         <p class="actual-card-body">
-          The badge is designed to capture what truly happens on a job as crews move — time, movement,
-          and the physical signature of the work itself. Data would be stored on the badge and
-          offloaded when the worker returns to the shop, creating a timestamped activity stream that
-          is free of edits or recollection bias.
+          The badge is designed to record time, movement, and the physical signature of the work as crews
+          move through the day. Data stays on the badge until the worker gets back to the shop, then
+          uploads as a timestamped activity stream that nobody edits and nobody has to remember.
         </p>
         <p class="actual-card-body">What it's designed to produce:</p>
         <ul class="actual-card-body">
@@ -76,8 +75,7 @@ title: Actual - Proof of Work
           <li>Active labor broken down by type: driving, idle, power equipment, hand labor</li>
         </ul>
         <p class="actual-card-body">
-          This is the truth layer — the data a business could pay from, report from, and lead from.
-          When work is logged as it happens, every downstream decision starts on solid ground.
+          This is the truth layer: data a business could pay from, report from, and lead from.
         </p>
       </div>
       <div class="actual-card">
@@ -86,9 +84,9 @@ title: Actual - Proof of Work
           You can't improve what you can't see flow.
         </p>
         <p class="actual-card-body">
-          Once work is captured truthfully, the next question is why it flowed the way it did.
-          The same data should make it possible to reverse-engineer how jobs really run — where time goes, where
-          constraints live, and where assumptions fall short.
+          Once work is captured, the next question is why it flowed the way it did. The same data
+          could show how jobs really run: where time goes, where the constraints are, and where
+          estimates fall short.
         </p>
         <p class="actual-card-body"><strong>a. Reverse-Engineered Schedule</strong></p>
         <ul class="actual-card-body">
@@ -99,12 +97,11 @@ title: Actual - Proof of Work
         <p class="actual-card-body"><strong>b. Reverse-Engineered Estimate</strong></p>
         <ul class="actual-card-body">
           <li>Convert badge data into cost per task and property</li>
-          <li>Ground estimating models in observed work, not guesses</li>
-          <li>Continuously refine future bids and plans from real production rates</li>
+          <li>Base estimates on observed work</li>
+          <li>Refine bids and plans from real production rates</li>
         </ul>
         <p class="actual-card-body">
-          Truth becomes improvement. The data that powers payroll would also teach how to
-          plan better — no extra steps, no separate system.
+          The data that runs payroll would also improve planning, with no extra steps and no separate system.
         </p>
       </div>
     </div>
@@ -115,13 +112,13 @@ title: Actual - Proof of Work
       <div class="actual-card">
         <h2 class="actual-card-title">How It's Designed to Work</h2>
         <p class="actual-card-body">
-          <strong>Edge Capture</strong> — The badge is designed to work fully offline. Inertial sensors, barometric terrain profiling, and kinetic and acoustic edge AI log movement and labor signatures all shift. No coverage needed, nothing to install at job sites.
+          <strong>Edge capture:</strong> The badge works fully offline. Inertial sensors, a barometer, and on-device models for motion and sound log movement and labor all shift. No coverage needed, nothing to install at job sites.
         </p>
         <p class="actual-card-body">
-          <strong>Cloud Reconstruction</strong> — Back at the shop, the badge offloads its log. Because every shift starts and ends at a known point, the cloud can use bi-directional inertial smoothing and road-plus-elevation map matching to correct drift, reconstruct the route, find each job site, and map work on each property. Results are written to an immutable store, and anomalies are flagged for review.
+          <strong>Cloud reconstruction:</strong> Back at the shop, the badge uploads its log. Every shift starts and ends at a known point, so the cloud can correct sensor drift, match the day against road and elevation maps, rebuild the route, find each job site, and map the work on each property. Results go to an immutable store, and anomalies are flagged for review.
         </p>
         <p class="actual-card-body">
-          <strong>Downstream</strong> — Verified data flows into the systems the business already uses: payroll, job costing, scheduling, billing. Every downstream record carries its origin — the operator, the timestamp, the badge attestation.
+          <strong>Downstream:</strong> Verified data flows into the systems the business already uses: payroll, job costing, scheduling, billing. Every record carries its origin: the operator, the timestamp, and the badge attestation.
         </p>
       </div>
       <div class="actual-card">
@@ -130,16 +127,16 @@ title: Actual - Proof of Work
           These are the economics we're designing toward. They drive the hardware and cloud decisions: commodity-cost hardware, and cloud pricing that scales with the size of the operation.
         </p>
         <p class="actual-card-body">
-          The hardware would be bought once — one badge per worker, designed to be cheap and replaceable, with no tags, beacons, or data plans. A recurring cloud fee would track the scale of the operation: the sites serviced or the crews run. 50 badges in summer, 15 in winter? The fee adjusts. No unused licenses. No per-worker math.
+          Customers would buy the hardware once: one badge per worker, cheap and replaceable, with no tags, beacons, or data plans. A recurring cloud fee would track the sites serviced or the crews run. If you run 50 badges in summer and 15 in winter, the fee follows. No unused licenses or per-worker math.
         </p>
         <p class="actual-card-body">
-          <strong>Hardware</strong> — One-time purchase, owned by the customer. Target: about $30 per badge.
+          <strong>Hardware:</strong> One-time purchase, owned by the customer. Target: about $30 per badge.
         </p>
         <p class="actual-card-body">
-          <strong>Cloud</strong> — Monthly fee based on the size of the operation, covering data processing, storage, and the truth store.
+          <strong>Cloud:</strong> Monthly fee based on the size of the operation, covering data processing, storage, and the truth store.
         </p>
         <p class="actual-card-body">
-          <strong>Connectors</strong> — Per active integration per month. Pay only for what you connect.
+          <strong>Connectors:</strong> Per active integration per month. Pay only for what you connect.
         </p>
       </div>
     </div>
@@ -153,10 +150,10 @@ title: Actual - Proof of Work
           Outdoor crews that move, build, and maintain. Landscaping, construction, utilities, municipalities, solar, facilities.
         </p>
         <p class="actual-card-body">
-          Millions of U.S. field workers currently rely on timesheets, phones, or truck GPS. Each worker is a potential badge.
+          Millions of U.S. field workers rely on timesheets, phones, or truck GPS. Each worker is a potential badge.
         </p>
         <p class="actual-card-body">
-          What matters most to them: capturing hours and tool use truthfully without extra steps — so payroll is correct, supervisors aren't chasing paperwork, and owners can trust job costing.
+          They need hours and tool use recorded truthfully without extra steps, so payroll is correct, supervisors aren't chasing paperwork, and owners can trust job costing.
         </p>
       </div>
       <div class="actual-card">
@@ -165,10 +162,10 @@ title: Actual - Proof of Work
           We're looking for engineers who want to own a piece of what they build:
         </p>
         <ul class="actual-card-body">
-          <li><strong>Embedded hardware / PCB</strong> — low-power badge design: inertial and barometric sensors, acoustic and vibration sensing, rugged enclosures</li>
-          <li><strong>Firmware</strong> — on-device capture, edge AI for labor classification, local storage, offload at the shop, power management</li>
-          <li><strong>Cloud / data backend</strong> — inertial route reconstruction, road-plus-elevation map matching, site discovery, the immutable truth store</li>
-          <li><strong>Integrations</strong> — connectors to payroll, job costing, scheduling, and billing systems</li>
+          <li><strong>Embedded hardware / PCB:</strong> low-power badge design with inertial, barometric, acoustic, and vibration sensing, in a rugged enclosure</li>
+          <li><strong>Firmware:</strong> on-device capture, labor classification, local storage, offload at the shop, power management</li>
+          <li><strong>Cloud / data backend:</strong> inertial route reconstruction, road and elevation map matching, site discovery, the immutable truth store</li>
+          <li><strong>Integrations:</strong> connectors to payroll, job costing, scheduling, and billing systems</li>
         </ul>
         <p class="actual-card-body">
           <strong>What you get:</strong> A meaningful stake in what we build, with terms worked out together, and a real say in the architecture from the first prototype.
@@ -188,10 +185,10 @@ title: Actual - Proof of Work
       <div class="actual-card">
         <h2 class="actual-card-title">Explore the Deck</h2>
         <p class="actual-card-body">
-          A living reference of principles, language, and practices that guide how Actual is being designed. The deck connects philosophy to execution — from automation and integrity to flow and truth.
+          The principles, language, and practices behind Actual's design, from automation and integrity to flow and truth.
         </p>
         <p class="actual-card-body">
-          Each card explores a core concept with why it matters, how it applies, and where it fits in the larger system. Use the deck to understand Actual's approach or to facilitate conversations with your team.
+          Each card covers one concept: why it matters, how it applies, and where it fits in the larger system. Use the deck to understand Actual's approach or to start a conversation with your team.
         </p>
         <p class="actual-card-body" style="margin-top: 1.25rem;">
           <a href="/actual/" class="btn-primary" style="display: inline-block; text-decoration: none; color: #ffffff;">Open the Deck</a>
@@ -205,13 +202,10 @@ title: Actual - Proof of Work
       <div class="actual-card">
         <h2 class="actual-card-title">The Promise</h2>
         <p class="actual-card-body">
-          These are the design commitments we're building to. The badge is not a tracker — it is a witness. It will not record conversations. It will not monitor behavior. It captures the basic facts of the job: when you arrived, where you moved, what kind of work you did, when the day wrapped up. It only records what the work creates.
+          These are the design commitments we're building to. The badge is a witness. It will not record conversations or monitor behavior. It captures the basic facts of the job: when you arrived, where you moved, what kind of work you did, when the day wrapped up. It only records what the work creates.
         </p>
         <p class="actual-card-body">
-          The person doing the work should never have to prove they worked. Actual puts the truth where the work happens. You wear the badge. It records what really happened.
-        </p>
-        <p class="actual-card-body">
-          Simple always wins. One badge. One worker. One automatic record of the truth.
+          The person doing the work should never have to prove they worked. You wear the badge. It records what really happened.
         </p>
       </div>
     </div>

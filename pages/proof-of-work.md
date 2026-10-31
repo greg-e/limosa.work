@@ -3,8 +3,8 @@ title: Proof of Work
 layout: default
 ---
 
-Operator-friendly examples that demonstrate Actual working in the field.
+Actual is in development. These are the results we'll measure in field tests:
 
-- Dispatch edits drop after rollout.  
-- Missed-site variance tracked and resolved.  
-- Faster month-end close from straight-through data.
+- Fewer dispatch edits after rollout  
+- Missed-site variance tracked and resolved  
+- Faster month-end close from straight-through data

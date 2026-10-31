@@ -10,7 +10,7 @@ Actual is a single wearable badge plus a cloud service for field service teams. 
 
 ## Elevator pitch (partner-facing)
 
-Most service businesses still run on self-reported logs. Actual replaces that with passive verification from field hardware your crew can actually use. No phone app dependency, no manual check-ins, just operational truth you can manage from.
+Most service businesses still run on self-reported logs. Actual is designed to replace them with a badge your crew wears and forgets about: no phone app, no manual check-ins, and a record of the work you can manage from.
 
 ## Core proof points
 
@@ -18,7 +18,7 @@ Most service businesses still run on self-reported logs. Actual replaces that wi
 - Nothing installed in the field: no tags, beacons, vehicle trackers, or data plans
 - Labor type (driving, equipment, hand work) recognized from motion and vibration
 - Audio is never recorded
-- Dashboard output designed for operational decisions, not vanity metrics
+- Dashboards built for payroll, job costing, and scheduling decisions
 
 ## Tone examples
 

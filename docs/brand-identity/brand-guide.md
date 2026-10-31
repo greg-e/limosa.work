@@ -11,7 +11,7 @@
 
 1. **Evidence over aesthetics** — clear, measurable, believable
 2. **Utility over ornament** — every visual element has a job
-3. **Field-grade simplicity** — robust and legible in rough contexts
+3. **Field-grade simplicity** — durable and legible in rough conditions
 4. **Calm confidence** — never loud, never gimmicky
 
 ## Brand personality

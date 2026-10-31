@@ -25,7 +25,7 @@ This package defines the foundational brand system for Actual and provides ready
 2. Keep clear space around logos equal to the mark diameter.
 3. Do not recolor logos outside approved palette.
 4. Do not stretch, rotate, or add shadows to logo assets.
-5. Keep messaging grounded in operational truth, not hype.
+5. Keep messaging factual and avoid hype.
 
 ## Package files
 

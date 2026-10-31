@@ -32,8 +32,8 @@ so I can trace back where it came from if something goes wrong.
 ### When running operations, I want work data to feed into administrative systems automatically,  
 so I don’t have to manually enter or double-check things.
 
-### When I’m being tracked or measured, I want to know it's to confirm my work, not control me,  
-so I feel respected and not treated like a suspect.
+### When I’m being tracked or measured, I want to know it's to confirm my work,  
+so I feel respected and trusted.
 
 ### When I’m working in the field, I want my tools to function without needing constant connectivity,  
 so I don’t lose data or fall behind if coverage drops.
@@ -48,7 +48,7 @@ so the tools support the process instead of complicating it.
 so no one can alter them later without a trace.
 
 ### When automating something, I want it to start where the work starts,  
-so the result reflects the real event, not just an observation.
+so the result reflects the real event.
 
 ### When using a tool, I want to understand what it’s doing at a glance,  
 so I’m not slowed down by confusion or complexity.
@@ -69,7 +69,7 @@ so I can plan more accurately and avoid waste.
 so users don’t feel micromanaged or disempowered.
 
 ### When gathering data, I want it to be opt-in and visible,  
-so it feels respectful and trustworthy, not hidden or extractive.
+so it feels respectful and trustworthy.
 
 ### When a job is done well, I want the system to credit the person who did it,  
 so recognition and accountability stay aligned.
