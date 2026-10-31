@@ -3,38 +3,38 @@ title: Product
 layout: default
 ---
 
-*Actual is a concept in development. Nothing below has been built yet. This page describes the design we're working toward and looking for [co-builders](/pages/partners.html) to help build.*
+*Actual is in development. Nothing below has been built yet. This page describes the design we're looking for [co-builders](/pages/partners.html) to help build.*
 
 ## The Objective
 
-We're building a self-contained wearable badge that delivers automated, verifiable proof of work: who worked, where they went, the path they walked, and what tasks they performed. The goal is no user interaction, no equipment tags, and no reliance on GPS or cellular networks.
+A wearable badge that records who worked, where they went, the path they walked, and what they did. It needs no worker interaction, equipment tags, GPS, or cellular.
 
-## Autonomous Proof of Work via Infrastructure-Free Edge Intelligence
+## How It Works
 
-Field service businesses lose money to inaccurate payroll, guessed job costing, and inefficient scheduling. Existing solutions depend either on human compliance (apps, forms, manual check-ins) or on fragile secondary infrastructure (GPS, cellular data, and Bluetooth beacons attached to tools).
+Field service businesses lose money to wrong payroll, guessed job costs, and poor scheduling. Current tools depend either on workers doing something (apps, forms, check-ins) or on fragile add-on hardware (GPS, cellular data, and Bluetooth beacons stuck to tools).
 
-We're designing a single rugged badge that records a field crew's workday on its own. Workers clip on the badge at the start of their shift and go to work. Working offline, the badge would use inertial sensors, a barometer for terrain profiling, and on-device models for motion and sound to log movement and physical labor all shift.
+The badge would record a crew's workday on its own. Workers clip it on at the start of their shift and go to work. It would work offline, logging movement and labor all shift with motion sensors, a barometer for terrain, and on-device models for motion and sound.
 
-When the worker returns to the shop, the badge uploads its log. The cloud then rebuilds the driving route, identifies each job site visited, maps the on-foot work path across each property, and breaks down active labor by task type.
+When the worker returns to the shop, the badge uploads its log. The cloud rebuilds the driving route, finds each job site, maps the walking path on each property, and breaks down labor by type.
 
 ## Why This Architecture
 
-### Infrastructure-Free Deployment
-No beacons installed at job sites, no Bluetooth tags epoxied onto vibrating tools, no trackers wired into vehicles, and no monthly cellular data plans. The badge is the entire hardware deployment.
+### Nothing Installed in the Field
+No beacons at job sites, no Bluetooth tags glued to vibrating tools, no trackers wired into vehicles, and no monthly data plans. The badge is the whole deployment.
 
-### No Burden on the Worker
-No phones, no apps, no buttons, no tap-to-check-in. If the worker is wearing the badge, the data is captured passively.
+### Nothing Asked of the Worker
+No phones, apps, buttons, or check-ins. If the worker wears the badge, the work gets recorded.
 
-### Route and Site Discovery Without GPS
-Every shift starts and ends at a known location: the shop. Because the loop closes, the cloud can smooth the inertial data in both directions and match it against road and elevation maps. That corrects sensor drift, finds scheduled and unscheduled stops, and rebuilds walking paths on each property without a satellite connection.
+### Routes and Job Sites Without GPS
+Every shift starts and ends at the shop, a known location. Because the loop closes, the cloud can smooth the motion data in both directions and match it to road and elevation maps. That corrects sensor drift, finds scheduled and unscheduled stops, and rebuilds walking paths on each property.
 
-### Labor Verification Beyond Presence
-GPS and Bluetooth tags can only show that a device was *near* a job site or tool. Actual's on-device motion and vibration models are designed to read the work itself and tell apart riding in a truck, standing idle, running power equipment, and hand labor. That's a stronger basis for payroll, job costing, and client billing than presence alone.
+### What Kind of Work
+GPS and Bluetooth tags only show that a device was *near* a job site or tool. Actual's on-device models read the motion and vibration of the work and tell apart riding in a truck, standing idle, running power equipment, and hand labor. Payroll, job costing, and billing can rest on that.
 
 ## The Target Outcome
 
 ### For the Worker
-Technology that stays out of the way, protects them from timesheet disputes, and never touches their personal phone.
+A badge that stays out of the way, settles timesheet disputes, and never touches their personal phone.
 
 ### For the Business Owner
-Automated, verifiable records for payroll, granular job costing, and scheduling, with hardware that's quick to deploy and has nothing to install or maintain in the field.
+Records for payroll, job costing, and scheduling, from hardware that's quick to set up and needs no field maintenance.

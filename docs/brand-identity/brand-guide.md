@@ -3,8 +3,8 @@
 ## Brand core
 
 - **Brand name:** Actual
-- **Category:** Field truth infrastructure for service operations
-- **Promise:** Replace self-reported activity with machine-observed reality
+- **Category:** Automatic proof of work for field service crews
+- **Promise:** Replace self-reported hours with a record the badge makes
 - **Positioning:** Durable, practical, and operationally honest
 
 ## Design principles
@@ -32,7 +32,7 @@
 ## Brand voice
 
 - Use short, factual statements
-- Emphasize outcomes and operational clarity
+- Emphasize outcomes: correct pay, accurate job costs, clear routes
 - Avoid buzzwords and exaggerated claims
 - Prefer “what happened” language over “what might happen”
 
@@ -44,4 +44,4 @@
 
 ## Narrative anchor
 
-> Actual turns field activity into verified operational truth.
+> Actual turns a crew's day into a verified record.

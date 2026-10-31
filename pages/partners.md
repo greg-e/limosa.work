@@ -21,7 +21,7 @@ This is the main ask: engineers who want to own a piece of what they build.
 ### Who we're looking for
 - **Embedded hardware / PCB:** low-power badge design with inertial, barometric, acoustic, and vibration sensing, in a rugged enclosure.
 - **Firmware:** on-device capture, labor classification, local storage, offload at the shop, power management.
-- **Cloud / data backend:** inertial route reconstruction, road and elevation map matching, site discovery, the immutable truth store.
+- **Cloud / data backend:** inertial route reconstruction, road and elevation map matching, site discovery, tamper-proof storage.
 - **Integrations:** connectors to payroll, job costing, scheduling, and billing systems.
 
 ### What co-builders get
@@ -30,7 +30,7 @@ This is the main ask: engineers who want to own a piece of what they build.
 - Recognition as a founding builder.
 
 ### What we ask
-- Real engineering time on a defined piece of the system.
+- Engineering time on a defined piece of the system.
 - Regular check-ins and honest technical judgment, including telling us when the design is wrong.
 
 ---
@@ -44,7 +44,7 @@ If you run crews (landscaping, construction, utilities, municipalities, solar, f
 - Review designs and tell us what would and wouldn't work on your sites.
 
 ### What field partners get
-- A design built around how your crews actually work.
+- A design built around how your crews work.
 - First in line to field-test prototypes once hardware exists.
 - Recognition as a founding field partner.
 
@@ -53,4 +53,4 @@ There's no cost to be a field partner.
 ---
 
 ## Our Principle
-**Actual gets built by the people who build it and shaped by the people who would use it.** We're not looking for passive investors. Every partner contributes real work or real field knowledge.
+We're not looking for passive investors. Every partner contributes engineering work or field knowledge.

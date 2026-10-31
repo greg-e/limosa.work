@@ -5,7 +5,7 @@ layout: default
 
 
 
-### When I perform work, I want my activity to be recorded at the moment it happens,  
+### When I work, I want it recorded as it happens,  
 so I can provide trustworthy evidence of what I did without extra effort.
 
 ### When I begin or finish a task, I want my time to be captured accurately,  
@@ -47,7 +47,7 @@ so the tools support the process instead of complicating it.
 ### When records are created, I want them to be permanent,  
 so no one can alter them later without a trace.
 
-### When automating something, I want it to start where the work starts,  
+### When automating, I want to start where the work starts,  
 so the result reflects the real event.
 
 ### When using a tool, I want to understand what it’s doing at a glance,  
@@ -57,7 +57,7 @@ so I’m not slowed down by confusion or complexity.
 so I remain accountable for the outcome.
 
 ### When circumstances change, I want the workflow to adjust smoothly,  
-so we don’t fall behind or redo work unnecessarily.
+so we don’t fall behind or redo work.
 
 ### When the system collects data, I want it to learn from what actually happened,  
 so it can improve how work gets done over time.
@@ -74,6 +74,6 @@ so it feels respectful and trustworthy.
 ### When a job is done well, I want the system to credit the person who did it,  
 so recognition and accountability stay aligned.
 
-### When building a system, I want trust to be a built-in outcome,  
-so people don’t need extra justification to believe the data.
+### When building a system, I want the data to stand on its own,  
+so people believe it without extra proof.
 

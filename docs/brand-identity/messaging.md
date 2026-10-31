@@ -26,7 +26,7 @@ Most service businesses still run on self-reported logs. Actual is designed to r
 
 - “Every site visit and how the time was spent, ready by end of day.”
 - “Built for real routes, weather, and crew turnover.”
-- “Operational truth without extra admin burden.”
+- “A verified record of the day, with no extra paperwork.”
 
 ### Avoid
 
