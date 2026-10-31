@@ -7,6 +7,11 @@ tags:
   - knowledge-base
 ---
 
+> **Superseded (2026-10-31).** This note describes the earlier badge + BLE equipment
+> tag design with GPS and cellular upload. Actual is now a single self-contained badge
+> with a shop dock: no tags, GPS, or cellular. Kept as a historical record. See
+> zettels/2026/202610/261031_actualPivot_badgeOnly.md.
+
 # Actual Zettelkasten
 Version: 1.0
 Author: bruh

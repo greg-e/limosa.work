@@ -127,6 +127,18 @@ a:hover{color:var(--green)}
   text-align: left;
 }
 
+.actual-hero-status {
+  display: inline-block;
+  margin: 0 0 1rem;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+  background: #f9fafb;
+}
+
 .actual-hero-title {
   font-size: clamp(2rem, 5vw, 2.8rem);
   line-height: 1.2;

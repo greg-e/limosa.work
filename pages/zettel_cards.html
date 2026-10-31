@@ -563,7 +563,7 @@
                 core: "Context emerges from physical proximity and timing, not from explicit user selection. Workers near a vehicle or job site are automatically associated with it.",
                 why: "Manual association is forgotten, delayed, or wrong. Passive sensing eliminates the human step entirely.",
                 practice: [
-                    "Use geofencing and badge readers to infer presence",
+                    "Infer presence from motion, stops, and the shop-anchored route",
                     "Associate workers with nearby assets and jobs automatically",
                     "Provide confirmation workflows, not selection workflows",
                     "Make exceptions visible and easy to correct"
@@ -575,10 +575,10 @@
                 title: "Presence Over Precision",
                 family: "Automation & Mechanisms",
                 core: "Knowing someone was there matters more than knowing exactly where they stood. Optimize for reliable presence detection, not centimeter-level accuracy.",
-                why: "GPS precision drains batteries and adds complexity. For most use cases, 'at the job site' is sufficient; '3 meters northwest of the foundation' is overkill.",
+                why: "Chasing precision adds hardware, power, and fragility. For most use cases, 'at the job site' is sufficient; '3 meters northwest of the foundation' is overkill.",
                 practice: [
-                    "Use geofences sized for practicality, not perfection",
-                    "Combine GPS with proximity sensors for battery efficiency",
+                    "Match stops to whole properties, not exact points",
+                    "Prefer simple onboard sensors over GPS, beacons, and tags",
                     "Accept that 'near enough' satisfies most business logic",
                     "Reserve high precision for the rare cases that truly need it"
                 ],
@@ -591,9 +591,9 @@
                 core: "Adjust sensing and transmission frequency based on context. Poll aggressively when movement is likely, sleep deeply when static.",
                 why: "Fixed intervals waste power during inactivity and miss events during high activity. Dynamic intervals optimize for both responsiveness and battery life.",
                 practice: [
-                    "Use accelerometers to detect movement and wake GPS",
+                    "Use motion detection to raise sampling rates and sleep when still",
                     "Increase polling frequency during work hours, decrease overnight",
-                    "Transmit immediately for critical events, batch for routine data",
+                    "Record everything locally; offload once per shift at the dock",
                     "Learn patterns and adapt intervals accordingly"
                 ],
                 connections: ["Battery as Constraint", "Continuous Sensing, Occasional Sending", "Automate the Constraint"]
@@ -662,7 +662,7 @@
                 why: "Memory is unreliable, especially under pressure. Sensor data doesn't have incentives, fatigue, or forgetfulness.",
                 practice: [
                     "Prioritize automated captures over manual logs",
-                    "Use physical events (badge scans, GPS fixes) as primary records",
+                    "Use physical events (badge motion, dock times) as primary records",
                     "Treat human input as annotation, not foundation",
                     "Resolve disputes by deferring to instrumentation"
                 ],
@@ -956,7 +956,7 @@
                 why: "Every manual transfer from operations to finance introduces errors and delays. Direct derivation eliminates reconciliation.",
                 practice: [
                     "Design operational systems to produce audit-ready financial data",
-                    "Generate journal entries from badge scans, GPS events, and job completions",
+                    "Generate journal entries from badge records, site visits, and job completions",
                     "Make the operational database the source of financial truth",
                     "Eliminate redundant entry between field logs and accounting systems"
                 ],
@@ -969,7 +969,7 @@
                 core: "Payroll should derive directly from presence records. If the badge scan happened, the pay happens. No manual timesheets, no delays, no disputes.",
                 why: "Manual payroll processes create errors that destroy trust. Automated pay based on verifiable presence is fast, accurate, and fair.",
                 practice: [
-                    "Use badge scans and GPS data as payroll source of record",
+                    "Use badge records and reconstructed site visits as payroll source of record",
                     "Calculate hours automatically from presence events",
                     "Show workers their accrued pay in real time",
                     "Reconcile exceptions, not the entire payroll"

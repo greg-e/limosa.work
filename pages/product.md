@@ -3,25 +3,38 @@ title: Product
 layout: default
 ---
 
-## Product Description
+*Actual is a concept in development. Nothing below has been built yet. This page describes the design we're working toward and looking for [co-builders](/pages/partners.html) to help build.*
 
-### Proof as You Work
-Actual places the machine at the operator. The badge captures presence, movement, and tool proximity four times per minute, storing every event with its original provenance: who created it, when it occurred, and under what conditions. Nothing is inferred or reconstructed later. There are no apps, taps, punches, or forms—only automated, verifiable evidence of work as it happens.
+## The Objective
 
-### Offline First, Always On
-Each badge runs as an autonomous node. It records locally for days and pushes its evidence to the cloud whenever cellular signal appears. If coverage is intermittent, nothing is lost and nothing is guessed. Syncing is batch-based to preserve battery life and maintain a continuous, minute-by-minute chain of truth. Operators remain fully self-contained, and job sites require no gateways, Wi-Fi, power, or infrastructure.
+We're building a self-contained wearable badge that delivers automated, verifiable proof of work: who worked, where they went, the path they walked, and what tasks they performed. The goal is no user interaction, no equipment tags, and no reliance on GPS or cellular networks.
 
-### Simple Handoffs with Full Provenance
-Actual’s data moves cleanly into payroll, job costing, scheduling, and equipment systems. Every downstream record still carries its origin: the operator, the timestamp, and the badge attestation. No system receives anonymous or derived data; each integration receives evidence. This reduces disputes, eliminates manual reconciliation, and makes audits straightforward.
+## Autonomous Proof of Work via Infrastructure-Free Edge Intelligence
 
-### Job Activity Data
-Actual provides verified start/stop times, presence patterns, task durations, movement on site, and tool-use intervals. The badge acts as a mechanical witness—capturing the rhythm of work without monitoring behavior. This becomes the truth layer of the business: the basis for payroll, billing, job reporting, and operational leadership.
+Field service businesses lose money to inaccurate payroll, guessed job costing, and inefficient scheduling. Existing solutions depend either on human compliance (apps, forms, manual check-ins) or on fragile secondary infrastructure (GPS, cellular data, and Bluetooth beacons attached to tools).
 
-### Reverse-Engineered Schedule and Estimate
-With truthful activity data, Actual reveals how work actually flows. It identifies pacing, idle time, constraint points, return trips, and sequence patterns. This lets you reverse-engineer real cycle times, compare assumptions against field conditions, and expose where estimates and schedules drifted from reality. The system can then recommend updated durations, crew mixes, and step sequences grounded in visible flow.
+We're engineering a single ruggedized badge designed to capture the operational record of a field crew on its own. Workers clip on the badge at the start of their shift and go to work. Operating offline, the badge would use onboard inertial sensors, barometric terrain profiling, and kinetic and acoustic edge AI to log movement and physical labor signatures continuously.
 
-### Autonomy Without Complexity
-The badge operates with minimal user interaction. Indicators use light and vibration instead of screens or menus. Attestation happens at natural still points in the day—start, finish, or task boundaries—preserving operator agency without adding tasks. The architecture enforces dignity: the badge witnesses work; it does not track people.
+When the worker returns to the shop, the badge offloads its log to the cloud. The cloud then reconstructs the driving route, identifies each job site visited, maps the on-foot work path across each property, and breaks down active labor by task type.
 
-### Designed for Flow Across the Organization
-Because every record begins at the operator, flow becomes measurable from the ground up. Patterns in presence, movement, and completion form a living map of how jobs unfold. Schedulers see real cadence, estimators see actual duration shapes, and managers gain clarity without the burden of additional administrative work in the field.
+## Why This Architecture
+
+### Infrastructure-Free Deployment
+No beacons installed at job sites, no Bluetooth tags epoxied onto vibrating tools, no trackers wired into vehicles, and no monthly cellular data plans. The badge is the entire hardware deployment.
+
+### No Burden on the Worker
+No phones, no apps, no buttons, no tap-to-check-in. If the worker is wearing the badge, the data is captured passively.
+
+### Route and Site Discovery Without GPS
+Every shift starts and ends at a known location: the shop. That closed loop lets the cloud engine apply bi-directional inertial smoothing and road-plus-elevation map matching to correct sensor drift, find scheduled and unscheduled stops, and reconstruct walking paths on each property, all without a live satellite connection.
+
+### Labor Verification Beyond Presence
+GPS and Bluetooth tags can only show that a device was *near* a job site or tool. Actual's onboard kinetic and vibration models are designed to read the physical motion of the work itself, distinguishing riding in a truck, standing idle, operating power equipment, and manual hand labor. That's a stronger basis for payroll, job costing, and client billing than presence alone.
+
+## The Target Outcome
+
+### For the Worker
+Technology that stays out of the way, protects them from timesheet disputes, and never touches their personal phone.
+
+### For the Business Owner
+Automated, verifiable records for payroll, granular job costing, and scheduling, with hardware that's quick to deploy and has nothing to install or maintain in the field.

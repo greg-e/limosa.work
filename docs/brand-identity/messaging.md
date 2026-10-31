@@ -2,11 +2,11 @@
 
 ## One-line value proposition
 
-Actual gives service operators verified field truth by automatically linking people, equipment, and place in real time.
+Actual gives service operators a verified record of every crew day: who worked, where, and what kind of work they did.
 
 ## Elevator pitch (short)
 
-Actual is a hardware-plus-cloud system for field service teams. Crew badges detect nearby equipment tags, upload events over cellular, and turn daily operations into auditable, real-time visibility for owners and managers.
+Actual is a single wearable badge plus a cloud service for field service teams. The badge records motion and labor signatures offline all shift. When the crew docks it at the shop, the cloud rebuilds the day's route, job sites, and labor breakdown for owners and managers. No GPS, cellular, or equipment tags. (In development.)
 
 ## Elevator pitch (partner-facing)
 
@@ -14,16 +14,17 @@ Most service businesses still run on self-reported logs. Actual replaces that wi
 
 ## Core proof points
 
-- Passive capture with minimal crew workflow overhead
-- Cellular-first architecture for uneven connectivity environments
-- Equipment-linked events improve confidence in service verification
+- Passive capture: take the badge in the morning, dock it at night
+- Nothing installed in the field: no tags, beacons, vehicle trackers, or data plans
+- Labor type (driving, equipment, hand work) recognized from motion and vibration
+- Audio is never recorded
 - Dashboard output designed for operational decisions, not vanity metrics
 
 ## Tone examples
 
 ### Preferred
 
-- “Verified arrival and equipment context in minutes.”
+- “Every site visit and how the time was spent, ready by end of day.”
 - “Built for real routes, weather, and crew turnover.”
 - “Operational truth without extra admin burden.”
 

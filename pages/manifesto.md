@@ -50,7 +50,7 @@ The truth stays the truth.
 ### Tools should make life easier, not harder  
 If a tool slows you down, it’s not a tool — it’s a burden.
 
-The badge doesn’t need Wi-Fi, Bluetooth, a phone, or a learning curve. It stores everything, then uploads on its own. You don’t have to manage it.
+The badge doesn’t need GPS, a cell signal, a phone, tags on your tools, or a learning curve. It records the day, and when it goes back in the dock at the shop, the day uploads on its own. You don’t have to manage it.
 
 You work. The badge handles the rest.
 
@@ -74,7 +74,7 @@ Because the badge records the real story of the job, the system can show:
 
 - Where time goes  
 - Where things slow down  
-- Where tools sit unused  
+- How time splits between driving, equipment, and hand work  
 - Where the crew gets stuck  
 - What work really costs
 

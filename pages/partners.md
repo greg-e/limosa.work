@@ -3,62 +3,54 @@ title: Partners
 layout: default
 ---
 
-“We’re building a tool called Actual. It’s a badge workers wear and tags you put on tools. Together, they give a simple and truthful record of who worked, for how long, and with what equipment. No phones, no paperwork, no guessing.
+Actual is a single badge each worker wears. It records who worked, where they went, and what work they did, with no tags, GPS, cellular, phones, or paperwork. It's in development.
 
-The principle we’re working on is straightforward: if you don’t use it, you don’t invest in it. We’re not chasing outside investors — we’re looking for people in the field who see the value and want to shape it with us.
-
-That’s where the idea of a charter partner comes in. Charter partners help fund early pilots, but more importantly, they get first access and a direct hand in making sure this works for real crews in real conditions.
-
-The ask isn’t ‘take a gamble on us.’ It’s ‘come shape this with us, so the tool works for you from the start.’”
+We have the problem, the architecture, and the design. What we need now are people to help build the first working prototype.
 
 **Get started:** greg@limosa.work
 
-# Actual Charter Partner Package  
-### Shaping the future of field time + tool tracking together
+# Actual Partners
+### Building field time + tool tracking together
 
 ---
 
-## What Charter Partners Get
+## Co-Builders
 
-### Early Access
-- First to receive and test Actual badges + tags in live field conditions.  
-- Direct influence on how the product develops.
+This is the main ask: engineers who want to own a piece of what they build.
 
-### Direct Input
-- Regular feedback sessions — your crews’ experience guides our roadmap.  
-- Priority support and a direct line to the product team.
+### Who we're looking for
+- **Embedded hardware / PCB** — low-power badge design: inertial and barometric sensors, acoustic and vibration sensing, rugged enclosures.
+- **Firmware** — on-device capture, edge AI for labor classification, local storage, offload at the shop, power management.
+- **Cloud / data backend** — inertial route reconstruction, road-plus-elevation map matching, site discovery, the immutable truth store.
+- **Integrations** — connectors to payroll, job costing, scheduling, and billing systems.
 
-### Recognition
-- Public acknowledgment as a founding charter partner.  
-- Your input becomes part of the story of how Actual was built.
+### What co-builders get
+- A meaningful stake in what we build, with terms worked out together.
+- A real say in the architecture, starting with the first prototype.
+- Recognition as a founding builder. Your work becomes part of the story of how Actual was built.
 
-### Preferred Pricing
-- Discounted device costs during the pilot phase.  
-- Locked-in pricing advantage as the product scales.
-
-### Innovation Credit
-- Charter fees go directly into building and improving the product, not overhead.  
-- Future upgrades prioritized for charter partners.
+### What we ask
+- Real engineering time on a defined piece of the system.
+- Regular check-ins and honest technical judgment, including telling us when the design is wrong.
 
 ---
 
-## What We Ask of Partners
+## Field Partners
 
-### Pilot Participation
-- Run Actual badges + tags with your crews and equipment.  
-- Commit to regular check-ins to share feedback.
+If you run crews (landscaping, construction, utilities, municipalities, solar, facilities), your input shapes the design.
 
-### Innovation Contribution
-- Financial support that offsets prototype and pilot costs.  
-- This is not a financial “investment” — it is a direct contribution to innovation you’ll benefit from.
+### What we ask
+- Show us how your crews track time and tools today, and where it breaks down.
+- Review designs and tell us what would and wouldn't work on your sites.
 
-### Active Engagement
-- Provide honest input from the field.  
-- Help us understand what works, what doesn’t, and what’s needed next.
+### What field partners get
+- A design built around how your crews actually work.
+- First in line to field-test prototypes once hardware exists.
+- Recognition as a founding field partner.
+
+There's no cost to be a field partner.
 
 ---
 
 ## Our Principle
-**We keep it simple: if you don’t use it, you don’t invest in it.**  
-This ensures Actual is shaped by the people who truly need it — not outside financiers chasing returns.
-
+**Actual gets built by the people who build it and shaped by the people who would use it.** We're not looking for passive investors. Every partner contributes real work or real field knowledge.

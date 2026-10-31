@@ -22,4 +22,5 @@ Use this before publishing decks, one-pagers, landing pages, and pilot docs.
 - Pilot state is labeled honestly when appropriate
 - Hardware references match technical docs
 - Pricing/context avoids over-promising
-- Terminology is consistent: badge, equipment tag, cloud event, dashboard
+- Terminology is consistent: badge, dock, shop, shift log, reconstruction, site visit, dashboard
+- No references to equipment tags, GPS, or cellular as part of Actual (dropped October 2026)
