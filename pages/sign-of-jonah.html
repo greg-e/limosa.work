@@ -130,7 +130,8 @@
     }
 
     .timeline-wrap {
-      padding-top: 32px;
+      max-width: 1100px;
+      padding-top: 72px;
     }
 
     .row {
@@ -149,8 +150,32 @@
     }
 
     .nisan {
+      position: relative;
       text-align: right;
-      padding-top: 14px;
+    }
+
+    .civil-dow {
+      position: absolute;
+      right: 0;
+      top: 0;
+      transform: translateY(-50%);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      color: #6b7280;
+      background: var(--bg);
+      padding: 0 2px;
+      z-index: 1;
+    }
+
+    .aviv-start {
+      position: absolute;
+      right: 0;
+      transform: translateY(-50%);
+    }
+
+    .aviv-start.before-first {
+      transform: translateY(calc(-100% - 12px));
     }
 
     .nisan-day {
@@ -202,7 +227,7 @@
     }
 
     .spine-line {
-      width: 10px;
+      width: 20px;
       height: 100%;
       border-radius: 999px;
       border: 1px solid #c4b89d;
@@ -257,11 +282,50 @@
       word-break: normal;
     }
 
+    .band-label {
+      position: absolute;
+      left: 1px;
+      width: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .band-label span {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .band-label.night span {
+      color: #e0e7ff;
+    }
+
+    .band-label.day span {
+      color: #78350f;
+    }
+
+    .rail-ref {
+      display: block;
+      margin-top: 1px;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: #9a8f78;
+    }
+
     .phase-dot {
       position: absolute;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 18px;
+      width: 26px;
       height: 2px;
       border-radius: 999px;
       box-shadow: 0 0 0 1px #f8f6f1;
@@ -307,11 +371,25 @@
       letter-spacing: 0.08em;
     }
 
-    .event-scripture {
-      margin-top: 8px;
-      font-size: 13px;
+    .event-verses {
+      margin-top: 10px;
+    }
+
+    .verse {
+      font-size: 14px;
       line-height: 1.55;
       color: #4b5563;
+      margin-bottom: 7px;
+    }
+
+    .verse-ref {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      margin-right: 8px;
+    }
+
+    .verse-text {
       font-style: italic;
     }
 
@@ -360,6 +438,44 @@
 
     .row.open .notes {
       display: block;
+    }
+
+    .argument {
+      margin-top: 16px;
+      padding: 12px 14px;
+      background: #ffffffa6;
+      border: 1px solid;
+    }
+
+    .argument-head {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      margin-bottom: 6px;
+    }
+
+    .argument-text {
+      font-size: 16px;
+      line-height: 1.65;
+      color: #374151;
+    }
+
+    .objection {
+      margin-top: 16px;
+      padding: 10px 14px;
+      border: 1px dashed #c7bfb0;
+    }
+
+    .objection summary {
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: #6b7280;
+    }
+
+    .objection[open] summary {
+      margin-bottom: 10px;
     }
 
     .sunset {
@@ -570,6 +686,414 @@
       }
     }
 
+    .view-toggle {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      padding-top: 32px;
+    }
+
+    .view-toggle button {
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: #6b7280;
+      background: transparent;
+      border: 1px solid var(--line);
+      padding: 8px 18px;
+      cursor: pointer;
+    }
+
+    .view-toggle button + button {
+      border-left: 0;
+    }
+
+    .view-toggle button[aria-pressed="true"] {
+      color: #111827;
+      background: var(--panel);
+      box-shadow: inset 0 -2px 0 #111827;
+    }
+
+    /* Calendar view: each square runs sunset to sunset */
+    .cal-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .cal-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 22px;
+      justify-content: center;
+      padding: 28px 0 22px;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: #4b5563;
+    }
+
+    .cal-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cal-swatch {
+      width: 18px;
+      height: 12px;
+      border: 1px solid #c4b89d;
+    }
+
+    .cal-swatch.night { background: #e9ecf5; }
+    .cal-swatch.day { background: #fdfaf2; }
+
+    .cal-swatch.tomb {
+      background: repeating-linear-gradient(135deg, #d6d3d1 0 3px, #f5f5f4 3px 6px);
+      border-color: #57534e;
+    }
+
+    .cal-swatch.lamb,
+    .cal-swatch.bread {
+      width: 26px;
+      border-left-width: 4px;
+      border-radius: 6px;
+    }
+
+    .cal-swatch.lamb { background: #fef3c7; border-color: #f59e0b; }
+    .cal-swatch.bread { background: #ede9fe; border-color: #8b5cf6; }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .cal-weekday {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: #6b7280;
+      text-align: center;
+      padding-bottom: 4px;
+    }
+
+    .cal-cell {
+      display: flex;
+      flex-direction: column;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-top-width: 3px;
+      min-height: 250px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .cal-cell:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px #8f7f5a1f;
+    }
+
+    .cal-cell.filler {
+      background: transparent;
+      border-style: dashed;
+      border-top-width: 1px;
+      min-height: 0;
+      cursor: default;
+    }
+
+    .cal-cell.filler:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .cal-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      padding: 8px 10px 6px;
+    }
+
+    .cal-num {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .cal-cell.filler .cal-num {
+      font-size: 16px;
+      font-weight: 300;
+      color: #b8b2a4;
+    }
+
+    .cal-title {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      line-height: 1.25;
+    }
+
+    .cal-dow-inline {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: #6b7280;
+    }
+
+    .cal-filler-note {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: #9ca3af;
+      padding: 0 10px 10px;
+      line-height: 1.4;
+    }
+
+    .cal-span {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      height: 24px;
+      padding: 0 10px;
+      border: 1px solid;
+      border-left-width: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      align-self: end;
+    }
+
+    .cal-span.starts { border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
+    .cal-span.ends { border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
+    .cal-span.continues { border-left-width: 1px; border-left-style: dashed; }
+
+    .cal-span span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cal-half {
+      flex: 1;
+      position: relative;
+      padding: 18px 10px 10px;
+    }
+
+    .cal-half.night { background: #e9ecf5; }
+
+    .cal-half.day {
+      background: #fdfaf2;
+      border-top: 2px solid #facc15;
+    }
+
+    .cal-half.tomb {
+      background-image: repeating-linear-gradient(135deg, #0000000d 0 3px, transparent 3px 7px);
+      box-shadow: inset 3px 0 0 #57534e;
+    }
+
+    .cal-half-label {
+      position: absolute;
+      top: 5px;
+      left: 10px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+    }
+
+    .cal-half.night .cal-half-label { color: #4f5f9a; }
+    .cal-half.day .cal-half-label { color: #a16207; }
+
+    .cal-pill {
+      position: absolute;
+      top: 3px;
+      right: 6px;
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      padding: 1px 6px;
+      border: 1px solid;
+    }
+
+    .cal-pill.n {
+      color: #4338ca;
+      background: #eef2ff;
+      border-color: #c7d2fe;
+    }
+
+    .cal-pill.d {
+      color: #9a3412;
+      background: #fff7ed;
+      border-color: #fdba74;
+    }
+
+    .cal-events {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .cal-events li {
+      font-size: 10.5px;
+      letter-spacing: 0.06em;
+      line-height: 1.3;
+      color: #374151;
+      text-transform: uppercase;
+      padding-left: 9px;
+      position: relative;
+      margin-bottom: 4px;
+    }
+
+    .cal-events li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 5px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.5;
+    }
+
+    .cal-events li.key {
+      font-weight: 700;
+    }
+
+    .cal-hint {
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: #6b7280;
+      margin-top: 14px;
+    }
+
+    .cal-count {
+      max-width: 680px;
+      margin: 48px auto 0;
+      border-top: 1px solid var(--line);
+      padding-top: 32px;
+    }
+
+    .count-row {
+      margin-bottom: 26px;
+    }
+
+    .count-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .count-total {
+      font-weight: 400;
+      color: #6b7280;
+    }
+
+    .slots {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      gap: 4px;
+    }
+
+    .slot {
+      border: 1px solid;
+      padding: 8px 4px;
+      text-align: center;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      line-height: 1.3;
+      min-height: 52px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 3px;
+    }
+
+    .slot strong { font-size: 11px; }
+
+    .slot.n {
+      color: #4338ca;
+      background: #eef2ff;
+      border-color: #c7d2fe;
+    }
+
+    .slot.d {
+      color: #9a3412;
+      background: #fff7ed;
+      border-color: #fdba74;
+    }
+
+    .slot.edge {
+      color: #6b7280;
+      background: transparent;
+      border-color: #d1d5db;
+      border-style: dashed;
+    }
+
+    .slot.edge.cross {
+      color: #991b1b;
+      border-color: #f87171;
+    }
+
+    .slot.edge.risen {
+      color: #166534;
+      border-color: #4ade80;
+    }
+
+    .slot.empty {
+      border-color: transparent;
+    }
+
+    .count-note {
+      margin-top: 18px;
+      font-style: italic;
+      font-size: 17px;
+      color: #4b5563;
+      line-height: 1.7;
+    }
+
+    .count-note + .count-note {
+      margin-top: 10px;
+    }
+
+    @media (min-width: 901px) {
+      .cal-dow-inline { display: none; }
+
+      .cal-halves {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .cal-grid { grid-template-columns: 1fr; }
+
+      /* Single column: drop the week placement and let spans sit before their first day */
+      .cal-grid > * {
+        grid-column: auto !important;
+        grid-row: auto !important;
+      }
+
+      .cal-weekday,
+      .cal-cell.filler { display: none; }
+
+      .cal-cell { min-height: 0; }
+
+      .cal-halves {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .cal-half.day {
+        border-top: 0;
+        border-left: 2px solid #facc15;
+      }
+
+      .slots { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .slot.empty { display: none; }
+    }
+
     @media (max-width: 760px) {
       .title {
         font-size: 30px;
@@ -634,14 +1158,29 @@
         <div class="quote-ref">MATTHEW 12:40 NET</div>
       </header>
 
+      <div class="view-toggle" role="group" aria-label="View">
+        <button type="button" data-view="timeline">TIMELINE</button>
+        <button type="button" data-view="calendar">CALENDAR</button>
+      </div>
+
       <section class="timeline-wrap" id="timeline"></section>
 
+      <section class="cal-wrap" id="calendar-view" hidden>
+        <div class="cal-legend">
+          <div class="cal-legend-item">EACH SQUARE RUNS SUNSET TO SUNSET</div>
+          <div class="cal-legend-item"><span class="cal-swatch night"></span>NIGHT (FIRST HALF)</div>
+          <div class="cal-legend-item"><span class="cal-swatch day"></span>DAY (SECOND HALF)</div>
+          <div class="cal-legend-item"><span class="cal-swatch tomb"></span>IN THE TOMB</div>
+          <div class="cal-legend-item"><span class="cal-swatch lamb"></span>LAMB KEPT</div>
+          <div class="cal-legend-item"><span class="cal-swatch bread"></span>THE FEAST OF UNLEAVENED BREAD</div>
+        </div>
+        <div class="cal-grid" id="calendar-grid"></div>
+        <div class="cal-hint">SELECT A DAY TO READ IT ON THE TIMELINE</div>
+        <div class="cal-count" id="count"></div>
+      </section>
+
       <footer class="footer-wrap">
-        <section class="section" id="matthew"></section>
-        <section class="section" id="supper"></section>
-        <section class="section" id="synoptics"></section>
-        <section class="section" id="typology"></section>
-        <section class="section" id="resolution"></section>
+        <section class="section" id="recap"></section>
         <div class="closing">
           <div class="closing-text">NET BIBLE TRANSLATION</div>
           <div class="closing-monolith" aria-hidden="true"></div>
@@ -656,29 +1195,38 @@
         nisan: 8, dow: "THU", title: "JERICHO",
         rail: "ZACCHAEUS ENCOUNTER",
         railMoments: [
-          { at: 0.42, label: "ZACCHAEUS ENCOUNTER" },
-          { at: 0.86, label: "OVERNIGHT IN JERICHO" },
+          { at: 0.3, label: "BLIND BARTIMAEUS HEALED", ref: "MARK 10:46-52" },
+          { at: 0.5, label: "ZACCHAEUS ENCOUNTER", ref: "LUKE 19:2-10" },
+          { at: 0.86, label: "OVERNIGHT IN JERICHO", ref: "LUKE 19:5" },
         ],
         type: "transit", anchor: false,
         typology: null,
-        ref: "LUKE 19:1",
-        scripture: "Jesus entered Jericho and was passing through.",
-        notes: "Zacchaeus encounter. Overnight stay. Departure imminent.",
+        ref: "MARK 10:46  //  LUKE 19:1",
+        verses: [
+          { ref: "MARK 10:46", text: "They came to Jericho. As Jesus and his disciples and a large crowd were leaving Jericho, Bartimaeus the son of Timaeus, a blind beggar, was sitting by the road." },
+          { ref: "MARK 10:52", text: "Jesus said to him, 'Go, your faith has healed you.' Immediately he regained his sight and followed him on the road." },
+          { ref: "LUKE 19:1", text: "Jesus entered Jericho and was passing through it." },
+        ],
+        notes: "Blind Bartimaeus healed. Zacchaeus encounter. Overnight stay. Departure imminent.",
         tomb: null,
       },
       {
         nisan: 9, dow: "FRI", title: "BETHANY ARRIVAL",
         rail: "SUPPER AT BETHANY",
         railMoments: [
-          { at: 0.38, label: "TRAVEL TO BETHANY" },
-          { at: 0.84, label: "SUPPER AT BETHANY (NIGHT)" },
-          { at: 0.92, label: "MARY ANOINTS JESUS (NIGHT)" },
+          { at: 0.38, label: "TRAVEL TO BETHANY", ref: "JOHN 12:1" },
+          { at: 0.84, label: "SUPPER AT BETHANY (NIGHT)", ref: "JOHN 12:2" },
+          { at: 0.92, label: "MARY ANOINTS JESUS (NIGHT)", ref: "JOHN 12:3" },
         ],
         type: "anchor", anchor: true,
         typology: "SIX DAYS BEFORE PASSOVER",
         ref: "JOHN 12:1",
-        scripture: "Six days before Passover, Jesus came to Bethany, where Lazarus lived.",
-        notes: "Primary chronological anchor. All downstream dates calculated from this fixed point. At sunset אביב (Aviv) 10 begins.",
+        verses: [
+          { ref: "JOHN 11:55", text: "Now the Jewish feast of Passover was near, and many people went up to Jerusalem from the rural areas before the Passover to cleanse themselves ritually." },
+          { ref: "JOHN 12:1", text: "Then, six days before the Passover, Jesus came to Bethany, where Lazarus lived, whom he had raised from the dead." },
+          { ref: "JOHN 12:2", text: "So they prepared a dinner for Jesus there. Martha was serving, and Lazarus was among those present at the table with him." },
+        ],
+        notes: "Primary chronological anchor. Every other date on this timeline counts from here. At sunset אביב (Aviv) 10 begins.",
         tomb: null,
         sunset: "PASSOVER SELECTION WINDOW  //  EXODUS 12:3",
       },
@@ -686,14 +1234,17 @@
         nisan: 10, dow: "SAT", title: "TRIUMPHAL ENTRY",
         rail: "ENTRY INTO JERUSALEM",
         railMoments: [
-          { at: 0.36, label: "ENTRY INTO JERUSALEM" },
-          { at: 0.58, label: "TEMPLE VISIT" },
-          { at: 0.86, label: "RETURN TO BETHANY (NIGHT)" },
+          { at: 0.36, label: "ENTRY INTO JERUSALEM", ref: "JOHN 12:12-15", key: true },
+          { at: 0.58, label: "TEMPLE VISIT", ref: "MARK 11:11" },
+          { at: 0.86, label: "RETURN TO BETHANY (NIGHT)", ref: "MARK 11:11" },
         ],
         type: "lamb", anchor: true,
         typology: "PASSOVER LAMB PRESENTED TO ISRAEL",
         ref: "JOHN 12:12  //  EXODUS 12:3",
-        scripture: "The next day the crowd welcomed Jesus into Jerusalem; on the tenth day each house was to take a lamb.",
+        verses: [
+          { ref: "JOHN 12:12-13", text: "The next day the large crowd that had come to the feast heard that Jesus was coming to Jerusalem. So they took branches of palm trees and went out to meet him. They began to shout, 'Hosanna! Blessed is the one who comes in the name of the Lord! Blessed is the king of Israel!'" },
+          { ref: "EXODUS 12:3", text: "Tell the whole community of Israel, 'In the tenth day of this month they each must take a lamb for themselves according to their families—a lamb for each household.'" },
+        ],
         notes: "Next day after Bethany arrival. The Lamb of God presents himself to Jerusalem on the precise day Israel was commanded to select the Passover lamb. Tradition calls this Palm Sunday. The text and typology demand Palm Saturday.",
         tomb: null,
       },
@@ -713,27 +1264,42 @@
         nisan: 12, dow: "MON", title: "OLIVET DISCOURSE",
         rail: "MOUNT OF OLIVES TEACHING",
         railMoments: [
-          { at: 0.34, label: "MOUNT OF OLIVES TEACHING" },
-          { at: 0.52, label: "PARABLES AND WARNINGS" },
-          { at: 0.86, label: "RETURN TO BETHANY (NIGHT)" },
+          { at: 0.34, label: "MOUNT OF OLIVES TEACHING", ref: "MARK 13:3" },
+          { at: 0.52, label: "PARABLES AND WARNINGS", ref: "MATTHEW 25" },
+          { at: 0.86, label: "RETURN TO BETHANY (NIGHT)", ref: "LUKE 21:37" },
         ],
         type: "transit", anchor: false,
         typology: null, ref: "MARK 13",
-        scripture: "On the Mount of Olives, Jesus taught about coming trials and urged watchfulness.",
+        verses: [
+          { ref: "MARK 13:3", text: "So while he was sitting on the Mount of Olives opposite the temple, Peter, James, John, and Andrew asked him privately," },
+          { ref: "MARK 13:37", text: "What I say to you I say to everyone: Stay alert!" },
+          { ref: "MATTHEW 26:2", text: "You know that after two days the Passover is coming, and the Son of Man will be handed over to be crucified." },
+          { ref: "MARK 14:1", text: "Two days before the Passover and the Feast of Unleavened Bread, the chief priests and the experts in the law were trying to find a way to arrest Jesus by stealth and kill him." },
+          { ref: "MATTHEW 26:5", text: "But they said, 'Not during the feast, so that there won't be a riot among the people.'" },
+        ],
         notes: "Mount of Olives discourse on the end of the age.",
+        arguments: [
+          {
+            head: "THE COUNTDOWN TO PASSOVER",
+            text: "The Gospels count down to the Passover: near (John 11:55), six days before (John 12:1), then two days before (Matthew 26:2, Mark 14:1). The Passover still had not come when the disciples ate in the Upper Room.",
+          },
+        ],
         tomb: null,
       },
       {
         nisan: 13, dow: "TUE", title: "TEMPLE",
         rail: "TEMPLE CONFRONTATIONS",
         railMoments: [
-          { at: 0.34, label: "FIG TREE LESSON" },
-          { at: 0.52, label: "TEMPLE CONFRONTATIONS" },
-          { at: 0.86, label: "WITHDRAW TO BETHANY (NIGHT)" },
+          { at: 0.34, label: "FIG TREE LESSON", ref: "MARK 11:20-21" },
+          { at: 0.52, label: "TEMPLE CONFRONTATIONS", ref: "MARK 11:15-18" },
+          { at: 0.86, label: "WITHDRAW TO BETHANY (NIGHT)", ref: "MARK 11:19" },
         ],
         type: "transit", anchor: false,
         typology: null, ref: "MARK 11:15",
-        scripture: "Jesus entered the temple courts and drove out buyers and sellers.",
+        verses: [
+          { ref: "MARK 11:15", text: "Then they came to Jerusalem. Jesus entered the temple area and began to drive out those who were selling and buying in the temple courts." },
+          { ref: "MARK 11:20-21", text: "In the morning as they passed by, they saw the fig tree withered from the roots. Peter remembered and said to him, 'Rabbi, look! The fig tree you cursed has withered.'" },
+        ],
         notes: "Fig tree cursed. Temple cleansed.",
         tomb: null,
       },
@@ -741,51 +1307,135 @@
         nisan: 14, dow: "WED", title: "CRUCIFIXION",
         rail: "UPPER ROOM -> GETHSEMANE -> HEROD",
         railMoments: [
-          { at: 0.1, label: "UPPER ROOM MEAL" },
-          { at: 0.16, label: "GETHSEMANE PRAYER (NIGHT)" },
-          { at: 0.2, label: "ARREST AND SANHEDRIN (NIGHT)" },
-          { at: 0.4, label: "HEROD / PILATE" },
-          { at: 0.63, label: "JESUS DIES (~3PM, DAY)" },
-          { at: 0.76, label: "BURIAL BEFORE SUNSET" },
+          { at: 0.1, label: "UPPER ROOM MEAL", ref: "JOHN 13:1-2", key: true },
+          { at: 0.16, label: "GETHSEMANE PRAYER (NIGHT)", ref: "MARK 14:32" },
+          { at: 0.2, label: "ARREST AND SANHEDRIN (NIGHT)", ref: "MARK 14:43-53" },
+          { at: 0.4, label: "HEROD / PILATE", ref: "LUKE 23:1-11" },
+          { at: 0.63, label: "JESUS DIES (~3PM, DAY)", ref: "MARK 15:34-37", key: true },
+          { at: 0.76, label: "BURIAL BEFORE SUNSET", ref: "MARK 15:42-46" },
         ],
         type: "crucifixion", anchor: true,
         typology: "PASSOVER LAMB SLAUGHTERED AT TWILIGHT",
         ref: "JOHN 19:14  //  EXODUS 12:6",
-        scripture: "It was the day of Preparation about noon; Pilate said, 'Behold your king.' The Passover lamb was slain at twilight.",
-        notes: "Upper Room meal, eaten before the Passover, not as it (John 13:1, 18:28). Preparation Day. Arrested, tried, crucified, buried before sunset. The lamb is slaughtered. The veil tears.",
+        verses: [
+          { ref: "LUKE 22:1", text: "Now the Feast of Unleavened Bread, which is called the Passover, was approaching." },
+          { ref: "EXODUS 12:18", text: "In the first month, from the fourteenth day of the month, in the evening, you will eat bread made without yeast, until the twenty-first day of the month in the evening." },
+          { ref: "MATTHEW 26:17", text: "Now on the first day of the feast of Unleavened Bread the disciples came to Jesus and said, 'Where do you want us to prepare for you to eat the Passover?'" },
+          { ref: "MARK 14:12", text: "Now on the first day of the feast of Unleavened Bread, when the Passover lamb is sacrificed, Jesus' disciples said to him, 'Where do you want us to prepare for you to eat the Passover?'" },
+          { ref: "LUKE 22:7", text: "Then the day for the feast of Unleavened Bread came, on which the Passover lamb had to be sacrificed." },
+          { ref: "JOHN 13:1", text: "Just before the Passover feast, Jesus knew that his time had come to depart from this world to the Father." },
+          { ref: "LUKE 22:15-16", text: "I have earnestly desired to eat this Passover with you before I suffer. For I tell you, I will not eat it again until it is fulfilled in the kingdom of God." },
+          { ref: "JOHN 13:29", text: "Because Judas had the money box, some thought Jesus was telling him to buy whatever they needed for the feast, or to give something to the poor." },
+          { ref: "JOHN 18:28", text: "They did not go into the governor's residence so they would not be ceremonially defiled, but could eat the Passover meal." },
+          { ref: "JOHN 19:14", text: "Now it was the day of preparation for the Passover, about noon." },
+          { ref: "MARK 15:21", text: "The soldiers forced a passerby to carry his cross, Simon of Cyrene, who was coming in from the country." },
+          { ref: "EXODUS 12:6", text: "You must care for it until the fourteenth day of this month, and then the whole community of Israel will kill it around sundown." },
+          { ref: "DEUT 16:6", text: "You must sacrifice the Passover animal in the evening at sunset, the time of day you came out of Egypt." },
+          { ref: "JOHN 1:29", text: "Look, the Lamb of God who takes away the sin of the world!" },
+          { ref: "MARK 15:46", text: "After Joseph bought a linen cloth and took down the body, he wrapped it in the linen and placed it in a tomb cut out of the rock." },
+          { ref: "LEV 23:7", text: "On the first day there is to be a holy assembly for you; you must not do any regular work." },
+        ],
+        notes: "Upper Room meal, eaten the night before the Passover (John 13:1, 18:28). Preparation Day. Arrested, tried, crucified, buried before sunset. The lamb is slaughtered. The veil tears.",
+        arguments: [
+          {
+            head: "UPPER ROOM MEAL  //  BEFORE THE PASSOVER",
+            text: "The disciples ate in the Upper Room at the start of Aviv 14, \"before the Passover feast.\" They assumed Judas left to buy for a feast still ahead. The next morning the priests had not yet eaten the Passover, and Pilate's verdict fell on the day of preparation for it. Jesus died as the lambs were being slain.",
+          },
+          {
+            head: "THE CRUCIFIXION DAY WAS A WORKING DAY",
+            text: "The Synoptics' own details fit a working day, Aviv 14. The leaders planned to act before the feast, the Sanhedrin held a night trial, Simon came in from the country, and Joseph bought linen. None of this belongs on Aviv 15, a holy assembly when no regular work was permitted.",
+          },
+        ],
+        objection: {
+          head: "MATTHEW, MARK AND LUKE CALL IT \"THE PASSOVER\"",
+          text: "Matthew 26:17, Mark 14:12 and Luke 22:7 plainly call the Upper Room meal \"the Passover.\" Three explanations reconcile this with John, and the working-day details above point to the 14th.",
+          answers: [
+            {
+              head: "1  //  \"PASSOVER\" NAMES THE WHOLE FESTIVAL",
+              text: "In the first century, \"Passover\" and \"Unleavened Bread\" were used loosely for the whole festival season, including the 14th, when leaven was removed from the house. Josephus likewise describes an eight-day feast. On this reading, \"the first day of Unleavened Bread\" is Aviv 14, and preparing \"the Passover\" means preparing for the festival, and the Upper Room meal need not be the lamb eaten on the night of the 15th.",
+            },
+            {
+              head: "2  //  A PASSOVER MEAL BEFORE HIS SUFFERING",
+              text: "Jesus knew he would die before the lambs were eaten, so he gave his disciples the meal ahead of time (Luke 22:15-16). No account of the supper mentions a lamb. The next afternoon Jesus himself became the lamb, slain at the hour the Passover lambs were slain.",
+            },
+            {
+              head: "3  //  TWO RECKONINGS OF THE DAY",
+              text: "Some scholars propose that different groups counted the festival differently: Annie Jaubert pointed to an Essene solar calendar, and Harold Hoehner to Galileans reckoning days from sunrise while Judeans reckoned from sunset. Either way, Jesus and the disciples could eat Passover by one reckoning while the temple slaughtered the lambs by the other. The Synoptic wording stays literal and John's chronology still holds.",
+            },
+            {
+              head: "THE FRIDAY VIEW",
+              text: "The Friday-crucifixion view reverses the harmonization: it takes the Synoptics literally and reads John 18:28 as the later festival offerings (the chagigah) and \"preparation\" as Friday, the day before the weekly Sabbath. Many critical scholars instead conclude that one tradition adjusted the date for theological reasons. The Wednesday view answers both by keeping John's dates and the Synoptics' events on the same day, Aviv 14.",
+            },
+          ],
+        },
         tomb: null,
+        band: [
+          { from: 0.78, to: 1, label: "NIGHT 1" },
+        ],
         sunset: "NIGHT 1 BEGINS",
       },
       {
         nisan: 15, dow: "THU", title: "HIGH SABBATH",
         rail: "TOMB SEALED",
         railMoments: [
-          { at: 0.1, label: "PASSOVER MEAL // HIGH SABBATH (NIGHT 1)" },
-          { at: 0.48, label: "TOMB SEALED AND GUARDED (DAY)" },
+          { at: 0.1, label: "PASSOVER MEAL // HIGH SABBATH (NIGHT 1)", ref: "EXODUS 12:8", key: true },
+          { at: 0.48, label: "TOMB SEALED AND GUARDED (DAY 1)", ref: "MATTHEW 27:62-66" },
           { at: 0.84, label: "NIGHT 2 BEGINS" },
         ],
         type: "high-sabbath", anchor: true,
-        typology: "PASSOVER  //  FEAST OF UNLEAVENED BREAD",
+        typology: "PASSOVER  //  THE FEAST OF UNLEAVENED BREAD BEGINS",
         ref: "JOHN 19:31  //  LEV 23:7",
-        scripture: "Because it was Preparation, and that Sabbath was a high day, the bodies were removed; the first feast day is a holy convocation.",
-        notes: "Passover meal eaten this night, after the lamb was slain at twilight on the 14th (Exod 12:8, Lev 23:5-6). Megas sabbaton. A great sabbath. Holy convocation. Distinct from the weekly sabbath. The tomb is sealed.",
+        verses: [
+          { ref: "JOHN 19:31", text: "Then, because it was the day of preparation, so that the bodies should not stay on the crosses on the Sabbath (for that Sabbath was an especially important one)..." },
+          { ref: "EXODUS 12:8", text: "They will eat the meat the same night; they will eat it roasted over the fire with bread made without yeast and with bitter herbs." },
+          { ref: "LEV 23:5-6", text: "In the first month, on the fourteenth day of the month, at twilight, is the Passover to the LORD. On the fifteenth day of the same month is the Festival of Unleavened Bread to the LORD." },
+          { ref: "NUMBERS 33:3", text: "They traveled from Rameses in the first month, on the fifteenth day of the first month; on the day after the Passover the Israelites went out defiantly in plain sight of all the Egyptians." },
+          { ref: "MATTHEW 27:62", text: "The next day (which is after the day of preparation) the chief priests and the Pharisees assembled before Pilate" },
+          { ref: "MATTHEW 27:66", text: "So they went with the soldiers of the guard and made the tomb secure by sealing the stone." },
+        ],
+        notes: "Passover meal eaten this night, after the lamb was slain at twilight on the 14th (Exod 12:8, Lev 23:5-6). John calls it a megas sabbaton, a great sabbath: a holy convocation, separate from the weekly sabbath. The tomb is sealed.",
+        arguments: [
+          {
+            head: "PASSOVER MEAL  //  NIGHT 1",
+            text: "The lamb is killed at twilight at the close of Aviv 14 and eaten that same night, after sunset, when Aviv 15 has begun. Jesus was buried before that sunset. The Passover meal Israel ate that night was Night 1 of his three nights in the tomb.",
+          },
+        ],
         tomb: { n: 1, d: 1 },
+        band: [
+          { from: 0, to: 0.22, label: "NIGHT 1" },
+          { from: 0.22, to: 0.78, label: "DAY 1" },
+          { from: 0.78, to: 1, label: "NIGHT 2" },
+        ],
         sunset: "NIGHT 2 BEGINS",
       },
       {
         nisan: 16, dow: "FRI", title: "SPICE GAP",
         rail: "SPICES BOUGHT AND PREPARED",
         railMoments: [
-          { at: 0.12, label: "SPICES BOUGHT (NIGHT)" },
-          { at: 0.58, label: "SPICES PREPARED" },
+          { at: 0.12, label: "SPICES BOUGHT (NIGHT)", ref: "MARK 16:1" },
+          { at: 0.58, label: "SPICES PREPARED", ref: "LUKE 23:56" },
           { at: 0.84, label: "NIGHT 3 BEGINS" },
         ],
         type: "gap", anchor: true,
         typology: "THE DAY BETWEEN TWO SABBATHS",
         ref: "MARK 16:1  //  LUKE 23:56",
-        scripture: "After the Sabbath, the women bought spices; they prepared spices and then rested on the Sabbath according to the commandment.",
-        notes: "Mark 16:1 — women buy spices after the sabbath. Luke 23:56 — women prepare spices then rest on the sabbath. This single day resolves what is otherwise a direct contradiction. The Friday crucifixion view has no answer.",
+        verses: [
+          { ref: "MARK 16:1", text: "When the Sabbath was over, Mary Magdalene, Mary the mother of James, and Salome bought aromatic spices so that they might go and anoint him." },
+          { ref: "LUKE 23:56", text: "Then they returned and prepared aromatic spices and perfumes." },
+        ],
+        notes: "In Mark 16:1 the women buy spices after the sabbath. In Luke 23:56 they prepare spices, then rest on the sabbath. A working day between two sabbaths makes both true. The Friday crucifixion view has no answer.",
+        arguments: [
+          {
+            head: "TWO SABBATH RESOLUTION",
+            text: "Under a Friday crucifixion, the only day between the burial and Sunday dawn is the weekly sabbath, so the women have no working day to buy and prepare spices. Only Aviv 16, a Friday, lets Mark 16:1 and Luke 23:56 both stand.",
+          },
+        ],
         tomb: { n: 2, d: 2 },
+        band: [
+          { from: 0, to: 0.22, label: "NIGHT 2" },
+          { from: 0.22, to: 0.78, label: "DAY 2" },
+          { from: 0.78, to: 1, label: "NIGHT 3" },
+        ],
         sunset: "NIGHT 3 BEGINS",
       },
       {
@@ -793,30 +1443,47 @@
         rail: "SABBATH REST",
         railMoments: [
           { at: 0.12, label: "WEEKLY SABBATH CONTINUES" },
-          { at: 0.5, label: "SABBATH REST" },
-          { at: 0.84, label: "NIGHT WATCH" },
+          { at: 0.5, label: "SABBATH REST", ref: "LUKE 23:56" },
+          { at: 0.8, label: "JESUS RISES (SUNSET, END OF DAY 3)", ref: "MATTHEW 12:40 // 28:6", key: true },
         ],
         type: "sabbath", anchor: true,
         typology: null,
         ref: "LUKE 23:56",
-        scripture: "They rested on the Sabbath according to the commandment.",
-        notes: "Women rest according to the commandment. The fourth commandment.",
+        verses: [
+          { ref: "LUKE 23:56", text: "On the Sabbath they rested according to the commandment." },
+        ],
+        notes: "The women rest according to the fourth commandment.",
         tomb: { n: 3, d: 3 },
+        band: [
+          { from: 0, to: 0.22, label: "NIGHT 3" },
+          { from: 0.22, to: 0.78, label: "DAY 3" },
+        ],
       },
       {
         nisan: 18, dow: "SUN", title: "RESURRECTION",
         rail: "STONE ROLLED AWAY",
         railMoments: [
-          { at: 0.18, label: "STONE ROLLED AWAY" },
-          { at: 0.26, label: "WOMEN ARRIVE AT DAWN" },
-          { at: 0.4, label: "EMPTY TOMB" },
-          { at: 0.58, label: "ANGELIC ANNOUNCEMENT" },
+          { at: 0.18, label: "STONE ROLLED AWAY", ref: "MATTHEW 28:2" },
+          { at: 0.26, label: "WOMEN ARRIVE AT DAWN", ref: "MARK 16:2" },
+          { at: 0.4, label: "EMPTY TOMB", ref: "LUKE 24:3" },
+          { at: 0.58, label: "ANGELIC ANNOUNCEMENT", ref: "MARK 16:6" },
         ],
         type: "resurrection", anchor: true,
         typology: "THREE DAYS AND THREE NIGHTS  //  FULFILLED",
         ref: "MARK 16:2  //  MATTHEW 12:40",
-        scripture: "Very early on the first day they came to the tomb at sunrise; as Jonah was three days and nights, so the Son of Man would be.",
-        notes: "Women arrive at sunrise. The stone is rolled away. The tomb is empty. Jesus is alive. Every count is satisfied. The sign of Jonah is complete.",
+        verses: [
+          { ref: "MARK 16:2", text: "And very early on the first day of the week, at sunrise, they went to the tomb." },
+          { ref: "MATTHEW 28:2", text: "Suddenly there was a severe earthquake, for an angel of the Lord descending from heaven came and rolled away the stone and sat on it." },
+          { ref: "MARK 16:6", text: "But he said to them, 'Do not be alarmed. You are looking for Jesus the Nazarene, who was crucified. He has been raised! He is not here. Look, this is the place where they laid him.'" },
+          { ref: "MATTHEW 12:40", text: "For just as Jonah was in the belly of the huge fish for three days and three nights, so the Son of Man will be in the heart of the earth for three days and three nights." },
+        ],
+        notes: "Women arrive at sunrise. The stone is rolled away and the tomb is empty. Jesus is alive. He rose at the previous sunset, three days and three nights after his burial, as Matthew 12:40 requires.",
+        arguments: [
+          {
+            head: "MATTHEW 12:40  //  SIGN OF JONAH",
+            text: "Buried before sunset on Wednesday, Jesus lay in the tomb Wednesday, Thursday and Friday nights and Thursday, Friday and Saturday days, and rose at Saturday's sunset. A Friday burial and a Sunday-dawn rising give two nights and one full day.",
+          },
+        ],
         tomb: null,
       },
     ];
@@ -883,26 +1550,51 @@
         const isKey = d.type !== "transit";
         const row = document.createElement("article");
         row.className = "row";
+        row.id = `aviv-${d.nisan}`;
         // Always show all items expanded
         row.classList.add("open");
 
         const left = document.createElement("div");
         left.className = "nisan";
 
-        const nisan = document.createElement("div");
-        nisan.className = "nisan-day";
-        nisan.textContent = String(d.nisan);
-        nisan.style.fontWeight = isKey ? "800" : "300";
-        nisan.style.fontSize = isKey ? "24px" : "16px";
-        nisan.style.color = isKey ? palette.text : "#9ca3af";
-
+        // Our calendar turns over at midnight, the gap between rows
         const dow = document.createElement("div");
-        dow.className = "nisan-dow";
+        dow.className = "civil-dow";
         dow.textContent = d.dow;
-        dow.style.color = isKey ? palette.sub : "#9ca3af";
-
-        left.appendChild(nisan);
         left.appendChild(dow);
+
+        // The Jewish day begins at sunset, so each Aviv date sits at the sundown before it
+        const addAviv = (day, at) => {
+          const dayPalette = theme[day.type];
+          const dayIsKey = day.type !== "transit";
+
+          const aviv = document.createElement("div");
+          aviv.className = "aviv-start";
+          aviv.style.top = `${at * 100}%`;
+
+          const nisan = document.createElement("div");
+          nisan.className = "nisan-day";
+          nisan.textContent = String(day.nisan);
+          nisan.style.fontWeight = dayIsKey ? "800" : "300";
+          nisan.style.fontSize = dayIsKey ? "24px" : "16px";
+          nisan.style.color = dayIsKey ? dayPalette.text : "#9ca3af";
+
+          const tag = document.createElement("div");
+          tag.className = "nisan-dow";
+          tag.textContent = "AVIV";
+          tag.style.color = dayIsKey ? dayPalette.sub : "#9ca3af";
+
+          aviv.appendChild(nisan);
+          aviv.appendChild(tag);
+          left.appendChild(aviv);
+        };
+
+        // Aviv 8 began at the sunset before the first row, so it sits above the first gap
+        if (i === 0) {
+          addAviv(d, 0);
+          left.lastChild.classList.add("before-first");
+        }
+        if (days[i + 1]) addAviv(days[i + 1], 0.78);
 
         const spine = document.createElement("div");
         spine.className = "spine";
@@ -913,7 +1605,8 @@
         const moments = Array.isArray(d.railMoments) && d.railMoments.length
           ? d.railMoments
           : [{ at: 0.5, label: d.rail || d.title }];
-        track.style.minHeight = `${Math.max(42, moments.length * 20)}px`;
+        // Tomb days need room for the NIGHT/DAY labels inside the band
+        track.style.minHeight = `${Math.max(d.band ? 260 : 42, moments.length * 32)}px`;
 
         const line = document.createElement("div");
         line.className = "spine-line";
@@ -928,6 +1621,19 @@
         track.appendChild(sunriseDot);
         track.appendChild(sundownDot);
 
+        (d.band || []).forEach((seg) => {
+          const band = document.createElement("div");
+          band.className = `band-label ${seg.label.startsWith("NIGHT") ? "night" : "day"}`;
+          band.style.top = `${seg.from * 100}%`;
+          band.style.height = `${(seg.to - seg.from) * 100}%`;
+
+          const text = document.createElement("span");
+          text.textContent = seg.label;
+
+          band.appendChild(text);
+          track.appendChild(band);
+        });
+
         moments.forEach((moment) => {
           const m = document.createElement("div");
           m.className = "rail-moment";
@@ -939,6 +1645,13 @@
           const text = document.createElement("span");
           text.className = "rail-text";
           text.textContent = moment.label;
+
+          if (moment.ref) {
+            const ref = document.createElement("span");
+            ref.className = "rail-ref";
+            ref.textContent = moment.ref;
+            text.appendChild(ref);
+          }
 
           m.appendChild(tick);
           m.appendChild(text);
@@ -994,11 +1707,29 @@
           card.appendChild(typology);
         }
 
-        if (d.scripture) {
-          const scripture = document.createElement("div");
-          scripture.className = "event-scripture";
-          scripture.textContent = `\"${d.scripture}\"`;
-          card.appendChild(scripture);
+        if (d.verses) {
+          const verses = document.createElement("div");
+          verses.className = "event-verses";
+
+          d.verses.forEach((v) => {
+            const verse = document.createElement("div");
+            verse.className = "verse";
+
+            const ref = document.createElement("span");
+            ref.className = "verse-ref";
+            ref.textContent = v.ref;
+            ref.style.color = isKey ? palette.sub : "#9ca3af";
+
+            const text = document.createElement("span");
+            text.className = "verse-text";
+            text.textContent = `\"${v.text}\"`;
+
+            verse.appendChild(ref);
+            verse.appendChild(text);
+            verses.appendChild(verse);
+          });
+
+          card.appendChild(verses);
         }
 
         if (d.tomb) {
@@ -1029,6 +1760,45 @@
         notes.textContent = d.notes;
         notes.style.borderTopColor = palette.border;
         card.appendChild(notes);
+
+        const makeArgument = (arg) => {
+          const block = document.createElement("div");
+          block.className = "argument";
+          block.style.borderColor = palette.border;
+
+          const head = document.createElement("div");
+          head.className = "argument-head";
+          head.textContent = arg.head;
+          head.style.color = palette.text;
+
+          const text = document.createElement("div");
+          text.className = "argument-text";
+          text.textContent = arg.text;
+
+          block.appendChild(head);
+          block.appendChild(text);
+          return block;
+        };
+
+        (d.arguments || []).forEach((arg) => card.appendChild(makeArgument(arg)));
+
+        // Objections stay collapsed so the main case reads straight through
+        if (d.objection) {
+          const objection = document.createElement("details");
+          objection.className = "objection";
+
+          const summary = document.createElement("summary");
+          summary.textContent = `OBJECTION  //  ${d.objection.head}`;
+
+          const text = document.createElement("div");
+          text.className = "argument-text";
+          text.textContent = d.objection.text;
+
+          objection.appendChild(summary);
+          objection.appendChild(text);
+          d.objection.answers.forEach((answer) => objection.appendChild(makeArgument(answer)));
+          card.appendChild(objection);
+        }
 
         if (d.sunset) {
           const sunset = document.createElement("div");
@@ -1068,260 +1838,21 @@
       });
     }
 
-    function renderGroup(section, group) {
-      const sub = document.createElement("div");
-      sub.className = "sub-head";
-      sub.style.color = group.col;
-      sub.textContent = group.head;
-      section.appendChild(sub);
-
-      group.rows.forEach((item) => {
-        const row = document.createElement("div");
-        row.className = "resolve-row";
-
-        const ref = document.createElement("span");
-        ref.className = "resolve-ref";
-        ref.style.color = group.col;
-        ref.textContent = item.ref;
-
-        const text = document.createElement("span");
-        text.className = "resolve-text";
-        text.textContent = `\"${item.text}\"`;
-
-        row.appendChild(ref);
-        row.appendChild(text);
-        section.appendChild(row);
-      });
-
-      const note = document.createElement("div");
-      note.className = "resolve-note";
-      note.textContent = group.note;
-      section.appendChild(note);
-    }
-
     function renderFooter() {
-      const matthew = document.getElementById("matthew");
-      matthew.innerHTML = "";
+      const recap = document.getElementById("recap");
+      recap.innerHTML = "";
 
-      const headA = document.createElement("div");
-      headA.className = "section-head";
-      headA.textContent = "MATTHEW 12:40  //  SIGN OF JONAH  //  FULFILLED";
-      matthew.appendChild(headA);
-
-      const chipsWrap = document.createElement("div");
-      chipsWrap.className = "chips";
-      [
-        { label: "WED NIGHT", night: true },
-        { label: "THU NIGHT", night: true },
-        { label: "FRI NIGHT", night: true },
-        { label: "THU DAY", night: false },
-        { label: "FRI DAY", night: false },
-        { label: "SAT DAY", night: false },
-      ].forEach((item) => {
-        const chip = document.createElement("div");
-        chip.className = "chip";
-        chip.textContent = item.label;
-        chip.style.color = item.night ? "#4338ca" : "#9a3412";
-        chip.style.background = item.night ? "#eef2ff" : "#fff7ed";
-        chip.style.borderColor = item.night ? "#c7d2fe" : "#fdba74";
-        chipsWrap.appendChild(chip);
-      });
-      matthew.appendChild(chipsWrap);
-
-      const supper = document.getElementById("supper");
-      supper.innerHTML = "";
-
-      const headS = document.createElement("div");
-      headS.className = "section-head";
-      headS.textContent = "LAST SUPPER  //  NOT THE PASSOVER MEAL";
-      supper.appendChild(headS);
+      const head = document.createElement("div");
+      head.className = "section-head";
+      head.textContent = "THE CASE IN BRIEF";
+      recap.appendChild(head);
 
       [
-        {
-          head: "THE LEAD-UP TO AVIV 14",
-          col: theme.anchor.text,
-          rows: [
-            { ref: "JOHN 11:55", text: "Now the Jewish feast of Passover was near, and many people went up to Jerusalem from the rural areas before the Passover to cleanse themselves ritually." },
-            { ref: "JOHN 12:1", text: "Then, six days before the Passover, Jesus came to Bethany, where Lazarus lived, whom he had raised from the dead." },
-            { ref: "MATTHEW 26:2", text: "You know that after two days the Passover is coming, and the Son of Man will be handed over to be crucified." },
-            { ref: "MARK 14:1", text: "Two days before the Passover and the Feast of Unleavened Bread, the chief priests and the experts in the law were trying to find a way to arrest Jesus by stealth and kill him." },
-          ],
-          note: "John counts down to the Passover: near, then six days before, then two days before. The countdown ends at the Passover itself, which the next group shows had not yet come when the Upper Room meal was eaten.",
-        },
-        {
-          head: "UPPER ROOM MEAL  //  BEFORE THE PASSOVER (AVIV 14, NIGHT)",
-          col: theme.crucifixion.text,
-          rows: [
-            { ref: "JOHN 13:1", text: "Just before the Passover feast, Jesus knew that his time had come to depart from this world to the Father." },
-            { ref: "JOHN 13:29", text: "Because Judas had the money box, some thought Jesus was telling him to buy whatever they needed for the feast, or to give something to the poor." },
-            { ref: "JOHN 18:28", text: "They did not go into the governor's residence so they would not be ceremonially defiled, but could eat the Passover meal." },
-            { ref: "JOHN 19:14", text: "Now it was the day of preparation for the Passover, about noon." },
-            { ref: "JOHN 19:31", text: "Then, because it was the day of preparation, so that the bodies should not stay on the crosses on the Sabbath (for that Sabbath was an especially important one)..." },
-          ],
-          note: "The meal in the Upper Room took place at the start of Aviv 14, \"before the Passover feast.\" The disciples assumed Judas left to buy for a feast still ahead. The next morning the priests had not yet eaten the Passover, and Pilate's verdict fell on the day of preparation for it. Jesus died as the lambs were being slain.",
-        },
-        {
-          head: "PASSOVER MEAL  //  NIGHT 1 (AVIV 15)",
-          col: theme["high-sabbath"].text,
-          rows: [
-            { ref: "EXODUS 12:6", text: "You must care for it until the fourteenth day of this month, and then the whole community of Israel will kill it around sundown." },
-            { ref: "EXODUS 12:8", text: "They will eat the meat the same night; they will eat it roasted over the fire with bread made without yeast and with bitter herbs." },
-            { ref: "LEV 23:5-6", text: "In the first month, on the fourteenth day of the month, at twilight, is the Passover to the LORD. On the fifteenth day of the same month is the Festival of Unleavened Bread to the LORD." },
-            { ref: "DEUT 16:6", text: "You must sacrifice the Passover animal in the evening at sunset, the time of day you came out of Egypt." },
-            { ref: "NUMBERS 33:3", text: "They traveled from Rameses in the first month, on the fifteenth day of the first month; on the day after the Passover the Israelites went out defiantly in plain sight of all the Egyptians." },
-          ],
-          note: "The lamb is killed at twilight at the close of Aviv 14 and eaten that same night, after sunset, when Aviv 15 has begun. Jesus was buried before that sunset. The Passover meal Israel ate that night was Night 1 of his three nights in the tomb.",
-        },
-      ].forEach((group) => renderGroup(supper, group));
-
-      const synoptics = document.getElementById("synoptics");
-      synoptics.innerHTML = "";
-
-      const headY = document.createElement("div");
-      headY.className = "section-head";
-      headY.textContent = "WHY MATTHEW, MARK AND LUKE SAY \"PASSOVER\"";
-      synoptics.appendChild(headY);
-
-      [
-        {
-          head: "THE SYNOPTIC WORDING",
-          col: theme.transit.text,
-          rows: [
-            { ref: "MATTHEW 26:17", text: "Now on the first day of the feast of Unleavened Bread the disciples came to Jesus and said, 'Where do you want us to prepare for you to eat the Passover?'" },
-            { ref: "MARK 14:12", text: "Now on the first day of the feast of Unleavened Bread, when the Passover lamb is sacrificed, Jesus' disciples said to him, 'Where do you want us to prepare for you to eat the Passover?'" },
-            { ref: "LUKE 22:7", text: "Then the day for the feast of Unleavened Bread came, on which the Passover lamb had to be sacrificed." },
-          ],
-          note: "Matthew, Mark and Luke plainly call the Upper Room meal \"the Passover.\" Three explanations reconcile this with John, and the events of the crucifixion day itself point to the 14th.",
-        },
-        {
-          head: "1  //  \"PASSOVER\" NAMES THE WHOLE FESTIVAL",
-          col: theme.anchor.text,
-          rows: [
-            { ref: "LUKE 22:1", text: "Now the Feast of Unleavened Bread, which is called the Passover, was approaching." },
-            { ref: "EXODUS 12:18", text: "In the first month, from the fourteenth day of the month, in the evening, you will eat bread made without yeast, until the twenty-first day of the month in the evening." },
-          ],
-          note: "In the first century, \"Passover\" and \"Unleavened Bread\" were used loosely for the whole festival season, including the 14th, when leaven was removed from the house. Josephus likewise describes an eight-day feast. On this reading, \"the first day of Unleavened Bread\" is Aviv 14, and preparing \"the Passover\" means preparing for the festival, not that the Upper Room meal was the lamb eaten on the night of the 15th.",
-        },
-        {
-          head: "2  //  A PASSOVER MEAL BEFORE HIS SUFFERING",
-          col: theme.lamb.text,
-          rows: [
-            { ref: "LUKE 22:15-16", text: "I have earnestly desired to eat this Passover with you before I suffer. For I tell you, I will not eat it again until it is fulfilled in the kingdom of God." },
-          ],
-          note: "Jesus knew he would die before the lambs were eaten, so he gave his disciples the meal ahead of time. No account of the supper mentions a lamb. The next afternoon Jesus himself became the lamb, slain at the hour the Passover lambs were slain.",
-        },
-        {
-          head: "3  //  TWO RECKONINGS OF THE DAY",
-          col: theme.sabbath.text,
-          rows: [],
-          note: "Some scholars propose that different groups counted the festival differently: Annie Jaubert pointed to an Essene solar calendar, and Harold Hoehner to Galileans reckoning days from sunrise while Judeans reckoned from sunset. Either way, Jesus and the disciples could eat Passover by one reckoning while the temple slaughtered the lambs by the other. The Synoptic wording stays literal and John's chronology still holds.",
-        },
-        {
-          head: "THE CRUCIFIXION DAY WAS NOT A FEAST DAY",
-          col: theme.crucifixion.text,
-          rows: [
-            { ref: "LEV 23:7", text: "On the first day there is to be a holy assembly for you; you must not do any regular work." },
-            { ref: "MATTHEW 26:5", text: "But they said, 'Not during the feast, so that there won't be a riot among the people.'" },
-            { ref: "MARK 15:21", text: "The soldiers forced a passerby to carry his cross, Simon of Cyrene, who was coming in from the country." },
-            { ref: "MARK 15:46", text: "After Joseph bought a linen cloth and took down the body, he wrapped it in the linen and placed it in a tomb cut out of the rock." },
-          ],
-          note: "The Synoptics' own details fit Aviv 14, not the holy assembly of Aviv 15: the leaders planned to act before the feast, the Sanhedrin held a night trial, Simon came in from the country, and Joseph bought linen. None of this belongs on a day when no regular work was permitted.",
-        },
-        {
-          head: "THE OTHER SIDE",
-          col: theme.transit.sub,
-          rows: [],
-          note: "The Friday-crucifixion view reverses the harmonization: it takes the Synoptics literally and reads John 18:28 as the later festival offerings (the chagigah) and \"preparation\" as Friday, the day before the weekly Sabbath. Many critical scholars instead conclude that one tradition adjusted the date for theological reasons. The Wednesday view answers both by keeping John's dates and the Synoptics' events on the same day: Aviv 14.",
-        },
-      ].forEach((group) => renderGroup(synoptics, group));
-
-      const typology = document.getElementById("typology");
-      typology.innerHTML = "";
-
-      const headB = document.createElement("div");
-      headB.className = "section-head";
-      headB.textContent = "PASSOVER LAMB TYPOLOGY";
-      typology.appendChild(headB);
-
-      [
-        {
-          ref: "EXODUS 12:3",
-          nisan: "AVIV 10",
-          type: "LAMB SELECTED",
-          fulfill: "Jesus presents himself to Jerusalem on lamb selection day",
-          scripture: "On the tenth day of this month each household is to take a lamb.",
-          col: theme.lamb.text,
-          bdr: theme.lamb.dot,
-        },
-        {
-          ref: "EXODUS 12:6",
-          nisan: "AVIV 14",
-          type: "LAMB SLAUGHTERED AT TWILIGHT",
-          fulfill: "Jesus crucified on Preparation Day before sunset",
-          scripture: "You shall keep it until the fourteenth day and kill it at twilight.",
-          col: theme.crucifixion.text,
-          bdr: theme.crucifixion.dot,
-        },
-        {
-          ref: "JOHN 1:29",
-          nisan: null,
-          type: "LAMB OF GOD",
-          fulfill: "Takes away the sin of the world",
-          scripture: "Behold, the Lamb of God, who takes away the sin of the world.",
-          col: theme.resurrection.text,
-          bdr: theme.resurrection.dot,
-        },
-      ].forEach((rowData) => {
-        const row = document.createElement("div");
-        row.className = "table-row";
-        row.style.borderLeftColor = rowData.bdr;
-
-        const c1 = document.createElement("div");
-        const ref = document.createElement("div");
-        ref.className = "small";
-        ref.style.color = rowData.col;
-        ref.textContent = rowData.ref;
-        c1.appendChild(ref);
-
-        if (rowData.nisan) {
-          const nisan = document.createElement("div");
-          nisan.className = "small-muted";
-          nisan.textContent = rowData.nisan;
-          c1.appendChild(nisan);
-        }
-
-        const c2 = document.createElement("div");
-        c2.className = "table-mid";
-        c2.textContent = rowData.type;
-
-        const c3 = document.createElement("div");
-        c3.className = "table-right";
-        c3.textContent = rowData.fulfill;
-
-        if (rowData.scripture) {
-          const scripture = document.createElement("div");
-          scripture.className = "table-scripture";
-          scripture.textContent = `\"${rowData.scripture}\"`;
-          c3.appendChild(scripture);
-        }
-
-        row.appendChild(c1);
-        row.appendChild(c2);
-        row.appendChild(c3);
-        typology.appendChild(row);
-      });
-
-      const resolution = document.getElementById("resolution");
-      resolution.innerHTML = "";
-
-      const headC = document.createElement("div");
-      headC.className = "section-head";
-      headC.textContent = "TWO SABBATH RESOLUTION";
-      resolution.appendChild(headC);
-
-      [
-        { ref: "MARK 16:1", text: "Women buy spices after the sabbath.", col: theme["high-sabbath"].text },
-        { ref: "LUKE 23:56", text: "Women prepare spices then rest on the sabbath.", col: theme.sabbath.text },
+        { ref: "AVIV 14", text: "Jesus was crucified on Wednesday, the day the Passover lambs were slain, and buried before sunset.", col: theme.crucifixion.text },
+        { ref: "AVIV 15", text: "The high sabbath fell on Thursday. Israel ate the Passover that night, his first night in the tomb.", col: theme["high-sabbath"].text },
+        { ref: "AVIV 16", text: "Friday was a working day between two sabbaths, when the women bought and prepared spices.", col: theme.gap.text },
+        { ref: "AVIV 17", text: "He rose at sunset on Saturday, after three nights and three days in the tomb.", col: theme.sabbath.text },
+        { ref: "AVIV 18", text: "The women found the tomb empty at sunrise on Sunday.", col: theme.resurrection.text },
       ].forEach((item) => {
         const row = document.createElement("div");
         row.className = "resolve-row";
@@ -1337,17 +1868,248 @@
 
         row.appendChild(ref);
         row.appendChild(text);
-        resolution.appendChild(row);
+        recap.appendChild(row);
       });
-
-      const note = document.createElement("div");
-      note.className = "resolve-note";
-      note.textContent = "Aviv 16 Friday is the only day that satisfies both statements without contradiction. The Friday crucifixion view produces an irreconcilable conflict between these two verses.";
-      resolution.appendChild(note);
     }
 
+    const weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+
+    // Rail positions of sunrise and sundown within each midnight-to-midnight row
+    const SUNRISE = 0.22;
+    const SUNDOWN = 0.78;
+
+    // Aviv 8 falls on a Thursday, so the grid opens on Sunday Aviv 4
+    const firstNisan = 4;
+    const lastNisan = 24;
+
+    const fillerNotes = {
+      21: "LAST DAY OF THE FEAST OF UNLEAVENED BREAD  //  HOLY CONVOCATION  //  LEV 23:8",
+    };
+
+    const feastPeriods = [
+      { from: 10, to: 14, name: "LAMB KEPT", ref: "EXOD 12:3-6", color: "#f59e0b", bg: "#fef3c7", text: "#92400e" },
+      { from: 15, to: 21, name: "THE FEAST OF UNLEAVENED BREAD", ref: "LEV 23:6-8", color: "#8b5cf6", bg: "#ede9fe", text: "#5b21b6" },
+    ];
+
+    function el(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text != null) node.textContent = text;
+      return node;
+    }
+
+    // A Hebrew day runs from the previous row's sundown to this row's sundown
+    function hebrewDayEvents(n) {
+      const prev = days.find((x) => x.nisan === n - 1);
+      const d = days.find((x) => x.nisan === n);
+      // The squares' halves and NIGHT/DAY pills already say what these suffixes and markers say
+      const shown = (m) => !/^NIGHT \d BEGINS$/.test(m.label);
+      const clean = (m) => ({ t: m.label.replace(/\s*\((NIGHT|DAY)( \d)?\)$/, ""), key: m.key });
+
+      const night = [
+        ...((prev && prev.railMoments) || []).filter((m) => m.at >= SUNDOWN),
+        ...(d.railMoments || []).filter((m) => m.at < SUNRISE),
+      ].filter(shown).map(clean);
+      const day = (d.railMoments || []).filter((m) => m.at >= SUNRISE && m.at < SUNDOWN).filter(shown).map(clean);
+
+      return { night, day };
+    }
+
+    // A feast period drawn as one bar per week, in a lane above that week's squares
+    function makeFeastSpan(period, n, col, week) {
+      const end = Math.min(period.to, n + (6 - col));
+      const starts = n === period.from;
+      const ends = end === period.to;
+      const width = end - n + 1;
+
+      const span = el("div", "cal-span");
+      if (starts) span.classList.add("starts");
+      else span.classList.add("continues");
+      if (ends) span.classList.add("ends");
+
+      span.style.gridRow = String(2 + week * 2);
+      span.style.gridColumn = `${col + 1} / span ${width}`;
+      span.style.background = period.bg;
+      span.style.borderColor = period.color;
+      span.style.color = period.text;
+
+      const range = `AVIV ${period.from}–${period.to}`;
+      const text = starts
+        ? (width >= 3 ? `${period.name}  //  ${range}  //  ${period.ref}` : `${period.name}  //  ${range}`)
+        : `${period.name} (CONT.)`;
+      span.title = `${period.name}, ${range}, ${period.ref}`;
+      span.appendChild(el("span", null, text));
+      return span;
+    }
+
+    function makeHalf(kind, label, items, tombIndex) {
+      const half = el("div", `cal-half ${kind}`);
+      half.appendChild(el("span", "cal-half-label", label));
+
+      if (tombIndex) {
+        half.classList.add("tomb");
+        half.appendChild(el("span", `cal-pill ${kind === "night" ? "n" : "d"}`, `${kind === "night" ? "NIGHT" : "DAY"} ${tombIndex}`));
+      }
+
+      const list = el("ul", "cal-events");
+      items.forEach((item) => list.appendChild(el("li", item.key ? "key" : null, item.t)));
+      half.appendChild(list);
+      return half;
+    }
+
+    function renderCalendar() {
+      const root = document.getElementById("calendar-grid");
+      root.innerHTML = "";
+
+      weekdays.forEach((w, i) => {
+        const weekday = el("div", "cal-weekday", w);
+        weekday.style.gridRow = "1";
+        weekday.style.gridColumn = String(i + 1);
+        root.appendChild(weekday);
+      });
+
+      for (let n = firstNisan; n <= lastNisan; n++) {
+        const col = (n - firstNisan) % 7;
+        const week = Math.floor((n - firstNisan) / 7);
+        const d = days.find((x) => x.nisan === n);
+
+        // Each week has a span lane (even rows) above its squares (odd rows)
+        const period = feastPeriods.find((p) => n >= p.from && n <= p.to);
+        if (period && (n === period.from || col === 0)) {
+          root.appendChild(makeFeastSpan(period, n, col, week));
+        }
+        const place = (cell) => {
+          cell.style.gridRow = String(3 + week * 2);
+          cell.style.gridColumn = String(col + 1);
+        };
+
+        if (!d) {
+          const cell = el("div", "cal-cell filler");
+          place(cell);
+          const head = el("div", "cal-head");
+          head.appendChild(el("span", "cal-num", String(n)));
+          cell.appendChild(head);
+          if (fillerNotes[n]) cell.appendChild(el("div", "cal-filler-note", fillerNotes[n]));
+          root.appendChild(cell);
+          continue;
+        }
+
+        const palette = theme[d.type];
+        const isKey = d.type !== "transit";
+        const prevDow = weekdays[(weekdays.indexOf(d.dow) + 6) % 7];
+        const { night, day } = hebrewDayEvents(n);
+
+        const cell = el("article", "cal-cell");
+        place(cell);
+        cell.style.borderTopColor = isKey ? palette.dot : "#d1d5db";
+
+        const head = el("div", "cal-head");
+        const num = el("span", "cal-num", String(n));
+        num.style.fontWeight = isKey ? "800" : "300";
+        num.style.color = isKey ? palette.text : "#9ca3af";
+        head.appendChild(num);
+        head.appendChild(el("span", "cal-dow-inline", d.dow));
+        const title = el("span", "cal-title", d.title);
+        title.style.fontWeight = isKey ? "700" : "400";
+        title.style.color = isKey ? palette.text : "#6b7280";
+        head.appendChild(title);
+        cell.appendChild(head);
+
+        const halves = el("div", "cal-halves");
+        halves.appendChild(makeHalf("night", `${prevDow} EVENING`, night, d.tomb && d.tomb.n));
+        halves.appendChild(makeHalf("day", `${d.dow} DAYLIGHT`, day, d.tomb && d.tomb.d));
+        cell.appendChild(halves);
+
+        cell.addEventListener("click", () => {
+          setView("timeline");
+          document.getElementById(`aviv-${n}`).scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+
+        root.appendChild(cell);
+      }
+    }
+
+    function renderCount() {
+      const root = document.getElementById("count");
+      root.innerHTML = "";
+      root.appendChild(el("div", "section-head", "COUNTING THE SIGN  //  TWO CALENDARS SIDE BY SIDE"));
+
+      [
+        {
+          label: "WEDNESDAY CRUCIFIXION",
+          col: theme.crucifixion.text,
+          total: "3 NIGHTS  //  3 DAYS",
+          slots: [
+            { kind: "edge cross", top: "WED", sub: "BURIED BEFORE SUNSET" },
+            { kind: "n", top: "N1", sub: "WED NIGHT" },
+            { kind: "d", top: "D1", sub: "THU DAY" },
+            { kind: "n", top: "N2", sub: "THU NIGHT" },
+            { kind: "d", top: "D2", sub: "FRI DAY" },
+            { kind: "n", top: "N3", sub: "FRI NIGHT" },
+            { kind: "d", top: "D3", sub: "SAT DAY" },
+            { kind: "edge risen", top: "SAT", sub: "RISES AT SUNSET" },
+          ],
+        },
+        {
+          label: "FRIDAY CRUCIFIXION",
+          col: theme.transit.text,
+          total: "2 NIGHTS  //  1 DAY",
+          slots: [
+            { kind: "empty" },
+            { kind: "empty" },
+            { kind: "empty" },
+            { kind: "edge cross", top: "FRI", sub: "BURIED BEFORE SUNSET" },
+            { kind: "n", top: "N1", sub: "FRI NIGHT" },
+            { kind: "d", top: "D1", sub: "SAT DAY" },
+            { kind: "n", top: "N2", sub: "SAT NIGHT" },
+            { kind: "edge risen", top: "SUN", sub: "TOMB EMPTY AT DAWN" },
+          ],
+        },
+      ].forEach((row) => {
+        const wrap = el("div", "count-row");
+        const label = el("div", "count-label");
+        const name = el("span", null, row.label);
+        name.style.color = row.col;
+        label.appendChild(name);
+        label.appendChild(el("span", "count-total", row.total));
+        wrap.appendChild(label);
+
+        const slots = el("div", "slots");
+        row.slots.forEach((s) => {
+          const slot = el("div", `slot ${s.kind}`);
+          if (s.top) {
+            slot.appendChild(el("strong", null, s.top));
+            slot.appendChild(el("span", null, s.sub));
+          }
+          slots.appendChild(slot);
+        });
+        wrap.appendChild(slots);
+        root.appendChild(wrap);
+      });
+
+      root.appendChild(el("div", "count-note", "Laid on a calendar, the Wednesday view fills every night and every day Matthew 12:40 names. The Friday view reaches the same Sunday morning with two nights and one full day."));
+      root.appendChild(el("div", "count-note", "Friday proponents answer with inclusive reckoning: in Jewish idiom any part of a day counts as the whole, so Friday afternoon, Saturday and early Sunday make three days. The Wednesday view needs no such idiom, because each night and each day on the calendar is a whole one."));
+    }
+
+    function setView(view) {
+      const isCalendar = view === "calendar";
+      document.getElementById("timeline").hidden = isCalendar;
+      document.getElementById("calendar-view").hidden = !isCalendar;
+      document.querySelectorAll(".view-toggle button").forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.view === view));
+      });
+      history.replaceState(null, "", isCalendar ? "#calendar" : location.pathname + location.search);
+    }
+
+    document.querySelectorAll(".view-toggle button").forEach((button) => {
+      button.addEventListener("click", () => setView(button.dataset.view));
+    });
+
     renderTimeline();
+    renderCalendar();
+    renderCount();
     renderFooter();
+    setView(location.hash === "#calendar" ? "calendar" : "timeline");
   </script>
 </body>
 </html>
