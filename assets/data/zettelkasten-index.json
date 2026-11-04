@@ -1,6 +1,14 @@
 {
-  "generatedAt": "2025-11-30T18:15:31.369Z",
+  "generatedAt": "2026-11-04T00:37:51.717Z",
   "notes": [
+    {
+      "id": "design-docs-markdown-and-git",
+      "title": "Design Docs, Markdown, and Git",
+      "tags": [],
+      "path": "/zettels/design-docs-markdown-and-git.md",
+      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/design-docs-markdown-and-git.md",
+      "excerpt": "Design Docs, Markdown, and Git"
+    },
     {
       "id": "251115h_actualZettelkasten_vision",
       "title": "Actual Zettelkasten · Vision & Alignment",
@@ -13,19 +21,6 @@
       "path": "/zettels/2025/202511/251115h_actualZettelkasten_vision.md",
       "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251115h_actualZettelkasten_vision.md",
       "excerpt": "Actual Zettelkasten · Vision & Alignment"
-    },
-    {
-      "id": "251115g_actualZettelkasten_finance",
-      "title": "Actual Zettelkasten · Finance & Reconciliation",
-      "tags": [
-        "actual",
-        "zettelkasten",
-        "finance",
-        "reconciliation"
-      ],
-      "path": "/zettels/2025/202511/251115g_actualZettelkasten_finance.md",
-      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251115g_actualZettelkasten_finance.md",
-      "excerpt": "Actual Zettelkasten · Finance & Reconciliation"
     },
     {
       "id": "251115f_actualZettelkasten_flow",
@@ -64,7 +59,7 @@
       ],
       "path": "/zettels/2025/202511/251115d_actualZettelkasten_automation.md",
       "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251115d_actualZettelkasten_automation.md",
-      "excerpt": "Actual Zettelkasten · Automation & Mechanisms"
+      "excerpt": "> **Superseded (2026-10-31).** This note describes the earlier badge + BLE equipment\n> tag design with GPS and cellular upload. Actual is now a single self-contained badge\n> with a shop dock: no tags, GPS, or cellular. Kept as a historical …"
     },
     {
       "id": "251115c_actualZettelkasten_field-practice",
@@ -76,7 +71,7 @@
       ],
       "path": "/zettels/2025/202511/251115c_actualZettelkasten_field-practice.md",
       "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251115c_actualZettelkasten_field-practice.md",
-      "excerpt": "Actual Zettelkasten · Field Practice"
+      "excerpt": "> **Superseded (2026-10-31).** This note describes the earlier badge + BLE equipment\n> tag design with GPS and cellular upload. Actual is now a single self-contained badge\n> with a shop dock: no tags, GPS, or cellular. Kept as a historical …"
     },
     {
       "id": "251115b_actualZettelkasten_principles",
@@ -103,30 +98,16 @@
       "excerpt": "Actual Zettelkasten Overview\nVersion: 1.0\nAuthor: bruh"
     },
     {
-      "id": "251113c_actualMarketGuidePrinciples",
-      "title": "Actual Market Guide Principles",
+      "id": "251115_actualZettelkasten",
+      "title": "Actual Zettelkasten",
       "tags": [
         "actual",
-        "market",
-        "principles",
-        "hardware"
+        "zettelkasten",
+        "knowledge-base"
       ],
-      "path": "/zettels/2025/202511/251113c_actualMarketGuidePrinciples.md",
-      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251113c_actualMarketGuidePrinciples.md",
-      "excerpt": "How Actual Meets Our Guiding Criteria"
-    },
-    {
-      "id": "251113b_actualPitch",
-      "title": "Actual Pitch — Closing Field Data Gaps",
-      "tags": [
-        "actual",
-        "pitch",
-        "badge",
-        "field-data"
-      ],
-      "path": "/zettels/2025/202511/251113b_actualPitch.md",
-      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251113b_actualPitch.md",
-      "excerpt": "The Problem Today"
+      "path": "/zettels/2025/202511/251115_actualZettelkasten.md",
+      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251115_actualZettelkasten.md",
+      "excerpt": "> **Superseded (2026-10-31).** This note describes the earlier badge + BLE equipment\n> tag design with GPS and cellular upload. Actual is now a single self-contained badge\n> with a shop dock: no tags, GPS, or cellular. Kept as a historical …"
     },
     {
       "id": "251113a_motivation",
@@ -190,6 +171,14 @@
       "path": "/zettels/2025/202511/251111a_learning.md",
       "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/251111a_learning.md",
       "excerpt": "Interpreting Ivan Illich on Learning"
+    },
+    {
+      "id": "20251129a",
+      "title": "20251129a",
+      "tags": [],
+      "path": "/zettels/2025/202511/20251129a.md",
+      "raw": "https://raw.githubusercontent.com/greg-e/limosa.work/main/zettels/2025/202511/20251129a.md",
+      "excerpt": "| 28 | 27 | 26 | 25 | 24 | 23 | 22 | 21 | 20 | 19 | 18 | 17 | 16 | 15 | 14 | 13 | 12 | 11 | 10 |  9 |  8 |  7 |  6 |  5 |  4 |  3 |  2 |  1 |\r\n|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|-…"
     }
   ]
 }
