@@ -3,7 +3,7 @@ title: Partners
 layout: default
 ---
 
-Actual is a single badge each worker wears. It records who worked, where they went, and what work they did, with no tags, GPS, cellular, phones, or paperwork. It's in development.
+Actual is a single badge each worker wears. It records who worked, where they went, and what work they did, with no tags, cellular, phones, or paperwork. It's in development.
 
 We have the problem, the architecture, and the design. Now we need partners: businesses that want to apply Actual to their work or their industry, and engineers who want to build it.
 
@@ -42,10 +42,10 @@ Not ready to commit? Thirty minutes telling us how your crews track time today s
 We're looking for engineers who want to own a piece of what they build.
 
 ### Who we're looking for
-- **Embedded hardware / PCB:** low-power badge design with inertial, barometric, acoustic, and vibration sensing, in a rugged enclosure.
+- **Embedded hardware / PCB:** low-power wearable design with on-board sensors, in a rugged enclosure.
 - **Firmware:** on-device capture, labor classification, local storage, offload at the shop, power management.
-- **Sensor fusion / navigation / ML:** rebuilding routes and job sites from motion data without GPS, and recognizing labor from motion and vibration.
-- **Cloud / data backend:** ingestion, road and elevation map matching, site discovery, tamper-proof storage.
+- **Sensor fusion / navigation / ML:** rebuilding routes and job sites from sensor data, and recognizing the type of labor.
+- **Cloud / data backend:** ingestion, data processing, site discovery, tamper-proof storage.
 - **Integrations:** connectors to payroll, job costing, scheduling, and billing systems.
 
 ### What you get

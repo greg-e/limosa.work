@@ -32,7 +32,7 @@ Actual saves every record as it happened. Corrections are added beside the origi
 ---
 
 ### Nothing to manage  
-The badge doesn’t need GPS, a cell signal, a phone, tags on your tools, or a learning curve. When it goes back in the dock at the shop, the day uploads on its own.
+The badge doesn’t need a cell signal, a phone, tags on your tools, or a learning curve. When it goes back in the dock at the shop, the day uploads on its own.
 
 ---
 
