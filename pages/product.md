@@ -1,40 +1,52 @@
 ---
-title: Product
+title: The idea
 layout: default
 ---
 
-*Actual is in development. Nothing below has been built yet. This page describes the design we're looking for [co-builders](/pages/partners.html) to help build.*
+Actual is an idea, at research stage. Nothing on this page has been built. There is no prototype and there are no customers.
 
-## The Objective
+## The problem
 
-A wearable badge that records who worked, where they went, the path they walked, and what they did. It needs no worker interaction, equipment tags, or cellular.
+Small service businesses do not know what each job really costs. True minutes on a property include the drive and the time at the shop. Crews in landscaping, HVAC, plumbing, pest control, house cleaning, in-home care, janitorial, and delivery often track that time on memory, paper, or spreadsheets. Overruns stay hidden until month-end.
 
-## How It Works
+## The idea
 
-Field service businesses lose money to wrong payroll, guessed job costs, and poor scheduling. Current tools depend either on workers doing something (apps, forms, check-ins) or on fragile add-on hardware (cellular data and Bluetooth beacons stuck to tools).
+A passive wearable badge the crew actually wants. It is the worker's own verified timecard, and proof of the hours they will be paid for. Drive time is included.
 
-The badge would record a crew's workday on its own. Workers clip it on at the start of their shift and go to work. It would work offline, logging movement and labor all shift.
+No daily steps. No phone. Nothing installed on the customer's property. It should not feel like policing.
 
-When the worker returns to the shop, the badge uploads its log. The cloud rebuilds the driving route, finds each job site, maps the walking path on each property, and breaks down labor by type.
+**For the worker:** get paid for every minute you work, drive time included, on a record you own.
 
-## Why This Architecture
+**For the owner:** see what every job really costs, proven by the people who did it. Real job costing, protection in a wage dispute, and a way to become the employer of choice.
 
-### Nothing Installed in the Field
-No beacons at job sites, no Bluetooth tags glued to vibrating tools, no trackers wired into vehicles, and no monthly data plans. The badge is the whole deployment.
+One arrangement being explored: the worker owns the record, and the employer subscribes to it with the worker's permission.
 
-### Nothing Asked of the Worker
-No phones, apps, buttons, or check-ins. If the worker wears the badge, the work gets recorded.
+"Every minute, on the record" is a candidate pitch, not a final line.
 
-### Routes and Job Sites
-The cloud rebuilds each day's route, finds scheduled and unscheduled stops, and maps the work on each property.
+## Design criteria
 
-### What Kind of Work
-Location data and Bluetooth tags only show that a device was *near* a job site or tool. Actual is designed to tell apart riding in a truck, standing idle, running power equipment, and hand labor. Payroll, job costing, and billing can rest on that.
+1. The record comes directly from the person.
+2. It covers every day, and the whole day.
+3. It is a product, not a service.
+4. It stays inside the work relationship.
+5. It does not feel like policing.
+6. It does not change how work is sold or organized.
 
-## The Target Outcome
+## Where it stands
 
-### For the Worker
-A badge that stays out of the way, settles timesheet disputes, and never touches their personal phone.
+Greg is a solo founder, bootstrapping. He is looking for a technical co-founder (hardware and software) and a sales or industry co-founder who knows service-business owners.
 
-### For the Business Owner
-Records for payroll, job costing, and scheduling, from hardware that's quick to set up and needs no field maintenance.
+The plan is off-the-shelf hardware and custom software, then a first paid pilot in roughly three to six months.
+
+## Similar products
+
+Close competitors exist. ZeroBadge, XGen, and Momentum CrewID make wearable badges. Jobber, Workyard, and Timeero use a phone and geofences.
+
+The open gap is a truly zero-step badge, the whole day per person, and a record the worker trusts or owns.
+
+## Open questions
+
+- Who pays for the device first.
+- What the final pitch should be.
+
+[Talk to Greg](/pages/contact.html) if you run a service business, work on a crew, or want to be a co-founder.

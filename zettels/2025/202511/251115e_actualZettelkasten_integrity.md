@@ -8,6 +8,8 @@ tags:
   - provenance
 ---
 
+> **Earlier notes (2026-11-11).** This file keeps older thinking, including equipment tags, GPS, a shop dock, badge readers, and truck tracking. That is not the current idea. The current idea is on the [home page](/).
+
 # Actual Zettelkasten · Data Integrity & Provenance
 
 ## 4. Data Integrity & Provenance

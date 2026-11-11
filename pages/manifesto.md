@@ -3,63 +3,40 @@ title: Manifesto
 layout: default
 ---
 
-# The Actual Manifesto  
-**Actual records the work without effort from the crew.**
+# The Actual Manifesto
+**Every minute, on the record.**
 
-Actual is built for the people who do the work and the people who support them.
+That line is a candidate pitch, not a final one. Actual is an idea at research stage. There is no product yet.
 
 
-### The person doing the work should never have to “prove” they worked  
-Timecards, forms, photos, and check-ins steal time from the job and force people to explain themselves after the fact.
+### The record comes from the person who did the work
+It is their verified timecard, and proof of the hours they will be paid for. Drive time counts. Shop time counts.
 
-You wear the badge, and it records what happened. No phone, app, or extra steps.
-
----
-
-### What the badge records  
-It doesn’t record conversations or monitor your day. It records:
-
-- When you arrived  
-- When you moved  
-- When you used tools  
-- When the day ended
+You should not have to reconstruct the day from memory.
 
 ---
 
-### Records can't be edited  
-Actual saves every record as it happened. Corrections are added beside the original, so nobody argues about what’s “really” true.
+### The whole day
+A job's true minutes include the property, the drive, and the shop. Paper, memory, and spreadsheets hide the overrun until month-end.
 
 ---
 
-### Nothing to manage  
-The badge doesn’t need a cell signal, a phone, tags on your tools, or a learning curve. When it goes back in the dock at the shop, the day uploads on its own.
+### Nothing extra in the day
+No daily steps. No phone. Nothing installed on the customer's property. It should not feel like policing.
 
 ---
 
-### What an automatic record fixes  
-- Pay is right  
-- Schedules match reality  
-- Estimates improve  
-- Delays have explanations  
-- Nobody has to “remember” anything
+### Inside the work relationship
+One arrangement being explored: the worker owns the record, and the employer subscribes to it with the worker's permission.
 
 ---
 
-### Decisions based on what happened  
-The record shows:
-
-- Where time goes  
-- Where things slow down  
-- How time splits between driving, equipment, and hand work  
-- Where the crew gets stuck  
-- What work costs
+### The work stays as it is
+The record does not change how the work is sold or how the day is organized. Owners see what each job really cost. The same record is protection in a wage dispute, and a reason to be the employer of choice.
 
 ---
 
-### Simple systems get used  
-Complicated systems break, confuse people, or get ignored. Actual is one badge per worker, with no forms, steps, or training.
+### Where this stands
+Greg is a solo founder, bootstrapping. He is looking for a technical co-founder and a sales or industry co-founder. The plan is off-the-shelf hardware with custom software, and a first paid pilot in roughly three to six months. Close competitors already exist. Who pays for the device first, and the final pitch, are still open.
 
----
-
-### The promise  
-Crews get paid for the hours they worked, without arguing over timesheets. Owners get records they can pay, bill, and estimate from.
+[Talk to Greg](/pages/contact.html) if you run a service business, work on a crew, or want to be a co-founder.

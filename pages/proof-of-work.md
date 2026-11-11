@@ -3,8 +3,6 @@ title: Proof of Work
 layout: default
 ---
 
-Actual is in development. These are the results we'll measure in field tests:
+There is no proof of work to show. Actual is an idea at research stage. There have been no field tests, no prototype, and no customers.
 
-- Fewer dispatch edits after rollout  
-- Missed-site variance tracked and resolved  
-- Faster month-end close from straight-through data
+The phrase on the home page, "Every minute, on the record," is a candidate pitch, not a result.

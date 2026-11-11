@@ -1,10 +1,6 @@
 ---
-title: Proof of Work
-layout: page
+title: Evidence
+layout: default
 ---
 
-Actual is in development. These are the results we'll measure in field tests:
-
-- Dispatch edits before and after rollout
-- Missed-site variance tracked and resolved
-- Faster month-end close from straight-through data
+There is no evidence from use. Actual is an idea at research stage. There have been no field tests, no prototype, and no customers.

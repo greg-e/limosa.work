@@ -3,9 +3,9 @@
 ## Brand core
 
 - **Brand name:** Actual
-- **Category:** Automatic proof of work for field service crews
-- **Promise:** Replace self-reported hours with a record the badge makes
-- **Positioning:** Durable, practical, and operationally honest
+- **Category:** An idea for a passive timecard badge for small service businesses
+- **Promise:** Candidate pitch, not final: every minute on a record the worker owns, drive time included
+- **Positioning:** Plain, practical, and honest about research stage. No product yet.
 
 ## Design principles
 
@@ -32,16 +32,16 @@
 ## Brand voice
 
 - Use short, factual statements
-- Emphasize outcomes: correct pay, accurate job costs, clear routes
+- Emphasize outcomes: paid minutes, true job cost, a record the worker owns
 - Avoid buzzwords and exaggerated claims
-- Prefer “what happened” language over “what might happen”
+- Say what is known. Leave open questions open.
 
 ## Audience framing
 
-- **Owner / Operator:** certainty, accountability, route and labor clarity
-- **Field Manager:** dispatch confidence, faster exception handling
-- **Crew:** minimal friction, no extra app/admin burden
+- **Owner:** what each job really costs, including drive and shop time, and protection in a wage dispute
+- **Crew:** a timecard they own, with no daily steps and no phone
+- **Co-founder:** hardware and software, or sales to service-business owners
 
 ## Narrative anchor
 
-> Actual turns a crew's day into a verified record.
+> Every minute, on the record. A candidate pitch for an idea that has not been built.
