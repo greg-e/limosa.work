@@ -188,6 +188,102 @@ a:hover{color:var(--green)}
   margin: 0.2rem 0;
 }
 
+.actual-points {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.1rem;
+  margin: 0 0 2.5rem;
+}
+
+.actual-points p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #4b5563;
+}
+
+.actual-points strong,
+.actual-losses strong {
+  color: #111827;
+}
+
+.actual-timecard {
+  margin: 0 0 2.75rem;
+}
+
+.actual-table-wrap {
+  overflow-x: auto;
+}
+
+.actual-timecard table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  color: #111827;
+}
+
+.actual-timecard th,
+.actual-timecard td {
+  padding: 0.55rem 0.65rem;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: right;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.actual-timecard thead th {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.actual-timecard th:first-child,
+.actual-timecard td:first-child {
+  text-align: left;
+}
+
+.actual-timecard .actual-week th,
+.actual-timecard .actual-week td {
+  font-weight: 700;
+  border-bottom: none;
+}
+
+.actual-timecard-caption {
+  margin: 0.65rem 0 0;
+  max-width: 40rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #6b7280;
+}
+
+.actual-section-title {
+  margin: 0 0 0.85rem;
+  font-size: 1.35rem;
+  line-height: 1.3;
+  font-weight: 700;
+  color: #111827;
+}
+
+.actual-losses {
+  margin: 0 0 2.25rem;
+  padding-left: 1.25rem;
+  max-width: 42rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #4b5563;
+}
+
+.actual-losses li {
+  margin: 0.55rem 0;
+}
+
+@media (min-width: 768px) {
+  .actual-points {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.75rem;
+  }
+}
+
 /* Buttons */
 .btn-primary,
 .btn-ghost,
@@ -352,6 +448,21 @@ a:hover{color:var(--green)}
 
   .actual-card-body {
     font-size: 0.9rem;
+  }
+
+  .actual-points p,
+  .actual-losses,
+  .actual-timecard table {
+    font-size: 0.9rem;
+  }
+
+  .actual-timecard th,
+  .actual-timecard td {
+    padding: 0.45rem 0.35rem;
+  }
+
+  .actual-section-title {
+    font-size: 1.2rem;
   }
 
   .site-nav {
