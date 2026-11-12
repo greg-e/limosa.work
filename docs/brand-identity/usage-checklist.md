@@ -12,15 +12,12 @@ Use this before publishing decks, one-pagers, landing pages, and pilot docs.
 
 ## Message checks
 
-- Claims match research stage: no product, prototype, customers, or traction numbers
+- The page says this is research stage, with no product or customers
 - Language is direct and plain
-- Audience value is explicit (owner, crew, co-founder)
-- The pitch is labeled as a candidate when that line is used
+- The founder is not named
 
 ## Content checks
 
-- Research stage is stated in plain language
-- Hardware is described as a plan: off-the-shelf hardware, custom software
-- No price, fee, or device cost unless Greg has published one
-- Terminology for the current idea: badge, timecard, minutes, drive time, shop time, record the worker owns
-- Do not present GPS, truck tracking, equipment tags, a shop dock, badge readers, or labor-type classification as the current idea
+- Hardware is described as a plan: off-the-shelf hardware, our own software
+- No price unless one has been published
+- Do not describe GPS, truck tracking, a shop dock, or labor types as the product

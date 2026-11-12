@@ -3,16 +3,16 @@
 ## Brand core
 
 - **Brand name:** Actual
-- **Category:** An idea for a passive timecard badge for small service businesses
-- **Promise:** Candidate pitch, not final: every minute on a record the worker owns, drive time included
-- **Positioning:** Plain, practical, and honest about research stage. No product yet.
+- **Category:** A passive timecard badge for service businesses
+- **Promise:** The badge records time on site as the worker's own verified timecard
+- **Positioning:** Research stage. No product or customers yet.
 
 ## Design principles
 
-1. **Evidence over aesthetics** — clear, measurable, believable
-2. **Utility over ornament** — every visual element has a job
-3. **Field-grade simplicity** — durable and legible in rough conditions
-4. **Calm confidence** — never loud, never gimmicky
+1. **Evidence over aesthetics.** Clear, measurable, believable.
+2. **Utility over ornament.** Every visual element has a job.
+3. **Field-grade simplicity.** Durable and legible in rough conditions.
+4. **Calm confidence.** Quiet, and free of gimmicks.
 
 ## Brand personality
 
@@ -32,16 +32,15 @@
 ## Brand voice
 
 - Use short, factual statements
-- Emphasize outcomes: paid minutes, true job cost, a record the worker owns
+- Say the record is the worker's own verified timecard
 - Avoid buzzwords and exaggerated claims
-- Say what is known. Leave open questions open.
+- Do not name the founder
 
 ## Audience framing
 
-- **Owner:** what each job really costs, including drive and shop time, and protection in a wage dispute
-- **Crew:** a timecard they own, with no daily steps and no phone
-- **Co-founder:** hardware and software, or sales to service-business owners
+- **Service businesses:** time on site, recorded as the worker's own timecard
+- **Co-founders:** one for hardware and software, one for sales or the industry
 
 ## Narrative anchor
 
-> Every minute, on the record. A candidate pitch for an idea that has not been built.
+> Actual is a research-stage idea. A passive badge records time on site as the worker's own verified timecard.

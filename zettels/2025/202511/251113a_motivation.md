@@ -8,7 +8,7 @@ tags:
   - actual
 ---
 
-> **Earlier notes (2026-11-11).** This note is older thinking about Actual. It is not the current idea. The current idea is on the [home page](/).
+> Earlier notes. The description of Actual is on the [home page](/).
 
 # Applying Self-Determination Theory to Actual
 

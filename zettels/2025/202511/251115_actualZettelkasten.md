@@ -7,7 +7,7 @@ tags:
   - knowledge-base
 ---
 
-> **Earlier notes (2026-11-11).** This file keeps an older design, including equipment tags, GPS, cellular upload, a shop dock, badge readers, or truck tracking. That is not the current idea. The current idea is on the [home page](/).
+> Earlier notes. The description of Actual is on the [home page](/).
 
 # Actual Zettelkasten
 Version: 1.0
