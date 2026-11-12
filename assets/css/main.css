@@ -164,6 +164,30 @@ a:hover{color:var(--green)}
   align-items: center;
 }
 
+.actual-for {
+  max-width: 40rem;
+  margin-top: 2.75rem;
+}
+
+.actual-for-label {
+  margin: 0 0 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.actual-for ul {
+  margin: 0;
+  padding-left: 1.15rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #6b7280;
+}
+
+.actual-for li {
+  margin: 0.2rem 0;
+}
+
 /* Buttons */
 .btn-primary,
 .btn-ghost,
