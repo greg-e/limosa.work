@@ -8,7 +8,7 @@ tags:
   - actual
 ---
 
-> **Earlier notes (2026-11-11).** This note is older thinking about Actual, including time-and-location records. It is not the current idea. The current idea is on the [home page](/).
+> Earlier notes. The description of Actual is on the [home page](/).
 
 ## Conviviality
 Conviviality, from Ivan Illich’s *Tools for Conviviality*, is the idea that technology should liberate human autonomy and creativity rather than enslave it. Convivial tools are those that extend people’s capabilities without demanding obedience to a system.  

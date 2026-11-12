@@ -12,7 +12,7 @@ permalink: /zettelkasten/
       <p class="zk-kicker">Card catalog</p>
       <h1>Zettelkasten</h1>
       <p>Browse and search the repo-native cards without leaving this page. Everything runs on GitHub Pages using markdown stored in <code>/zettels/&lt;year&gt;/&lt;yyyymm&gt;/&lt;id&gt;.md</code>.</p>
-      <p>These notes are earlier thinking. Some describe GPS, equipment tags, a shop dock, badge readers, and truck tracking. That is not the current idea. The current idea is on the <a href="/">home page</a>.</p>
+      <p>Earlier notes. The description of Actual is on the <a href="/">home page</a>.</p>
       <div class="zk-hero__cta">
         <button class="zk-button" type="button" data-zk-catalog-trigger aria-haspopup="dialog">
           Open catalog
