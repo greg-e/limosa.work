@@ -3,77 +3,26 @@ title: Outcomes
 layout: default
 ---
 
+These are the outcomes the idea is aimed at. They are not results. There is no product, and there are no customers.
 
 
-### When I work, I want it recorded as it happens,  
-so I can provide trustworthy evidence of what I did without extra effort.
+### When I finish a day, I want every minute on a record I can see,
+so I can be paid for the work, the drive, and the time at the shop.
 
-### When I begin or finish a task, I want my time to be captured accurately,  
-so I can be confident my hours are correct and don’t need to be corrected later.
+### When I am on a crew, I want that record to be mine,
+so I can stand on the hours I will be paid for.
 
-### When I’m doing field work, I want to avoid using complicated tools or devices,  
-so I can stay focused on the job and avoid interruptions.
+### When I wear something for work, I want it to take no daily steps,
+so I can leave my phone alone and stay on the job.
 
-### When I complete a job, I want to verify that it’s done in a way that reflects my input,  
-so I can stand behind the result without being surveilled.
+### When a record follows me through the day, I want it to feel like my timecard,
+so it does not feel like policing.
 
-### When my time or effort is being tracked, I want the record to reflect reality,  
-so I can trust that what’s shown matches what actually happened.
+### When I price a job after the fact, I want the true minutes,
+including drive and shop time, so overruns are not a surprise at month-end.
 
-### When I look at our operations, I want to see how work flows from start to finish,  
-so I can understand where delays or breakdowns occur.
+### When hours are disputed, I want a record that came from the person who did the work,
+so the dispute starts from that record.
 
-### When something slows down the job, I want to see clearly where and why it’s happening,  
-so I can fix the bottleneck without guessing.
-
-### When data flows between systems, I want it to carry its original context,  
-so I can trace back where it came from if something goes wrong.
-
-### When running operations, I want work data to feed into administrative systems automatically,  
-so I don’t have to manually enter or double-check things.
-
-### When I’m being tracked or measured, I want to know it's to confirm my work,  
-so I feel respected and trusted.
-
-### When I’m working in the field, I want my tools to function without needing constant connectivity,  
-so I don’t lose data or fall behind if coverage drops.
-
-### When our team or workload grows, I want our tools to stay accurate and consistent,  
-so we can scale without sacrificing trust in the data.
-
-### When designing systems, I want them to reflect how people actually work,  
-so the tools support the process instead of complicating it.
-
-### When records are created, I want them to be permanent,  
-so no one can alter them later without a trace.
-
-### When automating, I want to start where the work starts,  
-so the result reflects the real event.
-
-### When using a tool, I want to understand what it’s doing at a glance,  
-so I’m not slowed down by confusion or complexity.
-
-### When systems help with decisions, I want to be the one who confirms them,  
-so I remain accountable for the outcome.
-
-### When circumstances change, I want the workflow to adjust smoothly,  
-so we don’t fall behind or redo work.
-
-### When the system collects data, I want it to learn from what actually happened,  
-so it can improve how work gets done over time.
-
-### When managing operations, I want to see how tasks, time, and movement align,  
-so I can plan more accurately and avoid waste.
-
-### When tools are introduced, I want them to support people’s independence,  
-so users don’t feel micromanaged or disempowered.
-
-### When gathering data, I want it to be opt-in and visible,  
-so it feels respectful and trustworthy.
-
-### When a job is done well, I want the system to credit the person who did it,  
-so recognition and accountability stay aligned.
-
-### When building a system, I want the data to stand on its own,  
-so people believe it without extra proof.
-
+### When I hire, I want crews to trust the hours,
+so the company can become the employer of choice.

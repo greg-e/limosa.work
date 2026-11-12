@@ -2,34 +2,45 @@
 
 ## One-line value proposition
 
-Actual gives service operators a verified record of every crew day: who worked, where, and what kind of work they did.
+Candidate pitch, not final: every minute, on the record.
+
+For workers: get paid for every minute you work, drive time included, on a record you own.
+
+For owners: see what every job really costs, proven by the people who did it.
+
+## Status line
+
+Actual is an idea at research stage. No product, prototype, or customers. Greg is a solo founder, bootstrapping.
 
 ## Elevator pitch (short)
 
-Actual is a single wearable badge plus a cloud service for field service teams. The badge records motion and labor signatures offline all shift. When the crew docks it at the shop, the cloud rebuilds the day's route, job sites, and labor breakdown for owners and managers. No GPS, cellular, or equipment tags. (In development.)
+Small service businesses do not know the true minutes on a job, including drive and shop time. Actual is an idea for a passive badge the crew wants to wear: the worker's own verified timecard. No daily steps, no phone, nothing installed on the customer's property, and it should not feel like policing.
 
-## Elevator pitch (partner-facing)
+## Elevator pitch (co-founder)
 
-Most service businesses still run on self-reported logs. Actual is designed to replace them with a badge your crew wears and forgets about: no phone app, no manual check-ins, and a record of the work you can manage from.
+Greg is looking for a technical co-founder (hardware and software) and a sales or industry co-founder who knows service-business owners. The plan is off-the-shelf hardware and custom software, then a first paid pilot in roughly three to six months.
 
-## Core proof points
+## What to say about competitors
 
-- Passive capture: take the badge in the morning, dock it at night
-- Nothing installed in the field: no tags, beacons, vehicle trackers, or data plans
-- Labor type (driving, equipment, hand work) recognized from motion and vibration
-- Audio is never recorded
-- Dashboards built for payroll, job costing, and scheduling decisions
+Close competitors exist: ZeroBadge, XGen, Momentum CrewID, and phone geofence apps such as Jobber, Workyard, and Timeero. The open gap is a truly zero-step badge, the whole day per person, and a record the worker trusts or owns.
+
+## Open questions to leave open
+
+- Who pays for the device first.
+- The final pitch.
 
 ## Tone examples
 
 ### Preferred
 
-- “Every site visit and how the time was spent, ready by end of day.”
-- “Built for real routes, weather, and crew turnover.”
-- “A verified record of the day, with no extra paperwork.”
+- "True minutes on the property, including the drive and the shop."
+- "A record the worker owns."
+- "An idea. Nothing built yet."
 
 ### Avoid
 
-- “Revolutionary AI transformation for landscaping.”
-- “Guaranteed perfect data everywhere instantly.”
-- “Zero-effort magic automation.”
+- "Revolutionary AI transformation for landscaping."
+- "Guaranteed perfect data everywhere instantly."
+- "Zero-effort magic automation."
+- Any customer count, revenue, or date that has not happened.
+- GPS, truck tracking, equipment tags, a shop dock, or labor-type classification as the product.

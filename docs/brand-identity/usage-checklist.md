@@ -12,15 +12,15 @@ Use this before publishing decks, one-pagers, landing pages, and pilot docs.
 
 ## Message checks
 
-- Claims are evidence-based and realistic
-- Language is direct and operational
-- Audience value is explicit (owner, manager, crew)
-- “No manual entry” and “verified truth” are framed accurately
+- Claims match research stage: no product, prototype, customers, or traction numbers
+- Language is direct and plain
+- Audience value is explicit (owner, crew, co-founder)
+- The pitch is labeled as a candidate when that line is used
 
 ## Content checks
 
-- Pilot state is labeled honestly when appropriate
-- Hardware references match technical docs
-- Pricing/context avoids over-promising
-- Terminology is consistent: badge, dock, shop, shift log, reconstruction, site visit, dashboard
-- No references to equipment tags, GPS, or cellular as part of Actual (dropped October 2026)
+- Research stage is stated in plain language
+- Hardware is described as a plan: off-the-shelf hardware, custom software
+- No price, fee, or device cost unless Greg has published one
+- Terminology for the current idea: badge, timecard, minutes, drive time, shop time, record the worker owns
+- Do not present GPS, truck tracking, equipment tags, a shop dock, badge readers, or labor-type classification as the current idea

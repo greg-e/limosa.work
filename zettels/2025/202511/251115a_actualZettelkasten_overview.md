@@ -7,6 +7,8 @@ tags:
   - knowledge-base
 ---
 
+> **Earlier notes (2026-11-11).** This file keeps older thinking, including equipment tags, GPS, a shop dock, badge readers, and truck tracking. That is not the current idea. The current idea is on the [home page](/).
+
 # Actual Zettelkasten Overview
 Version: 1.0
 Author: bruh

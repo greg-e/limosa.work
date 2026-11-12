@@ -8,6 +8,8 @@ tags:
   - actual
 ---
 
+> **Earlier notes (2026-11-11).** This note is older thinking about Actual. It is not the current idea. The current idea is on the [home page](/).
+
 # Applying Self-Determination Theory to Actual
 
 ## 1. The Challenge with Guided Motivation (Extrinsic)
