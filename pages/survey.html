@@ -13,11 +13,8 @@ permalink: /pages/survey.html
     </p>
   </header>
 
-  <!--
-    Set data-endpoint to a URL that accepts a JSON POST (Formspree, an Azure Logic App
-    HTTP trigger, etc.). While it is empty, submitting opens an email with the answers filled in.
-  -->
-  <form id="time-survey" class="survey-form" data-endpoint="" data-fallback-email="greg@limosa.work" novalidate>
+  <!-- Posts to site.survey_endpoint. If that request fails, the browser opens the fallback email. -->
+  <form id="time-survey" class="survey-form" data-endpoint="{{ site.survey_endpoint | escape }}" data-fallback-email="greg@limosa.work" novalidate>
 
     <fieldset class="survey-q">
       <legend><span class="survey-num">1</span>What's your role?</legend>

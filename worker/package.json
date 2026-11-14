@@ -1,0 +1,8 @@
+{
+  "name": "limosa-survey-worker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}
