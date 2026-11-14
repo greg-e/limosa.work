@@ -280,6 +280,6 @@ test("the page keeps its questions and points at the configured endpoint", () =>
     assert.equal(html.includes(line), true, line);
   }
   assert.match(html, /data-endpoint="\{\{ site\.survey_endpoint \| escape \}\}"/);
-  assert.match(config, /survey_endpoint:\s*"https:\/\/survey\.limosa\.work\/responses"/);
+  assert.match(config, /survey_endpoint:\s*"https:\/\/limosa-survey\.limosa\.workers\.dev\/responses"/);
   assert.match(config, /^ {2}- worker$/m);
 });

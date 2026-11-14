@@ -25,7 +25,7 @@ npx wrangler@4 login
 npx wrangler@4 d1 create limosa-survey
 ```
 
-Copy the printed `database_id` into `wrangler.toml`, replacing the placeholder id. Then create the tables and the export secret. Wrangler will prompt for the token; paste it so it is not stored in your shell history.
+`wrangler.toml` already has the D1 database id for this account. Database ids are not secret. Create the tables if you have not, and set the export secret. Wrangler will prompt for the token; paste it so it is not stored in your shell history.
 
 ```bash
 npx wrangler@4 d1 execute limosa-survey --remote --file=schema.sql
@@ -34,21 +34,21 @@ npx wrangler@4 secret put EXPORT_TOKEN
 npx wrangler@4 deploy
 ```
 
-`wrangler deploy` prints a URL like `https://limosa-survey.<account>.workers.dev`. The submit endpoint is that origin plus `/responses`.
+The deployed Worker is at `https://limosa-survey.limosa.workers.dev`. The submit endpoint is `https://limosa-survey.limosa.workers.dev/responses`.
 
 Check it:
 
 ```bash
-curl -sS https://limosa-survey.<account>.workers.dev/health
+curl -sS https://limosa-survey.limosa.workers.dev/health
 ```
 
 A healthy Worker returns `{"ok":true}`.
 
 ## Point the site at it
 
-The form reads `survey_endpoint` in the repo root `_config.yml`. It is set to `https://survey.limosa.work/responses`. Make that URL reach this Worker, or replace it with the `workers.dev` URL from `wrangler deploy` (keep the `/responses` path) and push to `main`. GitHub Pages rebuilds the site.
+The form reads `survey_endpoint` in the repo root `_config.yml`. It is set to `https://limosa-survey.limosa.workers.dev/responses`, the deployed Worker. GitHub Pages picks that up when this change is on `main`.
 
-Until that URL answers, the browser cannot save the response. Submitting then shows an error and opens the email draft instead of the thank-you screen. Answers are not dropped: they are in that draft. After the Worker is live, a successful save shows the thank-you screen.
+A successful save shows the thank-you screen. If that URL does not answer, submitting shows an error and opens the email draft instead. The answers are in that draft.
 
 ### Custom hostname
 
@@ -68,7 +68,7 @@ CSV, using the same token you set as `EXPORT_TOKEN`:
 curl -sS \
   -H "Authorization: Bearer $EXPORT_TOKEN" \
   -o survey-responses.csv \
-  https://limosa-survey.<account>.workers.dev/export.csv
+  https://limosa-survey.limosa.workers.dev/export.csv
 ```
 
 Do not put the token in the URL. A wrong or missing token gets `401`. The file opens in a spreadsheet; `created_at` is the first data column after `id`.

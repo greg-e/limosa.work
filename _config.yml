@@ -8,7 +8,7 @@ plugins:
   - jekyll-sitemap
 
 # Where the survey form POSTs. See worker/README.md.
-survey_endpoint: "https://survey.limosa.work/responses"
+survey_endpoint: "https://limosa-survey.limosa.workers.dev/responses"
 
 # `exclude` replaces Jekyll's defaults, so the defaults are repeated here.
 # `worker` is the survey backend and must not be published with the site.

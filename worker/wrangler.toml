@@ -1,13 +1,14 @@
 name = "limosa-survey"
 main = "src/index.js"
 compatibility_date = "2026-11-01"
+workers_dev = true
+preview_urls = false
 
-# Create the database, then replace the id below with the one wrangler prints:
-#   npx wrangler d1 create limosa-survey
+# D1 database ids are not secret.
 [[d1_databases]]
 binding = "DB"
 database_name = "limosa-survey"
-database_id = "00000000-0000-0000-0000-000000000000"
+database_id = "e5905717-1cc8-489e-823f-e9766353b210"
 
 # EXPORT_TOKEN is a secret, not a var. Set it with:
 #   npx wrangler secret put EXPORT_TOKEN
