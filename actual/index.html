@@ -31,7 +31,7 @@
     <div class="actual-page">
       <div class="actual-container" style="padding-top: 1.25rem; padding-bottom: 0;">
         <p class="actual-card-body">
-          The principles behind Actual, one card each. Tap a card to read why it matters and how we apply it.
+          The principles behind Actual. Tap a card to read why it matters and how we apply it.
         </p>
       </div>
     </div>
@@ -39,10 +39,18 @@
     <div
       id="root"
       data-cards-url="/assets/actual-deck/cards.json"
-      data-logic-app-url=""
     ></div>
     <script>
       (() => {
+        // Keep the deck's search bar pinned just below the sticky site header.
+        const header = document.querySelector('.site-header');
+        if (header) {
+          const setHeaderHeight = () =>
+            document.documentElement.style.setProperty('--site-header-h', header.offsetHeight + 'px');
+          setHeaderHeight();
+          if (window.ResizeObserver) new ResizeObserver(setHeaderHeight).observe(header);
+        }
+
         const toggle = document.querySelector('.nav-toggle');
         const menu = document.getElementById('site-menu');
         if (!toggle || !menu) return;

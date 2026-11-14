@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "https://esm.sh/react@18.2.0";
+import React, { useEffect, useMemo, useState } from "https://esm.sh/react@18.2.0";
 import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";
 import htm from "https://esm.sh/htm@3.1.1";
 import {
@@ -9,13 +9,10 @@ import {
   Trash2,
   Rotate3D,
   FlipHorizontal2,
-  Edit3,
-  Save,
   X,
   Play,
   ArrowLeft,
   ArrowRight,
-  Download,
   ChevronDown,
   ChevronUp
 } from "https://esm.sh/lucide-react@0.441.0?deps=react@18.2.0";
@@ -24,121 +21,9 @@ const html = htm.bind(React.createElement);
 
 const rootElement = document.getElementById("root");
 const cardsDataUrl = rootElement?.dataset?.cardsUrl;
-const rootLogicAppUrl = rootElement?.dataset?.logicAppUrl;
 const CARDS_URL = cardsDataUrl
   ? new URL(cardsDataUrl, window.location.href)
   : new URL("../../assets/actual-deck/cards.json", import.meta.url);
-
-const STALE_AFTER_MS = 2 * 60 * 1000;
-const SAVE_VERIFY_TIMEOUT_MS = 20000;
-const SAVE_VERIFY_INTERVAL_MS = 1500;
-
-function formatTimeLabel(timestampMs) {
-  if (!timestampMs) return "not loaded";
-  return new Date(timestampMs).toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit"
-  });
-}
-
-function formatAgeLabel(ageMs) {
-  if (ageMs == null) return "";
-  const totalSeconds = Math.floor(ageMs / 1000);
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  if (minutes > 0) {
-    return `${minutes}m ${seconds}s`;
-  }
-  return `${seconds}s`;
-}
-
-function normalizeString(value) {
-  return typeof value === "string" ? value.trim() : "";
-}
-
-function normalizeStringList(values) {
-  if (!Array.isArray(values)) return [];
-  return values.map((value) => normalizeString(value)).filter(Boolean);
-}
-
-function cardsMatchForVerification(expectedCard, candidateCard) {
-  if (!expectedCard || !candidateCard) return false;
-  if (expectedCard.id !== candidateCard.id) return false;
-
-  const expectedHow = normalizeStringList(expectedCard.how);
-  const candidateHow = normalizeStringList(candidateCard.how);
-  const expectedAudiences = normalizeStringList(expectedCard.audiences);
-  const candidateAudiences = normalizeStringList(candidateCard.audiences);
-  const expectedRelated = normalizeStringList(expectedCard.related);
-  const candidateRelated = normalizeStringList(candidateCard.related);
-
-  return (
-    normalizeString(expectedCard.family) === normalizeString(candidateCard.family) &&
-    normalizeString(expectedCard.title) === normalizeString(candidateCard.title) &&
-    normalizeString(expectedCard.quote) === normalizeString(candidateCard.quote) &&
-    normalizeString(expectedCard.tagline) === normalizeString(candidateCard.tagline) &&
-    normalizeString(expectedCard.why) === normalizeString(candidateCard.why) &&
-    normalizeString(expectedCard.reflection) === normalizeString(candidateCard.reflection) &&
-    JSON.stringify(expectedHow) === JSON.stringify(candidateHow) &&
-    JSON.stringify(expectedAudiences) === JSON.stringify(candidateAudiences) &&
-    JSON.stringify(expectedRelated) === JSON.stringify(candidateRelated)
-  );
-}
-
-async function verifyCardPersistence(targetCard) {
-  if (!targetCard?.id) {
-    return false;
-  }
-
-  const deadline = Date.now() + SAVE_VERIFY_TIMEOUT_MS;
-
-  while (Date.now() < deadline) {
-    try {
-      const requestUrl = new URL(CARDS_URL.toString());
-      requestUrl.searchParams.set("_ts", String(Date.now()));
-      const response = await fetch(requestUrl.toString(), {
-        cache: "no-store"
-      });
-      if (response.ok) {
-        const data = await response.json();
-        if (Array.isArray(data)) {
-          const candidate = data.find((entry) => entry?.id === targetCard.id);
-          if (cardsMatchForVerification(targetCard, candidate)) {
-            return true;
-          }
-        }
-      }
-    } catch (error) {
-      // Ignore transient fetch failures while polling propagation.
-    }
-
-    await new Promise((resolve) => window.setTimeout(resolve, SAVE_VERIFY_INTERVAL_MS));
-  }
-
-  return false;
-}
-
-function getConfiguredLogicAppUrl() {
-  const queryParams = new URLSearchParams(window.location.search);
-  const queryLogicAppUrl = queryParams.get("logic_app_url");
-
-  if (queryLogicAppUrl && queryLogicAppUrl.trim()) {
-    localStorage.setItem("logic_app_url", queryLogicAppUrl.trim());
-
-    // Remove the one-time bootstrap parameter from the address bar.
-    const cleanUrl = new URL(window.location.href);
-    cleanUrl.searchParams.delete("logic_app_url");
-    window.history.replaceState({}, "", cleanUrl.toString());
-  }
-
-  return (
-    localStorage.getItem("logic_app_url") ||
-    window.ACTUAL_DECK_LOGIC_APP_URL ||
-    rootLogicAppUrl ||
-    ""
-  );
-}
 
 const FAMILY_META = {
   Language: { color: "bg-sky-700", accent: "text-sky-100" },
@@ -154,13 +39,7 @@ const FAMILY_META = {
   Outcome: { color: "bg-orange-700", accent: "text-orange-100" },
   Metric: { color: "bg-violet-800", accent: "text-violet-100" },
   Principles: { color: "bg-fuchsia-800", accent: "text-fuchsia-100" },
-  Vision: {
-    color: "bg-white",
-    accent: "text-neutral-700",
-    border: "border",
-    text: "text-neutral-900",
-    editAction: "text-black/70 hover:text-black"
-  }
+  Vision: { color: "bg-slate-800", accent: "text-slate-100" }
 };
 
 function canonicalFamilyKey(value) {
@@ -225,9 +104,9 @@ function Chip({ children, onClick, active }) {
   return html`<button onClick=${onClick} className=${classes}>${children}</button>`;
 }
 
-function Header({ query, setQuery, audience, setAudience, onClearStack, onNewCard, onConfigureSave, saveConnected }) {
+function Header({ query, setQuery, audience, setAudience, onClearStack }) {
   return html`
-    <div className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-black/10">
+    <div className="sticky z-10 bg-white/90 backdrop-blur border-b border-black/10" style=${{ top: "var(--site-header-h, 0px)" }}>
       <div className="px-3 py-2 flex items-center gap-2">
         <div className="flex items-center gap-2 flex-1 bg-black/5 rounded-xl px-3 py-2">
           <${Search} size=${18} />
@@ -251,25 +130,10 @@ function Header({ query, setQuery, audience, setAudience, onClearStack, onNewCar
           </select>
         </div>
         <button
-          onClick=${onNewCard}
-          className="inline-flex items-center gap-1 bg-emerald-600 text-white text-xs px-3 py-2 rounded-xl"
-        >
-          <${Plus} size=${14} /> New Card
-        </button>
-        <button
           onClick=${onClearStack}
           className="ml-1 inline-flex items-center gap-1 bg-red-600 text-white text-xs px-3 py-2 rounded-xl"
         >
           <${Trash2} size=${14} /> Clear
-        </button>
-        <button
-          onClick=${onConfigureSave}
-          className=${`ml-1 inline-flex items-center gap-1 text-xs px-3 py-2 rounded-xl ${
-            saveConnected ? "bg-blue-600 text-white" : "bg-amber-500 text-black"
-          }`}
-          title="Configure Logic App save endpoint"
-        >
-          <${Save} size=${14} /> ${saveConnected ? "Save Connected" : "Connect Save"}
         </button>
       </div>
     </div>
@@ -295,16 +159,24 @@ function FamilyFilters({ families, active, setActive }) {
   `;
 }
 
-function Card({ card, onAdd, onEdit }) {
+function cardAnchorId(id) {
+  return `card-${id}`;
+}
+
+function Card({ card, onAdd, highlighted }) {
   const [flipped, setFlipped] = useState(false);
   const meta = getFamilyMeta(card.family);
   const frontTextClass = meta.text || "text-white";
-  const editActionClass = meta.editAction || "text-white/80 hover:text-white";
   const frontClass = `absolute inset-0 rounded-2xl p-3 border ${
     meta.border || "border-black/10"
   } ${meta.color || "bg-neutral-800"} ${frontTextClass} [backface-visibility:hidden] flex flex-col`;
   return html`
-    <div className="group [perspective:1000px]">
+    <div
+      id=${cardAnchorId(card.id)}
+      className=${`group [perspective:1000px] scroll-mt-24 rounded-2xl transition-shadow duration-500 ${
+        highlighted ? "ring-4 ring-amber-400 ring-offset-2" : ""
+      }`}
+    >
       <div
         className="relative h-56 w-full cursor-pointer [transform-style:preserve-3d] transition-transform duration-500"
         onClick=${() => setFlipped((current) => !current)}
@@ -322,7 +194,7 @@ function Card({ card, onAdd, onEdit }) {
             : null}
           <div className="text-lg font-semibold leading-tight">${card.title}</div>
           <div className=${`text-[12px] mt-1 ${meta.accent || "text-white/70"}`}>${card.tagline}</div>
-          <div className="mt-auto flex items-center justify-between pt-2">
+          <div className="mt-auto flex items-center pt-2">
             <button
               onClick=${(e) => {
                 e.stopPropagation();
@@ -331,15 +203,6 @@ function Card({ card, onAdd, onEdit }) {
               className="text-xs bg-white text-black px-3 py-1 rounded-lg inline-flex items-center gap-1"
             >
               <${Plus} size=${14} /> Add to Stack
-            </button>
-            <button
-              onClick=${(e) => {
-                e.stopPropagation();
-                onEdit(card.id);
-              }}
-              className=${`text-xs inline-flex items-center gap-1 ${editActionClass}`}
-            >
-              <${Edit3} size=${14} /> Edit
             </button>
           </div>
         </div>
@@ -361,7 +224,7 @@ function Card({ card, onAdd, onEdit }) {
   `;
 }
 
-function Stack({ ids, cardMap, onRemove, onEdit, onPresent, collapsed, onToggleCollapse }) {
+function Stack({ ids, cardMap, onRemove, onPresent, collapsed, onToggleCollapse }) {
   return html`
     <div className="p-3 border-t border-black/10 bg-white">
       <div className="flex items-center justify-between">
@@ -401,9 +264,6 @@ function Stack({ ids, cardMap, onRemove, onEdit, onPresent, collapsed, onToggleC
                   <div className="text-[10px] uppercase tracking-wider text-black/60">${card.family}</div>
                   <div className="text-[13px] font-semibold leading-snug">${card.title}</div>
                   <div className="mt-2 flex items-center gap-3 text-[11px]">
-                    <button onClick=${() => onEdit(id)} className="text-blue-600 inline-flex items-center gap-1">
-                      <${Edit3} size=${12} /> Edit
-                    </button>
                     <button onClick=${() => onRemove(id)} className="text-red-600 inline-flex items-center gap-1">
                       <${Trash2} size=${12} /> Remove
                     </button>
@@ -412,226 +272,6 @@ function Stack({ ids, cardMap, onRemove, onEdit, onPresent, collapsed, onToggleC
               `;
             })}
           </div>`}
-    </div>
-  `;
-}
-
-function CardEditor({ initialCard, isEditing, onSave, onCancel, existingIds, onDownload, defaultAudiences = [] }) {
-  const [form, setForm] = useState(() => ({
-    id: initialCard?.id || "",
-    title: initialCard?.title || "",
-    family: initialCard?.family || "Language",
-    quote: initialCard?.quote || "",
-    tagline: initialCard?.tagline || "",
-    why: initialCard?.why || "",
-    how: (initialCard?.how || []).join("\n"),
-    reflection: initialCard?.reflection || "",
-    audiences: (initialCard?.audiences || (!isEditing ? defaultAudiences : [])).join(", "),
-    related: (initialCard?.related || []).join(", ")
-  }));
-  const [error, setError] = useState("");
-  const [saveStatus, setSaveStatus] = useState("");
-
-  useEffect(() => {
-    setForm({
-      id: initialCard?.id || "",
-      title: initialCard?.title || "",
-      family: initialCard?.family || "Language",
-      quote: initialCard?.quote || "",
-      tagline: initialCard?.tagline || "",
-      why: initialCard?.why || "",
-      how: (initialCard?.how || []).join("\n"),
-      reflection: initialCard?.reflection || "",
-      audiences: (initialCard?.audiences || (!isEditing ? defaultAudiences : [])).join(", "),
-      related: (initialCard?.related || []).join(", ")
-    });
-    setError("");
-    setSaveStatus("");
-  }, [initialCard, isEditing, defaultAudiences]);
-
-  function handleChange(field, value) {
-    setForm((current) => ({ ...current, [field]: value }));
-  }
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    const id = form.id.trim();
-    const family = form.family.trim();
-    const title = form.title.trim();
-
-    if (!id) {
-      setError("Card id is required.");
-      return;
-    }
-    if (!family) {
-      setError("Family is required.");
-      return;
-    }
-    if (!title) {
-      setError("Title is required.");
-      return;
-    }
-    if (!isEditing && existingIds && typeof existingIds.has === "function" && existingIds.has(id)) {
-      setError("Choose a unique id for the new card.");
-      return;
-    }
-
-    const how = form.how
-      .split("\n")
-      .map((line) => line.trim())
-      .filter(Boolean);
-    const audiences = form.audiences
-      .split(",")
-      .map((entry) => entry.trim())
-      .filter(Boolean);
-    const related = form.related
-      .split(",")
-      .map((entry) => entry.trim())
-      .filter(Boolean);
-
-    setSaveStatus("Saving...");
-    const saveAccepted = onSave({
-      ...initialCard,
-      id,
-      family,
-      title,
-      quote: form.quote.trim(),
-      tagline: form.tagline.trim(),
-      why: form.why.trim(),
-      how,
-      reflection: form.reflection.trim(),
-      audiences,
-      related
-    });
-
-    // Save can be deferred when stale data requires explicit overwrite confirmation.
-    if (saveAccepted === false) {
-      setSaveStatus("");
-    }
-  }
-
-  return html`
-    <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center px-4 py-8">
-      <div className="bg-white rounded-2xl shadow-xl max-w-3xl w-full max-h-full overflow-hidden flex flex-col">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-black/10">
-          <div className="text-sm font-semibold">${isEditing ? "Edit card" : "Create card"}</div>
-          <div className="flex items-center gap-2">
-            ${saveStatus
-              ? html`<span className="text-xs text-green-600 font-medium">${saveStatus}</span>`
-              : null}
-            <button
-              type="button"
-              onClick=${onCancel}
-              className="text-black/60 hover:text-black inline-flex items-center justify-center"
-            >
-              <${X} size=${18} />
-            </button>
-          </div>
-        </div>
-        <form className="flex-1 overflow-y-auto px-4 py-3 space-y-3" onSubmit=${handleSubmit}>
-          ${error
-            ? html`<div className="text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">${error}</div>`
-            : null}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <label className="flex flex-col gap-1 text-xs font-medium text-black/70">
-              <span>Card id</span>
-              <input
-                className="border border-black/20 rounded-lg px-3 py-2 text-sm"
-                value=${form.id}
-                onChange=${(event) => handleChange("id", event.target.value)}
-                disabled=${isEditing}
-              />
-            </label>
-            <label className="flex flex-col gap-1 text-xs font-medium text-black/70">
-              <span>Family</span>
-              <input
-                className="border border-black/20 rounded-lg px-3 py-2 text-sm"
-                value=${form.family}
-                onChange=${(event) => handleChange("family", event.target.value)}
-              />
-            </label>
-          </div>
-          <label className="flex flex-col gap-1 text-xs font-medium text-black/70">
-            <span>Title</span>
-            <input
-              className="border border-black/20 rounded-lg px-3 py-2 text-sm"
-              value=${form.title}
-              onChange=${(event) => handleChange("title", event.target.value)}
-            />
-          </label>
-          <label className="flex flex-col gap-1 text-xs font-medium text-black/70">
-            <span>Quote</span>
-            <input
-              className="border border-black/20 rounded-lg px-3 py-2 text-sm"
-              value=${form.quote}
-              onChange=${(event) => handleChange("quote", event.target.value)}
-            />
-          </label>
-          <label className="flex flex-col gap-1 text-xs font-medium text-black/70">
-            <span>Tagline</span>
-            <input
-              className="border border-black/20 rounded-lg px-3 py-2 text-sm"
-              value=${form.tagline}
-              onChange=${(event) => handleChange("tagline", event.target.value)}
-            />
-          </label>
-          <label className="flex flex-col gap-1 text-xs font-medium text-black/70">
-            <span>Why</span>
-            <textarea
-              className="border border-black/20 rounded-lg px-3 py-2 text-sm min-h-[96px]"
-              value=${form.why}
-              onChange=${(event) => handleChange("why", event.target.value)}
-            ></textarea>
-          </label>
-          <label className="flex flex-col gap-1 text-xs font-medium text-black/70">
-            <span>How (one bullet per line)</span>
-            <textarea
-              className="border border-black/20 rounded-lg px-3 py-2 text-sm min-h-[96px]"
-              value=${form.how}
-              onChange=${(event) => handleChange("how", event.target.value)}
-            ></textarea>
-          </label>
-          <label className="flex flex-col gap-1 text-xs font-medium text-black/70">
-            <span>Reflection</span>
-            <input
-              className="border border-black/20 rounded-lg px-3 py-2 text-sm"
-              value=${form.reflection}
-              onChange=${(event) => handleChange("reflection", event.target.value)}
-            />
-          </label>
-          <label className="flex flex-col gap-1 text-xs font-medium text-black/70">
-            <span>Audiences (comma separated)</span>
-            <input
-              className="border border-black/20 rounded-lg px-3 py-2 text-sm"
-              value=${form.audiences}
-              onChange=${(event) => handleChange("audiences", event.target.value)}
-            />
-          </label>
-          <label className="flex flex-col gap-1 text-xs font-medium text-black/70">
-            <span>Related card ids (comma separated)</span>
-            <input
-              className="border border-black/20 rounded-lg px-3 py-2 text-sm"
-              value=${form.related}
-              onChange=${(event) => handleChange("related", event.target.value)}
-            />
-          </label>
-          <div className="flex items-center justify-end gap-2 pt-2 border-t border-black/10">
-            <button
-              type="button"
-              onClick=${onCancel}
-              className="text-sm px-3 py-2 rounded-lg border border-black/10"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="text-sm inline-flex items-center gap-1 bg-black text-white px-4 py-2 rounded-lg"
-            >
-              <${Save} size=${16} /> ${isEditing ? "Save changes" : "Create card"}
-            </button>
-          </div>
-        </form>
-      </div>
     </div>
   `;
 }
@@ -721,138 +361,6 @@ function StackPresentation({ cards, index, onClose, onPrev, onNext }) {
   `;
 }
 
-function StaleSaveModal({ isOpen, ageLabel, loadedAtLabel, onCancel, onConfirm }) {
-  const modalRef = useRef(null);
-  const cancelButtonRef = useRef(null);
-  const lastActiveElementRef = useRef(null);
-
-  useEffect(() => {
-    if (!isOpen) {
-      return undefined;
-    }
-
-    lastActiveElementRef.current = document.activeElement;
-    const previousBodyOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    const focusTimer = window.setTimeout(() => {
-      if (cancelButtonRef.current) {
-        cancelButtonRef.current.focus();
-      }
-    }, 0);
-
-    function handleKeyDown(event) {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        onCancel();
-        return;
-      }
-
-      if (event.key !== "Tab") {
-        return;
-      }
-
-      const modalElement = modalRef.current;
-      if (!modalElement) {
-        return;
-      }
-
-      const focusables = modalElement.querySelectorAll(
-        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-      );
-      if (!focusables.length) {
-        event.preventDefault();
-        return;
-      }
-
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-      const active = document.activeElement;
-
-      if (event.shiftKey && active === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && active === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    }
-
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.clearTimeout(focusTimer);
-      document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = previousBodyOverflow;
-      if (lastActiveElementRef.current && typeof lastActiveElementRef.current.focus === "function") {
-        lastActiveElementRef.current.focus();
-      }
-    };
-  }, [isOpen, onCancel]);
-
-  if (!isOpen) return null;
-
-  return html`
-    <div
-      className="fixed inset-0 z-[60] bg-black/60 flex items-center justify-center px-4 py-8"
-      onClick=${(event) => {
-        if (event.target === event.currentTarget) {
-          onCancel();
-        }
-      }}
-    >
-      <div
-        ref=${modalRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="stale-save-modal-title"
-        aria-describedby="stale-save-modal-description"
-        tabIndex="-1"
-        className="bg-white rounded-2xl shadow-xl max-w-lg w-full border border-amber-300 overflow-hidden"
-      >
-        <div className="px-4 py-3 border-b border-amber-200 bg-amber-50">
-          <div id="stale-save-modal-title" className="text-sm font-semibold text-amber-900">Stale data detected</div>
-        </div>
-        <div id="stale-save-modal-description" className="px-4 py-4 text-sm text-black/80 space-y-3">
-          <p>
-            This page is using older data${ageLabel ? ` (${ageLabel} old)` : ""}${loadedAtLabel
-              ? ` loaded at ${loadedAtLabel}`
-              : ""}.
-          </p>
-          <p>
-            Saving now can overwrite newer edits from another session. Reload first for the safest path, or force
-            overwrite if this version is intentional.
-          </p>
-        </div>
-        <div className="px-4 py-3 border-t border-black/10 flex items-center justify-end gap-2">
-          <button
-            ref=${cancelButtonRef}
-            type="button"
-            onClick=${onCancel}
-            className="text-sm px-3 py-2 rounded-lg border border-black/10"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            onClick=${() => window.location.reload()}
-            className="text-sm px-3 py-2 rounded-lg border border-black/10"
-          >
-            Reload now
-          </button>
-          <button
-            type="button"
-            onClick=${onConfirm}
-            className="text-sm px-4 py-2 rounded-lg bg-amber-700 text-white"
-          >
-            Force overwrite
-          </button>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
 function ActualDeckApp() {
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -862,21 +370,8 @@ function ActualDeckApp() {
   const [familyFilter, setFamilyFilter] = useState("All");
   const [stack, setStack] = useState([]);
   const [isStackCollapsed, setIsStackCollapsed] = useState(false);
-  const [isEditorOpen, setIsEditorOpen] = useState(false);
-  const [editorCard, setEditorCard] = useState(null);
-  const [editingExisting, setEditingExisting] = useState(false);
   const [isPresenting, setIsPresenting] = useState(false);
   const [presentationIndex, setPresentationIndex] = useState(0);
-  const [saveConnected, setSaveConnected] = useState(() => {
-    const logicAppUrl = getConfiguredLogicAppUrl();
-    return Boolean(logicAppUrl || localStorage.getItem("github_token"));
-  });
-  const [cardsLoadedAt, setCardsLoadedAt] = useState(0);
-  const [cardsLastModified, setCardsLastModified] = useState("");
-  const [clockTick, setClockTick] = useState(Date.now());
-  const [pendingSaveCard, setPendingSaveCard] = useState(null);
-  const [showStaleSaveModal, setShowStaleSaveModal] = useState(false);
-  const [saveNotice, setSaveNotice] = useState(null);
 
   useEffect(() => {
     // Enforce the intended initial preset even if the browser restores a prior form value.
@@ -886,13 +381,6 @@ function ActualDeckApp() {
     return () => window.clearTimeout(timerId);
   }, []);
 
-  useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      setClockTick(Date.now());
-    }, 30000);
-    return () => window.clearInterval(intervalId);
-  }, []);
-
   const cardMap = useMemo(() => {
     const map = {};
     cards.forEach((card) => {
@@ -900,8 +388,6 @@ function ActualDeckApp() {
     });
     return map;
   }, [cards]);
-
-  const existingIds = useMemo(() => new Set(cards.map((card) => card.id)), [cards]);
 
   const visibleCards = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -957,8 +443,6 @@ function ActualDeckApp() {
         }
         if (!cancelled) {
           setCards(data);
-          setCardsLoadedAt(Date.now());
-          setCardsLastModified(response.headers.get("last-modified") || "");
         }
       } catch (error) {
         if (!cancelled) {
@@ -996,6 +480,50 @@ function ActualDeckApp() {
     }
   }, [stackCards, presentationIndex]);
 
+  // Deep links: /actual/#<card id> scrolls to that card and highlights it.
+  const [hashCardId, setHashCardId] = useState(() => decodeURIComponent(window.location.hash.slice(1)));
+  const [highlightedId, setHighlightedId] = useState("");
+
+  useEffect(() => {
+    const onHashChange = () => setHashCardId(decodeURIComponent(window.location.hash.slice(1)));
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+
+  useEffect(() => {
+    if (isLoading || !hashCardId || !cardMap[hashCardId]) {
+      return undefined;
+    }
+    if (!visibleCards.some((card) => card.id === hashCardId)) {
+      setQuery("");
+      setAudience("All");
+      setFamilyFilter("All");
+      return undefined;
+    }
+    const el = document.getElementById(cardAnchorId(hashCardId));
+    if (!el) {
+      return undefined;
+    }
+    // Jump straight to the card, then correct once in case Tailwind styles or fonts shift the layout.
+    const scrollToCard = () => {
+      const target = document.getElementById(cardAnchorId(hashCardId));
+      if (target) target.scrollIntoView({ behavior: "auto", block: "center" });
+    };
+    window.requestAnimationFrame(scrollToCard);
+    window.setTimeout(scrollToCard, 400);
+    setHighlightedId(hashCardId);
+    setHashCardId("");
+    return undefined;
+  }, [isLoading, hashCardId, cardMap, visibleCards]);
+
+  useEffect(() => {
+    if (!highlightedId) {
+      return undefined;
+    }
+    const timerId = window.setTimeout(() => setHighlightedId(""), 2500);
+    return () => window.clearTimeout(timerId);
+  }, [highlightedId]);
+
   function addToStack(id) {
     setStack((current) => (current.includes(id) ? current : [...current, id]));
   }
@@ -1006,262 +534,6 @@ function ActualDeckApp() {
 
   function clearStack() {
     setStack([]);
-  }
-
-  function downloadCardsJson() {
-    const blob = new Blob([JSON.stringify(cards, null, 2)], {
-      type: "application/json"
-    });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "cards.json";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  }
-
-  function openNewCard() {
-    setEditorCard(null);
-    setEditingExisting(false);
-    setIsEditorOpen(true);
-  }
-
-  function openEditCard(id) {
-    const card = cardMap[id];
-    if (!card) return;
-    setEditorCard(card);
-    setEditingExisting(true);
-    setIsEditorOpen(true);
-  }
-
-  function upsertCard(cardsList, card) {
-    const index = cardsList.findIndex((entry) => entry.id === card.id);
-    if (index >= 0) {
-      const next = [...cardsList];
-      next[index] = card;
-      return next;
-    }
-    return [...cardsList, card];
-  }
-
-  function applyCardSave(card) {
-    const nextCards = upsertCard(cards, card);
-    setCards(nextCards);
-    setIsEditorOpen(false);
-    setEditorCard(null);
-    setEditingExisting(false);
-
-    // Explicitly call save endpoint on every create/edit save action.
-    return saveCardsToAPI(nextCards, card).then((result) => {
-      if (result?.accepted && result?.verified) {
-        setSaveNotice({
-          tone: "success",
-          message: "Saved and verified."
-        });
-      } else if (result?.accepted) {
-        setSaveNotice({
-          tone: "warn",
-          message: "Save accepted, still propagating."
-        });
-      } else {
-        setSaveNotice({
-          tone: "error",
-          message: "Save failed. Changes are local only."
-        });
-      }
-
-      return result;
-    });
-  }
-
-  function handleSaveCard(card) {
-    if (cardsAreStale) {
-      setPendingSaveCard(card);
-      setShowStaleSaveModal(true);
-      return false;
-    }
-
-    applyCardSave(card);
-    return true;
-  }
-
-  function cancelStaleSaveModal() {
-    setShowStaleSaveModal(false);
-    setPendingSaveCard(null);
-  }
-
-  function confirmForceOverwriteSave() {
-    if (!pendingSaveCard) {
-      setShowStaleSaveModal(false);
-      return;
-    }
-
-    const cardToSave = pendingSaveCard;
-    setShowStaleSaveModal(false);
-    setPendingSaveCard(null);
-    applyCardSave(cardToSave);
-  }
-
-  async function saveCardsToAPI(cardsToSave, verificationCard) {
-    const logicAppUrl = getConfiguredLogicAppUrl();
-
-    if (logicAppUrl) {
-      console.info("[SaveDebug] Logic App save start", {
-        target: logicAppUrl,
-        cardCount: Array.isArray(cardsToSave) ? cardsToSave.length : 0
-      });
-      try {
-        const logicAppResponse = await fetch(logicAppUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            cards: cardsToSave,
-            commitMessage: "Update cards via Actual Deck Logic App"
-          })
-        });
-
-        let logicAppBodyPreview = "";
-        try {
-          logicAppBodyPreview = (await logicAppResponse.clone().text()).slice(0, 600);
-        } catch (previewError) {
-          logicAppBodyPreview = `[preview unavailable: ${String(previewError)}]`;
-        }
-
-        console.info("[SaveDebug] Logic App response", {
-          ok: logicAppResponse.ok,
-          status: logicAppResponse.status,
-          statusText: logicAppResponse.statusText,
-          contentType: logicAppResponse.headers.get("content-type") || "",
-          bodyPreview: logicAppBodyPreview
-        });
-
-        if (logicAppResponse.ok) {
-          setSaveConnected(true);
-          console.log("Cards saved via Logic App.");
-          const verified = await verifyCardPersistence(verificationCard);
-          return {
-            accepted: true,
-            verified
-          };
-        }
-
-        const logicAppError = await logicAppResponse.text();
-        console.error("Logic App save failed:", logicAppError);
-      } catch (logicAppException) {
-        console.error("Logic App request failed:", logicAppException);
-      }
-    }
-
-    // Legacy fallback for local testing while Logic App is being configured.
-    try {
-      const token = localStorage.getItem("github_token");
-      console.warn("[SaveDebug] Falling back from Logic App path", {
-        hasLogicAppUrl: Boolean(logicAppUrl),
-        hasGithubToken: Boolean(token)
-      });
-      
-      if (!token) {
-        console.warn("No Logic App URL or GitHub token found. Cards saved locally only.");
-        return {
-          accepted: false,
-          verified: false
-        };
-      }
-
-      const owner = "greg-e";
-      const repo = "limosa.work";
-      const path = "assets/actual-deck/cards.json";
-      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-
-      const getResponse = await fetch(url, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "X-GitHub-Api-Version": "2022-11-28"
-        }
-      });
-
-      let sha = null;
-      if (getResponse.ok) {
-        const fileData = await getResponse.json();
-        sha = fileData.sha;
-      }
-
-      const content = btoa(JSON.stringify(cardsToSave, null, 2));
-      
-      const saveResponse = await fetch(url, {
-        method: "PUT",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "X-GitHub-Api-Version": "2022-11-28",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          message: "Update cards via Actual Deck editor",
-          content: content,
-          sha: sha,
-          committer: {
-            name: "Actual Deck Editor",
-            email: "noreply@actualdeck.local"
-          }
-        })
-      });
-
-      if (saveResponse.ok) {
-        setSaveConnected(true);
-        const result = await saveResponse.json();
-        console.log("Cards saved to GitHub:", result.commit.message);
-        const verified = await verifyCardPersistence(verificationCard);
-        return {
-          accepted: true,
-          verified
-        };
-      } else {
-        const errorData = await saveResponse.json();
-        console.error("Failed to save cards to GitHub:", errorData);
-        if (errorData.message?.includes("token")) {
-          localStorage.removeItem("github_token");
-          setSaveConnected(Boolean(getConfiguredLogicAppUrl()));
-        }
-      }
-    } catch (error) {
-      console.error("Error saving to GitHub:", error);
-    }
-
-    return {
-      accepted: false,
-      verified: false
-    };
-  }
-
-  function configureSaveTarget() {
-    const current = getConfiguredLogicAppUrl();
-    const entered = window.prompt(
-      "Paste Logic App trigger URL (leave blank to clear):",
-      current || ""
-    );
-
-    if (entered === null) {
-      return;
-    }
-
-    const trimmed = entered.trim();
-    if (trimmed) {
-      localStorage.setItem("logic_app_url", trimmed);
-    } else {
-      localStorage.removeItem("logic_app_url");
-    }
-
-    setSaveConnected(Boolean(getConfiguredLogicAppUrl() || localStorage.getItem("github_token")));
-  }
-
-  function closeEditor() {
-    setIsEditorOpen(false);
-    setEditorCard(null);
-    setEditingExisting(false);
   }
 
   function startPresentation() {
@@ -1280,23 +552,6 @@ function ActualDeckApp() {
     setPresentationIndex((current) => (current + 1) % stackCards.length);
   }
 
-  const cardsAgeMs = cardsLoadedAt ? Math.max(0, clockTick - cardsLoadedAt) : null;
-  const cardsAreStale = cardsAgeMs != null && cardsAgeMs > STALE_AFTER_MS;
-  const loadedAtLabel = formatTimeLabel(cardsLoadedAt);
-  const ageLabel = formatAgeLabel(cardsAgeMs);
-
-  useEffect(() => {
-    if (!saveNotice) {
-      return undefined;
-    }
-
-    const timerId = window.setTimeout(() => {
-      setSaveNotice(null);
-    }, 12000);
-
-    return () => window.clearTimeout(timerId);
-  }, [saveNotice]);
-
   return html`
     <div className="min-h-screen bg-neutral-50 text-neutral-900">
       <${Header}
@@ -1305,38 +560,10 @@ function ActualDeckApp() {
         audience=${audience}
         setAudience=${setAudience}
         onClearStack=${clearStack}
-        onNewCard=${openNewCard}
-        onConfigureSave=${configureSaveTarget}
-        saveConnected=${saveConnected}
       />
       <div className="px-3 pt-2 flex items-center gap-2 text-xs text-black/70">
         <${Users2} size=${14} /> Audience preset is <span className="font-semibold">${audience}</span>
       </div>
-      <div className="px-3 pt-1 pb-1 text-xs text-black/70">
-        Cards loaded at <span className="font-semibold">${loadedAtLabel}</span>${ageLabel
-          ? html` <span>(${ageLabel} ago)</span>`
-          : null}${cardsLastModified
-          ? html` <span className="text-black/50">| source last-modified: ${cardsLastModified}</span>`
-          : null}
-      </div>
-      ${cardsAreStale
-        ? html`<div className="mx-3 mb-2 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-xs text-amber-900">
-            Data may be stale. Saves are blocked unless you explicitly confirm a force overwrite.
-          </div>`
-        : null}
-      ${saveNotice
-        ? html`<div
-            className=${`mx-3 mb-2 rounded-lg px-3 py-2 text-xs border ${
-              saveNotice.tone === "success"
-                ? "border-emerald-300 bg-emerald-50 text-emerald-900"
-                : saveNotice.tone === "warn"
-                ? "border-amber-300 bg-amber-50 text-amber-900"
-                : "border-red-300 bg-red-50 text-red-900"
-            }`}
-          >
-            ${saveNotice.message}
-          </div>`
-        : null}
       <${FamilyFilters} families=${families} active=${familyFilter} setActive=${setFamilyFilter} />
       <div className="px-3 pb-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
         ${isLoading
@@ -1352,7 +579,7 @@ function ActualDeckApp() {
                   key=${card.id}
                   card=${card}
                   onAdd=${addToStack}
-                  onEdit=${openEditCard}
+                  highlighted=${highlightedId === card.id}
                 />`
             )
           : html`<div className="text-sm text-black/60 p-6">No cards match the current filters.</div>`}
@@ -1362,23 +589,11 @@ function ActualDeckApp() {
           ids=${stack}
           cardMap=${cardMap}
           onRemove=${removeFromStack}
-          onEdit=${openEditCard}
           onPresent=${startPresentation}
           collapsed=${isStackCollapsed}
           onToggleCollapse=${() => setIsStackCollapsed((current) => !current)}
         />
       </div>
-      ${isEditorOpen
-        ? html`<${CardEditor}
-            initialCard=${editorCard}
-            isEditing=${editingExisting}
-            onSave=${handleSaveCard}
-            onCancel=${closeEditor}
-            existingIds=${existingIds}
-            onDownload=${downloadCardsJson}
-            defaultAudiences=${audience === "All" ? [] : [audience]}
-          />`
-        : null}
       ${isPresenting && stackCards.length
         ? html`<${StackPresentation}
             cards=${stackCards}
@@ -1388,17 +603,6 @@ function ActualDeckApp() {
             onNext=${goNext}
           />`
         : null}
-      <${StaleSaveModal}
-        isOpen=${showStaleSaveModal}
-        ageLabel=${ageLabel}
-        loadedAtLabel=${loadedAtLabel}
-        onCancel=${cancelStaleSaveModal}
-        onConfirm=${confirmForceOverwriteSave}
-      />
-      <div className="sr-only">
-        Draft new content with the in-app editor, download the latest cards JSON, and replace assets/actual-deck/cards.json in source
-        control when you want to publish updates.
-      </div>
     </div>
   `;
 }
