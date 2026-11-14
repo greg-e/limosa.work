@@ -1,5 +1,6 @@
 // Time-tracking survey. Collects answers as JSON and POSTs them to the form's
-// data-endpoint. With no endpoint configured, it opens an email with the answers.
+// data-endpoint. If that request fails, or no endpoint is set, it opens an email
+// with the answers filled in.
 (function () {
   var form = document.getElementById("time-survey");
   if (!form) return;
@@ -84,6 +85,24 @@
     }).join("\n");
   }
 
+  function openMailto(data) {
+    var to = form.getAttribute("data-fallback-email") || "";
+    location.href = "mailto:" + to +
+      "?subject=" + encodeURIComponent("How we track time") +
+      "&body=" + encodeURIComponent(toEmailBody(data));
+  }
+
+  // The email draft keeps the extra context the page already recorded.
+  // The POST sends only the form fields.
+  function payloadForPost(data) {
+    var skip = ["submitted_at", "referrer", "page", "utm_source", "utm_medium", "utm_campaign"];
+    var out = {};
+    Object.keys(data).forEach(function (k) {
+      if (skip.indexOf(k) === -1) out[k] = data[k];
+    });
+    return out;
+  }
+
   form.addEventListener("submit", function (event) {
     event.preventDefault();
     var data = collect();
@@ -102,29 +121,36 @@
 
     var endpoint = (form.getAttribute("data-endpoint") || "").trim();
     if (!endpoint) {
-      var to = form.getAttribute("data-fallback-email");
-      location.href = "mailto:" + to +
-        "?subject=" + encodeURIComponent("How we track time") +
-        "&body=" + encodeURIComponent(toEmailBody(data));
+      openMailto(data);
       showThanks();
       return;
     }
 
     submitBtn.disabled = true;
     setStatus("Sending…");
-    fetch(endpoint, {
+    var controller = typeof AbortController === "function" ? new AbortController() : null;
+    var timer = controller ? setTimeout(function () { controller.abort(); }, 8000) : null;
+    var opts = {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify(data)
-    })
+      body: JSON.stringify(payloadForPost(data)),
+      referrerPolicy: "no-referrer",
+      credentials: "omit"
+    };
+    if (controller) opts.signal = controller.signal;
+    fetch(endpoint, opts)
       .then(function (res) {
         if (!res.ok) throw new Error("HTTP " + res.status);
         showThanks();
       })
       .catch(function () {
         submitBtn.disabled = false;
-        setStatus("Something went wrong sending your answers. Please try again, or email " +
-          form.getAttribute("data-fallback-email") + ".", true);
+        openMailto(data);
+        setStatus("We couldn't save your answers here. Your email app should open with them filled in. Please send that message. If it doesn't, email " +
+          (form.getAttribute("data-fallback-email") || "") + ".", true);
+      })
+      .then(function () {
+        if (timer) clearTimeout(timer);
       });
   });
 })();

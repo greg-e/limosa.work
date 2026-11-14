@@ -7,3 +7,5 @@ vendor/
 .bundle/
 .jekyll-cache/
 _site/
+worker/.wrangler/
+worker/.dev.vars

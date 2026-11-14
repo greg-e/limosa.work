@@ -1,0 +1,14 @@
+name = "limosa-survey"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+workers_dev = true
+preview_urls = false
+
+# D1 database ids are not secret.
+[[d1_databases]]
+binding = "DB"
+database_name = "limosa-survey"
+database_id = "e5905717-1cc8-489e-823f-e9766353b210"
+
+# EXPORT_TOKEN is a secret, not a var. Set it with:
+#   npx wrangler secret put EXPORT_TOKEN
