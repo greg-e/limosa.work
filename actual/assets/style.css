@@ -1,5 +1,4 @@
 :root {
-  color-scheme: light;
   font-family: "Inter", "SF Pro Text", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
@@ -14,4 +13,32 @@ body {
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+/* Dark theme: remap the neutral Tailwind utilities the deck uses.
+   Colored family card fronts and the dark full-screen viewer stay as they are. */
+:root[data-theme="dark"] body {
+  background: var(--bg);
+}
+
+:root[data-theme="dark"] #root .bg-neutral-50 { background-color: var(--bg); }
+:root[data-theme="dark"] #root .text-neutral-900 { color: var(--ink); }
+
+:root[data-theme="dark"] #root .bg-white { background-color: var(--surface); }
+:root[data-theme="dark"] #root .bg-white\/80 { background-color: rgb(22 25 29 / 0.8); }
+:root[data-theme="dark"] #root .bg-white\/90 { background-color: rgb(22 25 29 / 0.9); }
+:root[data-theme="dark"] #root .bg-black\/5 { background-color: rgb(255 255 255 / 0.06); }
+
+:root[data-theme="dark"] #root .text-black { color: var(--ink); }
+:root[data-theme="dark"] #root .text-black\/60 { color: rgb(238 240 242 / 0.6); }
+:root[data-theme="dark"] #root .text-black\/70 { color: rgb(238 240 242 / 0.7); }
+
+:root[data-theme="dark"] #root .border-black { border-color: var(--ink); }
+:root[data-theme="dark"] #root .border-black\/10 { border-color: rgb(255 255 255 / 0.1); }
+:root[data-theme="dark"] #root .border-black\/20 { border-color: rgb(255 255 255 / 0.2); }
+
+/* Solid black controls (active filter chips, family select, flip buttons) invert to light. */
+:root[data-theme="dark"] #root .bg-black.text-white {
+  background-color: var(--ink);
+  color: var(--bg);
 }
