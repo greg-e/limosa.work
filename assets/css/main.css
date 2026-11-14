@@ -188,6 +188,97 @@ a:hover{color:var(--green)}
   margin: 0.2rem 0;
 }
 
+/* Related deck cards: mirrors the card front in /actual/ */
+.actual-for:has(.actual-for-card) {
+  max-width: 52rem;
+}
+
+.actual-for:has(.actual-for-card) ul {
+  list-style: none;
+  padding-left: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .actual-for:has(.actual-for-card) ul {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.actual-for:has(.actual-for-card) li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.actual-for-card {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 9.5rem;
+  padding: 0.75rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #262626;
+  color: #fff;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.actual-for-card:hover,
+.actual-for-card:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+  color: var(--card-text, #fff);
+  text-decoration: none;
+}
+
+.actual-for-card-family {
+  margin-bottom: 0.5rem;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--card-accent, rgba(255, 255, 255, 0.7));
+}
+
+.actual-for-card-quote {
+  margin-bottom: 0.25rem;
+  font-size: 11px;
+  line-height: 1.375;
+  opacity: 0.9;
+}
+
+.actual-for-card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.actual-for-card-tagline {
+  margin-top: 0.25rem;
+  font-size: 12px;
+  color: var(--card-accent, rgba(255, 255, 255, 0.7));
+}
+
+/* Family colors match FAMILY_META in actual/assets/index.js */
+.actual-for-card.family-language       { background: #0369a1; --card-accent: #e0f2fe; }
+.actual-for-card.family-automation     { background: #b45309; --card-accent: #fef3c7; }
+.actual-for-card.family-truth          { background: #1e40af; --card-accent: #dbeafe; }
+.actual-for-card.family-flow           { background: #155e75; --card-accent: #cffafe; }
+.actual-for-card.family-conviviality   { background: #065f46; --card-accent: #d1fae5; }
+.actual-for-card.family-data-integrity { background: #9f1239; --card-accent: #ffe4e6; }
+.actual-for-card.family-design         { background: #134e4a; --card-accent: #ccfbf1; }
+.actual-for-card.family-field-practice { background: #3f6212; --card-accent: #ecfccb; }
+.actual-for-card.family-finance        { background: #3730a3; --card-accent: #e0e7ff; }
+.actual-for-card.family-mechanism      { background: #44403c; --card-accent: #f5f5f4; }
+.actual-for-card.family-outcome        { background: #c2410c; --card-accent: #ffedd5; }
+.actual-for-card.family-metric         { background: #5b21b6; --card-accent: #ede9fe; }
+.actual-for-card.family-principles     { background: #86198f; --card-accent: #fae8ff; }
+.actual-for-card.family-vision         { background: #1e293b; --card-accent: #f1f5f9; }
+
 .actual-points {
   display: grid;
   grid-template-columns: 1fr;
