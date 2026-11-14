@@ -1,0 +1,163 @@
+---
+title: How do you track time?
+layout: default
+permalink: /pages/survey.html
+---
+<link rel="stylesheet" href="/assets/css/survey.css">
+
+<div class="actual-page survey">
+  <header class="survey-intro">
+    <h1 class="actual-hero-title">How do you track time today?</h1>
+    <p class="actual-hero-subtitle">
+      We're talking with field crews and the people who run them before we build Actual. Ten short questions, about three minutes. Every answer is optional.
+    </p>
+  </header>
+
+  <!--
+    Set data-endpoint to a URL that accepts a JSON POST (Formspree, an Azure Logic App
+    HTTP trigger, etc.). While it is empty, submitting opens an email with the answers filled in.
+  -->
+  <form id="time-survey" class="survey-form" data-endpoint="" data-fallback-email="greg@limosa.work" novalidate>
+
+    <fieldset class="survey-q">
+      <legend><span class="survey-num">1</span>What's your role?</legend>
+      <div class="survey-options">
+        <label><input type="radio" name="role" value="Owner or general manager"> Owner or general manager</label>
+        <label><input type="radio" name="role" value="Office, payroll, or accounting"> Office, payroll, or accounting</label>
+        <label><input type="radio" name="role" value="Operations or account manager"> Operations or account manager</label>
+        <label><input type="radio" name="role" value="Crew lead or foreman"> Crew lead or foreman</label>
+        <label><input type="radio" name="role" value="Crew member"> Crew member</label>
+        <label class="survey-other"><input type="radio" name="role" value="Other"> Other <input type="text" name="role_other" aria-label="Other role" placeholder="Tell us"></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="survey-q">
+      <legend><span class="survey-num">2</span>What kind of work does your company do?</legend>
+      <div class="survey-options">
+        <label><input type="checkbox" name="trade" value="Landscape maintenance"> Landscape maintenance</label>
+        <label><input type="checkbox" name="trade" value="Landscape installation or hardscape"> Landscape installation or hardscape</label>
+        <label><input type="checkbox" name="trade" value="Snow and ice"> Snow and ice</label>
+        <label><input type="checkbox" name="trade" value="Tree care"> Tree care</label>
+        <label><input type="checkbox" name="trade" value="Construction or trades"> Construction or trades</label>
+        <label><input type="checkbox" name="trade" value="Cleaning or facilities"> Cleaning or facilities</label>
+        <label class="survey-other"><input type="checkbox" name="trade" value="Other"> Other <input type="text" name="trade_other" aria-label="Other kind of work" placeholder="Tell us"></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="survey-q">
+      <legend><span class="survey-num">3</span>How many people work in the field during your busy season?</legend>
+      <div class="survey-options survey-options--row">
+        <label><input type="radio" name="field_headcount" value="1-5"> 1–5</label>
+        <label><input type="radio" name="field_headcount" value="6-20"> 6–20</label>
+        <label><input type="radio" name="field_headcount" value="21-50"> 21–50</label>
+        <label><input type="radio" name="field_headcount" value="51-200"> 51–200</label>
+        <label><input type="radio" name="field_headcount" value="200+"> 200+</label>
+      </div>
+    </fieldset>
+
+    <fieldset class="survey-q">
+      <legend><span class="survey-num">4</span>How do you record hours today?</legend>
+      <p class="survey-hint">Pick everything you use.</p>
+      <div class="survey-options">
+        <label><input type="checkbox" name="method" value="Paper timesheets"> Paper timesheets</label>
+        <label><input type="checkbox" name="method" value="Punch clock or kiosk at the shop"> Punch clock or kiosk at the shop</label>
+        <label><input type="checkbox" name="method" value="Phone app clock-in"> Phone app clock-in</label>
+        <label><input type="checkbox" name="method" value="GPS or vehicle tracking"> GPS or vehicle tracking</label>
+        <label><input type="checkbox" name="method" value="Crew lead reports hours for the crew"> Crew lead reports hours for the crew</label>
+        <label><input type="checkbox" name="method" value="Spreadsheet"> Spreadsheet</label>
+        <label class="survey-other"><input type="checkbox" name="method" value="Other"> Other <input type="text" name="method_other" aria-label="Other method" placeholder="Tell us"></label>
+      </div>
+      <label class="survey-text">
+        Which software or apps, if any?
+        <input type="text" name="tools" placeholder="e.g. the app name, your payroll system">
+      </label>
+    </fieldset>
+
+    <fieldset class="survey-q">
+      <legend><span class="survey-num">5</span>Do you track time against individual jobs or properties?</legend>
+      <div class="survey-options">
+        <label><input type="radio" name="job_costing" value="Yes, every visit"> Yes, every visit</label>
+        <label><input type="radio" name="job_costing" value="Some jobs or some crews"> Some jobs or some crews</label>
+        <label><input type="radio" name="job_costing" value="We estimate from the schedule"> We estimate from the schedule</label>
+        <label><input type="radio" name="job_costing" value="Total hours only"> Total hours only</label>
+      </div>
+    </fieldset>
+
+    <fieldset class="survey-q">
+      <legend><span class="survey-num">6</span>How much do you trust the hours you get?</legend>
+      <div class="survey-scale" role="radiogroup">
+        <span class="survey-scale-end">Barely</span>
+        <label><input type="radio" name="trust" value="1"><span>1</span></label>
+        <label><input type="radio" name="trust" value="2"><span>2</span></label>
+        <label><input type="radio" name="trust" value="3"><span>3</span></label>
+        <label><input type="radio" name="trust" value="4"><span>4</span></label>
+        <label><input type="radio" name="trust" value="5"><span>5</span></label>
+        <span class="survey-scale-end">Completely</span>
+      </div>
+    </fieldset>
+
+    <fieldset class="survey-q">
+      <legend><span class="survey-num">7</span>What causes the most trouble?</legend>
+      <p class="survey-hint">Pick up to three.</p>
+      <div class="survey-options" data-max="3">
+        <label><input type="checkbox" name="pain" value="Missed or forgotten punches"> Missed or forgotten punches</label>
+        <label><input type="checkbox" name="pain" value="Rounded or guessed hours"> Rounded or guessed hours</label>
+        <label><input type="checkbox" name="pain" value="Payroll corrections after the fact"> Payroll corrections after the fact</label>
+        <label><input type="checkbox" name="pain" value="Disputes over pay"> Disputes over pay</label>
+        <label><input type="checkbox" name="pain" value="No clear cost per job or property"> No clear cost per job or property</label>
+        <label><input type="checkbox" name="pain" value="Drive time and shop time are a blur"> Drive time and shop time are a blur</label>
+        <label><input type="checkbox" name="pain" value="Crews push back on tracking"> Crews push back on tracking</label>
+        <label><input type="checkbox" name="pain" value="Office time spent chasing timesheets"> Office time spent chasing timesheets</label>
+        <label class="survey-other"><input type="checkbox" name="pain" value="Other"> Other <input type="text" name="pain_other" aria-label="Other trouble" placeholder="Tell us"></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="survey-q">
+      <legend><span class="survey-num">8</span>In a typical week, how long does someone spend fixing or chasing timecards?</legend>
+      <div class="survey-options survey-options--row">
+        <label><input type="radio" name="fix_hours" value="None"> None</label>
+        <label><input type="radio" name="fix_hours" value="Under 1 hour"> Under 1 hour</label>
+        <label><input type="radio" name="fix_hours" value="1-3 hours"> 1–3 hours</label>
+        <label><input type="radio" name="fix_hours" value="3-8 hours"> 3–8 hours</label>
+        <label><input type="radio" name="fix_hours" value="8+ hours"> 8+ hours</label>
+      </div>
+    </fieldset>
+
+    <fieldset class="survey-q">
+      <legend><span class="survey-num">9</span>If you could fix one thing about how time gets tracked, what would it be?</legend>
+      <textarea name="one_fix" rows="4" aria-label="One thing you would fix"></textarea>
+    </fieldset>
+
+    <fieldset class="survey-q">
+      <legend><span class="survey-num">10</span>Can we follow up?</legend>
+      <p class="survey-hint">Leave a way to reach you if you're open to a 20-minute call. We'll only use it to talk about this.</p>
+      <div class="survey-grid">
+        <label class="survey-text">Name <input type="text" name="name" autocomplete="name"></label>
+        <label class="survey-text">Company <input type="text" name="company" autocomplete="organization"></label>
+        <label class="survey-text">Email <input type="email" name="email" autocomplete="email"></label>
+        <label class="survey-text">Phone <input type="tel" name="phone" autocomplete="tel"></label>
+      </div>
+    </fieldset>
+
+    <!-- Spam trap: hidden from people, bots fill it in. -->
+    <div class="survey-trap" aria-hidden="true">
+      <label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+    </div>
+
+    <div class="survey-actions">
+      <button type="submit" class="btn-primary">Send answers</button>
+      <p class="survey-status" role="status" aria-live="polite"></p>
+    </div>
+  </form>
+
+  <section class="survey-thanks" hidden>
+    <h2 class="actual-hero-title">Thank you.</h2>
+    <p class="actual-hero-subtitle">Your answers help us decide what Actual has to get right first. If you left contact details, we'll be in touch.</p>
+    <div class="actual-hero-actions">
+      <a class="btn-primary" href="/actual/">The principles behind Actual</a>
+      <a class="btn-link" href="/">Back to home</a>
+    </div>
+  </section>
+</div>
+
+<script src="/assets/js/survey.js"></script>
