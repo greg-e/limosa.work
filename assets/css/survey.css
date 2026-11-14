@@ -1,0 +1,186 @@
+/* Time-tracking survey (/pages/survey.html) */
+.survey {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2.5rem 0 4rem;
+}
+
+.survey [hidden] { display: none !important; }
+
+.survey-intro .actual-hero-subtitle { margin-bottom: 1.5rem; }
+
+.survey-form { display: grid; gap: 1rem; }
+
+.survey-q {
+  margin: 0;
+  padding: 1.25rem 1.25rem 1.1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+  min-width: 0;
+}
+
+.survey-q legend {
+  float: left;
+  width: 100%;
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+  padding: 0;
+  margin: 0 0 0.75rem;
+  font-weight: 600;
+  font-size: 1.02rem;
+  line-height: 1.4;
+  color: #111827;
+}
+.survey-q legend + * { clear: both; }
+
+.survey-num {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 999px;
+  background: #e7f6ee;
+  color: var(--green-dark);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.survey-hint {
+  margin: -0.4rem 0 0.75rem;
+  font-size: 0.88rem;
+  color: #6b7280;
+}
+
+.survey-options { display: grid; gap: 0.35rem; }
+.survey-options--row { grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); }
+
+.survey-options > label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid #eef0f2;
+  border-radius: 8px;
+  cursor: pointer;
+  line-height: 1.35;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.survey-options > label:hover { border-color: #cfd6dc; }
+.survey-options > label:has(input:checked) {
+  border-color: var(--green);
+  background: #f2fbf6;
+}
+
+.survey input[type="radio"],
+.survey input[type="checkbox"] {
+  flex: none;
+  width: 1.05rem;
+  height: 1.05rem;
+  margin: 0;
+  accent-color: var(--green);
+}
+
+.survey-other input[type="text"] {
+  flex: 1;
+  min-width: 0;
+  margin-left: 0.25rem;
+}
+
+.survey input[type="text"],
+.survey input[type="email"],
+.survey input[type="tel"],
+.survey textarea {
+  width: 100%;
+  font: inherit;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  color: #111827;
+}
+.survey input:focus-visible,
+.survey textarea:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+.survey textarea { resize: vertical; min-height: 6rem; }
+
+.survey-text {
+  display: grid;
+  gap: 0.3rem;
+  margin-top: 0.85rem;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.survey-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 1rem;
+}
+.survey-grid .survey-text { margin-top: 0.5rem; }
+
+.survey-scale {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.survey-scale-end { font-size: 0.85rem; color: #6b7280; }
+.survey-scale label { cursor: pointer; }
+.survey-scale input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.survey-scale span:not(.survey-scale-end) {
+  display: inline-grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+.survey-scale label:hover span { border-color: var(--green); }
+.survey-scale input:checked + span {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+.survey-scale input:focus-visible + span { outline: 2px solid var(--green); outline-offset: 2px; }
+
+.survey-trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.survey-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+.survey-actions button[disabled] { opacity: 0.6; cursor: progress; transform: none; }
+.survey-status { margin: 0; font-size: 0.9rem; color: #6b7280; }
+.survey-status.is-error { color: #b42318; }
+
+.survey-thanks { padding-top: 1rem; }
+
+@media (max-width: 600px) {
+  .survey { padding-top: 1.5rem; }
+  .survey-q { padding: 1rem; }
+  .survey-grid { grid-template-columns: 1fr; }
+  .survey-scale span:not(.survey-scale-end) { width: 2.4rem; height: 2.4rem; }
+  .survey-actions .btn-primary { width: 100%; }
+}
