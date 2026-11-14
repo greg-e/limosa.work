@@ -565,3 +565,17 @@ a:hover{color:var(--green)}
   }
 }
 
+/* About page: same measure and link color as the rest of the site */
+.about-page {
+  max-width: 48rem;
+}
+
+.about-page a {
+  color: var(--green);
+}
+
+.about-page a:hover {
+  color: var(--green-dark);
+  text-decoration: underline;
+}
+
