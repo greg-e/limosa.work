@@ -41,6 +41,7 @@ test("accepts a full answer and stamps a server timestamp", async () => {
     company: "North Crew",
     email: "ada@example.com",
     phone: "+1 555 0100",
+    early_access: "Yes",
     referrer: "https://secret.example/hidden",
     page: "/pages/survey.html",
     submitted_at: "2000-01-01T00:00:00.000Z",
@@ -61,6 +62,7 @@ test("accepts a full answer and stamps a server timestamp", async () => {
   assert.equal(row.tools, "a spreadsheet");
   assert.equal(row.one_fix, "Stop guessing\ndrive time");
   assert.equal(row.email, "ada@example.com");
+  assert.equal(row.early_access, "Yes");
   assert.equal(row.referrer, undefined);
   assert.equal(row.page, undefined);
   assert.equal(JSON.stringify(row).includes("secret.example"), false);
@@ -81,6 +83,7 @@ test("drops the honeypot without storing a row", async () => {
 test("rejects unknown choices, bad email, too many pains, and empty forms", async () => {
   const cases = [
     { role: "Intern" },
+    { early_access: "Maybe" },
     { email: "not-an-email" },
     { pain: ["Missed or forgotten punches", "Rounded or guessed hours", "Disputes over pay", "Other"] },
     {},

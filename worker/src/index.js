@@ -32,6 +32,7 @@ export const ANSWER_FIELDS = [
   "company",
   "email",
   "phone",
+  "early_access",
 ];
 
 const ENUMS = {
@@ -52,6 +53,7 @@ const ENUMS = {
   ],
   trust: ["1", "2", "3", "4", "5"],
   fix_hours: ["None", "Under 1 hour", "1-3 hours", "3-8 hours", "8+ hours"],
+  early_access: ["Yes"],
 };
 
 const MULTIS = {

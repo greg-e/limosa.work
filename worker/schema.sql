@@ -21,7 +21,8 @@ CREATE TABLE IF NOT EXISTS responses (
   name TEXT,
   company TEXT,
   email TEXT,
-  phone TEXT
+  phone TEXT,
+  early_access TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_responses_created_at ON responses (created_at);

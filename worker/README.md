@@ -10,7 +10,7 @@ The Worker's `workers.dev` hostname needs no DNS change. That matters because li
 
 ## What is stored
 
-Each row has `id`, `created_at` (UTC, set by the Worker), and the survey fields: role, trade, crew size, how hours are recorded, job costing, trust, troubles, time spent fixing timecards, the one thing to fix, and the optional name, company, email, and phone.
+Each row has `id`, `created_at` (UTC, set by the Worker), and the survey fields: role, trade, crew size, how hours are recorded, job costing, trust, troubles, time spent fixing timecards, the one thing to fix, the optional name, company, email, and phone, and whether they want to hear when the badge is ready to try (`early_access`).
 
 Not stored: IP address, user agent, cookies, referrer, the page path, or the honeypot. The IP is used only to build an HMAC for the hourly rate limit, and only after `EXPORT_TOKEN` is set. The hash is not reversible from the database alone and is not included in the CSV.
 
@@ -32,6 +32,12 @@ npx wrangler@4 d1 execute limosa-survey --remote --file=schema.sql
 openssl rand -base64 32
 npx wrangler@4 secret put EXPORT_TOKEN
 npx wrangler@4 deploy
+```
+
+A database created before the `early_access` column existed needs it added once, before deploying this Worker:
+
+```bash
+npx wrangler@4 d1 execute limosa-survey --remote --command "ALTER TABLE responses ADD COLUMN early_access TEXT;"
 ```
 
 The deployed Worker is at `https://limosa-survey.limosa.workers.dev`. The submit endpoint is `https://limosa-survey.limosa.workers.dev/responses`.
