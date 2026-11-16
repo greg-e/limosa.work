@@ -1,91 +1,91 @@
 ---
 title: Example ads
 layout: default
-permalink: /pages/ads/
+permalink: /pages/examples/
 description: Example ads showing how Actual would be marketed to field crews and the businesses they work for once the badge is available.
 ---
 <style>
-  .ads-page{padding-bottom:48px}
-  .ads-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:28px;margin-top:32px}
-  .ad-item{margin:0}
-  .ad-frame{display:block;width:100%;border:1px solid var(--line);border-radius:8px;background:#E8E4DC}
-  .ad-item figcaption{margin-top:10px;font-size:15px;line-height:1.45;color:var(--text)}
-  .ad-item figcaption strong{display:block;color:var(--ink)}
-  .ads-section{margin-top:48px}
-  .ads-section h2{margin:0}
-  .ads-section > p{margin:8px 0 0;color:var(--text)}
-  .ads-tabs{display:none;gap:6px;margin-top:32px;border-bottom:1px solid var(--line)}
-  .has-tabs .ads-tabs{display:flex}
-  .ads-tab{appearance:none;background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-1px;padding:12px 18px;font:inherit;font-size:17px;font-weight:600;color:var(--muted);cursor:pointer}
-  .ads-tab:hover{color:var(--ink)}
-  .ads-tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--green)}
-  .ads-tab:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
-  .has-tabs .ads-section{margin-top:24px}
-  .has-tabs .ads-section h2{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .ex-page{padding-bottom:48px}
+  .ex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:28px;margin-top:32px}
+  .ex-item{margin:0}
+  .ex-frame{display:block;width:100%;border:1px solid var(--line);border-radius:8px;background:#E8E4DC}
+  .ex-item figcaption{margin-top:10px;font-size:15px;line-height:1.45;color:var(--text)}
+  .ex-item figcaption strong{display:block;color:var(--ink)}
+  .ex-section{margin-top:48px}
+  .ex-section h2{margin:0}
+  .ex-section > p{margin:8px 0 0;color:var(--text)}
+  .ex-tabs{display:none;gap:6px;margin-top:32px;border-bottom:1px solid var(--line)}
+  .has-tabs .ex-tabs{display:flex}
+  .ex-tab{appearance:none;background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-1px;padding:12px 18px;font:inherit;font-size:17px;font-weight:600;color:var(--muted);cursor:pointer}
+  .ex-tab:hover{color:var(--ink)}
+  .ex-tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--green)}
+  .ex-tab:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
+  .has-tabs .ex-section{margin-top:24px}
+  .has-tabs .ex-section h2{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 </style>
 
-<div class="actual-container ads-page">
+<div class="actual-container ex-page">
   <h1 class="actual-hero-title">Example ads</h1>
   <p class="actual-hero-subtitle">These show how we would advertise Actual once the badge is available, to the crews who wear it and to the businesses they work for. Actual is in development, and the badge isn’t for sale yet. The hours in each ad are made-up examples.</p>
 
-  <div class="ads-tabs" role="tablist" aria-label="Ad audience">
-    <button class="ads-tab" role="tab" id="tab-workers" aria-controls="panel-workers" aria-selected="true">For workers</button>
-    <button class="ads-tab" role="tab" id="tab-business" aria-controls="panel-business" aria-selected="false" tabindex="-1">For businesses</button>
+  <div class="ex-tabs" role="tablist" aria-label="Ad audience">
+    <button class="ex-tab" role="tab" id="tab-workers" aria-controls="panel-workers" aria-selected="true">For workers</button>
+    <button class="ex-tab" role="tab" id="tab-business" aria-controls="panel-business" aria-selected="false" tabindex="-1">For businesses</button>
   </div>
 
-  <section class="ads-section" id="panel-workers" role="tabpanel" aria-labelledby="tab-workers">
+  <section class="ex-section" id="panel-workers" role="tabpanel" aria-labelledby="tab-workers">
   <h2>For workers</h2>
   <p>Crews get a badge they own and a record of their own hours.</p>
-  <div class="ads-grid">
-    <figure class="ad-item">
-      <iframe class="ad-frame" src="/pages/ads/hours-square.html" title="Your hours ad" loading="lazy" style="aspect-ratio:1/1"></iframe>
-      <figcaption><strong>Your hours</strong>1080 × 1080, for Instagram and Facebook posts. <a href="/pages/ads/hours-square.html">Open full size</a></figcaption>
+  <div class="ex-grid">
+    <figure class="ex-item">
+      <iframe class="ex-frame" src="/pages/examples/hours-square.html" title="Your hours ad" loading="lazy" style="aspect-ratio:1/1"></iframe>
+      <figcaption><strong>Your hours</strong>1080 × 1080, for Instagram and Facebook posts. <a href="/pages/examples/hours-square.html">Open full size</a></figcaption>
     </figure>
 
-    <figure class="ad-item">
-      <iframe class="ad-frame" src="/pages/ads/own-badge.html" title="Your badge ad" loading="lazy" style="aspect-ratio:4/5"></iframe>
-      <figcaption><strong>Your badge</strong>1080 × 1350, for Instagram and Facebook feeds. <a href="/pages/ads/own-badge.html">Open full size</a></figcaption>
+    <figure class="ex-item">
+      <iframe class="ex-frame" src="/pages/examples/own-badge.html" title="Your badge ad" loading="lazy" style="aspect-ratio:4/5"></iframe>
+      <figcaption><strong>Your badge</strong>1080 × 1350, for Instagram and Facebook feeds. <a href="/pages/examples/own-badge.html">Open full size</a></figcaption>
     </figure>
 
-    <figure class="ad-item">
-      <iframe class="ad-frame" src="/pages/ads/day-story.html" title="Example day ad" loading="lazy" style="aspect-ratio:9/16"></iframe>
-      <figcaption><strong>Example day</strong>1080 × 1920, for stories and status updates. <a href="/pages/ads/day-story.html">Open full size</a></figcaption>
+    <figure class="ex-item">
+      <iframe class="ex-frame" src="/pages/examples/day-story.html" title="Example day ad" loading="lazy" style="aspect-ratio:9/16"></iframe>
+      <figcaption><strong>Example day</strong>1080 × 1920, for stories and status updates. <a href="/pages/examples/day-story.html">Open full size</a></figcaption>
     </figure>
 
-    <figure class="ad-item">
-      <iframe class="ad-frame" src="/pages/ads/paycheck-banner.html" title="Paycheck banner ad" loading="lazy" style="aspect-ratio:1200/628"></iframe>
-      <figcaption><strong>Paycheck banner</strong>1200 × 628, for link previews, Facebook groups and LinkedIn. <a href="/pages/ads/paycheck-banner.html">Open full size</a></figcaption>
+    <figure class="ex-item">
+      <iframe class="ex-frame" src="/pages/examples/paycheck-banner.html" title="Paycheck banner ad" loading="lazy" style="aspect-ratio:1200/628"></iframe>
+      <figcaption><strong>Paycheck banner</strong>1200 × 628, for link previews, Facebook groups and LinkedIn. <a href="/pages/examples/paycheck-banner.html">Open full size</a></figcaption>
     </figure>
 
-    <figure class="ad-item">
-      <iframe class="ad-frame" src="/pages/ads/yard-flyer.html" title="Yard flyer" loading="lazy" style="aspect-ratio:8.5/11"></iframe>
-      <figcaption><strong>Yard flyer</strong>US Letter with a large QR code to scan with a phone, for the break room or the yard board. <a href="/pages/ads/yard-flyer.html">Open full size</a></figcaption>
+    <figure class="ex-item">
+      <iframe class="ex-frame" src="/pages/examples/yard-flyer.html" title="Yard flyer" loading="lazy" style="aspect-ratio:8.5/11"></iframe>
+      <figcaption><strong>Yard flyer</strong>US Letter with a large QR code to scan with a phone, for the break room or the yard board. <a href="/pages/examples/yard-flyer.html">Open full size</a></figcaption>
     </figure>
   </div>
   </section>
 
-  <section class="ads-section" id="panel-business" role="tabpanel" aria-labelledby="tab-business">
+  <section class="ex-section" id="panel-business" role="tabpanel" aria-labelledby="tab-business">
   <h2>For businesses</h2>
   <p>Owners and payroll get checked hours and each job's crew time, shared by the crew.</p>
-  <div class="ads-grid">
-    <figure class="ad-item">
-      <iframe class="ad-frame" src="/pages/ads/biz-job-cost-square.html" title="Job cost ad" loading="lazy" style="aspect-ratio:1/1"></iframe>
-      <figcaption><strong>Job cost</strong>1080 × 1080, for LinkedIn and Facebook posts. <a href="/pages/ads/biz-job-cost-square.html">Open full size</a></figcaption>
+  <div class="ex-grid">
+    <figure class="ex-item">
+      <iframe class="ex-frame" src="/pages/examples/biz-job-cost-square.html" title="Job cost ad" loading="lazy" style="aspect-ratio:1/1"></iframe>
+      <figcaption><strong>Job cost</strong>1080 × 1080, for LinkedIn and Facebook posts. <a href="/pages/examples/biz-job-cost-square.html">Open full size</a></figcaption>
     </figure>
 
-    <figure class="ad-item">
-      <iframe class="ad-frame" src="/pages/ads/biz-payroll-feed.html" title="Checked hours ad" loading="lazy" style="aspect-ratio:4/5"></iframe>
-      <figcaption><strong>Checked hours</strong>1080 × 1350, for LinkedIn and Facebook feeds. <a href="/pages/ads/biz-payroll-feed.html">Open full size</a></figcaption>
+    <figure class="ex-item">
+      <iframe class="ex-frame" src="/pages/examples/biz-payroll-feed.html" title="Checked hours ad" loading="lazy" style="aspect-ratio:4/5"></iframe>
+      <figcaption><strong>Checked hours</strong>1080 × 1350, for LinkedIn and Facebook feeds. <a href="/pages/examples/biz-payroll-feed.html">Open full size</a></figcaption>
     </figure>
 
-    <figure class="ad-item">
-      <iframe class="ad-frame" src="/pages/ads/biz-quote-banner.html" title="Quote banner ad" loading="lazy" style="aspect-ratio:1200/628"></iframe>
-      <figcaption><strong>Quote banner</strong>1200 × 628, for link previews, trade groups and LinkedIn. <a href="/pages/ads/biz-quote-banner.html">Open full size</a></figcaption>
+    <figure class="ex-item">
+      <iframe class="ex-frame" src="/pages/examples/biz-quote-banner.html" title="Quote banner ad" loading="lazy" style="aspect-ratio:1200/628"></iframe>
+      <figcaption><strong>Quote banner</strong>1200 × 628, for link previews, trade groups and LinkedIn. <a href="/pages/examples/biz-quote-banner.html">Open full size</a></figcaption>
     </figure>
 
-    <figure class="ad-item">
-      <iframe class="ad-frame" src="/pages/ads/biz-one-pager.html" title="Business one-pager" loading="lazy" style="aspect-ratio:8.5/11"></iframe>
-      <figcaption><strong>One-pager</strong>US Letter to print or send, for owners and office managers. <a href="/pages/ads/biz-one-pager.html">Open full size</a></figcaption>
+    <figure class="ex-item">
+      <iframe class="ex-frame" src="/pages/examples/biz-one-pager.html" title="Business one-pager" loading="lazy" style="aspect-ratio:8.5/11"></iframe>
+      <figcaption><strong>One-pager</strong>US Letter to print or send, for owners and office managers. <a href="/pages/examples/biz-one-pager.html">Open full size</a></figcaption>
     </figure>
   </div>
   </section>
@@ -93,8 +93,8 @@ description: Example ads showing how Actual would be marketed to field crews and
 <script>
   // Tabs for the two audiences. Without JavaScript both sections show.
   (function () {
-    var page = document.querySelector(".ads-page");
-    var tabs = [].slice.call(page.querySelectorAll(".ads-tab"));
+    var page = document.querySelector(".ex-page");
+    var tabs = [].slice.call(page.querySelectorAll(".ex-tab"));
     if (!tabs.length) return;
     page.classList.add("has-tabs");
     function show(id, focus) {
@@ -120,7 +120,7 @@ description: Example ads showing how Actual would be marketed to field crews and
         history.replaceState(null, "", "#" + next.getAttribute("aria-controls").replace("panel-", ""));
       });
     });
-    // Link to /pages/ads/#business to open the business tab.
+    // Link to /pages/examples/#business to open the business tab.
     show(location.hash === "#business" ? "panel-business" : "panel-workers");
   })();
 </script>
