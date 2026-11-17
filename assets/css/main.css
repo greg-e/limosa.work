@@ -654,6 +654,32 @@ a:hover{color:var(--green)}
   margin: 2rem 0 0.5rem;
 }
 
+/* About page: muted callout below the main copy (why the godwit) */
+.about-callout {
+  margin: 3rem 0 1rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--surface-muted);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--line-strong);
+  border-radius: 6px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+/* Transparent black bird mark; inverted to white in dark mode */
+.about-callout-logo {
+  display: block;
+  width: 28px;
+  height: 28px;
+  margin: 0 auto 0.6rem;
+  filter: var(--logo-filter);
+}
+
+.about-callout p:last-child {
+  margin-bottom: 0;
+}
+
 .status-table {
   width: 100%;
   border-collapse: collapse;
