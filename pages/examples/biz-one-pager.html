@@ -42,6 +42,9 @@
   .scan-cta{margin:10px 0 0;font-size:38px;line-height:1.08;font-weight:700;color:var(--ink)}
   .scan-url{display:inline-block;margin-top:14px;font-size:22px;font-weight:700;color:var(--earth)}
   .note{position:fixed;top:0;left:0;right:0;z-index:5;padding:10px 16px;background:#111111;color:#F4EFE4;font:600 13px/1.3 var(--font);letter-spacing:.04em;text-align:center}
+  .note{display:flex;justify-content:center;align-items:center;gap:24px;flex-wrap:wrap}
+  .note .back{color:#F4EFE4;text-decoration:underline;text-underline-offset:3px}
+  .note .back:hover,.note .back:focus-visible{color:#CB6735}
   @media print{
     @page{size:letter;margin:0}
     html,body{background:#fff;overflow:visible;height:auto}
@@ -52,34 +55,34 @@
 </style>
 </head>
 <body>
-<div class="note">Example ad for after launch. Actual is in development.</div>
+<div class="note"><a class="back" href="/pages/examples/#business">&larr; All example ads</a><span>Example ad for after launch. Actual is in development.</span></div>
 <div class="canvas">
   <div class="top">
     <div class="brand"><img src="../../assets/img/logo.png" alt=""><span>Actual</span></div>
     <p class="kicker">For service businesses</p>
-    <h1>Payroll and job costs from your crew's own records.</h1>
+    <h1>Payroll and job costs from your team's own records.</h1>
   </div>
 
   <div class="main">
     <div>
       <h2>How it works</h2>
       <ol>
-        <li>Each worker wears an Actual badge they own. It records their time on each job site, with nothing to tap or clock into.</li>
+        <li>Each worker wears an Actual badge they own. It records their time on each job, with nothing to tap or clock into.</li>
         <li>Before payroll, each worker checks their hours and shares the record with you.</li>
         <li>You run payroll from those hours and see what each job cost, by the minute.</li>
       </ol>
       <h2>Who it's for</h2>
-      <p>Landscaping, HVAC, plumbing, pest control, cleaning, in-home care, delivery and other businesses whose crews work at customers' properties.</p>
+      <p>Landscaping, HVAC, plumbing, pest control, cleaning, in-home care, delivery and other businesses whose people work at customers' homes and properties, alone or in crews.</p>
     </div>
     <div>
       <h2>What you get</h2>
       <ul>
-        <li>Time on each job site for every worker who shares it with you.</li>
-        <li>Hours your crew has checked before they reach payroll.</li>
-        <li>Each job's crew time next to its quote, for the next bid.</li>
+        <li>Time on each job for every worker who shares it with you.</li>
+        <li>Hours your team has checked before they reach payroll.</li>
+        <li>Each job's time next to its quote, for the next bid.</li>
         <li>No timecards to collect or retype.</li>
       </ul>
-      <h2>Why crews wear it</h2>
+      <h2>Why workers wear it</h2>
       <p>The badge and the record belong to the worker. They use it to check their own pay, on every job they work.</p>
     </div>
   </div>
