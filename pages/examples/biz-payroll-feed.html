@@ -3,10 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="only light">
 <title>Checked Hours · Actual ad</title>
 <link rel="icon" type="image/png" href="../../assets/img/favicon-32.png?v=6" sizes="32x32">
 <style>
   :root{
+    color-scheme:only light;
     --ink:#111111; --green:#1E4A42; --earth:#CB6735; --paper:#F4EFE4;
     --stone:#5C5850; --mist:#E8E4DC; --clay:#9A9488; --ok:#6BAB78;
     --font:"Avenir Next","Helvetica Neue",Arial,system-ui,sans-serif;
@@ -34,6 +36,11 @@
   li .ok::before{content:"";width:16px;height:16px;border-radius:50%;background:var(--ok)}
   .sum{display:flex;justify-content:space-between;align-items:baseline;margin-top:22px;font-size:32px;font-weight:700}
   .sum b{color:var(--earth);font-size:42px;font-variant-numeric:tabular-nums}
+  .job{margin-top:14px}
+  .job b{display:block;font-size:36px;font-weight:700}
+  .job span{display:block;margin-top:4px;font-size:24px;color:var(--stone)}
+  .line{display:flex;justify-content:space-between;align-items:baseline;margin-top:8px;font-size:26px;color:var(--stone)}
+  .line b{font-size:30px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
   .foot{margin-top:auto;border-top:3px solid rgba(244,239,228,.4);padding-top:30px}
   .cta{font-size:32px;font-weight:700;color:var(--paper)}
   .url{display:block;margin-top:6px;font-size:26px;font-weight:500;opacity:.8}
@@ -45,21 +52,23 @@
 </head>
 <body>
 <div class="note"><a class="back" href="/pages/examples/#business">&larr; All example ads</a><span>Example ad for after launch. Actual is in development.</span></div>
-<div class="canvas" role="img" aria-label="Actual ad for service businesses: Your team's hours arrive already checked. Example pay week with four workers, each marked checked, 153 hours 25 minutes in total.">
+<div class="canvas" role="img" aria-label="Actual ad for service businesses: Your team's hours arrive already checked. Example job at Hillcrest Commons, grounds maintenance on Tuesday: a crew lead, two crew members and a helper, each marked checked, 23 hours 50 minutes in total against 24 hours allotted to the property.">
   <div class="brand"><img src="../../assets/img/logo-mark.png" alt=""><span>Actual</span></div>
   <p class="label">For owners and payroll</p>
   <h1>Your team's hours arrive already checked.</h1>
-  <p class="body">Each worker reviews their own record and shares it with you before payroll. There are no timecards to chase on Monday morning.</p>
+  <p class="body">Each worker checks their own record and shares it before payroll. You see each person's time at the property next to the labor you allotted.</p>
 
   <div class="card">
-    <div class="card-head"><span>Example pay week</span><span>Shared with you</span></div>
+    <div class="card-head"><span>Example job</span><span>Shared with you</span></div>
+    <div class="job"><b>Hillcrest Commons</b><span>Grounds maintenance, Tuesday</span></div>
     <ul>
-      <li><span class="who">Crew lead</span><span class="hrs">41h 05m</span><span class="ok">Checked</span></li>
-      <li><span class="who">Crew member</span><span class="hrs">39h 50m</span><span class="ok">Checked</span></li>
-      <li><span class="who">Home care aide</span><span class="hrs">40h 15m</span><span class="ok">Checked</span></li>
-      <li><span class="who">Helper</span><span class="hrs">32h 15m</span><span class="ok">Checked</span></li>
+      <li><span class="who">Crew lead</span><span class="hrs">6h 10m</span><span class="ok">Checked</span></li>
+      <li><span class="who">Crew member</span><span class="hrs">5h 55m</span><span class="ok">Checked</span></li>
+      <li><span class="who">Crew member</span><span class="hrs">6h 05m</span><span class="ok">Checked</span></li>
+      <li><span class="who">Helper</span><span class="hrs">5h 40m</span><span class="ok">Checked</span></li>
     </ul>
-    <div class="sum"><span>Team total</span><b>153h 25m</b></div>
+    <div class="sum"><span>Crew total</span><b>23h 50m</b></div>
+    <div class="line"><span>Allotted to this property</span><b>24h 00m</b></div>
   </div>
 
   <div class="foot">
