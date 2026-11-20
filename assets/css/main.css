@@ -334,7 +334,7 @@ a:hover{color:var(--green)}
 .actual-for-card.family-conviviality   { background: #065f46; --card-accent: #d1fae5; }
 .actual-for-card.family-data-integrity { background: #9f1239; --card-accent: #ffe4e6; }
 .actual-for-card.family-design         { background: #134e4a; --card-accent: #ccfbf1; }
-.actual-for-card.family-field-practice { background: #3f6212; --card-accent: #ecfccb; }
+.actual-for-card.family-work-practice { background: #3f6212; --card-accent: #ecfccb; }
 .actual-for-card.family-finance        { background: #3730a3; --card-accent: #e0e7ff; }
 .actual-for-card.family-mechanism      { background: #44403c; --card-accent: #f5f5f4; }
 .actual-for-card.family-outcome        { background: #c2410c; --card-accent: #ffedd5; }

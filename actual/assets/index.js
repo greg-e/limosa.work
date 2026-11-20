@@ -33,7 +33,7 @@ const FAMILY_META = {
   Conviviality: { color: "bg-emerald-800", accent: "text-emerald-100" },
   "Data Integrity": { color: "bg-rose-800", accent: "text-rose-100" },
   Design: { color: "bg-teal-900", accent: "text-teal-100" },
-  "Field Practice": { color: "bg-lime-800", accent: "text-lime-100" },
+  "Work Practice": { color: "bg-lime-800", accent: "text-lime-100" },
   Finance: { color: "bg-indigo-800", accent: "text-indigo-100" },
   Mechanism: { color: "bg-stone-700", accent: "text-stone-100" },
   Outcome: { color: "bg-orange-700", accent: "text-orange-100" },
@@ -59,22 +59,24 @@ function getFamilyMeta(family) {
 
 const AUDIENCE_PRESETS = {
   All: [],
-  Field: [
+  Workers: [
     "language-provenance",
     "automation-automate-constraint",
     "truth-395",
-    "flow-critical",
+    "prin-003",
     "convivial-tools",
     "design-integrity-by-design",
     "convivial-reduce-load",
-    "outcome-empower-crew",
-    "metric-cognitive-load"
+    "field-005",
+    "metric-cognitive-load",
+    "work-001",
+    "work-002"
   ],
   Engineering: [
     "language-provenance",
     "automation-automate-constraint",
     "automation-necessary-not-sufficient",
-    "flow-critical",
+    "prin-003",
     "design-integrity-by-design",
     "mechanism-edge-autonomy"
   ],
@@ -82,7 +84,7 @@ const AUDIENCE_PRESETS = {
     "language-provenance",
     "truth-395",
     "design-integrity-by-design",
-    "outcome-empower-crew"
+    "field-005"
   ],
   Leadership: [
     "automation-necessary-not-sufficient",
