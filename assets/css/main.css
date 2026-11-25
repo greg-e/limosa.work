@@ -5,6 +5,7 @@
   --green:#0a9e53;
   --green-dark:#087a41;
   --green-tint:#eaf7f0;
+  --green-text:#087a41;
   --danger:#b42318;
   --ink:#111827;
   --text:#4b5563;
@@ -22,6 +23,7 @@
 :root[data-theme="dark"]{
   color-scheme:dark;
   --green-tint:#12291d;
+  --green-text:#4ade80;
   --danger:#f97066;
   --ink:#eef0f2;
   --text:#b9c0c7;
@@ -40,6 +42,7 @@
   :root:not([data-theme]){
     color-scheme:dark;
     --green-tint:#12291d;
+  --green-text:#4ade80;
     --danger:#f97066;
     --ink:#eef0f2;
     --text:#b9c0c7;
@@ -431,6 +434,59 @@ a:hover{color:var(--green)}
   margin: 0.55rem 0;
 }
 
+/* Landing: development status panel */
+.actual-hero h2 {
+  font-size: 1.5rem;
+  margin: 0 0 1.1rem;
+  color: var(--ink);
+}
+
+.actual-now {
+  margin: 0 0 3rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.actual-now .status-tag {
+  margin-right: 0.4rem;
+}
+
+.actual-now a {
+  color: var(--green-text);
+  font-weight: 600;
+  margin-left: 0.25rem;
+}
+
+.actual-now a:hover {
+  text-decoration: underline;
+}
+
+/* Landing: calls to action, one button per audience */
+.actual-asks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+}
+
+.actual-asks .btn-primary,
+.actual-asks .btn-ghost {
+  padding: 0.55rem 1.2rem;
+  font-size: 0.92rem;
+}
+
+.actual-asks .btn-ghost {
+  background: transparent;
+  border-width: 1px;
+  border-color: var(--line-strong);
+}
+
+.actual-asks .btn-ghost:hover {
+  background: var(--surface-sunken);
+  border-color: var(--green);
+}
+
 @media (min-width: 768px) {
   .actual-points {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -723,7 +779,7 @@ a:hover{color:var(--green)}
 .status-live {
   background: var(--green-tint);
   border-color: var(--green);
-  color: var(--green-dark);
+  color: var(--green-text);
 }
 
 .status-none {
