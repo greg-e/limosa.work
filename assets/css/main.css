@@ -242,6 +242,49 @@ a:hover{color:var(--green)}
   color: var(--muted);
 }
 
+.actual-for-intro {
+  max-width: none;
+  margin: 0 0 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.actual-for-intro a {
+  color: var(--green-text);
+  font-weight: 600;
+}
+
+.actual-for-refresh {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.actual-for-refresh[hidden] {
+  display: none;
+}
+
+.actual-for-refresh:hover,
+.actual-for-refresh:focus-visible {
+  background: var(--surface-sunken);
+  border-color: var(--green);
+}
+
+.actual-for-refresh:active svg {
+  transform: rotate(90deg);
+  transition: transform 0.15s ease;
+}
+
 .actual-for ul {
   margin: 0;
   padding-left: 1.15rem;
@@ -487,7 +530,35 @@ a:hover{color:var(--green)}
   border-color: var(--green);
 }
 
+/* Landing: worker and business columns */
+.actual-sides {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 1.75rem;
+}
+
+.actual-sides h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+.actual-asks-more {
+  margin: 0 0 1rem;
+  font-size: 0.92rem;
+  color: var(--text);
+}
+
+.actual-asks-more a {
+  color: var(--green-text);
+  font-weight: 600;
+}
+
 @media (min-width: 768px) {
+  .actual-sides {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .actual-points {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.75rem;

@@ -7,28 +7,51 @@ title: Home
     <div class="actual-container">
       <h1 class="actual-hero-title">Proof of Work</h1>
       <p class="actual-hero-subtitle">
-        On Monday, do you remember where you were and what you were doing at 10:15 last Tuesday? Maybe you wrote it down, can you find it in the next two minutes? When you find it, do you trust what you wrote? Will someone who wasn't there and doesn't know you trust it? If your answer is no, or maybe, then you may have a problem proving your work.
+        A customer says nobody showed up. The van's GPS shows it parked for an hour. The timesheet says the job was done. When the work is questioned, can you prove it? A clock-in and clock-out show when the day started and ended. Everything in between is someone's word.
       </p>
-      <h2>Actual is the solution</h2>
+      <h2>How Actual is solving the problem</h2>
       <div class="actual-points">
-        <p><strong>Nothing to remember.</strong> A personal device that records where you are and what you're doing, on your terms.</p>
-        <p><strong>Proof anyone can check.</strong> The record is proven truth anyone can trust and verify.</p>
-        <p><strong>Yours to share.</strong> You own the record and choose what to share and with whom.</p>
+        <p><strong>Nothing to remember.</strong> A badge you wear records where you are and what you're doing at each job, as it happens.</p>
+        <p><strong>Proof anyone can check.</strong> The record is sealed as it's made. Nobody can change it, so anyone you share it with can trust it.</p>
+        <p><strong>Yours to share.</strong> The worker owns the badge and the record, and chooses who sees it.</p>
       </div>
-      
-      <p class="actual-now"><span class="status-tag status-live">Currently in Research</span> Experience has proven a need, technology is ready, we are proving the solution. <a href="/pages/status.html">Full status</a></p>
 
-      <h3>Get involved and innovate with us</h3>
+      <h2>One Record</h2>
+      <div class="actual-sides">
+        <div>
+          <h3>Your Work</h3>
+          <ul class="actual-losses">
+            <li>When your work is questioned, show what happened.</li>
+            <li>On payday, match your pay to your hours.</li>
+            <li>When you go for your next job, show a live resume: verified hours by type of work, from every employer.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Your Team's Work</h3>
+          <ul class="actual-losses">
+            <li>When a customer disputes a visit or a bill, show the record.</li>
+            <li>Run payroll and invoices from hours your team has checked.</li>
+            <li>Bid the next job on what the last one took, and show customers a verified history of your work.</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="actual-now"><span class="status-tag status-live">Currently in Research</span> Actual is in development. We're talking with workers, business owners and office staff before we build anything. <a href="/pages/status.html">Full status</a></p>
+
+      <h3>Get involved</h3>
       <div class="actual-asks">
         <a class="btn-primary" href="/pages/survey.html">I do the work</a>
-        <a class="btn-ghost" href="mailto:greg@limosa.work?subject=Industry%20partner">I run a team</a>
-        <a class="btn-ghost" href="mailto:greg@limosa.work?subject=Building%20Actual">I build technology</a>
-        <a class="btn-ghost" href="mailto:greg@limosa.work?subject=Feedback%20on%20Actual">I know people</a>
+        <a class="btn-primary" href="mailto:greg@limosa.work?subject=Industry%20partner">I run a team</a>
       </div>
+      <p class="actual-asks-more">Build technology? <a href="mailto:greg@limosa.work?subject=Building%20Actual">Build it with us</a>. Know someone who should see this? <a href="mailto:greg@limosa.work?subject=Feedback%20on%20Actual">Tell us</a>.</p>
 
       <div class="actual-for">
-        <p class="actual-for-label">The principles behind Actual. Tap a card to read why it matters and how we apply it.</p>
-        <ul id="actual-for-cards">
+        <h2>The principles behind Actual</h2>
+        <p class="actual-for-intro">Before building anything, we wrote down <span id="actual-deck-count">63</span> ideas about work, pay and proof.  Here are four, picked at random. <a href="/actual/">See the whole deck</a>.</p>
+        <button type="button" class="actual-for-refresh" id="actual-for-refresh" aria-label="Show four more cards" title="Show four more cards" hidden>
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.34 5.66"/><path d="M20 4v7h-7"/></svg>
+        </button>
+        <ul id="actual-for-cards" aria-live="polite">
           <li>
             <a class="actual-for-card family-finance" href="/actual/#fin-001">
               <span class="actual-for-card-family">Finance</span>
@@ -60,39 +83,61 @@ title: Home
         </ul>
       </div>
       <script>
-        // Show a different set of deck cards on each load. The static cards above are the fallback.
+        // Show random deck cards, four at a time. The refresh button deals the next four,
+        // and every card shows once before any repeats. The static cards above are the fallback.
         (function () {
           var list = document.getElementById("actual-for-cards");
+          var refresh = document.getElementById("actual-for-refresh");
           if (!list || !window.fetch) return;
           var COUNT = 4;
           var slug = function (s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-"); };
+          var shuffle = function (a) {
+            for (var i = a.length - 1; i > 0; i--) {
+              var j = Math.floor(Math.random() * (i + 1));
+              var t = a[i]; a[i] = a[j]; a[j] = t;
+            }
+            return a;
+          };
 
           fetch("/assets/actual-deck/cards.json")
             .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
             .then(function (cards) {
               var pool = cards.filter(function (c) { return c && c.title && c.family; });
               if (pool.length < COUNT) return;
-              for (var i = pool.length - 1; i > 0; i--) {
-                var j = Math.floor(Math.random() * (i + 1));
-                var t = pool[i]; pool[i] = pool[j]; pool[j] = t;
+              var count = document.getElementById("actual-deck-count");
+              if (count) count.textContent = pool.length;
+              var pos = pool.length;
+              var deal = function () {
+                if (pos + COUNT > pool.length) { shuffle(pool); pos = 0; }
+                render(pool.slice(pos, pos + COUNT));
+                pos += COUNT;
+              };
+              var render = function (hand) {
+                list.replaceChildren.apply(list, hand.map(cardItem));
+              };
+              deal();
+              if (refresh) {
+                refresh.hidden = false;
+                refresh.addEventListener("click", deal);
               }
-              list.replaceChildren.apply(list, pool.slice(0, COUNT).map(function (c) {
-                var li = document.createElement("li");
-                var a = document.createElement("a");
-                a.className = "actual-for-card family-" + slug(c.family);
-                a.href = "/actual/#" + encodeURIComponent(c.id);
-                [["family", c.family], ["quote", c.quote], ["title", c.title], ["tagline", c.tagline]].forEach(function (part) {
-                  if (!part[1]) return;
-                  var span = document.createElement("span");
-                  span.className = "actual-for-card-" + part[0];
-                  span.textContent = part[1];
-                  a.appendChild(span);
-                });
-                li.appendChild(a);
-                return li;
-              }));
             })
             .catch(function () {});
+
+          function cardItem(c) {
+            var li = document.createElement("li");
+            var a = document.createElement("a");
+            a.className = "actual-for-card family-" + slug(c.family);
+            a.href = "/actual/#" + encodeURIComponent(c.id);
+            [["family", c.family], ["quote", c.quote], ["title", c.title], ["tagline", c.tagline]].forEach(function (part) {
+              if (!part[1]) return;
+              var span = document.createElement("span");
+              span.className = "actual-for-card-" + part[0];
+              span.textContent = part[1];
+              a.appendChild(span);
+            });
+            li.appendChild(a);
+            return li;
+          }
         })();
       </script>
     </div>
